@@ -100,10 +100,19 @@
         const json = await res.json();
         const card = json.data;
 
-        const prices = card?.tcgplayer?.prices;
-        const marketPrice = prices?.holofoil?.market 
-                         || prices?.normal?.market 
-                         || prices?.reverseHolofoil?.market;
+        // Double rares are typically standard Holofoil
+const prices = card?.tcgplayer?.prices;
+const rawMarketPrice = prices?.holofoil?.market 
+                 || prices?.normal?.market 
+                 || prices?.reverseHolofoil?.market;
+
+let priceText = 'N/A';
+
+if (rawMarketPrice !== undefined) {
+  // Sets minimum floor to $1.00
+  const finalPrice = Math.max(1.00, rawMarketPrice);
+  priceText = `$${finalPrice.toFixed(2)}`;
+}
 
         const priceText = marketPrice !== undefined ? `$${marketPrice.toFixed(2)}` : 'N/A';
         const tcgUrl = card?.tcgplayer?.url || 'https://www.tcgplayer.com';
