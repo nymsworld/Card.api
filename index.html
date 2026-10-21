@@ -97,4 +97,77 @@
     async function loadCard() {
       const container = document.getElementById('cardContainer');
       if (!cardId) {
-        container.innerHTML = `<div class="error">No card ID
+        container.innerHTML = `<div class="error">No card ID provided in URL.<br><br>Scan a card QR code to view live price.</div>`;
+        return;
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+      try {
+        // High-speed, free community compatibility endpoint
+        const res = await fetch(`https://api.carddex.dev/compat/pokemontcg/v2/cards/${cardId}`, {
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (res.status === 404) {
+          container.innerHTML = `<div class="error">Card ID "<strong>${cardId}</strong>" was not found.</div>`;
+          return;
+        }
+
+        if (!res.ok) {
+          container.innerHTML = `<div class="error">Server busy (${res.status}). Please refresh.</div>`;
+          return;
+        }
+
+        const json = await res.json();
+        const card = json.data;
+
+        // Retrieve pricing from Holofoil, Normal, or Reverse
+        const prices = card?.tcgplayer?.prices;
+        const rawMarketPrice = prices?.holofoil?.market 
+                         || prices?.normal?.market 
+                         || prices?.reverseHolofoil?.market;
+
+        let priceText = 'N/A';
+        let floorNote = '';
+
+        if (rawMarketPrice !== undefined) {
+          // Set $1.00 minimum floor
+          const finalPrice = Math.max(1.00, rawMarketPrice);
+          priceText = `$${finalPrice.toFixed(2)}`;
+          if (rawMarketPrice < 1.00) {
+            floorNote = `<div class="floor-note">($1.00 store floor applied)</div>`;
+          }
+        }
+
+        const tcgUrl = card?.tcgplayer?.url || 'https://www.tcgplayer.com';
+
+        container.innerHTML = `
+          <div class="badge">Double Rare</div>
+          <h1>${card.name}</h1>
+          <div class="set-info">${card.set.name} · #${card.number}/${card.set.printedTotal}</div>
+          
+          <div class="price-container">
+            <div class="label">TCGplayer Market Price</div>
+            <div class="price">${priceText}</div>
+            ${floorNote}
+          </div>
+
+          <a class="btn" href="${tcgUrl}" target="_blank" rel="noopener">View on TCGplayer</a>
+        `;
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          container.innerHTML = `<div class="error">Request timed out.<br><br><a href="javascript:location.reload()" style="color:#38bdf8;">Tap here to retry</a></div>`;
+        } else {
+          container.innerHTML = `<div class="error">Failed to fetch pricing data. Check your network connection.</div>`;
+        }
+      }
+    }
+
+    loadCard();
+  </script>
+</body>
+</html>
