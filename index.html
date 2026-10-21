@@ -1,15 +1,9 @@
-
-Noah Martin
-7:51 PM (0 minutes ago)
-to me
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kanto Misplay Society - Price Check</title>
-  <!-- Embedded QR scanner library -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <style>
     :root {
@@ -168,7 +162,7 @@ to me
     }
     .cart-bar-btn-scan { background: #8b5cf6; }
 
-    /* Modal / Drawer Overlays */
+    /* Drawer Overlays */
     .drawer-overlay {
       display: none;
       position: fixed;
@@ -227,113 +221,4 @@ to me
     .cart-item-info { flex: 1; padding-right: 0.5rem; text-align: left; }
     .cart-item-title { font-size: 0.9rem; font-weight: 600; }
     .cart-item-meta { font-size: 0.75rem; color: var(--text-sub); }
-    .cart-item-price { font-size: 0.95rem; font-weight: 700; color: var(--price-color); margin-top: 2px; }
-
-    .qty-controls { display: flex; align-items: center; gap: 0.5rem; }
-    .qty-btn {
-      background: var(--bg-sub);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .qty-count { font-size: 0.9rem; font-weight: 700; min-width: 18px; text-align: center; }
-    .del-btn {
-      background: transparent;
-      border: none;
-      color: var(--btn-danger);
-      font-size: 1.1rem;
-      margin-left: 0.5rem;
-      cursor: pointer;
-    }
-
-    .drawer-footer {
-      border-top: 1px solid var(--border-color);
-      padding-top: 1rem;
-    }
-
-    .drawer-total-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    .btn-clear {
-      background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-sub);
-      width: 100%;
-      padding: 0.65rem;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-
-    #scanner-container {
-      width: 100%;
-      max-width: 320px;
-      margin: 1rem auto 0 auto;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 2px solid var(--border-color);
-      background: #000;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="card" id="cardContainer">
-    <div class="loading" id="status">Loading live price...</div>
-  </div>
-
-  <div class="cart-bar" id="cartBar">
-    <div onclick="toggleCartDrawer(true)" style="cursor:pointer; flex: 1;">
-      <div class="cart-summary-text" id="cartSummaryCount">0 items selected</div>
-      <div class="cart-summary-total" id="cartSummaryTotal">$0.00</div>
-    </div>
-    <div class="cart-buttons">
-      <button class="cart-bar-btn cart-bar-btn-scan" onclick="startInAppScanner()">📷 Scan</button>
-      <button class="cart-bar-btn" onclick="toggleCartDrawer(true)">Cart</button>
-    </div>
-  </div>
-
-  <div class="drawer-overlay" id="drawerOverlay" onclick="handleOverlayClick(event, 'drawerOverlay')">
-    <div class="drawer">
-      <div class="drawer-header">
-        <h2>Your Scanned Cards</h2>
-        <button class="close-btn" onclick="toggleCartDrawer(false)">&times;</button>
-      </div>
-      <div class="cart-items" id="cartItemsList"></div>
-      <div class="drawer-footer">
-        <div class="drawer-total-row">
-          <span>Total:</span>
-          <span class="cart-summary-total" id="drawerGrandTotal">$0.00</span>
-        </div>
-        <button class="btn-clear" onclick="clearCart()">Clear All Cards</button>
-      </div>
-    </div>
-  </div>
-
-      const res = await fetch(`https://raw.githubusercontent.com/nymsworld/Card.api/main/prices.json?v=${Date.now()}`);
-      if (!res.ok) throw new Error('Catalog fetch failed');
-      priceCatalog = await res.json();
-      return priceCatalog;
-    }
-
-    function displayCard(card) {
-      const container = document.getElementById('cardContainer');
-      currentCardData = card;
-
-      let floorNote = '';
-      if (card.rawMarket !== null && card.rawMarket < 1.00) {
-        floorNote = '<div class="floor-note">($
+    .cart-
