@@ -1,331 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kanto Misplay Society - Price Check</title>
-  <style>
-    :root {
-      --bg-page: #0b0f19;
-      --bg-card: #161f30;
-      --bg-sub: #1f2b42;
-      --border-color: #23314d;
-      --text-main: #f8fafc;
-      --text-sub: #94a3b8;
-      --price-color: #4ade80;
-      --btn-primary: #2563eb;
-      --btn-primary-hover: #1d4ed8;
-      --btn-danger: #ef4444;
-    }
-
-    * { box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      margin: 0;
-      background: var(--bg-page);
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 1.5rem 1rem 7rem 1rem;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 2rem 1.5rem;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.45);
-    }
-
-    .card-art {
-      width: 170px;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.15);
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 0.75rem;
-    }
-
-    h1 {
-      font-size: 1.35rem;
-      margin: 0 0 0.25rem 0;
-      color: var(--text-main);
-    }
-
-    .set-info {
-      font-size: 0.85rem;
-      color: var(--text-sub);
-      margin-bottom: 1.25rem;
-    }
-
-    .price-container {
-      margin: 1rem 0 1.25rem 0;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 12px;
-    }
-
-    .label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-sub);
-    }
-
-    .price {
-      font-size: 2.75rem;
-      font-weight: 800;
-      color: var(--price-color);
-      margin-top: 0.25rem;
-    }
-
-    .floor-note {
-      font-size: 0.75rem;
-      color: var(--text-sub);
-      margin-top: 4px;
-    }
-
-    .btn {
-      display: inline-block;
-      width: 100%;
-      background: var(--btn-primary);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      padding: 0.85rem 1rem;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn:active { background: var(--btn-primary-hover); }
-
-    .btn-cart {
-      background: #10b981;
-      margin-bottom: 0.75rem;
-    }
-    .btn-cart:active { background: #059669; }
-
-    .btn-link {
-      background: #334155;
-      font-size: 0.85rem;
-      padding: 0.65rem 1rem;
-    }
-
-    .loading { color: var(--text-sub); font-size: 0.95rem; }
-    .error { color: #f87171; font-size: 0.9rem; line-height: 1.4; }
-
-    /* Floating Cart Sticky Bar */
-    .cart-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #111827;
-      border-top: 1px solid var(--border-color);
-      padding: 0.85rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 -8px 24px rgba(0,0,0,0.5);
-      z-index: 50;
-      cursor: pointer;
-    }
-
-    .cart-summary-text { font-size: 0.85rem; color: var(--text-sub); }
-    .cart-summary-total { font-size: 1.25rem; font-weight: 800; color: var(--price-color); }
-    .cart-bar-btn {
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.55rem 1rem;
-      font-weight: 600;
-      font-size: 0.85rem;
-    }
-
-    /* Full-screen Drawer Modal */
-    .drawer-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 100;
-      justify-content: center;
-      align-items: flex-end;
-    }
-
-    .drawer-overlay.active { display: flex; }
-
-    .drawer {
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-color);
-      border-radius: 20px 20px 0 0;
-      width: 100%;
-      max-width: 480px;
-      max-height: 80vh;
-      display: flex;
-      flex-direction: column;
-      padding: 1.25rem;
-    }
-
-    .drawer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .drawer-header h2 { margin: 0; font-size: 1.15rem; }
-    .close-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-sub);
-      font-size: 1.5rem;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    .cart-items {
-      overflow-y: auto;
-      flex: 1;
-      margin: 1rem 0;
-    }
-
-    .cart-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .cart-item-info { flex: 1; padding-right: 0.5rem; text-align: left; }
-    .cart-item-title { font-size: 0.9rem; font-weight: 600; }
-    .cart-item-meta { font-size: 0.75rem; color: var(--text-sub); }
-    .cart-item-price { font-size: 0.95rem; font-weight: 700; color: var(--price-color); margin-top: 2px; }
-
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .qty-btn {
-      background: var(--bg-sub);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .qty-count { font-size: 0.9rem; font-weight: 700; min-width: 18px; text-align: center; }
-
-    .del-btn {
-      background: transparent;
-      border: none;
-      color: var(--btn-danger);
-      font-size: 1.1rem;
-      margin-left: 0.5rem;
-      cursor: pointer;
-      padding: 0 4px;
-    }
-
-    .drawer-footer {
-      border-top: 1px solid var(--border-color);
-      padding-top: 1rem;
-    }
-
-    .drawer-total-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    .btn-clear {
-      background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-sub);
-      width: 100%;
-      padding: 0.65rem;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Main Card Display -->
-  <div class="card" id="cardContainer">
-    <div class="loading" id="status">Loading live price...</div>
-  </div>
-
-  <!-- Bottom Floating Sticky Bar -->
-  <div class="cart-bar" id="cartBar" onclick="toggleCartDrawer(true)">
-    <div>
-      <div class="cart-summary-text" id="cartSummaryCount">0 items selected</div>
-      <div class="cart-summary-total" id="cartSummaryTotal">$0.00</div>
-    </div>
-    <button class="cart-bar-btn">View List</button>
-  </div>
-
-  <!-- Slide-Up Cart Review Drawer -->
-  <div class="drawer-overlay" id="drawerOverlay" onclick="handleOverlayClick(event)">
-    <div class="drawer">
-      <div class="drawer-header">
-        <h2>Your Scanned Cards</h2>
-        <button class="close-btn" onclick="toggleCartDrawer(false)">&times;</button>
-      </div>
-
-      <div class="cart-items" id="cartItemsList">
-        <!-- Rendered items go here -->
-      </div>
-
-      <div class="drawer-footer">
-        <div class="drawer-total-row">
-          <span>Total:</span>
-          <span class="cart-summary-total" id="drawerGrandTotal">$0.00</span>
-        </div>
-        <button class="btn-clear" onclick="clearCart()">Clear All Cards</button>
-      </div>
-    </div>
-  </div>
-
   <script>
     const params = new URLSearchParams(window.location.search);
     const cardId = params.get('id');
 
-    // Cart state saved across scans
     let cart = JSON.parse(localStorage.getItem('kms_cart') || '[]');
     let currentCardData = null;
 
@@ -342,6 +18,79 @@
       return Math.max(1.00, roundedPrice);
     }
 
+    // Cache helper: 4 hour cache expiration
+    const CACHE_TTL = 4 * 60 * 60 * 1000;
+
+    function getCachedCard(id) {
+      try {
+        const itemStr = localStorage.getItem(`kms_cache_${id}`);
+        if (!itemStr) return null;
+        const item = JSON.parse(itemStr);
+        if (Date.now() - item.timestamp > CACHE_TTL) {
+          localStorage.removeItem(`kms_cache_${id}`);
+          return null;
+        }
+        return item.data;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function setCachedCard(id, data) {
+      try {
+        localStorage.setItem(`kms_cache_${id}`, JSON.stringify({
+          timestamp: Date.now(),
+          data: data
+        }));
+      } catch (e) {
+        // Storage might be full, safe to ignore
+      }
+    }
+
+    function renderCard(card) {
+      const container = document.getElementById('cardContainer');
+      const prices = card?.tcgplayer?.prices;
+      const rawMarketPrice = prices?.holofoil?.market 
+                       || prices?.normal?.market 
+                       || prices?.reverseHolofoil?.market;
+
+      const storePrice = calculateStorePrice(rawMarketPrice);
+      const priceText = `$${storePrice.toFixed(2)}`;
+      let floorNote = '';
+
+      if (rawMarketPrice !== undefined && rawMarketPrice < 1.00) {
+        floorNote = `<div class="floor-note">($1.00 store floor applied)</div>`;
+      }
+
+      currentCardData = {
+        id: card.id,
+        name: card.name,
+        setName: card.set.name,
+        number: card.number,
+        printedTotal: card.set.printedTotal,
+        price: storePrice,
+        image: card?.images?.small || ''
+      };
+
+      const tcgUrl = card?.tcgplayer?.url || 'https://www.tcgplayer.com';
+
+      container.innerHTML = `
+        ${currentCardData.image ? `<img src="${currentCardData.image}" alt="${card.name}" class="card-art" loading="eager">` : ''}
+        <div class="badge">Double Rare</div>
+        <h1>${card.name}</h1>
+        <div class="set-info">${card.set.name} · #${card.number}/${card.set.printedTotal}</div>
+        
+        <div class="price-container">
+          <div class="label">Store Price</div>
+          <div class="price">${priceText}</div>
+          ${floorNote}
+        </div>
+
+        <button class="btn btn-cart" onclick="addToCartCurrent()">+ Add to List</button>
+        <a class="btn btn-link" href="${tcgUrl}" target="_blank" rel="noopener">View on TCGplayer</a>
+      `;
+    }
+
     async function loadCard() {
       const container = document.getElementById('cardContainer');
       if (!cardId) {
@@ -349,13 +98,20 @@
         return;
       }
 
+      // 1. Check local cache first for instant 0ms load
+      const cached = getCachedCard(cardId);
+      if (cached) {
+        renderCard(cached);
+        return;
+      }
+
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
 
       try {
-        const res = await fetch(`https://api.carddex.dev/compat/pokemontcg/v2/cards/${cardId}`, {
-          signal: controller.signal
-        });
+        // 2. Fetch with field selection to cut response payload down by ~75%
+        const url = `https://api.carddex.dev/compat/pokemontcg/v2/cards/${cardId}?select=id,name,number,set,tcgplayer,images`;
+        const res = await fetch(url, { signal: controller.signal });
 
         clearTimeout(timeoutId);
 
@@ -365,4 +121,109 @@
         }
 
         if (!res.ok) {
-          
+          container.innerHTML = `<div class="error">Server busy (${res.status}). Please refresh.</div>`;
+          return;
+        }
+
+        const json = await res.json();
+        const card = json.data;
+
+        // Cache the result for subsequent scans
+        setCachedCard(cardId, card);
+        renderCard(card);
+
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          container.innerHTML = `<div class="error">Request timed out.<br><br><a href="javascript:location.reload()" style="color:#38bdf8;">Tap here to retry</a></div>`;
+        } else {
+          container.innerHTML = `<div class="error">Failed to fetch pricing data. Check your connection.</div>`;
+        }
+      }
+    }
+
+    function addToCartCurrent() {
+      if (!currentCardData) return;
+      const existing = cart.find(item => item.id === currentCardData.id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...currentCardData, qty: 1 });
+      }
+      saveCart();
+      toggleCartDrawer(true);
+    }
+
+    function updateQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== id);
+      }
+      saveCart();
+    }
+
+    function removeItem(id) {
+      cart = cart.filter(i => i.id !== id);
+      saveCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      saveCart();
+    }
+
+    function renderCartUI() {
+      const itemsList = document.getElementById('cartItemsList');
+      const barCount = document.getElementById('cartSummaryCount');
+      const barTotal = document.getElementById('cartSummaryTotal');
+      const drawerTotal = document.getElementById('drawerGrandTotal');
+
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      const grandTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      const totalStr = `$${grandTotal.toFixed(2)}`;
+      barCount.textContent = `${totalItems} card${totalItems === 1 ? '' : 's'} selected`;
+      barTotal.textContent = totalStr;
+      drawerTotal.textContent = totalStr;
+
+      if (cart.length === 0) {
+        itemsList.innerHTML = `<div style="text-align:center; color: var(--text-sub); margin-top:2rem;">Your list is empty.<br>Scan or add a card above.</div>`;
+        return;
+      }
+
+      itemsList.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.name}</div>
+            <div class="cart-item-meta">${item.setName} #${item.number}</div>
+            <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)} ($${item.price.toFixed(2)} ea)</div>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="updateQty('${item.id}', -1)">−</button>
+            <span class="qty-count">${item.qty}</span>
+            <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+            <button class="del-btn" onclick="removeItem('${item.id}')" title="Remove">&times;</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleCartDrawer(show) {
+      const drawer = document.getElementById('drawerOverlay');
+      if (show) {
+        drawer.classList.add('active');
+      } else {
+        drawer.classList.remove('active');
+      }
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target.id === 'drawerOverlay') {
+        toggleCartDrawer(false);
+      }
+    }
+
+    loadCard();
+    renderCartUI();
+  </script>
