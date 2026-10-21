@@ -326,7 +326,7 @@
     } catch (e) {
       cart = [];
     }
-    
+
     let currentCardData = null;
 
     function saveCart() {
@@ -336,8 +336,143 @@
       renderCartUI();
     }
 
-    function calculateStorePrice(rawMarketPrice) {
-      if (rawMarketPrice === undefined || rawMarketPrice === null) return 1.00;
-      const dollarPart = Math.floor(rawMarketPrice);
-      const centsPart = rawMarketPrice - dollarPart;
-      let roundedPrice = centsPart >= 0.30 ?
+    async function loadCard() {
+      const container = document.getElementById('cardContainer');
+      if (!cardId) {
+        container.innerHTML = `<div class="error">No card ID provided in URL.<br><br>Scan a card QR code to view live price.</div>`;
+        return;
+      }
+
+      try {
+        // Appends a cache buster matching the current date string
+        const res = await fetch(`./prices.json?cache_bust=${new Date().toISOString().slice(0, 10)}`);
+
+        if (!res.ok) {
+          throw new Error('Pricing catalog not yet built.');
+        }
+
+        const catalog = await res.json();
+        const card = catalog[cardId];
+
+        if (!card) {
+          container.innerHTML = `<div class="error">Card ID "<strong>${cardId}</strong>" was not found in catalog.</div>`;
+          return;
+        }
+
+        currentCardData = card;
+
+        let floorNote = '';
+        if (card.rawMarket !== null && card.rawMarket < 1.00) {
+          floorNote = `<div class="floor-note">($1.00 store floor applied)</div>`;
+        }
+
+        container.innerHTML = `
+          ${card.image ? `<img src="${card.image}" alt="${card.name}" class="card-art">` : ''}
+          <div class="badge">${card.rarity || 'Double Rare'}</div>
+          <h1>${card.name}</h1>
+          <div class="set-info">${card.setName} · #${card.number}${card.printedTotal ? '/' + card.printedTotal : ''}</div>
+
+          <div class="price-container">
+            <div class="label">Store Price</div>
+            <div class="price">$${card.price.toFixed(2)}</div>
+            ${floorNote}
+          </div>
+
+          <button class="btn btn-cart" onclick="addToCartCurrent()">+ Add to List</button>
+          <a class="btn btn-link" href="${card.tcgUrl}" target="_blank" rel="noopener">View on TCGplayer</a>
+        `;
+
+      } catch (err) {
+        container.innerHTML = `<div class="error">Failed to load price catalog.<br><br><a href="javascript:location.reload()" style="color:#38bdf8;">Tap here to retry</a></div>`;
+      }
+    }
+
+    function addToCartCurrent() {
+      if (!currentCardData) return;
+      const existing = cart.find(item => item.id === currentCardData.id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...currentCardData, qty: 1 });
+      }
+      saveCart();
+      toggleCartDrawer(true);
+    }
+
+    function updateQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== id);
+      }
+      saveCart();
+    }
+
+    function removeItem(id) {
+      cart = cart.filter(i => i.id !== id);
+      saveCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      saveCart();
+    }
+
+    function renderCartUI() {
+      const itemsList = document.getElementById('cartItemsList');
+      const barCount = document.getElementById('cartSummaryCount');
+      const barTotal = document.getElementById('cartSummaryTotal');
+      const drawerTotal = document.getElementById('drawerGrandTotal');
+
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      const grandTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      const totalStr = `$${grandTotal.toFixed(2)}`;
+      if (barCount) barCount.textContent = `${totalItems} card${totalItems === 1 ? '' : 's'} selected`;
+      if (barTotal) barTotal.textContent = totalStr;
+      if (drawerTotal) drawerTotal.textContent = totalStr;
+
+      if (!itemsList) return;
+
+      if (cart.length === 0) {
+        itemsList.innerHTML = `<div style="text-align:center; color: var(--text-sub); margin-top:2rem;">Your list is empty.<br>Scan or add a card above.</div>`;
+        return;
+      }
+
+      itemsList.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.name}</div>
+            <div class="cart-item-meta">${item.setName} #${item.number}</div>
+            <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)} ($${item.price.toFixed(2)} ea)</div>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="updateQty('${item.id}', -1)">−</button>
+            <span class="qty-count">${item.qty}</span>
+            <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+            <button class="del-btn" onclick="removeItem('${item.id}')" title="Remove">&times;</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleCartDrawer(show) {
+      const drawer = document.getElementById('drawerOverlay');
+      if (drawer) {
+        if (show) drawer.classList.add('active');
+        else drawer.classList.remove('active');
+      }
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target.id === 'drawerOverlay') {
+        toggleCartDrawer(false);
+      }
+    }
+
+    loadCard();
+    renderCartUI();
+  </script>
+</body>
+</html>
