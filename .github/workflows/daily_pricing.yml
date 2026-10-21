@@ -1,0 +1,41 @@
+name: Update Pokemon Card Prices Daily
+
+on:
+  schedule:
+    # Runs every day at 4:00 AM UTC (11:00 PM EST / 8:00 PM PST)
+    - cron: '0 4 * * *'
+  # Allows you to click a button and run it manually whenever you want
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-prices:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests
+
+      - name: Run Price Updater
+        run: |
+          python update_prices.py
+
+      - name: Commit and Push Updated prices.json
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add prices.json
+          git commit -m "Auto-update prices.json [skip ci]" || exit 0
+          git push
+          
