@@ -345,7 +345,8 @@
 
       try {
         // Appends a cache buster matching the current date string
-        const res = await fetch(`./prices.json?cache_bust=${new Date().toISOString().slice(0, 10)}`);
+        const res = await fetch(`https://raw.githubusercontent.com/nymsworld/Card.api/main/prices.json?v=${new Date().toISOString().slice(0, 10)}`);
+
 
         if (!res.ok) {
           throw new Error('Pricing catalog not yet built.');
