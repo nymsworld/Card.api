@@ -139,6 +139,8 @@ def fetch_promo_group(catalog, group):
         number = get_extended(product, "Number")
         if not number:
             continue
+        # A few promos are listed as "134/142"; the promo number is the first part
+        number = number.split("/")[0].strip()
         by_number.setdefault(number, []).append(product)
 
     added = 0
