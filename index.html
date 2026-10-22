@@ -1,26 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#e31515">
   <title>Kanto Misplay Society - Price Check</title>
+  <link rel="icon" href="logo.jpg">
+  <script>
+    // Apply the saved theme before the page draws (dark is the default)
+    try {
+      if (localStorage.getItem('kms_theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <style>
+    /* Colors taken from the KMS Pokeball logo. Dark theme is the default. */
     :root {
-      --bg-page: #0b0f19;
-      --bg-card: #161f30;
-      --bg-sub: #1f2b42;
-      --border-color: #23314d;
-      --text-main: #f8fafc;
-      --text-sub: #94a3b8;
-      --price-color: #4ade80;
-      --btn-primary: #2563eb;
-      --btn-danger: #ef4444;
+      --kms-red: #e31515;
+      --kms-red-dark: #b80e0e;
+      --kms-black: #111111;
+      --kms-white: #ffffff;
+
+      --bg-page: #0d0d0f;
+      --bg-card: #18181b;
+      --surface: #222226;
+      --border-color: #34343a;
+      --line-soft: #2a2a2f;
+      --card-shadow: #000000;
+      --text-main: #f5f5f5;
+      --text-sub: #a1a1aa;
+      --band-bg: #000000;
+      --band-border: #34343a;
+      --btn-alt-bg: #f5f5f5;
+      --btn-alt-fg: #111111;
+      --btn-outline-bg: transparent;
+      --error-color: #ff6b6b;
+      --logo-ring: #000000;
+      color-scheme: dark;
+    }
+
+    :root[data-theme="light"] {
+      --bg-page: #f3f3f3;
+      --bg-card: #ffffff;
+      --surface: #ffffff;
+      --border-color: #111111;
+      --line-soft: #e2e2e2;
+      --card-shadow: #111111;
+      --text-main: #111111;
+      --text-sub: #5f5f5f;
+      --band-bg: #111111;
+      --band-border: #111111;
+      --btn-alt-bg: #111111;
+      --btn-alt-fg: #ffffff;
+      --btn-outline-bg: #ffffff;
+      --error-color: #b80e0e;
+      --logo-ring: #111111;
+      color-scheme: light;
     }
 
     * { box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
       background: var(--bg-page);
       color: var(--text-main);
@@ -28,78 +71,174 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 1.5rem 1rem 7.5rem 1rem;
+      padding: 0 1rem 7.5rem 1rem;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    /* Red Pokeball dome header */
+    .brand {
+      position: relative;
+      width: calc(100% + 2rem);
+      margin: 0 -1rem;
+      background: var(--kms-red);
+      border-bottom: 6px solid var(--kms-black);
+      border-radius: 0 0 50% 50% / 0 0 48px 48px;
+      padding: 1.25rem 3.5rem 3.75rem 3.5rem;
+      text-align: center;
+      color: var(--kms-white);
+    }
+
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .brand-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    /* Dark / light toggle in the header corner */
+    .theme-toggle {
+      position: absolute;
+      top: 0.9rem;
+      right: 0.9rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 3px solid var(--kms-black);
+      background: var(--kms-white);
+      color: var(--kms-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .theme-toggle svg { width: 20px; height: 20px; }
+    .theme-toggle .icon-sun { display: none; }
+    :root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    :root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+    /* Logo sits on the header's edge like a Pokeball button */
+    .brand-logo {
+      display: block;
+      width: 92px;
+      height: 92px;
+      margin: -46px auto 1rem auto;
+      border-radius: 50%;
+      border: 6px solid var(--logo-ring);
+      background: var(--kms-white);
+      object-fit: cover;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
     }
 
     .card {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
+      border: 3px solid var(--border-color);
       border-radius: 20px;
       padding: 1.75rem 1.25rem;
       width: 100%;
       max-width: 380px;
       text-align: center;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+      box-shadow: 0 8px 0 var(--card-shadow);
     }
 
     .card-art {
+      display: block;
       width: 160px;
       height: auto;
       border-radius: 8px;
-      margin-bottom: 0.75rem;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+      margin: 0 auto 0.85rem auto;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
     }
 
     .badge {
       display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.15);
-      padding: 4px 12px;
+      color: var(--kms-red);
+      background: transparent;
+      border: 2px solid var(--kms-red);
+      padding: 3px 12px;
       border-radius: 999px;
       margin-bottom: 0.6rem;
     }
 
-    h1 {
-      font-size: 1.35rem;
-      margin: 0 0 0.25rem 0;
+    h1, h2 {
+      font-weight: 900;
       color: var(--text-main);
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 0 0.25rem 0;
     }
 
     .set-info {
       font-size: 0.85rem;
+      font-weight: 500;
       color: var(--text-sub);
       margin-bottom: 1rem;
     }
 
+    /* Black band with a center button, like the middle of a Pokeball */
     .price-container {
-      margin: 0.75rem 0 1.25rem 0;
-      padding: 0.85rem;
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 12px;
+      position: relative;
+      margin: 0.75rem 0 1.5rem 0;
+      padding: 0.85rem 0.85rem 1.4rem 0.85rem;
+      background: var(--band-bg);
+      border: 2px solid var(--band-border);
+      color: var(--kms-white);
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .price-container::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -14px;
+      width: 26px;
+      height: 26px;
+      margin-left: -13px;
+      border-radius: 50%;
+      background: var(--kms-white);
+      border: 5px solid var(--band-bg);
+      box-shadow: 0 0 0 2px var(--band-border);
     }
 
     .label {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-sub);
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.7);
     }
 
     .price {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--price-color);
-      margin-top: 0.2rem;
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--kms-white);
+      margin-top: 0.1rem;
     }
 
     .floor-note {
-      font-size: 0.75rem;
-      color: var(--text-sub);
-      margin-top: 4px;
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 2px;
     }
 
     .action-stack {
@@ -111,23 +250,34 @@
     .btn {
       display: inline-block;
       width: 100%;
-      color: #fff;
+      font-family: inherit;
+      color: var(--kms-white);
+      text-align: center;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 800;
       font-size: 0.95rem;
+      letter-spacing: 0.02em;
       padding: 0.85rem 1rem;
-      border-radius: 10px;
-      border: none;
+      border-radius: 12px;
+      border: 3px solid var(--kms-black);
       cursor: pointer;
     }
 
-    .btn:active { filter: brightness(0.85); }
-    .btn-cart { background: #10b981; }
-    .btn-scan { background: #8b5cf6; }
-    .btn-link { background: #334155; font-size: 0.85rem; padding: 0.65rem 1rem; }
+    .btn:active { transform: translateY(2px); filter: brightness(0.92); }
+    .btn-cart { background: var(--kms-red); }
+    .btn-scan { background: var(--btn-alt-bg); color: var(--btn-alt-fg); border-color: var(--btn-alt-bg); }
+    .btn-link {
+      background: var(--btn-outline-bg);
+      color: var(--text-main);
+      border-color: var(--border-color);
+      font-size: 0.85rem;
+      padding: 0.65rem 1rem;
+    }
 
-    .loading { color: var(--text-sub); font-size: 0.95rem; }
-    .error { color: #f87171; font-size: 0.9rem; line-height: 1.4; padding: 10px; }
+    .loading { color: var(--text-sub); font-size: 0.95rem; font-weight: 600; }
+    .error { color: var(--error-color); font-size: 0.9rem; font-weight: 600; line-height: 1.4; padding: 10px; }
+    .empty-state { padding: 1rem 0; }
+    .empty-state p { color: var(--text-sub); font-size: 0.9rem; }
 
     /* Sticky Cart Bar */
     .cart-bar {
@@ -135,37 +285,43 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: #111827;
-      border-top: 1px solid var(--border-color);
+      background: #000000;
+      border-top: 5px solid var(--kms-red);
       padding: 0.85rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 -8px 24px rgba(0,0,0,0.5);
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
       z-index: 50;
     }
 
-    .cart-summary-text { font-size: 0.85rem; color: var(--text-sub); }
-    .cart-summary-total { font-size: 1.25rem; font-weight: 800; color: var(--price-color); }
+    .cart-bar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .cart-summary-text { font-size: 0.8rem; font-weight: 600; color: rgba(255, 255, 255, 0.7); }
+    .cart-summary-total { font-size: 1.3rem; font-weight: 900; color: var(--kms-white); }
     .cart-buttons { display: flex; gap: 0.5rem; }
     .cart-bar-btn {
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.55rem 0.85rem;
-      font-weight: 600;
+      font-family: inherit;
+      background: var(--kms-white);
+      color: var(--kms-black);
+      border: 2px solid var(--kms-white);
+      border-radius: 10px;
+      padding: 0.55rem 0.9rem;
+      font-weight: 800;
       font-size: 0.85rem;
       cursor: pointer;
     }
-    .cart-bar-btn-scan { background: #8b5cf6; }
+    .cart-bar-btn-scan { background: var(--kms-red); border-color: var(--kms-red); color: var(--kms-white); }
 
     /* Modal / Drawer Overlays */
     .drawer-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.65);
       z-index: 100;
       justify-content: center;
       align-items: flex-end;
@@ -175,80 +331,89 @@
 
     .drawer {
       background: var(--bg-card);
-      border-top: 1px solid var(--border-color);
-      border-radius: 20px 20px 0 0;
+      border: 3px solid var(--border-color);
+      border-bottom: none;
+      border-radius: 22px 22px 0 0;
       width: 100%;
       max-width: 480px;
       max-height: 85vh;
       display: flex;
       flex-direction: column;
-      padding: 1.25rem;
+      overflow: hidden;
     }
 
     .drawer-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 1.25rem;
+      background: var(--kms-red);
+      border-bottom: 4px solid var(--kms-black);
     }
 
-    .drawer-header h2 { margin: 0; font-size: 1.15rem; }
+    .drawer-header h2 { margin: 0; font-size: 1.1rem; color: var(--kms-white); }
     .close-btn {
       background: transparent;
       border: none;
-      color: var(--text-sub);
-      font-size: 1.5rem;
+      color: var(--kms-white);
+      font-size: 1.6rem;
+      line-height: 1;
       cursor: pointer;
     }
 
     .cart-items {
       overflow-y: auto;
       flex: 1;
-      margin: 1rem 0;
+      margin: 0.5rem 0;
+      padding: 0 1.25rem;
     }
+
+    .cart-empty { text-align: center; color: var(--text-sub); margin: 2rem 0; }
 
     .cart-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0.75rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid var(--line-soft);
     }
 
     .cart-item-info { flex: 1; padding-right: 0.5rem; text-align: left; }
-    .cart-item-title { font-size: 0.9rem; font-weight: 600; }
+    .cart-item-title { font-size: 0.9rem; font-weight: 800; }
     .cart-item-meta { font-size: 0.75rem; color: var(--text-sub); }
-    .cart-item-price { font-size: 0.95rem; font-weight: 700; color: var(--price-color); margin-top: 2px; }
+    .cart-item-price { font-size: 0.95rem; font-weight: 800; color: var(--kms-red); margin-top: 2px; }
 
     .qty-controls { display: flex; align-items: center; gap: 0.5rem; }
     .qty-btn {
-      background: var(--bg-sub);
-      border: 1px solid var(--border-color);
+      font-family: inherit;
+      background: var(--surface);
+      border: 2px solid var(--border-color);
       color: var(--text-main);
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
       font-size: 1rem;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
     }
 
-    .qty-count { font-size: 0.9rem; font-weight: 700; min-width: 18px; text-align: center; }
+    .qty-count { font-size: 0.9rem; font-weight: 800; min-width: 18px; text-align: center; }
     .del-btn {
       background: transparent;
       border: none;
-      color: var(--btn-danger);
-      font-size: 1.1rem;
-      margin-left: 0.5rem;
+      color: var(--kms-red);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-left: 0.25rem;
       cursor: pointer;
     }
 
     .drawer-footer {
-      border-top: 1px solid var(--border-color);
-      padding-top: 1rem;
+      border-top: 3px solid var(--border-color);
+      padding: 1rem 1.25rem 1.25rem 1.25rem;
     }
 
     .drawer-total-row {
@@ -257,17 +422,21 @@
       align-items: center;
       margin-bottom: 1rem;
       font-size: 1.1rem;
-      font-weight: 700;
+      font-weight: 900;
     }
 
+    .drawer-total-row .cart-summary-total { color: var(--kms-red); }
+
     .btn-clear {
-      background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-sub);
+      font-family: inherit;
+      background: var(--btn-outline-bg);
+      border: 2px solid var(--border-color);
+      color: var(--text-main);
       width: 100%;
       padding: 0.65rem;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 0.85rem;
+      font-weight: 700;
       cursor: pointer;
     }
 
@@ -275,27 +444,112 @@
       width: 100%;
       max-width: 320px;
       margin: 1rem auto 0 auto;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 2px solid var(--border-color);
+      border: 4px solid var(--kms-black);
       background: #000;
+    }
+
+    .scanner-hint {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin: 10px 1.25rem 1.25rem 1.25rem;
+    }
+
+    /* Tablets and computers */
+    @media (min-width: 760px) {
+      body { padding-bottom: 6.5rem; }
+
+      .brand {
+        padding: 1.75rem 4rem 4.5rem 4rem;
+        border-radius: 0 0 50% 50% / 0 0 72px 72px;
+      }
+      .brand-name { font-size: 1.6rem; }
+      .brand-tag { font-size: 0.8rem; }
+      .theme-toggle { top: 1.25rem; right: 1.5rem; width: 44px; height: 44px; }
+
+      .brand-logo {
+        width: 120px;
+        height: 120px;
+        margin-top: -60px;
+        margin-bottom: 1.5rem;
+      }
+
+      .card {
+        max-width: 820px;
+        padding: 2.25rem;
+      }
+
+      /* Card art on the left, details on the right */
+      .card-view {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 2.5rem;
+        align-items: center;
+        text-align: left;
+      }
+
+      .card-art { width: 260px; margin: 0; }
+      h1 { font-size: 1.9rem; }
+      .set-info { font-size: 0.95rem; }
+      .price { font-size: 3rem; }
+
+      .card-view .action-stack {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .card-view .btn-cart { grid-column: 1 / -1; }
+      .card-view .btn-link { font-size: 0.95rem; padding: 0.85rem 1rem; }
+
+      .empty-state { padding: 2rem 0; }
+      .empty-state .btn { max-width: 320px; }
+
+      .cart-bar { padding: 1rem 2rem; }
+      .cart-bar-btn { padding: 0.65rem 1.25rem; font-size: 0.95rem; }
+
+      /* Cart and scanner open as centered windows */
+      .drawer-overlay { align-items: center; padding: 2rem; }
+      .drawer {
+        border-bottom: 3px solid var(--border-color);
+        border-radius: 22px;
+        max-height: 80vh;
+        box-shadow: 0 10px 0 var(--card-shadow);
+      }
+    }
+
+    /* Hover effects for mouse users */
+    @media (hover: hover) {
+      .btn:hover, .cart-bar-btn:hover { filter: brightness(1.1); }
+      .qty-btn:hover, .theme-toggle:hover { border-color: var(--kms-red); }
     }
   </style>
 </head>
 <body>
+
+  <header class="brand">
+    <div class="brand-name">Kanto Misplay Society</div>
+    <div class="brand-tag">Price Check</div>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Switch to light mode" title="Switch to light mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+    </button>
+  </header>
+  <img class="brand-logo" src="logo.jpg" alt="KMS logo" onerror="this.style.display='none'">
 
   <div class="card" id="cardContainer">
     <div class="loading" id="status">Loading live price...</div>
   </div>
 
   <div class="cart-bar" id="cartBar">
-    <div onclick="toggleCartDrawer(true)" style="cursor:pointer; flex: 1;">
-      <div class="cart-summary-text" id="cartSummaryCount">0 cards selected</div>
-      <div class="cart-summary-total" id="cartSummaryTotal">$0.00</div>
-    </div>
-    <div class="cart-buttons">
-      <button class="cart-bar-btn cart-bar-btn-scan" onclick="startInAppScanner()">Scan</button>
-      <button class="cart-bar-btn" onclick="toggleCartDrawer(true)">Cart</button>
+    <div class="cart-bar-inner">
+      <div onclick="toggleCartDrawer(true)" style="cursor:pointer; flex: 1;">
+        <div class="cart-summary-text" id="cartSummaryCount">0 cards selected</div>
+        <div class="cart-summary-total" id="cartSummaryTotal">$0.00</div>
+      </div>
+      <div class="cart-buttons">
+        <button class="cart-bar-btn cart-bar-btn-scan" onclick="startInAppScanner()">Scan</button>
+        <button class="cart-bar-btn" onclick="toggleCartDrawer(true)">Cart</button>
+      </div>
     </div>
   </div>
 
@@ -323,7 +577,7 @@
         <button class="close-btn" onclick="stopInAppScanner()">&times;</button>
       </div>
       <div id="scanner-container"></div>
-      <p style="font-size: 0.8rem; color: var(--text-sub); margin-top: 10px;">Camera will automatically detect the card sticker.</p>
+      <p class="scanner-hint">Camera will automatically detect the card sticker.</p>
     </div>
   </div>
 
@@ -341,6 +595,26 @@
       if (!Array.isArray(cart)) cart = [];
     } catch (e) {
       cart = [];
+    }
+
+    // Dark mode is the default; the choice is remembered on this device
+    function updateThemeToggle() {
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      var label = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+      var btn = document.getElementById('themeToggle');
+      if (btn) {
+        btn.setAttribute('aria-label', label);
+        btn.setAttribute('title', label);
+      }
+    }
+
+    function toggleTheme() {
+      var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('kms_theme', next);
+      } catch (e) {}
+      updateThemeToggle();
     }
 
     function saveCart() {
@@ -376,8 +650,7 @@
       throw new Error('Could not fetch price database from mirrors.');
     }
 
-    // Finds a card by ID, ignoring upper/lower case differences
-        // Finds a card by ID, ignoring case and leading zeros (MEP-023 = mep-23)
+    // Finds a card by ID, ignoring case and leading zeros (MEP-023 = mep-23)
     function normalizeId(id) {
       return String(id).trim().toLowerCase().replace(/-0+(?=\d)/g, '-');
     }
@@ -404,19 +677,23 @@
       var numTotal = card.printedTotal ? '/' + card.printedTotal : '';
 
       container.innerHTML =
-        imgHtml +
-        '<div class="badge">' + (card.rarity || 'Double Rare') + '</div>' +
-        '<h1>' + card.name + '</h1>' +
-        '<div class="set-info">' + card.setName + ' · #' + card.number + numTotal + '</div>' +
-        '<div class="price-container">' +
-          '<div class="label">Store Price</div>' +
-          '<div class="price">' + money(card.price) + '</div>' +
-          floorNote +
-        '</div>' +
-        '<div class="action-stack">' +
-          '<button class="btn btn-cart" onclick="addToCartCurrent()">+ Add to List</button>' +
-          '<button class="btn btn-scan" onclick="startInAppScanner()">Scan Another Card</button>' +
-          (card.tcgUrl ? '<a class="btn btn-link" href="' + card.tcgUrl + '" target="_blank" rel="noopener">View on TCGplayer</a>' : '') +
+        '<div class="card-view">' +
+          imgHtml +
+          '<div class="card-details">' +
+            '<div class="badge">' + (card.rarity || 'Double Rare') + '</div>' +
+            '<h1>' + card.name + '</h1>' +
+            '<div class="set-info">' + card.setName + ' · #' + card.number + numTotal + '</div>' +
+            '<div class="price-container">' +
+              '<div class="label">Store Price</div>' +
+              '<div class="price">' + money(card.price) + '</div>' +
+              floorNote +
+            '</div>' +
+            '<div class="action-stack">' +
+              '<button class="btn btn-cart" onclick="addToCartCurrent()">+ Add to List</button>' +
+              '<button class="btn btn-scan" onclick="startInAppScanner()">Scan Another Card</button>' +
+              (card.tcgUrl ? '<a class="btn btn-link" href="' + card.tcgUrl + '" target="_blank" rel="noopener">View on TCGplayer</a>' : '') +
+            '</div>' +
+          '</div>' +
         '</div>';
     }
 
@@ -425,9 +702,9 @@
       if (!targetId) {
         currentCardData = null;
         container.innerHTML =
-          '<div style="padding: 1rem 0;">' +
+          '<div class="empty-state">' +
             '<h2>Scan a Card</h2>' +
-            '<p style="color:var(--text-sub); font-size:0.9rem;">Scan a sticker QR code to view live pricing.</p>' +
+            '<p>Scan a sticker QR code to view live pricing.</p>' +
             '<button class="btn btn-scan" onclick="startInAppScanner()" style="margin-top:1rem;">Open Scanner</button>' +
           '</div>';
         return;
@@ -561,7 +838,7 @@
       if (!itemsList) return;
 
       if (cart.length === 0) {
-        itemsList.innerHTML = '<div style="text-align:center; color: var(--text-sub); margin-top:2rem;">Your list is empty.<br>Scan a card above to begin.</div>';
+        itemsList.innerHTML = '<div class="cart-empty">Your list is empty.<br>Scan a card above to begin.</div>';
         return;
       }
 
@@ -606,6 +883,7 @@
       loadCard(new URLSearchParams(window.location.search).get('id'));
     });
 
+    updateThemeToggle();
     loadCard(cardId);
     renderCartUI();
   </script>
