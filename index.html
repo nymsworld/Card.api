@@ -3,56 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Card Scanner & Catalog Lookup</title>
-  <!-- HTML5 QR / Barcode Scanner CDN -->
+  <title>Card Inventory Scanner</title>
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <style>
+    * { box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
-      padding: 16px;
+      padding: 14px;
       background: #121212;
       color: #e0e0e0;
     }
     h1 {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       text-align: center;
-      margin-bottom: 12px;
+      margin: 6px 0 14px 0;
     }
     #reader {
       width: 100%;
-      max-width: 480px;
+      max-width: 460px;
       margin: 0 auto;
       border-radius: 8px;
       overflow: hidden;
       background: #000;
+      min-height: 250px;
     }
-    .manual-entry {
-      max-width: 480px;
-      margin: 16px auto;
+    .search-row {
+      max-width: 460px;
+      margin: 14px auto;
       display: flex;
       gap: 8px;
     }
     input[type="text"] {
       flex: 1;
       padding: 10px;
-      border-radius: 4px;
+      border-radius: 6px;
       border: 1px solid #333;
       background: #1e1e1e;
       color: #fff;
+      font-size: 0.95rem;
     }
     button {
       padding: 10px 16px;
       background: #2563eb;
       color: #fff;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
+      font-weight: 600;
       cursor: pointer;
     }
-    #result-box {
-      max-width: 480px;
-      margin: 16px auto;
-      padding: 14px;
+    button:active { background: #1d4ed8; }
+    #cardContainer {
+      max-width: 460px;
+      margin: 14px auto;
+      padding: 16px;
       border-radius: 8px;
       background: #1e1e1e;
       border: 1px solid #333;
@@ -60,24 +64,46 @@
     }
     .badge {
       display: inline-block;
-      padding: 2px 8px;
+      padding: 3px 8px;
       font-size: 0.75rem;
       border-radius: 4px;
       font-weight: bold;
       margin-bottom: 8px;
     }
     .badge-acespec { background: #be123c; color: #fff; }
-    .badge-svpromo { background: #4338ca; color: #fff; }
-    .badge-megapromo { background: #047857; color: #fff; }
+    .badge-promo { background: #4338ca; color: #fff; }
     .card-title {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: bold;
-      margin: 0 0 6px 0;
+      margin: 4px 0 8px 0;
     }
     .card-meta {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: #aaa;
       margin-bottom: 4px;
+    }
+    .price-box {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #2a2a2a;
+    }
+    .price-val {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #10b981;
+    }
+    .floor-note {
+      font-size: 0.8rem;
+      color: #f59e0b;
+      margin-top: 2px;
+    }
+    .action-row {
+      margin-top: 14px;
+      display: flex;
+      gap: 8px;
+    }
+    .btn-secondary {
+      background: #374151;
     }
   </style>
 </head>
@@ -86,15 +112,14 @@
   <h1>Card Inventory Scanner</h1>
   <div id="reader"></div>
 
-  <div class="manual-entry">
-    <input type="text" id="manualInput" placeholder="Lookup by ID (e.g., SVP-004, TEF-157)">
-    <button onclick="handleLookup(document.getElementById('manualInput').value)">Search</button>
+  <div class="search-row">
+    <input type="text" id="manualInput" placeholder="Lookup ID (e.g., SVP-004, TEF-157)">
+    <button onclick="handleManualSearch()">Search</button>
   </div>
 
-  <div id="result-box"></div>
+  <div id="cardContainer"></div>
 
   <script>
-    // Embedded Catalog: ACE SPECs, SV Promo ex, and Mega Promo ex
     const CARD_CATALOG = {
       // --- ACE SPEC: Temporal Forces ---
       "TEF-141": { name: "Awakening Drum", set: "Temporal Forces", number: "141", type: "ACE SPEC" },
@@ -135,49 +160,171 @@
       "PRE-131": { name: "Treasure Tracker", set: "Prismatic Evolutions", number: "131", type: "ACE SPEC" },
 
       // --- Scarlet & Violet Black Star Promos (ex) ---
-      "SVP-004": { name: "Mimikyu ex", set: "SV Black Star Promos", number: "004", type: "SV Promo ex" },
-      "SVP-016": { name: "Ampharos ex", set: "SV Black Star Promos", number: "016", type: "SV Promo ex" },
-      "SVP-017": { name: "Lucario ex", set: "SV Black Star Promos", number: "017", type: "SV Promo ex" },
-      "SVP-018": { name: "Cyclizar ex", set: "SV Black Star Promos", number: "018", type: "SV Promo ex" },
-      "SVP-028": { name: "Miraidon ex", set: "SV Black Star Promos", number: "028", type: "SV Promo ex" },
-      "SVP-029": { name: "Koraidon ex", set: "SV Black Star Promos", number: "029", type: "SV Promo ex" },
-      "SVP-030": { name: "Chien-Pao ex", set: "SV Black Star Promos", number: "030", type: "SV Promo ex" },
-      "SVP-031": { name: "Tinkaton ex", set: "SV Black Star Promos", number: "031", type: "SV Promo ex" },
-      "SVP-032": { name: "Annihilape ex", set: "SV Black Star Promos", number: "032", type: "SV Promo ex" },
-      "SVP-033": { name: "Meowscarada ex", set: "SV Black Star Promos", number: "033", type: "SV Promo ex" },
-      "SVP-034": { name: "Skeledirge ex", set: "SV Black Star Promos", number: "034", type: "SV Promo ex" },
-      "SVP-035": { name: "Quaquaval ex", set: "SV Black Star Promos", number: "035", type: "SV Promo ex" },
-      "SVP-049": { name: "Zapdos ex", set: "SV Black Star Promos", number: "049", type: "SV Promo ex" },
-      "SVP-050": { name: "Alakazam ex", set: "SV Black Star Promos", number: "050", type: "SV Promo ex" },
-      "SVP-053": { name: "Mew ex", set: "SV Black Star Promos", number: "053", type: "SV Promo ex" },
-      "SVP-054": { name: "Greninja ex", set: "SV Black Star Promos", number: "054", type: "SV Promo ex" },
-      "SVP-055": { name: "Kangaskhan ex", set: "SV Black Star Promos", number: "055", type: "SV Promo ex" },
-      "SVP-056": { name: "Charizard ex", set: "SV Black Star Promos", number: "056", type: "SV Promo ex" },
-      "SVP-067": { name: "Roaring Moon ex", set: "SV Black Star Promos", number: "067", type: "SV Promo ex" },
-      "SVP-068": { name: "Iron Valiant ex", set: "SV Black Star Promos", number: "068", type: "SV Promo ex" },
-      "SVP-072": { name: "Great Tusk ex", set: "SV Black Star Promos", number: "072", type: "SV Promo ex" },
-      "SVP-073": { name: "Iron Treads ex", set: "SV Black Star Promos", number: "073", type: "SV Promo ex" },
-      "SVP-074": { name: "Charizard ex", set: "SV Black Star Promos", number: "074", type: "SV Promo ex" },
-      "SVP-078": { name: "Meowscarada ex", set: "SV Black Star Promos", number: "078", type: "SV Promo ex" },
-      "SVP-081": { name: "Skeledirge ex", set: "SV Black Star Promos", number: "081", type: "SV Promo ex" },
-      "SVP-084": { name: "Quaquaval ex", set: "SV Black Star Promos", number: "084", type: "SV Promo ex" },
-      "SVP-086": { name: "Mabosstiff ex", set: "SV Black Star Promos", number: "086", type: "SV Promo ex" },
-      "SVP-103": { name: "Houndoom ex", set: "SV Black Star Promos", number: "103", type: "SV Promo ex" },
-      "SVP-104": { name: "Melmetal ex", set: "SV Black Star Promos", number: "104", type: "SV Promo ex" },
-      "SVP-105": { name: "Armarouge ex", set: "SV Black Star Promos", number: "105", type: "SV Promo ex" },
-      "SVP-106": { name: "Pikachu ex", set: "SV Black Star Promos", number: "106", type: "SV Promo ex" },
-      "SVP-110": { name: "Darkrai ex", set: "SV Black Star Promos", number: "110", type: "SV Promo ex" },
-      "SVP-125": { name: "Armarouge ex", set: "SV Black Star Promos", number: "125", type: "SV Promo ex" },
-      "SVP-126": { name: "Palafin ex", set: "SV Black Star Promos", number: "126", type: "SV Promo ex" },
-      "SVP-127": { name: "Walking Wake ex", set: "SV Black Star Promos", number: "127", type: "SV Promo ex" },
-      "SVP-128": { name: "Iron Leaves ex", set: "SV Black Star Promos", number: "128", type: "SV Promo ex" },
-      "SVP-131": { name: "Kingdra ex", set: "SV Black Star Promos", number: "131", type: "SV Promo ex" },
-      "SVP-132": { name: "Greninja ex", set: "SV Black Star Promos", number: "132", type: "SV Promo ex" },
-      "SVP-144": { name: "Gouging Fire ex", set: "SV Black Star Promos", number: "144", type: "SV Promo ex" },
-      "SVP-145": { name: "Raging Bolt ex", set: "SV Black Star Promos", number: "145", type: "SV Promo ex" },
-      "SVP-146": { name: "Iron Crown ex", set: "SV Black Star Promos", number: "146", type: "SV Promo ex" },
-      "SVP-147": { name: "Iron Boulder ex", set: "SV Black Star Promos", number: "147", type: "SV Promo ex" },
-      "SVP-160": { name: "Squawkabilly ex", set: "SV Black Star Promos", number: "160", type: "SV Promo ex" },
+      "SVP-004": { name: "Mimikyu ex", set: "SV Black Star Promos", number: "004", type: "Promo" },
+      "SVP-016": { name: "Ampharos ex", set: "SV Black Star Promos", number: "016", type: "Promo" },
+      "SVP-017": { name: "Lucario ex", set: "SV Black Star Promos", number: "017", type: "Promo" },
+      "SVP-018": { name: "Cyclizar ex", set: "SV Black Star Promos", number: "018", type: "Promo" },
+      "SVP-028": { name: "Miraidon ex", set: "SV Black Star Promos", number: "028", type: "Promo" },
+      "SVP-029": { name: "Koraidon ex", set: "SV Black Star Promos", number: "029", type: "Promo" },
+      "SVP-030": { name: "Chien-Pao ex", set: "SV Black Star Promos", number: "030", type: "Promo" },
+      "SVP-031": { name: "Tinkaton ex", set: "SV Black Star Promos", number: "031", type: "Promo" },
+      "SVP-032": { name: "Annihilape ex", set: "SV Black Star Promos", number: "032", type: "Promo" },
+      "SVP-033": { name: "Meowscarada ex", set: "SV Black Star Promos", number: "033", type: "Promo" },
+      "SVP-034": { name: "Skeledirge ex", set: "SV Black Star Promos", number: "034", type: "Promo" },
+      "SVP-035": { name: "Quaquaval ex", set: "SV Black Star Promos", number: "035", type: "Promo" },
+      "SVP-049": { name: "Zapdos ex", set: "SV Black Star Promos", number: "049", type: "Promo" },
+      "SVP-050": { name: "Alakazam ex", set: "SV Black Star Promos", number: "050", type: "Promo" },
+      "SVP-053": { name: "Mew ex", set: "SV Black Star Promos", number: "053", type: "Promo" },
+      "SVP-054": { name: "Greninja ex", set: "SV Black Star Promos", number: "054", type: "Promo" },
+      "SVP-055": { name: "Kangaskhan ex", set: "SV Black Star Promos", number: "055", type: "Promo" },
+      "SVP-056": { name: "Charizard ex", set: "SV Black Star Promos", number: "056", type: "Promo" },
+      "SVP-067": { name: "Roaring Moon ex", set: "SV Black Star Promos", number: "067", type: "Promo" },
+      "SVP-068": { name: "Iron Valiant ex", set: "SV Black Star Promos", number: "068", type: "Promo" },
+      "SVP-072": { name: "Great Tusk ex", set: "SV Black Star Promos", number: "072", type: "Promo" },
+      "SVP-073": { name: "Iron Treads ex", set: "SV Black Star Promos", number: "073", type: "Promo" },
+      "SVP-074": { name: "Charizard ex", set: "SV Black Star Promos", number: "074", type: "Promo" },
+      "SVP-078": { name: "Meowscarada ex", set: "SV Black Star Promos", number: "078", type: "Promo" },
+      "SVP-081": { name: "Skeledirge ex", set: "SV Black Star Promos", number: "081", type: "Promo" },
+      "SVP-084": { name: "Quaquaval ex", set: "SV Black Star Promos", number: "084", type: "Promo" },
+      "SVP-086": { name: "Mabosstiff ex", set: "SV Black Star Promos", number: "086", type: "Promo" },
+      "SVP-103": { name: "Houndoom ex", set: "SV Black Star Promos", number: "103", type: "Promo" },
+      "SVP-104": { name: "Melmetal ex", set: "SV Black Star Promos", number: "104", type: "Promo" },
+      "SVP-105": { name: "Armarouge ex", set: "SV Black Star Promos", number: "105", type: "Promo" },
+      "SVP-106": { name: "Pikachu ex", set: "SV Black Star Promos", number: "106", type: "Promo" },
+      "SVP-110": { name: "Darkrai ex", set: "SV Black Star Promos", number: "110", type: "Promo" },
+      "SVP-125": { name: "Armarouge ex", set: "SV Black Star Promos", number: "125", type: "Promo" },
+      "SVP-126": { name: "Palafin ex", set: "SV Black Star Promos", number: "126", type: "Promo" },
+      "SVP-127": { name: "Walking Wake ex", set: "SV Black Star Promos", number: "127", type: "Promo" },
+      "SVP-128": { name: "Iron Leaves ex", set: "SV Black Star Promos", number: "128", type: "Promo" },
+      "SVP-131": { name: "Kingdra ex", set: "SV Black Star Promos", number: "131", type: "Promo" },
+      "SVP-132": { name: "Greninja ex", set: "SV Black Star Promos", number: "132", type: "Promo" },
+      "SVP-144": { name: "Gouging Fire ex", set: "SV Black Star Promos", number: "144", type: "Promo" },
+      "SVP-145": { name: "Raging Bolt ex", set: "SV Black Star Promos", number: "145", type: "Promo" },
+      "SVP-146": { name: "Iron Crown ex", set: "SV Black Star Promos", number: "146", type: "Promo" },
+      "SVP-147": { name: "Iron Boulder ex", set: "SV Black Star Promos", number: "147", type: "Promo" },
+      "SVP-160": { name: "Squawkabilly ex", set: "SV Black Star Promos", number: "160", type: "Promo" },
+      "SVP-161": { name: "Charizard ex", set: "SV Black Star Promos", number: "161", type: "Promo" },
+      "SVP-162": { name: "Houndstone ex", set: "SV Black Star Promos", number: "162", type: "Promo" },
+      "SVP-163": { name: "Cinderace ex", set: "SV Black Star Promos", number: "163", type: "Promo" },
+      "SVP-164": { name: "Lapras ex", set: "SV Black Star Promos", number: "164", type: "Promo" },
+      "SVP-165": { name: "Terapagos ex", set: "SV Black Star Promos", number: "165", type: "Promo" },
+      "SVP-166": { name: "Teal Mask Ogerpon ex", set: "SV Black Star Promos", number: "166", type: "Promo" },
+      "SVP-174": { name: "Eevee ex", set: "SV Black Star Promos", number: "174", type: "Promo" },
+      "SVP-177": { name: "Bloodmoon Ursaluna ex", set: "SV Black Star Promos", number: "177", type: "Promo" },
+      "SVP-178": { name: "Kyogre ex", set: "SV Black Star Promos", number: "178", type: "Promo" },
+      "SVP-179": { name: "Xerneas ex", set: "SV Black Star Promos", number: "179", type: "Promo" },
+      "SVP-180": { name: "Dialga ex", set: "SV Black Star Promos", number: "180", type: "Promo" },
+      "SVP-193": { name: "Hop's Zacian ex", set: "SV Black Star Promos", number: "193", type: "Promo" },
+      "SVP-194": { name: "Iono's Bellibolt ex", set: "SV Black Star Promos", number: "194", type: "Promo" },
+      "SVP-195": { name: "Lillie's Clefairy ex", set: "SV Black Star Promos", number: "195", type: "Promo" },
+      "SVP-196": { name: "Charizard ex", set: "SV Black Star Promos", number: "196", type: "Promo" },
+      "SVP-197": { name: "Koraidon ex", set: "SV Black Star Promos", number: "197", type: "Promo" },
+      "SVP-198": { name: "Zacian ex", set: "SV Black Star Promos", number: "198", type: "Promo" },
+      "SVP-204": { name: "Cynthia's Garchomp ex", set: "SV Black Star Promos", number: "204", type: "Promo" },
+      "SVP-205": { name: "Team Rocket's Mewtwo ex", set: "SV Black Star Promos", number: "205", type: "Promo" },
+
+      // --- Mega Evolution Promos (MEP) ---
+      "MEP-011": { name: "Mega Latias ex", set: "Mega Evolution Promos", number: "011", type: "Promo" },
+      "MEP-012": { name: "Mega Lucario ex", set: "Mega Evolution Promos", number: "012", type: "Promo" },
+      "MEP-013": { name: "Mega Venusaur ex", set: "Mega Evolution Promos", number: "013", type: "Promo" },
+      "MEP-023": { name: "Mega Charizard ex", set: "Mega Evolution Promos", number: "023", type: "Promo" },
+      "MEP-024": { name: "Oricorio ex", set: "Mega Evolution Promos", number: "024", type: "Promo" },
+      "MEP-025": { name: "Mega Kangaskhan ex", set: "Mega Evolution Promos", number: "025", type: "Promo" },
+      "MEP-029": { name: "Mega Charizard X ex", set: "Mega Evolution Promos", number: "029", type: "Promo" },
+      "MEP-030": { name: "Mega Charizard Y ex", set: "Mega Evolution Promos", number: "030", type: "Promo" },
+      "MEP-032": { name: "Mega Gardevoir ex", set: "Mega Evolution Promos", number: "032", type: "Promo" },
+      "MEP-033": { name: "Mega Lucario ex", set: "Mega Evolution Promos", number: "033", type: "Promo" },
+      "MEP-034": { name: "Mega Meganium ex", set: "Mega Evolution Promos", number: "034", type: "Promo" },
+      "MEP-035": { name: "Mega Emboar ex", set: "Mega Evolution Promos", number: "035", type: "Promo" },
+      "MEP-036": { name: "Mega Feraligatr ex", set: "Mega Evolution Promos", number: "036", type: "Promo" },
+      "MEP-071": { name: "Mega Zygarde ex", set: "Mega Evolution Promos", number: "071", type: "Promo" },
+      "MEP-072": { name: "Mega Clefable ex", set: "Mega Evolution Promos", number: "072", type: "Promo" },
+      "MEP-073": { name: "Mega Gengar ex", set: "Mega Evolution Promos", number: "073", type: "Promo" },
+      "MEP-081": { name: "Mega Greninja ex", set: "Mega Evolution Promos", number: "081", type: "Promo" },
+      "MEP-089": { name: "Mega Zeraora ex", set: "Mega Evolution Promos", number: "089", type: "Promo" },
+      "MEP-090": { name: "Mega Darkrai ex", set: "Mega Evolution Promos", number: "090", type: "Promo" },
+      "MEP-091": { name: "Mega Dragonite ex", set: "Mega Evolution Promos", number: "091", type: "Promo" },
+      "MEP-099": { name: "Greninja ex", set: "Mega Evolution Promos", number: "099", type: "Promo" },
+      "MEP-100": { name: "Sylveon ex", set: "Mega Evolution Promos", number: "100", type: "Promo" },
+      "MEP-107": { name: "Pikachu ex", set: "Mega Evolution Promos", number: "107", type: "Promo" },
+      "MEP-108": { name: "Espeon ex", set: "Mega Evolution Promos", number: "108", type: "Promo" },
+      "MEP-109": { name: "Pikachu ex", set: "Mega Evolution Promos", number: "109", type: "Promo" },
+      "MEP-110": { name: "Umbreon ex", set: "Mega Evolution Promos", number: "110", type: "Promo" }
+    };
+
+    function displayCard(card, code) {
+      const container = document.getElementById('cardContainer');
+      const badgeClass = card.type === "ACE SPEC" ? "badge-acespec" : "badge-promo";
+      
+      container.style.display = "block";
+      container.innerHTML = `
+        <span class="badge ${badgeClass}">${card.type}</span>
+        <div class="card-title">${card.name}</div>
+        <div class="card-meta"><strong>Set:</strong> ${card.set}</div>
+        <div class="card-meta"><strong>Card #:</strong> ${card.number}</div>
+        <div class="card-meta"><strong>ID:</strong> ${code}</div>
+        
+        <div class="price-box">
+          <div class="card-meta">Store Price</div>
+          <div class="price-val">$1.00</div>
+          <div class="floor-note">($1.00 store floor applied)</div>
+        </div>
+
+        <div class="action-row">
+          <button onclick="alert('Added ${card.name} to staging list!')">+ Add to List</button>
+          <button class="btn-secondary" onclick="document.getElementById('cardContainer').style.display='none'">Dismiss</button>
+        </div>
+      `;
+    }
+
+    function handleLookup(text) {
+      if (!text) return;
+      const cleanKey = text.trim().toUpperCase().replace(/[\r\n\t]/g, '');
+      const container = document.getElementById('cardContainer');
+
+      if (CARD_CATALOG[cleanKey]) {
+        displayCard(CARD_CATALOG[cleanKey], cleanKey);
+      } else {
+        container.style.display = "block";
+        container.innerHTML = `<span style="color: #ef4444; font-size: 0.95rem;">Unrecognized Card ID: "${cleanKey}"</span>`;
+      }
+    }
+
+    function handleManualSearch() {
+      const val = document.getElementById('manualInput').value;
+      handleLookup(val);
+    }
+
+    // Auto-launch camera targeting environment (back-facing) lens
+    const html5QrCode = new Html5Qrcode("reader");
+    Html5Qrcode.getCameras().then(cameras => {
+      if (cameras && cameras.length) {
+        // Find back camera index or fall back to cameras[0]
+        const backCam = cameras.find(c => c.label.toLowerCase().includes('back') || c.label.toLowerCase().includes('rear')) || cameras[cameras.length - 1];
+        
+        html5QrCode.start(
+          backCam.id,
+          {
+            fps: 15,
+            qrbox: { width: 220, height: 220 }
+          },
+          (decodedText) => {
+            handleLookup(decodedText);
+          },
+          (errorMessage) => {
+            // Ignore frame-by-frame read misses
+          }
+        ).catch(err => {
+          console.error("Camera start failed", err);
+        });
+      }
+    }).catch(err => {
+      console.error("No cameras found", err);
+    });
+  </script>
+</body>
+</html>
+"SV Promo ex" },
       "SVP-161": { name: "Charizard ex", set: "SV Black Star Promos", number: "161", type: "SV Promo ex" },
       "SVP-162": { name: "Houndstone ex", set: "SV Black Star Promos", number: "162", type: "SV Promo ex" },
       "SVP-163": { name: "Cinderace ex", set: "SV Black Star Promos", number: "163", type: "SV Promo ex" },
