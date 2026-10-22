@@ -563,6 +563,203 @@
   </script>
 </body>
 </html>
+m mirrors.');
+    }
+
+    function displayCard(card) {
+      var container = document.getElementById('cardContainer');
+      currentCardData = card;
+
+      var floorNote = '';
+      if (card.rawMarket !== null && card.rawMarket < 1.00) {
+        floorNote = '<div class="floor-note">($1.00 store floor applied)</div>';
+      }
+
+      var imgHtml = card.image ? '<img src="' + card.image + '" alt="' + card.name + '" class="card-art">' : '';
+      var numTotal = card.printedTotal ? '/' + card.printedTotal : '';
+
+      container.innerHTML = 
+        imgHtml +
+        '<div class="badge">' + (card.rarity || 'Double Rare') + '</div>' +
+        '<h1>' + card.name + '</h1>' +
+        '<div class="set-info">' + card.setName + ' · #' + card.number + numTotal + '</div>' +
+        '<div class="price-container">' +
+          '<div class="label">Store Price</div>' +
+          '<div class="price">$' + Number(card.price).toFixed(2) + '</div>' +
+          floorNote +
+        '</div>' +
+        '<div class="action-stack">' +
+          '<button class="btn btn-cart" onclick="addToCartCurrent()">+ Add to List</button>' +
+          '<button class="btn btn-scan" onclick="startInAppScanner()">Scan Another Card</button>' +
+          '<a class="btn btn-link" href="' + card.tcgUrl + '" target="_blank" rel="noopener">View on TCGplayer</a>' +
+        '</div>';
+    }
+
+    async function loadCard(targetId) {
+      var container = document.getElementById('cardContainer');
+      if (!targetId) {
+        container.innerHTML = 
+          '<div style="padding: 1rem 0;">' +
+            '<h2>Scan a Card</h2>' +
+            '<p style="color:var(--text-sub); font-size:0.9rem;">Scan a sticker QR code to view live pricing.</p>' +
+            '<button class="btn btn-scan" onclick="startInAppScanner()" style="margin-top:1rem;">Open Scanner</button>' +
+          '</div>';
+        return;
+      }
+
+      try {
+        var catalog = await fetchCatalog();
+        var card = catalog[targetId];
+
+        if (!card) {
+          container.innerHTML = '<div class="error">Card ID "<strong>' + targetId + '</strong>" not found in catalog.<br><br><button class="btn btn-scan" onclick="startInAppScanner()">Scan Different Card</button></div>';
+          return;
+        }
+
+        displayCard(card);
+      } catch (err) {
+        container.innerHTML = '<div class="error">' + err.message + '<br><br><button class="btn btn-link" onclick="location.reload()">Tap to Retry</button></div>';
+      }
+    }
+
+    function startInAppScanner() {
+      var overlay = document.getElementById('scannerOverlay');
+      overlay.classList.add('active');
+
+      if (!html5QrScanner) {
+        html5QrScanner = new Html5Qrcode("scanner-container");
+      }
+
+      html5QrScanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 220, height: 220 } },
+        function(decodedText) {
+          try {
+            var urlObj = new URL(decodedText);
+            var parsedId = urlObj.searchParams.get("id");
+            if (parsedId) {
+              stopInAppScanner();
+              window.history.pushState({}, '', '?id=' + parsedId);
+              loadCard(parsedId);
+              return;
+            }
+          } catch(e) {}
+
+          stopInAppScanner();
+          window.history.pushState({}, '', '?id=' + decodedText.trim());
+          loadCard(decodedText.trim());
+        },
+        function() {}
+      ).catch(function() {
+        alert("Camera access denied or unavailable.");
+        stopInAppScanner();
+      });
+    }
+
+    function stopInAppScanner() {
+      var overlay = document.getElementById('scannerOverlay');
+      overlay.classList.remove('active');
+      if (html5QrScanner) {
+        html5QrScanner.stop().catch(function() {});
+      }
+    }
+
+    function addToCartCurrent() {
+      if (!currentCardData) return;
+      var existing = cart.find(function(item) { return item.id === currentCardData.id; });
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        var copy = Object.assign({}, currentCardData);
+        copy.qty = 1;
+        cart.push(copy);
+      }
+      saveCart();
+      toggleCartDrawer(true);
+    }
+
+    function updateQty(id, delta) {
+      var item = cart.find(function(i) { return i.id === id; });
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(function(i) { return i.id !== id; });
+      }
+      saveCart();
+    }
+
+    function removeItem(id) {
+      cart = cart.filter(function(i) { return i.id !== id; });
+      saveCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      saveCart();
+    }
+
+    function renderCartUI() {
+      var itemsList = document.getElementById('cartItemsList');
+      var barCount = document.getElementById('cartSummaryCount');
+      var barTotal = document.getElementById('cartSummaryTotal');
+      var drawerTotal = document.getElementById('drawerGrandTotal');
+
+      var totalItems = cart.reduce(function(sum, item) { return sum + item.qty; }, 0);
+      var grandTotal = cart.reduce(function(sum, item) { return sum + (item.price * item.qty), 0; }, 0);
+
+      var totalStr = '$' + grandTotal.toFixed(2);
+      if (barCount) barCount.textContent = totalItems + ' card' + (totalItems === 1 ? '' : 's') + ' selected';
+      if (barTotal) barTotal.textContent = totalStr;
+      if (drawerTotal) drawerTotal.textContent = totalStr;
+
+      if (!itemsList) return;
+
+      if (cart.length === 0) {
+        itemsList.innerHTML = '<div style="text-align:center; color: var(--text-sub); margin-top:2rem;">Your list is empty.<br>Scan a card above to begin.</div>';
+        return;
+      }
+
+      var rows = '';
+      for (var i = 0; i < cart.length; i++) {
+        var it = cart[i];
+        rows += 
+          '<div class="cart-item">' +
+            '<div class="cart-item-info">' +
+              '<div class="cart-item-title">' + it.name + '</div>' +
+              '<div class="cart-item-meta">' + it.setName + ' #' + it.number + '</div>' +
+              '<div class="cart-item-price">$' + (it.price * it.qty).toFixed(2) + ' ($' + it.price.toFixed(2) + ' ea)</div>' +
+            '</div>' +
+            '<div class="qty-controls">' +
+              '<button class="qty-btn" onclick="updateQty(\'' + it.id + '\', -1)">−</button>' +
+              '<span class="qty-count">' + it.qty + '</span>' +
+              '<button class="qty-btn" onclick="updateQty(\'' + it.id + '\', 1)">+</button>' +
+              '<button class="del-btn" onclick="removeItem(\'' + it.id + '\')" title="Remove">&times;</button>' +
+            '</div>' +
+          '</div>';
+      }
+      itemsList.innerHTML = rows;
+    }
+
+    function toggleCartDrawer(show) {
+      var drawer = document.getElementById('drawerOverlay');
+      if (drawer) {
+        if (show) drawer.classList.add('active');
+        else drawer.classList.remove('active');
+      }
+    }
+
+    function handleOverlayClick(e, overlayId) {
+      if (e.target.id === overlayId) {
+        if (overlayId === 'scannerOverlay') stopInAppScanner();
+        if (overlayId === 'drawerOverlay') toggleCartDrawer(false);
+      }
+    }
+
+    loadCard(cardId);
+    renderCartUI();
+  </script>
+</body>
+</html>
  { name: "Squawkabilly ex", set: "SV Black Star Promos", number: "160", type: "Promo" },
       "SVP-161": { name: "Charizard ex", set: "SV Black Star Promos", number: "161", type: "Promo" },
       "SVP-162": { name: "Houndstone ex", set: "SV Black Star Promos", number: "162", type: "Promo" },
