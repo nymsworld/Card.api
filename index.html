@@ -377,11 +377,16 @@
     }
 
     // Finds a card by ID, ignoring upper/lower case differences
+        // Finds a card by ID, ignoring case and leading zeros (MEP-023 = mep-23)
+    function normalizeId(id) {
+      return String(id).trim().toLowerCase().replace(/-0+(?=\d)/g, '-');
+    }
+
     function findCard(catalog, targetId) {
       if (catalog[targetId]) return catalog[targetId];
-      var lower = targetId.toLowerCase();
+      var want = normalizeId(targetId);
       for (var key in catalog) {
-        if (key.toLowerCase() === lower) return catalog[key];
+        if (normalizeId(key) === want) return catalog[key];
       }
       return null;
     }
