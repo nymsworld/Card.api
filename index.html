@@ -3,370 +3,271 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kanto Misplay Society - Price Check</title>
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <title>Card Scanner & Catalog Lookup</title>
+  <!-- HTML5 QR / Barcode Scanner CDN -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <style>
-    :root {
-      --bg-page: #0b0f19;
-      --bg-card: #161f30;
-      --bg-sub: #1f2b42;
-      --border-color: #23314d;
-      --text-main: #f8fafc;
-      --text-sub: #94a3b8;
-      --price-color: #4ade80;
-      --btn-primary: #2563eb;
-      --btn-danger: #ef4444;
-    }
-
-    * { box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
-      background: var(--bg-page);
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 1.5rem 1rem 7.5rem 1rem;
+      padding: 16px;
+      background: #121212;
+      color: #e0e0e0;
     }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 1.75rem 1.25rem;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.45);
-    }
-
-    .card-art {
-      width: 160px;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 0.75rem;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.15);
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 0.6rem;
-    }
-
     h1 {
-      font-size: 1.35rem;
-      margin: 0 0 0.25rem 0;
-      color: var(--text-main);
+      font-size: 1.4rem;
+      text-align: center;
+      margin-bottom: 12px;
     }
-
-    .set-info {
-      font-size: 0.85rem;
-      color: var(--text-sub);
-      margin-bottom: 1rem;
-    }
-
-    .price-container {
-      margin: 0.75rem 0 1.25rem 0;
-      padding: 0.85rem;
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 12px;
-    }
-
-    .label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-sub);
-    }
-
-    .price {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--price-color);
-      margin-top: 0.2rem;
-    }
-
-    .floor-note {
-      font-size: 0.75rem;
-      color: var(--text-sub);
-      margin-top: 4px;
-    }
-
-    .action-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .btn {
-      display: inline-block;
-      width: 100%;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      padding: 0.85rem 1rem;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn:active { filter: brightness(0.85); }
-    .btn-cart { background: #10b981; }
-    .btn-scan { background: #8b5cf6; }
-    .btn-link { background: #334155; font-size: 0.85rem; padding: 0.65rem 1rem; }
-
-    .loading { color: var(--text-sub); font-size: 0.95rem; }
-    .error { color: #f87171; font-size: 0.9rem; line-height: 1.4; padding: 10px; }
-
-    /* Sticky Cart Bar */
-    .cart-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #111827;
-      border-top: 1px solid var(--border-color);
-      padding: 0.85rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 -8px 24px rgba(0,0,0,0.5);
-      z-index: 50;
-    }
-
-    .cart-summary-text { font-size: 0.85rem; color: var(--text-sub); }
-    .cart-summary-total { font-size: 1.25rem; font-weight: 800; color: var(--price-color); }
-    .cart-buttons { display: flex; gap: 0.5rem; }
-    .cart-bar-btn {
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.55rem 0.85rem;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-    .cart-bar-btn-scan { background: #8b5cf6; }
-
-    /* Modal / Drawer Overlays */
-    .drawer-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 100;
-      justify-content: center;
-      align-items: flex-end;
-    }
-
-    .drawer-overlay.active { display: flex; }
-
-    .drawer {
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-color);
-      border-radius: 20px 20px 0 0;
+    #reader {
       width: 100%;
       max-width: 480px;
-      max-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      padding: 1.25rem;
-    }
-
-    .drawer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .drawer-header h2 { margin: 0; font-size: 1.15rem; }
-    .close-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-sub);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    .cart-items {
-      overflow-y: auto;
-      flex: 1;
-      margin: 1rem 0;
-    }
-
-    .cart-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .cart-item-info { flex: 1; padding-right: 0.5rem; text-align: left; }
-    .cart-item-title { font-size: 0.9rem; font-weight: 600; }
-    .cart-item-meta { font-size: 0.75rem; color: var(--text-sub); }
-    .cart-item-price { font-size: 0.95rem; font-weight: 700; color: var(--price-color); margin-top: 2px; }
-
-    .qty-controls { display: flex; align-items: center; gap: 0.5rem; }
-    .qty-btn {
-      background: var(--bg-sub);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .qty-count { font-size: 0.9rem; font-weight: 700; min-width: 18px; text-align: center; }
-    .del-btn {
-      background: transparent;
-      border: none;
-      color: var(--btn-danger);
-      font-size: 1.1rem;
-      margin-left: 0.5rem;
-      cursor: pointer;
-    }
-
-    .drawer-footer {
-      border-top: 1px solid var(--border-color);
-      padding-top: 1rem;
-    }
-
-    .drawer-total-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    .btn-clear {
-      background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-sub);
-      width: 100%;
-      padding: 0.65rem;
+      margin: 0 auto;
       border-radius: 8px;
-      font-size: 0.85rem;
+      overflow: hidden;
+      background: #000;
+    }
+    .manual-entry {
+      max-width: 480px;
+      margin: 16px auto;
+      display: flex;
+      gap: 8px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #333;
+      background: #1e1e1e;
+      color: #fff;
+    }
+    button {
+      padding: 10px 16px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
       cursor: pointer;
     }
-
-    #scanner-container {
-      width: 100%;
-      max-width: 320px;
-      margin: 1rem auto 0 auto;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 2px solid var(--border-color);
-      background: #000;
+    #result-box {
+      max-width: 480px;
+      margin: 16px auto;
+      padding: 14px;
+      border-radius: 8px;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      display: none;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .badge-acespec { background: #be123c; color: #fff; }
+    .badge-svpromo { background: #4338ca; color: #fff; }
+    .badge-megapromo { background: #047857; color: #fff; }
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 0 0 6px 0;
+    }
+    .card-meta {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-bottom: 4px;
     }
   </style>
 </head>
 <body>
 
-  <div class="card" id="cardContainer">
-    <div class="loading" id="status">Loading live price...</div>
+  <h1>Card Inventory Scanner</h1>
+  <div id="reader"></div>
+
+  <div class="manual-entry">
+    <input type="text" id="manualInput" placeholder="Lookup by ID (e.g., SVP-004, TEF-157)">
+    <button onclick="handleLookup(document.getElementById('manualInput').value)">Search</button>
   </div>
 
-  <div class="cart-bar" id="cartBar">
-    <div onclick="toggleCartDrawer(true)" style="cursor:pointer; flex: 1;">
-      <div class="cart-summary-text" id="cartSummaryCount">0 items selected</div>
-      <div class="cart-summary-total" id="cartSummaryTotal">$0.00</div>
-    </div>
-    <div class="cart-buttons">
-      <button class="cart-bar-btn cart-bar-btn-scan" onclick="startInAppScanner()">Scan</button>
-      <button class="cart-bar-btn" onclick="toggleCartDrawer(true)">Cart</button>
-    </div>
-  </div>
-
-  <div class="drawer-overlay" id="drawerOverlay" onclick="handleOverlayClick(event, 'drawerOverlay')">
-    <div class="drawer">
-      <div class="drawer-header">
-        <h2>Your Scanned Cards</h2>
-        <button class="close-btn" onclick="toggleCartDrawer(false)">&times;</button>
-      </div>
-      <div class="cart-items" id="cartItemsList"></div>
-      <div class="drawer-footer">
-        <div class="drawer-total-row">
-          <span>Total:</span>
-          <span class="cart-summary-total" id="drawerGrandTotal">$0.00</span>
-        </div>
-        <button class="btn-clear" onclick="clearCart()">Clear All Cards</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="drawer-overlay" id="scannerOverlay" onclick="handleOverlayClick(event, 'scannerOverlay')">
-    <div class="drawer" style="align-items: center; text-align: center;">
-      <div class="drawer-header" style="width: 100%;">
-        <h2>Point at QR Code</h2>
-        <button class="close-btn" onclick="stopInAppScanner()">&times;</button>
-      </div>
-      <div id="scanner-container"></div>
-      <p style="font-size: 0.8rem; color: var(--text-sub); margin-top: 10px;">Camera will automatically detect the card sticker.</p>
-    </div>
-  </div>
+  <div id="result-box"></div>
 
   <script>
-    var cardId = new URLSearchParams(window.location.search).get('id');
-    var priceCatalog = null;
-    var currentCardData = null;
-    var html5QrScanner = null;
-    var cart = [];
+    // Embedded Catalog: ACE SPECs, SV Promo ex, and Mega Promo ex
+    const CARD_CATALOG = {
+      // --- ACE SPEC: Temporal Forces ---
+      "TEF-141": { name: "Awakening Drum", set: "Temporal Forces", number: "141", type: "ACE SPEC" },
+      "TEF-152": { name: "Hero's Cape", set: "Temporal Forces", number: "152", type: "ACE SPEC" },
+      "TEF-153": { name: "Master Ball", set: "Temporal Forces", number: "153", type: "ACE SPEC" },
+      "TEF-154": { name: "Maximum Belt", set: "Temporal Forces", number: "154", type: "ACE SPEC" },
+      "TEF-157": { name: "Prime Catcher", set: "Temporal Forces", number: "157", type: "ACE SPEC" },
+      "TEF-158": { name: "Reboot Pod", set: "Temporal Forces", number: "158", type: "ACE SPEC" },
 
-    try {
-      cart = JSON.parse(localStorage.getItem('kms_cart') || '[]');
-    } catch (e) {
-      cart = [];
+      // --- ACE SPEC: Twilight Masquerade ---
+      "TWM-152": { name: "Hyper Aroma", set: "Twilight Masquerade", number: "152", type: "ACE SPEC" },
+      "TWM-162": { name: "Scoop Up Cyclone", set: "Twilight Masquerade", number: "162", type: "ACE SPEC" },
+      "TWM-163": { name: "Secret Box", set: "Twilight Masquerade", number: "163", type: "ACE SPEC" },
+      "TWM-164": { name: "Survival Brace", set: "Twilight Masquerade", number: "164", type: "ACE SPEC" },
+      "TWM-165": { name: "Unfair Stamp", set: "Twilight Masquerade", number: "165", type: "ACE SPEC" },
+
+      // --- ACE SPEC: Shrouded Fable ---
+      "SFA-058": { name: "Dangerous Laser", set: "Shrouded Fable", number: "058", type: "ACE SPEC" },
+      "SFA-060": { name: "Neutralization Zone", set: "Shrouded Fable", number: "060", type: "ACE SPEC" },
+      "SFA-062": { name: "Poké Vital A", set: "Shrouded Fable", number: "062", type: "ACE SPEC" },
+
+      // --- ACE SPEC: Stellar Crown ---
+      "SCR-134": { name: "Deluxe Bomb", set: "Stellar Crown", number: "134", type: "ACE SPEC" },
+      "SCR-136": { name: "Grand Tree", set: "Stellar Crown", number: "136", type: "ACE SPEC" },
+      "SCR-142": { name: "Sparkling Crystal", set: "Stellar Crown", number: "142", type: "ACE SPEC" },
+
+      // --- ACE SPEC: Surging Sparks ---
+      "SSP-162": { name: "Amulet of Hope", set: "Surging Sparks", number: "162", type: "ACE SPEC" },
+      "SSP-164": { name: "Brilliant Blender", set: "Surging Sparks", number: "164", type: "ACE SPEC" },
+      "SSP-176": { name: "Energy Search Pro", set: "Surging Sparks", number: "176", type: "ACE SPEC" },
+      "SSP-182": { name: "Megaton Blower", set: "Surging Sparks", number: "182", type: "ACE SPEC" },
+      "SSP-183": { name: "Miracle Headset", set: "Surging Sparks", number: "183", type: "ACE SPEC" },
+      "SSP-185": { name: "Precious Trolley", set: "Surging Sparks", number: "185", type: "ACE SPEC" },
+      "SSP-186": { name: "Scramble Switch", set: "Surging Sparks", number: "186", type: "ACE SPEC" },
+
+      // --- ACE SPEC: Prismatic Evolutions ---
+      "PRE-116": { name: "Max Rod", set: "Prismatic Evolutions", number: "116", type: "ACE SPEC" },
+      "PRE-131": { name: "Treasure Tracker", set: "Prismatic Evolutions", number: "131", type: "ACE SPEC" },
+
+      // --- Scarlet & Violet Black Star Promos (ex) ---
+      "SVP-004": { name: "Mimikyu ex", set: "SV Black Star Promos", number: "004", type: "SV Promo ex" },
+      "SVP-016": { name: "Ampharos ex", set: "SV Black Star Promos", number: "016", type: "SV Promo ex" },
+      "SVP-017": { name: "Lucario ex", set: "SV Black Star Promos", number: "017", type: "SV Promo ex" },
+      "SVP-018": { name: "Cyclizar ex", set: "SV Black Star Promos", number: "018", type: "SV Promo ex" },
+      "SVP-028": { name: "Miraidon ex", set: "SV Black Star Promos", number: "028", type: "SV Promo ex" },
+      "SVP-029": { name: "Koraidon ex", set: "SV Black Star Promos", number: "029", type: "SV Promo ex" },
+      "SVP-030": { name: "Chien-Pao ex", set: "SV Black Star Promos", number: "030", type: "SV Promo ex" },
+      "SVP-031": { name: "Tinkaton ex", set: "SV Black Star Promos", number: "031", type: "SV Promo ex" },
+      "SVP-032": { name: "Annihilape ex", set: "SV Black Star Promos", number: "032", type: "SV Promo ex" },
+      "SVP-033": { name: "Meowscarada ex", set: "SV Black Star Promos", number: "033", type: "SV Promo ex" },
+      "SVP-034": { name: "Skeledirge ex", set: "SV Black Star Promos", number: "034", type: "SV Promo ex" },
+      "SVP-035": { name: "Quaquaval ex", set: "SV Black Star Promos", number: "035", type: "SV Promo ex" },
+      "SVP-049": { name: "Zapdos ex", set: "SV Black Star Promos", number: "049", type: "SV Promo ex" },
+      "SVP-050": { name: "Alakazam ex", set: "SV Black Star Promos", number: "050", type: "SV Promo ex" },
+      "SVP-053": { name: "Mew ex", set: "SV Black Star Promos", number: "053", type: "SV Promo ex" },
+      "SVP-054": { name: "Greninja ex", set: "SV Black Star Promos", number: "054", type: "SV Promo ex" },
+      "SVP-055": { name: "Kangaskhan ex", set: "SV Black Star Promos", number: "055", type: "SV Promo ex" },
+      "SVP-056": { name: "Charizard ex", set: "SV Black Star Promos", number: "056", type: "SV Promo ex" },
+      "SVP-067": { name: "Roaring Moon ex", set: "SV Black Star Promos", number: "067", type: "SV Promo ex" },
+      "SVP-068": { name: "Iron Valiant ex", set: "SV Black Star Promos", number: "068", type: "SV Promo ex" },
+      "SVP-072": { name: "Great Tusk ex", set: "SV Black Star Promos", number: "072", type: "SV Promo ex" },
+      "SVP-073": { name: "Iron Treads ex", set: "SV Black Star Promos", number: "073", type: "SV Promo ex" },
+      "SVP-074": { name: "Charizard ex", set: "SV Black Star Promos", number: "074", type: "SV Promo ex" },
+      "SVP-078": { name: "Meowscarada ex", set: "SV Black Star Promos", number: "078", type: "SV Promo ex" },
+      "SVP-081": { name: "Skeledirge ex", set: "SV Black Star Promos", number: "081", type: "SV Promo ex" },
+      "SVP-084": { name: "Quaquaval ex", set: "SV Black Star Promos", number: "084", type: "SV Promo ex" },
+      "SVP-086": { name: "Mabosstiff ex", set: "SV Black Star Promos", number: "086", type: "SV Promo ex" },
+      "SVP-103": { name: "Houndoom ex", set: "SV Black Star Promos", number: "103", type: "SV Promo ex" },
+      "SVP-104": { name: "Melmetal ex", set: "SV Black Star Promos", number: "104", type: "SV Promo ex" },
+      "SVP-105": { name: "Armarouge ex", set: "SV Black Star Promos", number: "105", type: "SV Promo ex" },
+      "SVP-106": { name: "Pikachu ex", set: "SV Black Star Promos", number: "106", type: "SV Promo ex" },
+      "SVP-110": { name: "Darkrai ex", set: "SV Black Star Promos", number: "110", type: "SV Promo ex" },
+      "SVP-125": { name: "Armarouge ex", set: "SV Black Star Promos", number: "125", type: "SV Promo ex" },
+      "SVP-126": { name: "Palafin ex", set: "SV Black Star Promos", number: "126", type: "SV Promo ex" },
+      "SVP-127": { name: "Walking Wake ex", set: "SV Black Star Promos", number: "127", type: "SV Promo ex" },
+      "SVP-128": { name: "Iron Leaves ex", set: "SV Black Star Promos", number: "128", type: "SV Promo ex" },
+      "SVP-131": { name: "Kingdra ex", set: "SV Black Star Promos", number: "131", type: "SV Promo ex" },
+      "SVP-132": { name: "Greninja ex", set: "SV Black Star Promos", number: "132", type: "SV Promo ex" },
+      "SVP-144": { name: "Gouging Fire ex", set: "SV Black Star Promos", number: "144", type: "SV Promo ex" },
+      "SVP-145": { name: "Raging Bolt ex", set: "SV Black Star Promos", number: "145", type: "SV Promo ex" },
+      "SVP-146": { name: "Iron Crown ex", set: "SV Black Star Promos", number: "146", type: "SV Promo ex" },
+      "SVP-147": { name: "Iron Boulder ex", set: "SV Black Star Promos", number: "147", type: "SV Promo ex" },
+      "SVP-160": { name: "Squawkabilly ex", set: "SV Black Star Promos", number: "160", type: "SV Promo ex" },
+      "SVP-161": { name: "Charizard ex", set: "SV Black Star Promos", number: "161", type: "SV Promo ex" },
+      "SVP-162": { name: "Houndstone ex", set: "SV Black Star Promos", number: "162", type: "SV Promo ex" },
+      "SVP-163": { name: "Cinderace ex", set: "SV Black Star Promos", number: "163", type: "SV Promo ex" },
+      "SVP-164": { name: "Lapras ex", set: "SV Black Star Promos", number: "164", type: "SV Promo ex" },
+      "SVP-165": { name: "Terapagos ex", set: "SV Black Star Promos", number: "165", type: "SV Promo ex" },
+      "SVP-166": { name: "Teal Mask Ogerpon ex", set: "SV Black Star Promos", number: "166", type: "SV Promo ex" },
+      "SVP-174": { name: "Eevee ex", set: "SV Black Star Promos", number: "174", type: "SV Promo ex" },
+      "SVP-177": { name: "Bloodmoon Ursaluna ex", set: "SV Black Star Promos", number: "177", type: "SV Promo ex" },
+      "SVP-178": { name: "Kyogre ex", set: "SV Black Star Promos", number: "178", type: "SV Promo ex" },
+      "SVP-179": { name: "Xerneas ex", set: "SV Black Star Promos", number: "179", type: "SV Promo ex" },
+      "SVP-180": { name: "Dialga ex", set: "SV Black Star Promos", number: "180", type: "SV Promo ex" },
+      "SVP-193": { name: "Hop's Zacian ex", set: "SV Black Star Promos", number: "193", type: "SV Promo ex" },
+      "SVP-194": { name: "Iono's Bellibolt ex", set: "SV Black Star Promos", number: "194", type: "SV Promo ex" },
+      "SVP-195": { name: "Lillie's Clefairy ex", set: "SV Black Star Promos", number: "195", type: "SV Promo ex" },
+      "SVP-196": { name: "Charizard ex", set: "SV Black Star Promos", number: "196", type: "SV Promo ex" },
+      "SVP-197": { name: "Koraidon ex", set: "SV Black Star Promos", number: "197", type: "SV Promo ex" },
+      "SVP-198": { name: "Zacian ex", set: "SV Black Star Promos", number: "198", type: "SV Promo ex" },
+      "SVP-204": { name: "Cynthia's Garchomp ex", set: "SV Black Star Promos", number: "204", type: "SV Promo ex" },
+      "SVP-205": { name: "Team Rocket's Mewtwo ex", set: "SV Black Star Promos", number: "205", type: "SV Promo ex" },
+
+      // --- Mega Evolution Promos (MEP) ---
+      "MEP-011": { name: "Mega Latias ex", set: "Mega Evolution Promos", number: "011", type: "Mega Promo" },
+      "MEP-012": { name: "Mega Lucario ex", set: "Mega Evolution Promos", number: "012", type: "Mega Promo" },
+      "MEP-013": { name: "Mega Venusaur ex", set: "Mega Evolution Promos", number: "013", type: "Mega Promo" },
+      "MEP-023": { name: "Mega Charizard ex", set: "Mega Evolution Promos", number: "023", type: "Mega Promo" },
+      "MEP-024": { name: "Oricorio ex", set: "Mega Evolution Promos", number: "024", type: "Mega Promo" },
+      "MEP-025": { name: "Mega Kangaskhan ex", set: "Mega Evolution Promos", number: "025", type: "Mega Promo" },
+      "MEP-029": { name: "Mega Charizard X ex", set: "Mega Evolution Promos", number: "029", type: "Mega Promo" },
+      "MEP-030": { name: "Mega Charizard Y ex", set: "Mega Evolution Promos", number: "030", type: "Mega Promo" },
+      "MEP-032": { name: "Mega Gardevoir ex", set: "Mega Evolution Promos", number: "032", type: "Mega Promo" },
+      "MEP-033": { name: "Mega Lucario ex", set: "Mega Evolution Promos", number: "033", type: "Mega Promo" },
+      "MEP-034": { name: "Mega Meganium ex", set: "Mega Evolution Promos", number: "034", type: "Mega Promo" },
+      "MEP-035": { name: "Mega Emboar ex", set: "Mega Evolution Promos", number: "035", type: "Mega Promo" },
+      "MEP-036": { name: "Mega Feraligatr ex", set: "Mega Evolution Promos", number: "036", type: "Mega Promo" },
+      "MEP-071": { name: "Mega Zygarde ex", set: "Mega Evolution Promos", number: "071", type: "Mega Promo" },
+      "MEP-072": { name: "Mega Clefable ex", set: "Mega Evolution Promos", number: "072", type: "Mega Promo" },
+      "MEP-073": { name: "Mega Gengar ex", set: "Mega Evolution Promos", number: "073", type: "Mega Promo" },
+      "MEP-081": { name: "Mega Greninja ex", set: "Mega Evolution Promos", number: "081", type: "Mega Promo" },
+      "MEP-089": { name: "Mega Zeraora ex", set: "Mega Evolution Promos", number: "089", type: "Mega Promo" },
+      "MEP-090": { name: "Mega Darkrai ex", set: "Mega Evolution Promos", number: "090", type: "Mega Promo" },
+      "MEP-091": { name: "Mega Dragonite ex", set: "Mega Evolution Promos", number: "091", type: "Mega Promo" },
+      "MEP-099": { name: "Greninja ex", set: "Mega Evolution Promos", number: "099", type: "Mega Promo" },
+      "MEP-100": { name: "Sylveon ex", set: "Mega Evolution Promos", number: "100", type: "Mega Promo" },
+      "MEP-107": { name: "Pikachu ex", set: "Mega Evolution Promos", number: "107", type: "Mega Promo" },
+      "MEP-108": { name: "Espeon ex", set: "Mega Evolution Promos", number: "108", type: "Mega Promo" },
+      "MEP-109": { name: "Pikachu ex", set: "Mega Evolution Promos", number: "109", type: "Mega Promo" },
+      "MEP-110": { name: "Umbreon ex", set: "Mega Evolution Promos", number: "110", type: "Mega Promo" }
+    };
+
+    function getBadgeClass(type) {
+      if (type === "ACE SPEC") return "badge-acespec";
+      if (type === "SV Promo ex") return "badge-svpromo";
+      return "badge-megapromo";
     }
 
-    function saveCart() {
-      try {
-        localStorage.setItem('kms_cart', JSON.stringify(cart));
-      } catch (e) {}
-      renderCartUI();
-    }
+    function handleLookup(scannedText) {
+      const resultBox = document.getElementById('result-box');
+      const cleanKey = scannedText.trim().toUpperCase();
 
-    // Tries GitHub Raw CDN first, falls back to jsDelivr mirror if blocked
-    async function fetchCatalog() {
-      if (priceCatalog) return priceCatalog;
-
-      var endpoints = [
-        'https://raw.githubusercontent.com/nymsworld/Card.api/main/prices.json?v=' + Date.now(),
-        'https://cdn.jsdelivr.net/gh/nymsworld/Card.api@main/prices.json'
-      ];
-
-      for (var i = 0; i < endpoints.length; i++) {
-        try {
-          var res = await fetch(endpoints[i]);
-          if (res.ok) {
-            priceCatalog = await res.json();
-            return priceCatalog;
-          }
-        } catch (e) {}
+      if (CARD_CATALOG[cleanKey]) {
+        const item = CARD_CATALOG[cleanKey];
+        resultBox.style.display = "block";
+        resultBox.innerHTML = `
+          <span class="badge ${getBadgeClass(item.type)}">${item.type}</span>
+          <div class="card-title">${item.name}</div>
+          <div class="card-meta"><strong>Set:</strong> ${item.set}</div>
+          <div class="card-meta"><strong>Number:</strong> #${item.number}</div>
+          <div class="card-meta"><strong>Internal Code:</strong> ${cleanKey}</div>
+        `;
+      } else {
+        resultBox.style.display = "block";
+        resultBox.innerHTML = `<span style="color: #ef4444;">No match found for: "${scannedText}"</span>`;
       }
+    }
 
-      throw new Error('Could not fetch price database from mirrors.');
+    function onScanSuccess(decodedText) {
+      handleLookup(decodedText);
+    }
+
+    // Initialize Camera Scanner
+    const html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader", 
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      /* verbose= */ false
+    );
+    html5QrcodeScanner.render(onScanSuccess);
+  </script>
+</body>
+</html>
+m mirrors.');
     }
 
     function displayCard(card) {
