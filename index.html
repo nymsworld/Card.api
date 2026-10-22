@@ -290,7 +290,7 @@
 
   <div class="cart-bar" id="cartBar">
     <div onclick="toggleCartDrawer(true)" style="cursor:pointer; flex: 1;">
-      <div class="cart-summary-text" id="cartSummaryCount">0 items selected</div>
+      <div class="cart-summary-text" id="cartSummaryCount">0 cards selected</div>
       <div class="cart-summary-total" id="cartSummaryTotal">$0.00</div>
     </div>
     <div class="cart-buttons">
@@ -332,10 +332,13 @@
     var priceCatalog = null;
     var currentCardData = null;
     var html5QrScanner = null;
+    var scannerStopping = Promise.resolve();
+    var scanHandled = false;
     var cart = [];
 
     try {
       cart = JSON.parse(localStorage.getItem('kms_cart') || '[]');
+      if (!Array.isArray(cart)) cart = [];
     } catch (e) {
       cart = [];
     }
@@ -345,6 +348,10 @@
         localStorage.setItem('kms_cart', JSON.stringify(cart));
       } catch (e) {}
       renderCartUI();
+    }
+
+    function money(n) {
+      return '$' + (Number(n) || 0).toFixed(2);
     }
 
     // Tries GitHub Raw CDN first, falls back to jsDelivr mirror if blocked
@@ -369,39 +376,50 @@
       throw new Error('Could not fetch price database from mirrors.');
     }
 
+    // Finds a card by ID, ignoring upper/lower case differences
+    function findCard(catalog, targetId) {
+      if (catalog[targetId]) return catalog[targetId];
+      var lower = targetId.toLowerCase();
+      for (var key in catalog) {
+        if (key.toLowerCase() === lower) return catalog[key];
+      }
+      return null;
+    }
+
     function displayCard(card) {
       var container = document.getElementById('cardContainer');
       currentCardData = card;
 
       var floorNote = '';
-      if (card.rawMarket !== null && card.rawMarket < 1.00) {
+      if (card.rawMarket != null && card.rawMarket < 1.00) {
         floorNote = '<div class="floor-note">($1.00 store floor applied)</div>';
       }
 
       var imgHtml = card.image ? '<img src="' + card.image + '" alt="' + card.name + '" class="card-art">' : '';
       var numTotal = card.printedTotal ? '/' + card.printedTotal : '';
 
-      container.innerHTML = 
+      container.innerHTML =
         imgHtml +
         '<div class="badge">' + (card.rarity || 'Double Rare') + '</div>' +
         '<h1>' + card.name + '</h1>' +
         '<div class="set-info">' + card.setName + ' · #' + card.number + numTotal + '</div>' +
         '<div class="price-container">' +
           '<div class="label">Store Price</div>' +
-          '<div class="price">$' + Number(card.price).toFixed(2) + '</div>' +
+          '<div class="price">' + money(card.price) + '</div>' +
           floorNote +
         '</div>' +
         '<div class="action-stack">' +
           '<button class="btn btn-cart" onclick="addToCartCurrent()">+ Add to List</button>' +
           '<button class="btn btn-scan" onclick="startInAppScanner()">Scan Another Card</button>' +
-          '<a class="btn btn-link" href="' + card.tcgUrl + '" target="_blank" rel="noopener">View on TCGplayer</a>' +
+          (card.tcgUrl ? '<a class="btn btn-link" href="' + card.tcgUrl + '" target="_blank" rel="noopener">View on TCGplayer</a>' : '') +
         '</div>';
     }
 
     async function loadCard(targetId) {
       var container = document.getElementById('cardContainer');
       if (!targetId) {
-        container.innerHTML = 
+        currentCardData = null;
+        container.innerHTML =
           '<div style="padding: 1rem 0;">' +
             '<h2>Scan a Card</h2>' +
             '<p style="color:var(--text-sub); font-size:0.9rem;">Scan a sticker QR code to view live pricing.</p>' +
@@ -410,51 +428,70 @@
         return;
       }
 
+      container.innerHTML = '<div class="loading">Loading live price...</div>';
+
       try {
         var catalog = await fetchCatalog();
-        var card = catalog[targetId];
+        var card = findCard(catalog, targetId);
 
         if (!card) {
+          currentCardData = null;
           container.innerHTML = '<div class="error">Card ID "<strong>' + targetId + '</strong>" not found in catalog.<br><br><button class="btn btn-scan" onclick="startInAppScanner()">Scan Different Card</button></div>';
           return;
         }
 
+        if (!card.id) card.id = targetId;
         displayCard(card);
       } catch (err) {
         container.innerHTML = '<div class="error">' + err.message + '<br><br><button class="btn btn-link" onclick="location.reload()">Tap to Retry</button></div>';
       }
     }
 
+    function handleScan(decodedText) {
+      // The scanner can fire several times for one code; only act on the first
+      if (scanHandled) return;
+      scanHandled = true;
+
+      var text = (decodedText || '').trim();
+      var id = text;
+      try {
+        var parsedId = new URL(text).searchParams.get('id');
+        if (parsedId) id = parsedId.trim();
+      } catch (e) {}
+
+      stopInAppScanner();
+      window.history.pushState({}, '', '?id=' + encodeURIComponent(id));
+      loadCard(id);
+    }
+
     function startInAppScanner() {
       var overlay = document.getElementById('scannerOverlay');
       overlay.classList.add('active');
+      toggleCartDrawer(false);
 
-      if (!html5QrScanner) {
-        html5QrScanner = new Html5Qrcode("scanner-container");
+      if (typeof Html5Qrcode === 'undefined') {
+        alert('Scanner library failed to load. Check your internet connection.');
+        overlay.classList.remove('active');
+        return;
       }
 
-      html5QrScanner.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 220, height: 220 } },
-        function(decodedText) {
-          try {
-            var urlObj = new URL(decodedText);
-            var parsedId = urlObj.searchParams.get("id");
-            if (parsedId) {
-              stopInAppScanner();
-              window.history.pushState({}, '', '?id=' + parsedId);
-              loadCard(parsedId);
-              return;
-            }
-          } catch(e) {}
+      if (!html5QrScanner) {
+        html5QrScanner = new Html5Qrcode('scanner-container');
+      }
 
-          stopInAppScanner();
-          window.history.pushState({}, '', '?id=' + decodedText.trim());
-          loadCard(decodedText.trim());
-        },
-        function() {}
-      ).catch(function() {
-        alert("Camera access denied or unavailable.");
+      // Wait for any previous stop to finish before starting again
+      scannerStopping.then(function() {
+        if (!overlay.classList.contains('active') || html5QrScanner.isScanning) return;
+        scanHandled = false;
+        return html5QrScanner.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: { width: 220, height: 220 } },
+          handleScan,
+          function() {}
+        );
+      }).catch(function(err) {
+        console.error('Camera start failed', err);
+        alert('Camera access denied or unavailable. Make sure the page is opened over https:// and camera permission is allowed.');
         stopInAppScanner();
       });
     }
@@ -462,8 +499,8 @@
     function stopInAppScanner() {
       var overlay = document.getElementById('scannerOverlay');
       overlay.classList.remove('active');
-      if (html5QrScanner) {
-        html5QrScanner.stop().catch(function() {});
+      if (html5QrScanner && html5QrScanner.isScanning) {
+        scannerStopping = html5QrScanner.stop().catch(function() {});
       }
     }
 
@@ -474,6 +511,7 @@
         existing.qty += 1;
       } else {
         var copy = Object.assign({}, currentCardData);
+        copy.price = Number(copy.price) || 0;
         copy.qty = 1;
         cart.push(copy);
       }
@@ -508,9 +546,9 @@
       var drawerTotal = document.getElementById('drawerGrandTotal');
 
       var totalItems = cart.reduce(function(sum, item) { return sum + item.qty; }, 0);
-      var grandTotal = cart.reduce(function(sum, item) { return sum + (item.price * item.qty), 0; }, 0);
+      var grandTotal = cart.reduce(function(sum, item) { return sum + (Number(item.price) * item.qty); }, 0);
 
-      var totalStr = '$' + grandTotal.toFixed(2);
+      var totalStr = money(grandTotal);
       if (barCount) barCount.textContent = totalItems + ' card' + (totalItems === 1 ? '' : 's') + ' selected';
       if (barTotal) barTotal.textContent = totalStr;
       if (drawerTotal) drawerTotal.textContent = totalStr;
@@ -525,12 +563,12 @@
       var rows = '';
       for (var i = 0; i < cart.length; i++) {
         var it = cart[i];
-        rows += 
+        rows +=
           '<div class="cart-item">' +
             '<div class="cart-item-info">' +
               '<div class="cart-item-title">' + it.name + '</div>' +
               '<div class="cart-item-meta">' + it.setName + ' #' + it.number + '</div>' +
-              '<div class="cart-item-price">$' + (it.price * it.qty).toFixed(2) + ' ($' + it.price.toFixed(2) + ' ea)</div>' +
+              '<div class="cart-item-price">' + money(it.price * it.qty) + ' (' + money(it.price) + ' ea)</div>' +
             '</div>' +
             '<div class="qty-controls">' +
               '<button class="qty-btn" onclick="updateQty(\'' + it.id + '\', -1)">−</button>' +
@@ -558,330 +596,13 @@
       }
     }
 
-    loadCard(cardId);
-    renderCartUI();
-  </script>
-</body>
-</html>
-m mirrors.');
-    }
-
-    function displayCard(card) {
-      var container = document.getElementById('cardContainer');
-      currentCardData = card;
-
-      var floorNote = '';
-      if (card.rawMarket !== null && card.rawMarket < 1.00) {
-        floorNote = '<div class="floor-note">($1.00 store floor applied)</div>';
-      }
-
-      var imgHtml = card.image ? '<img src="' + card.image + '" alt="' + card.name + '" class="card-art">' : '';
-      var numTotal = card.printedTotal ? '/' + card.printedTotal : '';
-
-      container.innerHTML = 
-        imgHtml +
-        '<div class="badge">' + (card.rarity || 'Double Rare') + '</div>' +
-        '<h1>' + card.name + '</h1>' +
-        '<div class="set-info">' + card.setName + ' · #' + card.number + numTotal + '</div>' +
-        '<div class="price-container">' +
-          '<div class="label">Store Price</div>' +
-          '<div class="price">$' + Number(card.price).toFixed(2) + '</div>' +
-          floorNote +
-        '</div>' +
-        '<div class="action-stack">' +
-          '<button class="btn btn-cart" onclick="addToCartCurrent()">+ Add to List</button>' +
-          '<button class="btn btn-scan" onclick="startInAppScanner()">Scan Another Card</button>' +
-          '<a class="btn btn-link" href="' + card.tcgUrl + '" target="_blank" rel="noopener">View on TCGplayer</a>' +
-        '</div>';
-    }
-
-    async function loadCard(targetId) {
-      var container = document.getElementById('cardContainer');
-      if (!targetId) {
-        container.innerHTML = 
-          '<div style="padding: 1rem 0;">' +
-            '<h2>Scan a Card</h2>' +
-            '<p style="color:var(--text-sub); font-size:0.9rem;">Scan a sticker QR code to view live pricing.</p>' +
-            '<button class="btn btn-scan" onclick="startInAppScanner()" style="margin-top:1rem;">Open Scanner</button>' +
-          '</div>';
-        return;
-      }
-
-      try {
-        var catalog = await fetchCatalog();
-        var card = catalog[targetId];
-
-        if (!card) {
-          container.innerHTML = '<div class="error">Card ID "<strong>' + targetId + '</strong>" not found in catalog.<br><br><button class="btn btn-scan" onclick="startInAppScanner()">Scan Different Card</button></div>';
-          return;
-        }
-
-        displayCard(card);
-      } catch (err) {
-        container.innerHTML = '<div class="error">' + err.message + '<br><br><button class="btn btn-link" onclick="location.reload()">Tap to Retry</button></div>';
-      }
-    }
-
-    function startInAppScanner() {
-      var overlay = document.getElementById('scannerOverlay');
-      overlay.classList.add('active');
-
-      if (!html5QrScanner) {
-        html5QrScanner = new Html5Qrcode("scanner-container");
-      }
-
-      html5QrScanner.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 220, height: 220 } },
-        function(decodedText) {
-          try {
-            var urlObj = new URL(decodedText);
-            var parsedId = urlObj.searchParams.get("id");
-            if (parsedId) {
-              stopInAppScanner();
-              window.history.pushState({}, '', '?id=' + parsedId);
-              loadCard(parsedId);
-              return;
-            }
-          } catch(e) {}
-
-          stopInAppScanner();
-          window.history.pushState({}, '', '?id=' + decodedText.trim());
-          loadCard(decodedText.trim());
-        },
-        function() {}
-      ).catch(function() {
-        alert("Camera access denied or unavailable.");
-        stopInAppScanner();
-      });
-    }
-
-    function stopInAppScanner() {
-      var overlay = document.getElementById('scannerOverlay');
-      overlay.classList.remove('active');
-      if (html5QrScanner) {
-        html5QrScanner.stop().catch(function() {});
-      }
-    }
-
-    function addToCartCurrent() {
-      if (!currentCardData) return;
-      var existing = cart.find(function(item) { return item.id === currentCardData.id; });
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        var copy = Object.assign({}, currentCardData);
-        copy.qty = 1;
-        cart.push(copy);
-      }
-      saveCart();
-      toggleCartDrawer(true);
-    }
-
-    function updateQty(id, delta) {
-      var item = cart.find(function(i) { return i.id === id; });
-      if (!item) return;
-      item.qty += delta;
-      if (item.qty <= 0) {
-        cart = cart.filter(function(i) { return i.id !== id; });
-      }
-      saveCart();
-    }
-
-    function removeItem(id) {
-      cart = cart.filter(function(i) { return i.id !== id; });
-      saveCart();
-    }
-
-    function clearCart() {
-      cart = [];
-      saveCart();
-    }
-
-    function renderCartUI() {
-      var itemsList = document.getElementById('cartItemsList');
-      var barCount = document.getElementById('cartSummaryCount');
-      var barTotal = document.getElementById('cartSummaryTotal');
-      var drawerTotal = document.getElementById('drawerGrandTotal');
-
-      var totalItems = cart.reduce(function(sum, item) { return sum + item.qty; }, 0);
-      var grandTotal = cart.reduce(function(sum, item) { return sum + (item.price * item.qty), 0; }, 0);
-
-      var totalStr = '$' + grandTotal.toFixed(2);
-      if (barCount) barCount.textContent = totalItems + ' card' + (totalItems === 1 ? '' : 's') + ' selected';
-      if (barTotal) barTotal.textContent = totalStr;
-      if (drawerTotal) drawerTotal.textContent = totalStr;
-
-      if (!itemsList) return;
-
-      if (cart.length === 0) {
-        itemsList.innerHTML = '<div style="text-align:center; color: var(--text-sub); margin-top:2rem;">Your list is empty.<br>Scan a card above to begin.</div>';
-        return;
-      }
-
-      var rows = '';
-      for (var i = 0; i < cart.length; i++) {
-        var it = cart[i];
-        rows += 
-          '<div class="cart-item">' +
-            '<div class="cart-item-info">' +
-              '<div class="cart-item-title">' + it.name + '</div>' +
-              '<div class="cart-item-meta">' + it.setName + ' #' + it.number + '</div>' +
-              '<div class="cart-item-price">$' + (it.price * it.qty).toFixed(2) + ' ($' + it.price.toFixed(2) + ' ea)</div>' +
-            '</div>' +
-            '<div class="qty-controls">' +
-              '<button class="qty-btn" onclick="updateQty(\'' + it.id + '\', -1)">−</button>' +
-              '<span class="qty-count">' + it.qty + '</span>' +
-              '<button class="qty-btn" onclick="updateQty(\'' + it.id + '\', 1)">+</button>' +
-              '<button class="del-btn" onclick="removeItem(\'' + it.id + '\')" title="Remove">&times;</button>' +
-            '</div>' +
-          '</div>';
-      }
-      itemsList.innerHTML = rows;
-    }
-
-    function toggleCartDrawer(show) {
-      var drawer = document.getElementById('drawerOverlay');
-      if (drawer) {
-        if (show) drawer.classList.add('active');
-        else drawer.classList.remove('active');
-      }
-    }
-
-    function handleOverlayClick(e, overlayId) {
-      if (e.target.id === overlayId) {
-        if (overlayId === 'scannerOverlay') stopInAppScanner();
-        if (overlayId === 'drawerOverlay') toggleCartDrawer(false);
-      }
-    }
-
-    loadCard(cardId);
-    renderCartUI();
-  </script>
-</body>
-</html>
- { name: "Squawkabilly ex", set: "SV Black Star Promos", number: "160", type: "Promo" },
-      "SVP-161": { name: "Charizard ex", set: "SV Black Star Promos", number: "161", type: "Promo" },
-      "SVP-162": { name: "Houndstone ex", set: "SV Black Star Promos", number: "162", type: "Promo" },
-      "SVP-163": { name: "Cinderace ex", set: "SV Black Star Promos", number: "163", type: "Promo" },
-      "SVP-164": { name: "Lapras ex", set: "SV Black Star Promos", number: "164", type: "Promo" },
-      "SVP-165": { name: "Terapagos ex", set: "SV Black Star Promos", number: "165", type: "Promo" },
-      "SVP-166": { name: "Teal Mask Ogerpon ex", set: "SV Black Star Promos", number: "166", type: "Promo" },
-      "SVP-174": { name: "Eevee ex", set: "SV Black Star Promos", number: "174", type: "Promo" },
-      "SVP-177": { name: "Bloodmoon Ursaluna ex", set: "SV Black Star Promos", number: "177", type: "Promo" },
-      "SVP-178": { name: "Kyogre ex", set: "SV Black Star Promos", number: "178", type: "Promo" },
-      "SVP-179": { name: "Xerneas ex", set: "SV Black Star Promos", number: "179", type: "Promo" },
-      "SVP-180": { name: "Dialga ex", set: "SV Black Star Promos", number: "180", type: "Promo" },
-      "SVP-193": { name: "Hop's Zacian ex", set: "SV Black Star Promos", number: "193", type: "Promo" },
-      "SVP-194": { name: "Iono's Bellibolt ex", set: "SV Black Star Promos", number: "194", type: "Promo" },
-      "SVP-195": { name: "Lillie's Clefairy ex", set: "SV Black Star Promos", number: "195", type: "Promo" },
-      "SVP-196": { name: "Charizard ex", set: "SV Black Star Promos", number: "196", type: "Promo" },
-      "SVP-197": { name: "Koraidon ex", set: "SV Black Star Promos", number: "197", type: "Promo" },
-      "SVP-198": { name: "Zacian ex", set: "SV Black Star Promos", number: "198", type: "Promo" },
-      "SVP-204": { name: "Cynthia's Garchomp ex", set: "SV Black Star Promos", number: "204", type: "Promo" },
-      "SVP-205": { name: "Team Rocket's Mewtwo ex", set: "SV Black Star Promos", number: "205", type: "Promo" },
-      "MEP-011": { name: "Mega Latias ex", set: "Mega Evolution Promos", number: "011", type: "Promo" },
-      "MEP-012": { name: "Mega Lucario ex", set: "Mega Evolution Promos", number: "012", type: "Promo" },
-      "MEP-013": { name: "Mega Venusaur ex", set: "Mega Evolution Promos", number: "013", type: "Promo" },
-      "MEP-023": { name: "Mega Charizard ex", set: "Mega Evolution Promos", number: "023", type: "Promo" },
-      "MEP-024": { name: "Oricorio ex", set: "Mega Evolution Promos", number: "024", type: "Promo" },
-      "MEP-025": { name: "Mega Kangaskhan ex", set: "Mega Evolution Promos", number: "025", type: "Promo" },
-      "MEP-029": { name: "Mega Charizard X ex", set: "Mega Evolution Promos", number: "029", type: "Promo" },
-      "MEP-030": { name: "Mega Charizard Y ex", set: "Mega Evolution Promos", number: "030", type: "Promo" },
-      "MEP-032": { name: "Mega Gardevoir ex", set: "Mega Evolution Promos", number: "032", type: "Promo" },
-      "MEP-033": { name: "Mega Lucario ex", set: "Mega Evolution Promos", number: "033", type: "Promo" },
-      "MEP-034": { name: "Mega Meganium ex", set: "Mega Evolution Promos", number: "034", type: "Promo" },
-      "MEP-035": { name: "Mega Emboar ex", set: "Mega Evolution Promos", number: "035", type: "Promo" },
-      "MEP-036": { name: "Mega Feraligatr ex", set: "Mega Evolution Promos", number: "036", type: "Promo" },
-      "MEP-071": { name: "Mega Zygarde ex", set: "Mega Evolution Promos", number: "071", type: "Promo" },
-      "MEP-072": { name: "Mega Clefable ex", set: "Mega Evolution Promos", number: "072", type: "Promo" },
-      "MEP-073": { name: "Mega Gengar ex", set: "Mega Evolution Promos", number: "073", type: "Promo" },
-      "MEP-081": { name: "Mega Greninja ex", set: "Mega Evolution Promos", number: "081", type: "Promo" },
-      "MEP-089": { name: "Mega Zeraora ex", set: "Mega Evolution Promos", number: "089", type: "Promo" },
-      "MEP-090": { name: "Mega Darkrai ex", set: "Mega Evolution Promos", number: "090", type: "Promo" },
-      "MEP-091": { name: "Mega Dragonite ex", set: "Mega Evolution Promos", number: "091", type: "Promo" },
-      "MEP-099": { name: "Greninja ex", set: "Mega Evolution Promos", number: "099", type: "Promo" },
-      "MEP-100": { name: "Sylveon ex", set: "Mega Evolution Promos", number: "100", type: "Promo" },
-      "MEP-107": { name: "Pikachu ex", set: "Mega Evolution Promos", number: "107", type: "Promo" },
-      "MEP-108": { name: "Espeon ex", set: "Mega Evolution Promos", number: "108", type: "Promo" },
-      "MEP-109": { name: "Pikachu ex", set: "Mega Evolution Promos", number: "109", type: "Promo" },
-      "MEP-110": { name: "Umbreon ex", set: "Mega Evolution Promos", number: "110", type: "Promo" }
-    };
-
-    function displayCard(card, code) {
-      var container = document.getElementById('cardContainer');
-      var badgeClass = (card.type === 'ACE SPEC') ? 'badge-acespec' : 'badge-promo';
-      
-      var html = '<span class="badge ' + badgeClass + '">' + card.type + '</span>';
-      html += '<div class="card-title">' + card.name + '</div>';
-      html += '<div class="card-meta"><strong>Set:</strong> ' + card.set + '</div>';
-      html += '<div class="card-meta"><strong>Card #:</strong> ' + card.number + '</div>';
-      html += '<div class="card-meta"><strong>ID:</strong> ' + code + '</div>';
-      html += '<div class="price-box">';
-      html += '<div class="card-meta">Store Price</div>';
-      html += '<div class="price-val">$1.00</div>';
-      html += '<div class="floor-note">($1.00 store floor applied)</div>';
-      html += '</div>';
-      html += '<div class="action-row">';
-      html += '<button onclick="alert(\\'Added to list!\\')">+ Add to List</button>';
-      html += '<button class="btn-secondary" onclick="document.getElementById(\\'cardContainer\\').style.display=\\'none\\'">Dismiss</button>';
-      html += '</div>';
-
-      container.innerHTML = html;
-      container.style.display = 'block';
-    }
-
-    function handleLookup(text) {
-      if (!text) return;
-      var cleanKey = text.trim().toUpperCase().replace(/[\\r\\n\\t]/g, '');
-      var container = document.getElementById('cardContainer');
-
-      if (CARD_CATALOG[cleanKey]) {
-        displayCard(CARD_CATALOG[cleanKey], cleanKey);
-      } else {
-        container.style.display = 'block';
-        container.innerHTML = '<span style="color: #ef4444; font-size: 0.95rem;">Unrecognized Card ID: "' + cleanKey + '"</span>';
-      }
-    }
-
-    function handleManualSearch() {
-      var val = document.getElementById('manualInput').value;
-      handleLookup(val);
-    }
-
-    var html5QrCode = new Html5Qrcode('reader');
-    Html5Qrcode.getCameras().then(function(cameras) {
-      if (cameras && cameras.length) {
-        var backCam = null;
-        for (var i = 0; i < cameras.length; i++) {
-          var label = (cameras[i].label || '').toLowerCase();
-          if (label.indexOf('back') !== -1 || label.indexOf('rear') !== -1) {
-            backCam = cameras[i];
-            break;
-          }
-        }
-        if (!backCam) {
-          backCam = cameras[cameras.length - 1];
-        }
-
-        html5QrCode.start(
-          backCam.id,
-          {
-            fps: 15,
-            qrbox: { width: 220, height: 220 }
-          },
-          function(decodedText) {
-            handleLookup(decodedText);
-          },
-          function(errorMessage) {}
-        ).catch(function(err) {
-          console.error('Camera start failed', err);
-        });
-      }
-    }).catch(function(err) {
-      console.error('Camera enumeration error', err);
+    // Browser back/forward buttons show the matching card
+    window.addEventListener('popstate', function() {
+      loadCard(new URLSearchParams(window.location.search).get('id'));
     });
-  <\\/script>
+
+    loadCard(cardId);
+    renderCartUI();
+  </script>
 </body>
 </html>
-`;
