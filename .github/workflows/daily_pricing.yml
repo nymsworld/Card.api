@@ -12,7 +12,7 @@ on:
     - cron: '30 6 * * *'   # part 2: 151 holos + first half of SV overnumbered
     - cron: '55 6 * * *'   # part 3: second half of SV overnumbered
     - cron: '20 7 * * *'   # part 4: Mega Evolution overnumbered
-    - cron: '45 7 * * *'   # part 5: stocked cards from stock_cards.csv
+    - cron: '45 7 * * *'   # part 5: Japanese Pokémon cards + stocked cards (Pokémon, Magic, Yu-Gi-Oh)
   # Allows you to click a button and run it manually whenever you want
   workflow_dispatch:
     inputs:
