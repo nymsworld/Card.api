@@ -1,2328 +1,423 @@
-Card Name,Set,Number,Card ID,QR URL
-Spidops ex,Scarlet & Violet,19,sv1-19,https://nymsworld.github.io/Card.api/?id=sv1-19
-Arcanine ex,Scarlet & Violet,32,sv1-32,https://nymsworld.github.io/Card.api/?id=sv1-32
-Gyarados ex,Scarlet & Violet,45,sv1-45,https://nymsworld.github.io/Card.api/?id=sv1-45
-Magnezone ex,Scarlet & Violet,65,sv1-65,https://nymsworld.github.io/Card.api/?id=sv1-65
-Miraidon ex,Scarlet & Violet,81,sv1-81,https://nymsworld.github.io/Card.api/?id=sv1-81
-Gardevoir ex,Scarlet & Violet,86,sv1-86,https://nymsworld.github.io/Card.api/?id=sv1-86
-Banette ex,Scarlet & Violet,88,sv1-88,https://nymsworld.github.io/Card.api/?id=sv1-88
-Great Tusk ex,Scarlet & Violet,123,sv1-123,https://nymsworld.github.io/Card.api/?id=sv1-123
-Koraidon ex,Scarlet & Violet,125,sv1-125,https://nymsworld.github.io/Card.api/?id=sv1-125
-Toxicroak ex,Scarlet & Violet,131,sv1-131,https://nymsworld.github.io/Card.api/?id=sv1-131
-Iron Treads ex,Scarlet & Violet,143,sv1-143,https://nymsworld.github.io/Card.api/?id=sv1-143
-Oinkologne ex,Scarlet & Violet,158,sv1-158,https://nymsworld.github.io/Card.api/?id=sv1-158
-Forretress ex,Paldea Evolved,5,sv2-5,https://nymsworld.github.io/Card.api/?id=sv2-5
-Meowscarada ex,Paldea Evolved,15,sv2-15,https://nymsworld.github.io/Card.api/?id=sv2-15
-Wo-Chien ex,Paldea Evolved,27,sv2-27,https://nymsworld.github.io/Card.api/?id=sv2-27
-Skeledirge ex,Paldea Evolved,37,sv2-37,https://nymsworld.github.io/Card.api/?id=sv2-37
-Chi-Yu ex,Paldea Evolved,40,sv2-40,https://nymsworld.github.io/Card.api/?id=sv2-40
-Quaquaval ex,Paldea Evolved,52,sv2-52,https://nymsworld.github.io/Card.api/?id=sv2-52
-Chien-Pao ex,Paldea Evolved,61,sv2-61,https://nymsworld.github.io/Card.api/?id=sv2-61
-Pikachu ex,Paldea Evolved,63,sv2-63,https://nymsworld.github.io/Card.api/?id=sv2-63
-Bellibolt ex,Paldea Evolved,79,sv2-79,https://nymsworld.github.io/Card.api/?id=sv2-79
-Slowking ex,Paldea Evolved,86,sv2-86,https://nymsworld.github.io/Card.api/?id=sv2-86
-Dedenne ex,Paldea Evolved,93,sv2-93,https://nymsworld.github.io/Card.api/?id=sv2-93
-Lycanroc ex,Paldea Evolved,117,sv2-117,https://nymsworld.github.io/Card.api/?id=sv2-117
-Ting-Lu ex,Paldea Evolved,127,sv2-127,https://nymsworld.github.io/Card.api/?id=sv2-127
-Paldean Clodsire ex,Paldea Evolved,130,sv2-130,https://nymsworld.github.io/Card.api/?id=sv2-130
-Copperajah ex,Paldea Evolved,150,sv2-150,https://nymsworld.github.io/Card.api/?id=sv2-150
-Noivern ex,Paldea Evolved,153,sv2-153,https://nymsworld.github.io/Card.api/?id=sv2-153
-Squawkabilly ex,Paldea Evolved,169,sv2-169,https://nymsworld.github.io/Card.api/?id=sv2-169
-Decidueye ex,Obsidian Flames,15,sv3-15,https://nymsworld.github.io/Card.api/?id=sv3-15
-Toedscruel ex,Obsidian Flames,22,sv3-22,https://nymsworld.github.io/Card.api/?id=sv3-22
-Victini ex,Obsidian Flames,33,sv3-33,https://nymsworld.github.io/Card.api/?id=sv3-33
-Eiscue ex,Obsidian Flames,42,sv3-42,https://nymsworld.github.io/Card.api/?id=sv3-42
-Tyranitar ex,Obsidian Flames,66,sv3-66,https://nymsworld.github.io/Card.api/?id=sv3-66
-Pawmot ex,Obsidian Flames,73,sv3-73,https://nymsworld.github.io/Card.api/?id=sv3-73
-Miraidon ex,Obsidian Flames,79,sv3-79,https://nymsworld.github.io/Card.api/?id=sv3-79
-Clefable ex,Obsidian Flames,82,sv3-82,https://nymsworld.github.io/Card.api/?id=sv3-82
-Vespiquen ex,Obsidian Flames,96,sv3-96,https://nymsworld.github.io/Card.api/?id=sv3-96
-Houndstone ex,Obsidian Flames,102,sv3-102,https://nymsworld.github.io/Card.api/?id=sv3-102
-Klawf ex,Obsidian Flames,120,sv3-120,https://nymsworld.github.io/Card.api/?id=sv3-120
-Glimmora ex,Obsidian Flames,123,sv3-123,https://nymsworld.github.io/Card.api/?id=sv3-123
-Koraidon ex,Obsidian Flames,124,sv3-124,https://nymsworld.github.io/Card.api/?id=sv3-124
-Charizard ex,Obsidian Flames,125,sv3-125,https://nymsworld.github.io/Card.api/?id=sv3-125
-Houndoom ex,Obsidian Flames,134,sv3-134,https://nymsworld.github.io/Card.api/?id=sv3-134
-Absol ex,Obsidian Flames,135,sv3-135,https://nymsworld.github.io/Card.api/?id=sv3-135
-Melmetal ex,Obsidian Flames,153,sv3-153,https://nymsworld.github.io/Card.api/?id=sv3-153
-Revavroom ex,Obsidian Flames,156,sv3-156,https://nymsworld.github.io/Card.api/?id=sv3-156
-Dragonite ex,Obsidian Flames,159,sv3-159,https://nymsworld.github.io/Card.api/?id=sv3-159
-Pidgeot ex,Obsidian Flames,164,sv3-164,https://nymsworld.github.io/Card.api/?id=sv3-164
-Greedent ex,Obsidian Flames,179,sv3-179,https://nymsworld.github.io/Card.api/?id=sv3-179
-Venusaur ex,151,3,sv3pt5-3,https://nymsworld.github.io/Card.api/?id=sv3pt5-3
-Charizard ex,151,6,sv3pt5-6,https://nymsworld.github.io/Card.api/?id=sv3pt5-6
-Blastoise ex,151,9,sv3pt5-9,https://nymsworld.github.io/Card.api/?id=sv3pt5-9
-Arbok ex,151,24,sv3pt5-24,https://nymsworld.github.io/Card.api/?id=sv3pt5-24
-Ninetales ex,151,38,sv3pt5-38,https://nymsworld.github.io/Card.api/?id=sv3pt5-38
-Wigglytuff ex,151,40,sv3pt5-40,https://nymsworld.github.io/Card.api/?id=sv3pt5-40
-Alakazam ex,151,65,sv3pt5-65,https://nymsworld.github.io/Card.api/?id=sv3pt5-65
-Golem ex,151,76,sv3pt5-76,https://nymsworld.github.io/Card.api/?id=sv3pt5-76
-Kangaskhan ex,151,115,sv3pt5-115,https://nymsworld.github.io/Card.api/?id=sv3pt5-115
-Jynx ex,151,124,sv3pt5-124,https://nymsworld.github.io/Card.api/?id=sv3pt5-124
-Zapdos ex,151,145,sv3pt5-145,https://nymsworld.github.io/Card.api/?id=sv3pt5-145
-Mew ex,151,151,sv3pt5-151,https://nymsworld.github.io/Card.api/?id=sv3pt5-151
-Froslass ex,Paradox Rift,3,sv4-3,https://nymsworld.github.io/Card.api/?id=sv4-3
-Armarouge ex,Paradox Rift,27,sv4-27,https://nymsworld.github.io/Card.api/?id=sv4-27
-Garchomp ex,Paradox Rift,38,sv4-38,https://nymsworld.github.io/Card.api/?id=sv4-38
-Tsareena ex,Paradox Rift,46,sv4-46,https://nymsworld.github.io/Card.api/?id=sv4-46
-Golisopod ex,Paradox Rift,50,sv4-50,https://nymsworld.github.io/Card.api/?id=sv4-50
-Mewtwo ex,Paradox Rift,58,sv4-58,https://nymsworld.github.io/Card.api/?id=sv4-58
-Tapu Koko ex,Paradox Rift,68,sv4-68,https://nymsworld.github.io/Card.api/?id=sv4-68
-Iron Hands ex,Paradox Rift,70,sv4-70,https://nymsworld.github.io/Card.api/?id=sv4-70
-Cofagrigus ex,Paradox Rift,76,sv4-76,https://nymsworld.github.io/Card.api/?id=sv4-76
-Iron Valiant ex,Paradox Rift,89,sv4-89,https://nymsworld.github.io/Card.api/?id=sv4-89
-Hoopa ex,Paradox Rift,98,sv4-98,https://nymsworld.github.io/Card.api/?id=sv4-98
-Toxtricity ex,Paradox Rift,100,sv4-100,https://nymsworld.github.io/Card.api/?id=sv4-100
-Sandy Shocks ex,Paradox Rift,108,sv4-108,https://nymsworld.github.io/Card.api/?id=sv4-108
-Roaring Moon ex,Paradox Rift,124,sv4-124,https://nymsworld.github.io/Card.api/?id=sv4-124
-Aegislash ex,Paradox Rift,135,sv4-135,https://nymsworld.github.io/Card.api/?id=sv4-135
-Skeledirge ex,Paradox Rift,137,sv4-137,https://nymsworld.github.io/Card.api/?id=sv4-137
-Gholdengo ex,Paradox Rift,139,sv4-139,https://nymsworld.github.io/Card.api/?id=sv4-139
-Altaria ex,Paradox Rift,140,sv4-140,https://nymsworld.github.io/Card.api/?id=sv4-140
-Maushold ex,Paradox Rift,155,sv4-155,https://nymsworld.github.io/Card.api/?id=sv4-155
-Bombirdier ex,Paradox Rift,156,sv4-156,https://nymsworld.github.io/Card.api/?id=sv4-156
-Forretress ex,Paldean Fates,2,sv4pt5-2,https://nymsworld.github.io/Card.api/?id=sv4pt5-2
-Toedscruel ex,Paldean Fates,5,sv4pt5-5,https://nymsworld.github.io/Card.api/?id=sv4pt5-5
-Espathra ex,Paldean Fates,6,sv4pt5-6,https://nymsworld.github.io/Card.api/?id=sv4pt5-6
-Gardevoir ex,Paldean Fates,29,sv4pt5-29,https://nymsworld.github.io/Card.api/?id=sv4pt5-29
-Great Tusk ex,Paldean Fates,53,sv4pt5-53,https://nymsworld.github.io/Card.api/?id=sv4pt5-53
-Charizard ex,Paldean Fates,54,sv4pt5-54,https://nymsworld.github.io/Card.api/?id=sv4pt5-54
-Paldean Clodsire ex,Paldean Fates,59,sv4pt5-59,https://nymsworld.github.io/Card.api/?id=sv4pt5-59
-Iron Treads ex,Paldean Fates,66,sv4pt5-66,https://nymsworld.github.io/Card.api/?id=sv4pt5-66
-Noivern ex,Paldean Fates,69,sv4pt5-69,https://nymsworld.github.io/Card.api/?id=sv4pt5-69
-Squawkabilly ex,Paldean Fates,75,sv4pt5-75,https://nymsworld.github.io/Card.api/?id=sv4pt5-75
-Torterra ex,Temporal Forces,12,sv5-12,https://nymsworld.github.io/Card.api/?id=sv5-12
-Scovillain ex,Temporal Forces,22,sv5-22,https://nymsworld.github.io/Card.api/?id=sv5-22
-Iron Leaves ex,Temporal Forces,25,sv5-25,https://nymsworld.github.io/Card.api/?id=sv5-25
-Incineroar ex,Temporal Forces,34,sv5-34,https://nymsworld.github.io/Card.api/?id=sv5-34
-Gouging Fire ex,Temporal Forces,38,sv5-38,https://nymsworld.github.io/Card.api/?id=sv5-38
-Walking Wake ex,Temporal Forces,50,sv5-50,https://nymsworld.github.io/Card.api/?id=sv5-50
-Wugtrio ex,Temporal Forces,60,sv5-60,https://nymsworld.github.io/Card.api/?id=sv5-60
-Iron Crown ex,Temporal Forces,81,sv5-81,https://nymsworld.github.io/Card.api/?id=sv5-81
-Iron Boulder ex,Temporal Forces,99,sv5-99,https://nymsworld.github.io/Card.api/?id=sv5-99
-Gengar ex,Temporal Forces,104,sv5-104,https://nymsworld.github.io/Card.api/?id=sv5-104
-Farigiraf ex,Temporal Forces,108,sv5-108,https://nymsworld.github.io/Card.api/?id=sv5-108
-Scizor ex,Temporal Forces,111,sv5-111,https://nymsworld.github.io/Card.api/?id=sv5-111
-Koraidon ex,Temporal Forces,120,sv5-120,https://nymsworld.github.io/Card.api/?id=sv5-120
-Miraidon ex,Temporal Forces,122,sv5-122,https://nymsworld.github.io/Card.api/?id=sv5-122
-Raging Bolt ex,Temporal Forces,123,sv5-123,https://nymsworld.github.io/Card.api/?id=sv5-123
-Sinistcha ex,Twilight Masquerade,23,sv6-23,https://nymsworld.github.io/Card.api/?id=sv6-23
-Teal Mask Ogerpon ex,Twilight Masquerade,25,sv6-25,https://nymsworld.github.io/Card.api/?id=sv6-25
-Magcargo ex,Twilight Masquerade,29,sv6-29,https://nymsworld.github.io/Card.api/?id=sv6-29
-Hearthflame Mask Ogerpon ex,Twilight Masquerade,40,sv6-40,https://nymsworld.github.io/Card.api/?id=sv6-40
-Palafin ex,Twilight Masquerade,61,sv6-61,https://nymsworld.github.io/Card.api/?id=sv6-61
-Wellspring Mask Ogerpon ex,Twilight Masquerade,64,sv6-64,https://nymsworld.github.io/Card.api/?id=sv6-64
-Luxray ex,Twilight Masquerade,68,sv6-68,https://nymsworld.github.io/Card.api/?id=sv6-68
-Iron Thorns ex,Twilight Masquerade,77,sv6-77,https://nymsworld.github.io/Card.api/?id=sv6-77
-Scream Tail ex,Twilight Masquerade,94,sv6-94,https://nymsworld.github.io/Card.api/?id=sv6-94
-Greninja ex,Twilight Masquerade,106,sv6-106,https://nymsworld.github.io/Card.api/?id=sv6-106
-Cornerstone Mask Ogerpon ex,Twilight Masquerade,112,sv6-112,https://nymsworld.github.io/Card.api/?id=sv6-112
-Dragapult ex,Twilight Masquerade,130,sv6-130,https://nymsworld.github.io/Card.api/?id=sv6-130
-Blissey ex,Twilight Masquerade,134,sv6-134,https://nymsworld.github.io/Card.api/?id=sv6-134
-Bloodmoon Ursaluna ex,Twilight Masquerade,141,sv6-141,https://nymsworld.github.io/Card.api/?id=sv6-141
-Kingdra ex,Shrouded Fable,12,sv6pt5-12,https://nymsworld.github.io/Card.api/?id=sv6pt5-12
-Revavroom ex,Shrouded Fable,15,sv6pt5-15,https://nymsworld.github.io/Card.api/?id=sv6pt5-15
-Okidogi ex,Shrouded Fable,36,sv6pt5-36,https://nymsworld.github.io/Card.api/?id=sv6pt5-36
-Munkidori ex,Shrouded Fable,37,sv6pt5-37,https://nymsworld.github.io/Card.api/?id=sv6pt5-37
-Fezandipiti ex,Shrouded Fable,38,sv6pt5-38,https://nymsworld.github.io/Card.api/?id=sv6pt5-38
-Pecharunt ex,Shrouded Fable,39,sv6pt5-39,https://nymsworld.github.io/Card.api/?id=sv6pt5-39
-Venusaur ex,Stellar Crown,1,sv7-1,https://nymsworld.github.io/Card.api/?id=sv7-1
-Hydrapple ex,Stellar Crown,14,sv7-14,https://nymsworld.github.io/Card.api/?id=sv7-14
-Cinderace ex,Stellar Crown,28,sv7-28,https://nymsworld.github.io/Card.api/?id=sv7-28
-Blastoise ex,Stellar Crown,30,sv7-30,https://nymsworld.github.io/Card.api/?id=sv7-30
-Lapras ex,Stellar Crown,32,sv7-32,https://nymsworld.github.io/Card.api/?id=sv7-32
-Greninja ex,Stellar Crown,41,sv7-41,https://nymsworld.github.io/Card.api/?id=sv7-41
-Galvantula ex,Stellar Crown,51,sv7-51,https://nymsworld.github.io/Card.api/?id=sv7-51
-Dachsbun ex,Stellar Crown,67,sv7-67,https://nymsworld.github.io/Card.api/?id=sv7-67
-Medicham ex,Stellar Crown,80,sv7-80,https://nymsworld.github.io/Card.api/?id=sv7-80
-Lucario ex,Stellar Crown,82,sv7-82,https://nymsworld.github.io/Card.api/?id=sv7-82
-Garganacl ex,Stellar Crown,89,sv7-89,https://nymsworld.github.io/Card.api/?id=sv7-89
-Melmetal ex,Stellar Crown,105,sv7-105,https://nymsworld.github.io/Card.api/?id=sv7-105
-Orthworm ex,Stellar Crown,110,sv7-110,https://nymsworld.github.io/Card.api/?id=sv7-110
-Terapagos ex,Stellar Crown,128,sv7-128,https://nymsworld.github.io/Card.api/?id=sv7-128
-Durant ex,Surging Sparks,4,sv8-4,https://nymsworld.github.io/Card.api/?id=sv8-4
-Ceruledge ex,Surging Sparks,36,sv8-36,https://nymsworld.github.io/Card.api/?id=sv8-36
-Scovillain ex,Surging Sparks,37,sv8-37,https://nymsworld.github.io/Card.api/?id=sv8-37
-Milotic ex,Surging Sparks,42,sv8-42,https://nymsworld.github.io/Card.api/?id=sv8-42
-Black Kyurem ex,Surging Sparks,48,sv8-48,https://nymsworld.github.io/Card.api/?id=sv8-48
-Pikachu ex,Surging Sparks,57,sv8-57,https://nymsworld.github.io/Card.api/?id=sv8-57
-Kilowattrel ex,Surging Sparks,68,sv8-68,https://nymsworld.github.io/Card.api/?id=sv8-68
-Latias ex,Surging Sparks,76,sv8-76,https://nymsworld.github.io/Card.api/?id=sv8-76
-Sylveon ex,Surging Sparks,86,sv8-86,https://nymsworld.github.io/Card.api/?id=sv8-86
-Palossand ex,Surging Sparks,91,sv8-91,https://nymsworld.github.io/Card.api/?id=sv8-91
-Flygon ex,Surging Sparks,106,sv8-106,https://nymsworld.github.io/Card.api/?id=sv8-106
-Hydreigon ex,Surging Sparks,119,sv8-119,https://nymsworld.github.io/Card.api/?id=sv8-119
-Archaludon ex,Surging Sparks,130,sv8-130,https://nymsworld.github.io/Card.api/?id=sv8-130
-Alolan Exeggutor ex,Surging Sparks,133,sv8-133,https://nymsworld.github.io/Card.api/?id=sv8-133
-Tatsugiri ex,Surging Sparks,142,sv8-142,https://nymsworld.github.io/Card.api/?id=sv8-142
-Slaking ex,Surging Sparks,147,sv8-147,https://nymsworld.github.io/Card.api/?id=sv8-147
-Cyclizar ex,Surging Sparks,159,sv8-159,https://nymsworld.github.io/Card.api/?id=sv8-159
-Flamigo ex,Surging Sparks,160,sv8-160,https://nymsworld.github.io/Card.api/?id=sv8-160
-Leafeon ex,Prismatic Evolutions,6,sv8pt5-6,https://nymsworld.github.io/Card.api/?id=sv8pt5-6
-Hydrapple ex,Prismatic Evolutions,11,sv8pt5-11,https://nymsworld.github.io/Card.api/?id=sv8pt5-11
-Teal Mask Ogerpon ex,Prismatic Evolutions,12,sv8pt5-12,https://nymsworld.github.io/Card.api/?id=sv8pt5-12
-Flareon ex,Prismatic Evolutions,14,sv8pt5-14,https://nymsworld.github.io/Card.api/?id=sv8pt5-14
-Hearthflame Mask Ogerpon ex,Prismatic Evolutions,17,sv8pt5-17,https://nymsworld.github.io/Card.api/?id=sv8pt5-17
-Vaporeon ex,Prismatic Evolutions,23,sv8pt5-23,https://nymsworld.github.io/Card.api/?id=sv8pt5-23
-Glaceon ex,Prismatic Evolutions,26,sv8pt5-26,https://nymsworld.github.io/Card.api/?id=sv8pt5-26
-Wellspring Mask Ogerpon ex,Prismatic Evolutions,27,sv8pt5-27,https://nymsworld.github.io/Card.api/?id=sv8pt5-27
-Pikachu ex,Prismatic Evolutions,28,sv8pt5-28,https://nymsworld.github.io/Card.api/?id=sv8pt5-28
-Jolteon ex,Prismatic Evolutions,30,sv8pt5-30,https://nymsworld.github.io/Card.api/?id=sv8pt5-30
-Iron Hands ex,Prismatic Evolutions,31,sv8pt5-31,https://nymsworld.github.io/Card.api/?id=sv8pt5-31
-Iron Thorns ex,Prismatic Evolutions,32,sv8pt5-32,https://nymsworld.github.io/Card.api/?id=sv8pt5-32
-Espeon ex,Prismatic Evolutions,34,sv8pt5-34,https://nymsworld.github.io/Card.api/?id=sv8pt5-34
-Sylveon ex,Prismatic Evolutions,41,sv8pt5-41,https://nymsworld.github.io/Card.api/?id=sv8pt5-41
-Lucario ex,Prismatic Evolutions,51,sv8pt5-51,https://nymsworld.github.io/Card.api/?id=sv8pt5-51
-Sandy Shocks ex,Prismatic Evolutions,56,sv8pt5-56,https://nymsworld.github.io/Card.api/?id=sv8pt5-56
-Cornerstone Mask Ogerpon ex,Prismatic Evolutions,58,sv8pt5-58,https://nymsworld.github.io/Card.api/?id=sv8pt5-58
-Umbreon ex,Prismatic Evolutions,60,sv8pt5-60,https://nymsworld.github.io/Card.api/?id=sv8pt5-60
-Tyranitar ex,Prismatic Evolutions,64,sv8pt5-64,https://nymsworld.github.io/Card.api/?id=sv8pt5-64
-Dragapult ex,Prismatic Evolutions,73,sv8pt5-73,https://nymsworld.github.io/Card.api/?id=sv8pt5-73
-Eevee ex,Prismatic Evolutions,75,sv8pt5-75,https://nymsworld.github.io/Card.api/?id=sv8pt5-75
-Snorlax ex,Prismatic Evolutions,76,sv8pt5-76,https://nymsworld.github.io/Card.api/?id=sv8pt5-76
-Lugia ex,Prismatic Evolutions,82,sv8pt5-82,https://nymsworld.github.io/Card.api/?id=sv8pt5-82
-Noivern ex,Prismatic Evolutions,91,sv8pt5-91,https://nymsworld.github.io/Card.api/?id=sv8pt5-91
-Terapagos ex,Prismatic Evolutions,92,sv8pt5-92,https://nymsworld.github.io/Card.api/?id=sv8pt5-92
-Amoonguss ex,Journey Together,11,sv9-11,https://nymsworld.github.io/Card.api/?id=sv9-11
-Blaziken ex,Journey Together,24,sv9-24,https://nymsworld.github.io/Card.api/?id=sv9-24
-Reshiram ex,Journey Together,30,sv9-30,https://nymsworld.github.io/Card.api/?id=sv9-30
-Volcanion ex,Journey Together,31,sv9-31,https://nymsworld.github.io/Card.api/?id=sv9-31
-Veluza ex,Journey Together,43,sv9-43,https://nymsworld.github.io/Card.api/?id=sv9-43
-Tapu Koko ex,Journey Together,51,sv9-51,https://nymsworld.github.io/Card.api/?id=sv9-51
-Iono's Bellibolt ex,Journey Together,53,sv9-53,https://nymsworld.github.io/Card.api/?id=sv9-53
-Lillie's Clefairy ex,Journey Together,56,sv9-56,https://nymsworld.github.io/Card.api/?id=sv9-56
-Mimikyu ex,Journey Together,69,sv9-69,https://nymsworld.github.io/Card.api/?id=sv9-69
-Alcremie ex,Journey Together,75,sv9-75,https://nymsworld.github.io/Card.api/?id=sv9-75
-Mamoswine ex,Journey Together,79,sv9-79,https://nymsworld.github.io/Card.api/?id=sv9-79
-Paldean Clodsire ex,Journey Together,94,sv9-94,https://nymsworld.github.io/Card.api/?id=sv9-94
-N's Zoroark ex,Journey Together,98,sv9-98,https://nymsworld.github.io/Card.api/?id=sv9-98
-Hop's Zacian ex,Journey Together,111,sv9-111,https://nymsworld.github.io/Card.api/?id=sv9-111
-Salamence ex,Journey Together,114,sv9-114,https://nymsworld.github.io/Card.api/?id=sv9-114
-Dudunsparce ex,Journey Together,121,sv9-121,https://nymsworld.github.io/Card.api/?id=sv9-121
-Yanmega ex,Destined Rivals,3,sv10-3,https://nymsworld.github.io/Card.api/?id=sv10-3
-Arboliva ex,Destined Rivals,23,sv10-23,https://nymsworld.github.io/Card.api/?id=sv10-23
-Rabsca ex,Destined Rivals,25,sv10-25,https://nymsworld.github.io/Card.api/?id=sv10-25
-Team Rocket's Moltres ex,Destined Rivals,31,sv10-31,https://nymsworld.github.io/Card.api/?id=sv10-31
-Ethan's Ho-Oh ex,Destined Rivals,39,sv10-39,https://nymsworld.github.io/Card.api/?id=sv10-39
-Cetitan ex,Destined Rivals,65,sv10-65,https://nymsworld.github.io/Card.api/?id=sv10-65
-Dondozo ex,Destined Rivals,66,sv10-66,https://nymsworld.github.io/Card.api/?id=sv10-66
-Electivire ex,Destined Rivals,69,sv10-69,https://nymsworld.github.io/Card.api/?id=sv10-69
-Team Rocket's Mewtwo ex,Destined Rivals,81,sv10-81,https://nymsworld.github.io/Card.api/?id=sv10-81
-Regirock ex,Destined Rivals,101,sv10-101,https://nymsworld.github.io/Card.api/?id=sv10-101
-Cynthia's Garchomp ex,Destined Rivals,104,sv10-104,https://nymsworld.github.io/Card.api/?id=sv10-104
-Team Rocket's Nidoking ex,Destined Rivals,119,sv10-119,https://nymsworld.github.io/Card.api/?id=sv10-119
-Team Rocket's Crobat ex,Destined Rivals,122,sv10-122,https://nymsworld.github.io/Card.api/?id=sv10-122
-Marnie's Grimmsnarl ex,Destined Rivals,136,sv10-136,https://nymsworld.github.io/Card.api/?id=sv10-136
-Arven's Mabosstiff ex,Destined Rivals,139,sv10-139,https://nymsworld.github.io/Card.api/?id=sv10-139
-Steven's Metagross ex,Destined Rivals,145,sv10-145,https://nymsworld.github.io/Card.api/?id=sv10-145
-Team Rocket's Persian ex,Destined Rivals,150,sv10-150,https://nymsworld.github.io/Card.api/?id=sv10-150
-Whimsicott ex,White Flare,5,rsv10pt5-5,https://nymsworld.github.io/Card.api/?id=rsv10pt5-5
-Reshiram ex,White Flare,20,rsv10pt5-20,https://nymsworld.github.io/Card.api/?id=rsv10pt5-20
-Keldeo ex,White Flare,30,rsv10pt5-30,https://nymsworld.github.io/Card.api/?id=rsv10pt5-30
-Jellicent ex,White Flare,45,rsv10pt5-45,https://nymsworld.github.io/Card.api/?id=rsv10pt5-45
-Hydreigon ex,White Flare,67,rsv10pt5-67,https://nymsworld.github.io/Card.api/?id=rsv10pt5-67
-Bouffalant ex,White Flare,77,rsv10pt5-77,https://nymsworld.github.io/Card.api/?id=rsv10pt5-77
-Serperior ex,Black Bolt,3,zsv10pt5-3,https://nymsworld.github.io/Card.api/?id=zsv10pt5-3
-Kyurem ex,Black Bolt,28,zsv10pt5-28,https://nymsworld.github.io/Card.api/?id=zsv10pt5-28
-Zekrom ex,Black Bolt,34,zsv10pt5-34,https://nymsworld.github.io/Card.api/?id=zsv10pt5-34
-Meloetta ex,Black Bolt,44,zsv10pt5-44,https://nymsworld.github.io/Card.api/?id=zsv10pt5-44
-Excadrill ex,Black Bolt,46,zsv10pt5-46,https://nymsworld.github.io/Card.api/?id=zsv10pt5-46
-Genesect ex,Black Bolt,67,zsv10pt5-67,https://nymsworld.github.io/Card.api/?id=zsv10pt5-67
-Mega Venusaur ex,Mega Evolution,3,me1-3,https://nymsworld.github.io/Card.api/?id=me1-3
-Mega Camerupt ex,Mega Evolution,22,me1-22,https://nymsworld.github.io/Card.api/?id=me1-22
-Mega Abomasnow ex,Mega Evolution,36,me1-36,https://nymsworld.github.io/Card.api/?id=me1-36
-Mega Manectric ex,Mega Evolution,50,me1-50,https://nymsworld.github.io/Card.api/?id=me1-50
-Mega Gardevoir ex,Mega Evolution,60,me1-60,https://nymsworld.github.io/Card.api/?id=me1-60
-Mega Lucario ex,Mega Evolution,77,me1-77,https://nymsworld.github.io/Card.api/?id=me1-77
-Mega Absol ex,Mega Evolution,86,me1-86,https://nymsworld.github.io/Card.api/?id=me1-86
-Mega Mawile ex,Mega Evolution,94,me1-94,https://nymsworld.github.io/Card.api/?id=me1-94
-Mega Latias ex,Mega Evolution,100,me1-100,https://nymsworld.github.io/Card.api/?id=me1-100
-Mega Kangaskhan ex,Mega Evolution,104,me1-104,https://nymsworld.github.io/Card.api/?id=me1-104
-Mega Heracross ex,Phantasmal Flames,4,me2-4,https://nymsworld.github.io/Card.api/?id=me2-4
-Mega Charizard X ex,Phantasmal Flames,13,me2-13,https://nymsworld.github.io/Card.api/?id=me2-13
-Oricorio ex,Phantasmal Flames,18,me2-18,https://nymsworld.github.io/Card.api/?id=me2-18
-Rotom ex,Phantasmal Flames,29,me2-29,https://nymsworld.github.io/Card.api/?id=me2-29
-Mismagius ex,Phantasmal Flames,36,me2-36,https://nymsworld.github.io/Card.api/?id=me2-36
-Mega Diancie ex,Phantasmal Flames,41,me2-41,https://nymsworld.github.io/Card.api/?id=me2-41
-Mega Gengar ex,Phantasmal Flames,56,me2-56,https://nymsworld.github.io/Card.api/?id=me2-56
-Mega Sharpedo ex,Phantasmal Flames,61,me2-61,https://nymsworld.github.io/Card.api/?id=me2-61
-Empoleon ex,Phantasmal Flames,70,me2-70,https://nymsworld.github.io/Card.api/?id=me2-70
-Mega Lopunny ex,Phantasmal Flames,84,me2-84,https://nymsworld.github.io/Card.api/?id=me2-84
-Erika's Vileplume ex,Ascended Heroes,3,me2pt5-3,https://nymsworld.github.io/Card.api/?id=me2pt5-3
-Mega Meganium ex,Ascended Heroes,10,me2pt5-10,https://nymsworld.github.io/Card.api/?id=me2pt5-10
-Mega Charizard Y ex,Ascended Heroes,22,me2pt5-22,https://nymsworld.github.io/Card.api/?id=me2pt5-22
-Ethan's Ho-Oh ex,Ascended Heroes,26,me2pt5-26,https://nymsworld.github.io/Card.api/?id=me2pt5-26
-Mega Emboar ex,Ascended Heroes,31,me2pt5-31,https://nymsworld.github.io/Card.api/?id=me2pt5-31
-Cinderace ex,Ascended Heroes,38,me2pt5-38,https://nymsworld.github.io/Card.api/?id=me2pt5-38
-Mega Feraligatr ex,Ascended Heroes,43,me2pt5-43,https://nymsworld.github.io/Card.api/?id=me2pt5-43
-Mega Froslass ex,Ascended Heroes,47,me2pt5-47,https://nymsworld.github.io/Card.api/?id=me2pt5-47
-Regice ex,Ascended Heroes,48,me2pt5-48,https://nymsworld.github.io/Card.api/?id=me2pt5-48
-Pikachu ex,Ascended Heroes,57,me2pt5-57,https://nymsworld.github.io/Card.api/?id=me2pt5-57
-Voltorb ex,Ascended Heroes,58,me2pt5-58,https://nymsworld.github.io/Card.api/?id=me2pt5-58
-Mega Eelektross ex,Ascended Heroes,61,me2pt5-61,https://nymsworld.github.io/Card.api/?id=me2pt5-61
-Hop's Pincurchin ex,Ascended Heroes,68,me2pt5-68,https://nymsworld.github.io/Card.api/?id=me2pt5-68
-Iono's Bellibolt ex,Ascended Heroes,70,me2pt5-70,https://nymsworld.github.io/Card.api/?id=me2pt5-70
-Miraidon ex,Ascended Heroes,73,me2pt5-73,https://nymsworld.github.io/Card.api/?id=me2pt5-73
-Lillie's Clefairy ex,Ascended Heroes,76,me2pt5-76,https://nymsworld.github.io/Card.api/?id=me2pt5-76
-Team Rocket's Mewtwo ex,Ascended Heroes,79,me2pt5-79,https://nymsworld.github.io/Card.api/?id=me2pt5-79
-Azumarill ex,Ascended Heroes,84,me2pt5-84,https://nymsworld.github.io/Card.api/?id=me2pt5-84
-Mega Gardevoir ex,Ascended Heroes,89,me2pt5-89,https://nymsworld.github.io/Card.api/?id=me2pt5-89
-Regirock ex,Ascended Heroes,107,me2pt5-107,https://nymsworld.github.io/Card.api/?id=me2pt5-107
-Cynthia's Garchomp ex,Ascended Heroes,111,me2pt5-111,https://nymsworld.github.io/Card.api/?id=me2pt5-111
-Mega Lucario ex,Ascended Heroes,113,me2pt5-113,https://nymsworld.github.io/Card.api/?id=me2pt5-113
-Stunfisk ex,Ascended Heroes,114,me2pt5-114,https://nymsworld.github.io/Card.api/?id=me2pt5-114
-Mega Hawlucha ex,Ascended Heroes,116,me2pt5-116,https://nymsworld.github.io/Card.api/?id=me2pt5-116
-Koraidon ex,Ascended Heroes,121,me2pt5-121,https://nymsworld.github.io/Card.api/?id=me2pt5-121
-Mega Gengar ex,Ascended Heroes,125,me2pt5-125,https://nymsworld.github.io/Card.api/?id=me2pt5-125
-Mega Scrafty ex,Ascended Heroes,135,me2pt5-135,https://nymsworld.github.io/Card.api/?id=me2pt5-135
-N's Zoroark ex,Ascended Heroes,137,me2pt5-137,https://nymsworld.github.io/Card.api/?id=me2pt5-137
-Mandibuzz ex,Ascended Heroes,139,me2pt5-139,https://nymsworld.github.io/Card.api/?id=me2pt5-139
-Fezandipiti ex,Ascended Heroes,142,me2pt5-142,https://nymsworld.github.io/Card.api/?id=me2pt5-142
-Registeel ex,Ascended Heroes,145,me2pt5-145,https://nymsworld.github.io/Card.api/?id=me2pt5-145
-Togedemaru ex,Ascended Heroes,149,me2pt5-149,https://nymsworld.github.io/Card.api/?id=me2pt5-149
-Mega Dragonite ex,Ascended Heroes,152,me2pt5-152,https://nymsworld.github.io/Card.api/?id=me2pt5-152
-Dragapult ex,Ascended Heroes,160,me2pt5-160,https://nymsworld.github.io/Card.api/?id=me2pt5-160
-Team Rocket's Kangaskhan ex,Ascended Heroes,162,me2pt5-162,https://nymsworld.github.io/Card.api/?id=me2pt5-162
-Larry's Dudunsparce ex,Ascended Heroes,164,me2pt5-164,https://nymsworld.github.io/Card.api/?id=me2pt5-164
-Zangoose ex,Ascended Heroes,167,me2pt5-167,https://nymsworld.github.io/Card.api/?id=me2pt5-167
-Mega Audino ex,Ascended Heroes,172,me2pt5-172,https://nymsworld.github.io/Card.api/?id=me2pt5-172
-Terapagos ex,Ascended Heroes,179,me2pt5-179,https://nymsworld.github.io/Card.api/?id=me2pt5-179
-Decidueye ex,Perfect Order,12,me3-12,https://nymsworld.github.io/Card.api/?id=me3-12
-Salazzle ex,Perfect Order,16,me3-16,https://nymsworld.github.io/Card.api/?id=me3-16
-Mega Starmie ex,Perfect Order,21,me3-21,https://nymsworld.github.io/Card.api/?id=me3-21
-Lapras ex,Perfect Order,22,me3-22,https://nymsworld.github.io/Card.api/?id=me3-22
-Mega Clefable ex,Perfect Order,31,me3-31,https://nymsworld.github.io/Card.api/?id=me3-31
-Mega Zygarde ex,Perfect Order,47,me3-47,https://nymsworld.github.io/Card.api/?id=me3-47
-Yveltal ex,Perfect Order,53,me3-53,https://nymsworld.github.io/Card.api/?id=me3-53
-Mega Skarmory ex,Perfect Order,55,me3-55,https://nymsworld.github.io/Card.api/?id=me3-55
-Meowth ex,Perfect Order,62,me3-62,https://nymsworld.github.io/Card.api/?id=me3-62
-Beedrill ex,Chaos Rising,3,me4-3,https://nymsworld.github.io/Card.api/?id=me4-3
-Mega Pyroar ex,Chaos Rising,15,me4-15,https://nymsworld.github.io/Card.api/?id=me4-15
-Mega Greninja ex,Chaos Rising,22,me4-22,https://nymsworld.github.io/Card.api/?id=me4-22
-Mega Floette ex,Chaos Rising,35,me4-35,https://nymsworld.github.io/Card.api/?id=me4-35
-Gourgeist ex,Chaos Rising,41,me4-41,https://nymsworld.github.io/Card.api/?id=me4-41
-Mega Gallade ex,Chaos Rising,48,me4-48,https://nymsworld.github.io/Card.api/?id=me4-48
-Krookodile ex,Chaos Rising,55,me4-55,https://nymsworld.github.io/Card.api/?id=me4-55
-Cobalion ex,Chaos Rising,64,me4-64,https://nymsworld.github.io/Card.api/?id=me4-64
-Mega Dragalge ex,Chaos Rising,65,me4-65,https://nymsworld.github.io/Card.api/?id=me4-65
-Cinccino ex,Chaos Rising,73,me4-73,https://nymsworld.github.io/Card.api/?id=me4-73
-Lurantis ex,Pitch Black,4,me5-4,https://nymsworld.github.io/Card.api/?id=me5-4
-Mega Delphox ex,Pitch Black,8,me5-8,https://nymsworld.github.io/Card.api/?id=me5-8
-Wailord ex,Pitch Black,16,me5-16,https://nymsworld.github.io/Card.api/?id=me5-16
-Mega Zeraora ex,Pitch Black,27,me5-27,https://nymsworld.github.io/Card.api/?id=me5-27
-Mega Slowbro ex,Pitch Black,31,me5-31,https://nymsworld.github.io/Card.api/?id=me5-31
-Mega Chandelure ex,Pitch Black,38,me5-38,https://nymsworld.github.io/Card.api/?id=me5-38
-Rampardos ex,Pitch Black,45,me5-45,https://nymsworld.github.io/Card.api/?id=me5-45
-Mega Darkrai ex,Pitch Black,48,me5-48,https://nymsworld.github.io/Card.api/?id=me5-48
-Morpeko ex,Pitch Black,55,me5-55,https://nymsworld.github.io/Card.api/?id=me5-55
-Mega Excadrill ex,Pitch Black,65,me5-65,https://nymsworld.github.io/Card.api/?id=me5-65
-Fuecoco ex,30th Celebration,15,me55-15,https://nymsworld.github.io/Card.api/?id=me55-15
-Greninja ex,30th Celebration,21,me55-21,https://nymsworld.github.io/Card.api/?id=me55-21
-Pikachu ex,30th Celebration,53,me55-53,https://nymsworld.github.io/Card.api/?id=me55-53
-Pikachu ex,30th Celebration,54,me55-54,https://nymsworld.github.io/Card.api/?id=me55-54
-Mewtwo ex,30th Celebration,64,me55-64,https://nymsworld.github.io/Card.api/?id=me55-64
-Mew ex,30th Celebration,66,me55-66,https://nymsworld.github.io/Card.api/?id=me55-66
-Espeon ex,30th Celebration,70,me55-70,https://nymsworld.github.io/Card.api/?id=me55-70
-Sylveon ex,30th Celebration,71,me55-71,https://nymsworld.github.io/Card.api/?id=me55-71
-Gengar ex,30th Celebration,90,me55-90,https://nymsworld.github.io/Card.api/?id=me55-90
-Umbreon ex,30th Celebration,92,me55-92,https://nymsworld.github.io/Card.api/?id=me55-92
-Jirachi ex,30th Celebration,102,me55-102,https://nymsworld.github.io/Card.api/?id=me55-102
-Salamence ex,30th Celebration,109,me55-109,https://nymsworld.github.io/Card.api/?id=me55-109
-Max Rod,Prismatic Evolutions,116,sv8pt5-116,https://nymsworld.github.io/Card.api/?id=sv8pt5-116
-Maximum Belt,Prismatic Evolutions,117,sv8pt5-117,https://nymsworld.github.io/Card.api/?id=sv8pt5-117
-Prime Catcher,Prismatic Evolutions,119,sv8pt5-119,https://nymsworld.github.io/Card.api/?id=sv8pt5-119
-Scoop Up Cyclone,Prismatic Evolutions,128,sv8pt5-128,https://nymsworld.github.io/Card.api/?id=sv8pt5-128
-Sparkling Crystal,Prismatic Evolutions,129,sv8pt5-129,https://nymsworld.github.io/Card.api/?id=sv8pt5-129
-Treasure Tracker,Prismatic Evolutions,131,sv8pt5-131,https://nymsworld.github.io/Card.api/?id=sv8pt5-131
-Dangerous Laser,Shrouded Fable,58,sv6pt5-58,https://nymsworld.github.io/Card.api/?id=sv6pt5-58
-Neutralization Zone,Shrouded Fable,60,sv6pt5-60,https://nymsworld.github.io/Card.api/?id=sv6pt5-60
-Poké Vital A,Shrouded Fable,62,sv6pt5-62,https://nymsworld.github.io/Card.api/?id=sv6pt5-62
-Deluxe Bomb,Stellar Crown,134,sv7-134,https://nymsworld.github.io/Card.api/?id=sv7-134
-Grand Tree,Stellar Crown,136,sv7-136,https://nymsworld.github.io/Card.api/?id=sv7-136
-Sparkling Crystal,Stellar Crown,142,sv7-142,https://nymsworld.github.io/Card.api/?id=sv7-142
-Amulet of Hope,Surging Sparks,162,sv8-162,https://nymsworld.github.io/Card.api/?id=sv8-162
-Brilliant Blender,Surging Sparks,164,sv8-164,https://nymsworld.github.io/Card.api/?id=sv8-164
-Energy Search Pro,Surging Sparks,176,sv8-176,https://nymsworld.github.io/Card.api/?id=sv8-176
-Megaton Blower,Surging Sparks,182,sv8-182,https://nymsworld.github.io/Card.api/?id=sv8-182
-Miracle Headset,Surging Sparks,183,sv8-183,https://nymsworld.github.io/Card.api/?id=sv8-183
-Precious Trolley,Surging Sparks,185,sv8-185,https://nymsworld.github.io/Card.api/?id=sv8-185
-Scramble Switch,Surging Sparks,186,sv8-186,https://nymsworld.github.io/Card.api/?id=sv8-186
-Enriching Energy,Surging Sparks,191,sv8-191,https://nymsworld.github.io/Card.api/?id=sv8-191
-Awakening Drum,Temporal Forces,141,sv5-141,https://nymsworld.github.io/Card.api/?id=sv5-141
-Hero's Cape,Temporal Forces,152,sv5-152,https://nymsworld.github.io/Card.api/?id=sv5-152
-Master Ball,Temporal Forces,153,sv5-153,https://nymsworld.github.io/Card.api/?id=sv5-153
-Maximum Belt,Temporal Forces,154,sv5-154,https://nymsworld.github.io/Card.api/?id=sv5-154
-Prime Catcher,Temporal Forces,157,sv5-157,https://nymsworld.github.io/Card.api/?id=sv5-157
-Reboot Pod,Temporal Forces,158,sv5-158,https://nymsworld.github.io/Card.api/?id=sv5-158
-Neo Upper Energy,Temporal Forces,162,sv5-162,https://nymsworld.github.io/Card.api/?id=sv5-162
-Hyper Aroma,Twilight Masquerade,152,sv6-152,https://nymsworld.github.io/Card.api/?id=sv6-152
-Scoop Up Cyclone,Twilight Masquerade,162,sv6-162,https://nymsworld.github.io/Card.api/?id=sv6-162
-Secret Box,Twilight Masquerade,163,sv6-163,https://nymsworld.github.io/Card.api/?id=sv6-163
-Survival Brace,Twilight Masquerade,164,sv6-164,https://nymsworld.github.io/Card.api/?id=sv6-164
-Unfair Stamp,Twilight Masquerade,165,sv6-165,https://nymsworld.github.io/Card.api/?id=sv6-165
-Legacy Energy,Twilight Masquerade,167,sv6-167,https://nymsworld.github.io/Card.api/?id=sv6-167
-Meganium,ME Black Star Promos,001,mep-1,https://nymsworld.github.io/Card.api/?id=mep-1
-Meganium [Staff],ME Black Star Promos,001,mep-1-staff,https://nymsworld.github.io/Card.api/?id=mep-1-staff
-Inteleon,ME Black Star Promos,002,mep-2,https://nymsworld.github.io/Card.api/?id=mep-2
-Inteleon [Staff],ME Black Star Promos,002,mep-2-staff,https://nymsworld.github.io/Card.api/?id=mep-2-staff
-Alakazam,ME Black Star Promos,003,mep-3,https://nymsworld.github.io/Card.api/?id=mep-3
-Alakazam [Staff],ME Black Star Promos,003,mep-3-staff,https://nymsworld.github.io/Card.api/?id=mep-3-staff
-Lunatone,ME Black Star Promos,004,mep-4,https://nymsworld.github.io/Card.api/?id=mep-4
-Lunatone [Staff],ME Black Star Promos,004,mep-4-staff,https://nymsworld.github.io/Card.api/?id=mep-4-staff
-Drifloon (Cosmos Holo),ME Black Star Promos,005,mep-5,https://nymsworld.github.io/Card.api/?id=mep-5
-Drifblim (Cosmos Holo),ME Black Star Promos,006,mep-6,https://nymsworld.github.io/Card.api/?id=mep-6
-Psyduck,ME Black Star Promos,007,mep-7,https://nymsworld.github.io/Card.api/?id=mep-7
-Golduck,ME Black Star Promos,008,mep-8,https://nymsworld.github.io/Card.api/?id=mep-8
-Alakazam,ME Black Star Promos,009,mep-9,https://nymsworld.github.io/Card.api/?id=mep-9
-Alakazam (Pokemon Center Exclusive),ME Black Star Promos,009,mep-9-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=mep-9-pokemon-center-exclusive
-Riolu,ME Black Star Promos,010,mep-10,https://nymsworld.github.io/Card.api/?id=mep-10
-Riolu (Pokemon Center Exclusive),ME Black Star Promos,010,mep-10-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=mep-10-pokemon-center-exclusive
-Mega Latias ex,ME Black Star Promos,011,mep-11,https://nymsworld.github.io/Card.api/?id=mep-11
-Mega Lucario ex,ME Black Star Promos,012,mep-12,https://nymsworld.github.io/Card.api/?id=mep-12
-Mega Venusaur ex,ME Black Star Promos,013,mep-13,https://nymsworld.github.io/Card.api/?id=mep-13
-Ceruledge,ME Black Star Promos,014,mep-14,https://nymsworld.github.io/Card.api/?id=mep-14
-Ceruledge [Staff],ME Black Star Promos,014,mep-14-staff,https://nymsworld.github.io/Card.api/?id=mep-14-staff
-Zacian,ME Black Star Promos,015,mep-15,https://nymsworld.github.io/Card.api/?id=mep-15
-Zacian [Staff],ME Black Star Promos,015,mep-15-staff,https://nymsworld.github.io/Card.api/?id=mep-15-staff
-Flygon,ME Black Star Promos,016,mep-16,https://nymsworld.github.io/Card.api/?id=mep-16
-Flygon [Staff],ME Black Star Promos,016,mep-16-staff,https://nymsworld.github.io/Card.api/?id=mep-16-staff
-Toxtricity (Prerelease),ME Black Star Promos,017,mep-17,https://nymsworld.github.io/Card.api/?id=mep-17
-Toxtricity [Staff],ME Black Star Promos,017,mep-17-staff,https://nymsworld.github.io/Card.api/?id=mep-17-staff
-Cottonee (Cosmos Holo),ME Black Star Promos,018,mep-18,https://nymsworld.github.io/Card.api/?id=mep-18
-Whimsicott (Cosmos Holo),ME Black Star Promos,019,mep-19,https://nymsworld.github.io/Card.api/?id=mep-19
-Sneasel (Cosmos Holo),ME Black Star Promos,020,mep-20,https://nymsworld.github.io/Card.api/?id=mep-20
-Weavile (Cosmos Holo),ME Black Star Promos,021,mep-21,https://nymsworld.github.io/Card.api/?id=mep-21
-Charcadet,ME Black Star Promos,022,mep-22,https://nymsworld.github.io/Card.api/?id=mep-22
-Charcadet (Pokemon Center Exclusive),ME Black Star Promos,022,mep-22-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=mep-22-pokemon-center-exclusive
-Mega Charizard X ex,ME Black Star Promos,023,mep-23,https://nymsworld.github.io/Card.api/?id=mep-23
-Oricorio ex,ME Black Star Promos,024,mep-24,https://nymsworld.github.io/Card.api/?id=mep-24
-Mega Kangaskhan ex,ME Black Star Promos,025,mep-25,https://nymsworld.github.io/Card.api/?id=mep-25
-Meloetta,ME Black Star Promos,026,mep-26,https://nymsworld.github.io/Card.api/?id=mep-26
-Haunter,ME Black Star Promos,027,mep-27,https://nymsworld.github.io/Card.api/?id=mep-27
-Celebratory Fanfare (Asia Championship Series 24-25),ME Black Star Promos,028,mep-28,https://nymsworld.github.io/Card.api/?id=mep-28
-Celebratory Fanfare (Ace Trainer),ME Black Star Promos,028,mep-28-ace-trainer,https://nymsworld.github.io/Card.api/?id=mep-28-ace-trainer
-Mega Charizard X ex,ME Black Star Promos,029,mep-29,https://nymsworld.github.io/Card.api/?id=mep-29
-Mega Charizard Y ex,ME Black Star Promos,030,mep-30,https://nymsworld.github.io/Card.api/?id=mep-30
-N's Zekrom,ME Black Star Promos,031,mep-31,https://nymsworld.github.io/Card.api/?id=mep-31
-N's Zekrom (Pokemon Center Exclusive),ME Black Star Promos,031,mep-31-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=mep-31-pokemon-center-exclusive
-Mega Gardevoir ex,ME Black Star Promos,032,mep-32,https://nymsworld.github.io/Card.api/?id=mep-32
-Mega Lucario ex,ME Black Star Promos,033,mep-33,https://nymsworld.github.io/Card.api/?id=mep-33
-Mega Meganium ex,ME Black Star Promos,034,mep-34,https://nymsworld.github.io/Card.api/?id=mep-34
-Mega Emboar ex,ME Black Star Promos,035,mep-35,https://nymsworld.github.io/Card.api/?id=mep-35
-Mega Feraligatr ex,ME Black Star Promos,036,mep-36,https://nymsworld.github.io/Card.api/?id=mep-36
-Bulbasaur,ME Black Star Promos,037,mep-37,https://nymsworld.github.io/Card.api/?id=mep-37
-Charmander,ME Black Star Promos,038,mep-38,https://nymsworld.github.io/Card.api/?id=mep-38
-Squirtle,ME Black Star Promos,039,mep-39,https://nymsworld.github.io/Card.api/?id=mep-39
-Turtwig,ME Black Star Promos,040,mep-40,https://nymsworld.github.io/Card.api/?id=mep-40
-Chimchar,ME Black Star Promos,041,mep-41,https://nymsworld.github.io/Card.api/?id=mep-41
-Piplup,ME Black Star Promos,042,mep-42,https://nymsworld.github.io/Card.api/?id=mep-42
-Rowlet,ME Black Star Promos,043,mep-43,https://nymsworld.github.io/Card.api/?id=mep-43
-Litten,ME Black Star Promos,044,mep-44,https://nymsworld.github.io/Card.api/?id=mep-44
-Popplio,ME Black Star Promos,045,mep-45,https://nymsworld.github.io/Card.api/?id=mep-45
-Chikorita,ME Black Star Promos,046,mep-46,https://nymsworld.github.io/Card.api/?id=mep-46
-Cyndaquil,ME Black Star Promos,047,mep-47,https://nymsworld.github.io/Card.api/?id=mep-47
-Totodile,ME Black Star Promos,048,mep-48,https://nymsworld.github.io/Card.api/?id=mep-48
-Snivy,ME Black Star Promos,049,mep-49,https://nymsworld.github.io/Card.api/?id=mep-49
-Tepig,ME Black Star Promos,050,mep-50,https://nymsworld.github.io/Card.api/?id=mep-50
-Oshawott,ME Black Star Promos,051,mep-51,https://nymsworld.github.io/Card.api/?id=mep-51
-Grookey,ME Black Star Promos,052,mep-52,https://nymsworld.github.io/Card.api/?id=mep-52
-Scorbunny,ME Black Star Promos,053,mep-53,https://nymsworld.github.io/Card.api/?id=mep-53
-Sobble,ME Black Star Promos,054,mep-54,https://nymsworld.github.io/Card.api/?id=mep-54
-Treecko,ME Black Star Promos,055,mep-55,https://nymsworld.github.io/Card.api/?id=mep-55
-Torchic,ME Black Star Promos,056,mep-56,https://nymsworld.github.io/Card.api/?id=mep-56
-Mudkip,ME Black Star Promos,057,mep-57,https://nymsworld.github.io/Card.api/?id=mep-57
-Chespin,ME Black Star Promos,058,mep-58,https://nymsworld.github.io/Card.api/?id=mep-58
-Fennekin,ME Black Star Promos,059,mep-59,https://nymsworld.github.io/Card.api/?id=mep-59
-Froakie,ME Black Star Promos,060,mep-60,https://nymsworld.github.io/Card.api/?id=mep-60
-Sprigatito,ME Black Star Promos,061,mep-61,https://nymsworld.github.io/Card.api/?id=mep-61
-Fuecoco,ME Black Star Promos,062,mep-62,https://nymsworld.github.io/Card.api/?id=mep-62
-Quaxly,ME Black Star Promos,063,mep-63,https://nymsworld.github.io/Card.api/?id=mep-63
-Serperior,ME Black Star Promos,064,mep-64,https://nymsworld.github.io/Card.api/?id=mep-64
-Serperior [Staff],ME Black Star Promos,064,mep-64-staff,https://nymsworld.github.io/Card.api/?id=mep-64-staff
-Barbaracle,ME Black Star Promos,065,mep-65,https://nymsworld.github.io/Card.api/?id=mep-65
-Barbaracle [Staff],ME Black Star Promos,065,mep-65-staff,https://nymsworld.github.io/Card.api/?id=mep-65-staff
-Tyrantrum,ME Black Star Promos,066,mep-66,https://nymsworld.github.io/Card.api/?id=mep-66
-Tyrantrum [Staff],ME Black Star Promos,066,mep-66-staff,https://nymsworld.github.io/Card.api/?id=mep-66-staff
-Doublade,ME Black Star Promos,067,mep-67,https://nymsworld.github.io/Card.api/?id=mep-67
-Doublade [Staff],ME Black Star Promos,067,mep-67-staff,https://nymsworld.github.io/Card.api/?id=mep-67-staff
-Makuhita,ME Black Star Promos,068,mep-68,https://nymsworld.github.io/Card.api/?id=mep-68
-Chikorita (Cosmos Holo),ME Black Star Promos,069,mep-69,https://nymsworld.github.io/Card.api/?id=mep-69
-Tyrunt,ME Black Star Promos,070,mep-70,https://nymsworld.github.io/Card.api/?id=mep-70
-Tyrunt (Pokemon Center Exclusive),ME Black Star Promos,070,mep-70-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=mep-70-pokemon-center-exclusive
-Mega Zygarde ex,ME Black Star Promos,071,mep-71,https://nymsworld.github.io/Card.api/?id=mep-71
-Mega Clefable ex,ME Black Star Promos,072,mep-72,https://nymsworld.github.io/Card.api/?id=mep-72
-Mega Gengar ex,ME Black Star Promos,073,mep-73,https://nymsworld.github.io/Card.api/?id=mep-73
-Delphox,ME Black Star Promos,074,mep-74,https://nymsworld.github.io/Card.api/?id=mep-74
-Delphox [Staff],ME Black Star Promos,074,mep-74-staff,https://nymsworld.github.io/Card.api/?id=mep-74-staff
-Ampharos,ME Black Star Promos,075,mep-75,https://nymsworld.github.io/Card.api/?id=mep-75
-Ampharos [Staff],ME Black Star Promos,075,mep-75-staff,https://nymsworld.github.io/Card.api/?id=mep-75-staff
-Crobat,ME Black Star Promos,076,mep-76,https://nymsworld.github.io/Card.api/?id=mep-76
-Crobat [Staff],ME Black Star Promos,076,mep-76-staff,https://nymsworld.github.io/Card.api/?id=mep-76-staff
-Goodra,ME Black Star Promos,077,mep-77,https://nymsworld.github.io/Card.api/?id=mep-77
-Goodra [Staff],ME Black Star Promos,077,mep-77-staff,https://nymsworld.github.io/Card.api/?id=mep-77-staff
-Toxel (Cosmos Holo),ME Black Star Promos,078,mep-78,https://nymsworld.github.io/Card.api/?id=mep-78
-Charmeleon (Cosmos Holo),ME Black Star Promos,079,mep-79,https://nymsworld.github.io/Card.api/?id=mep-79
-Fennekin,ME Black Star Promos,080,mep-80,https://nymsworld.github.io/Card.api/?id=mep-80
-Fennekin (Pokemon Center Exclusive),ME Black Star Promos,080,mep-80-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=mep-80-pokemon-center-exclusive
-Mega Greninja ex,ME Black Star Promos,081,mep-81,https://nymsworld.github.io/Card.api/?id=mep-81
-Miraidon (Pitch Black Stamped),ME Black Star Promos,082,mep-82,https://nymsworld.github.io/Card.api/?id=mep-82
-Miraidon [Staff],ME Black Star Promos,082,mep-82-staff,https://nymsworld.github.io/Card.api/?id=mep-82-staff
-Slowbro (Pitch Black Stamped),ME Black Star Promos,083,mep-83,https://nymsworld.github.io/Card.api/?id=mep-83
-Slowbro [Staff],ME Black Star Promos,083,mep-83-staff,https://nymsworld.github.io/Card.api/?id=mep-83-staff
-Dhelmise (Prerelease),ME Black Star Promos,084,mep-84,https://nymsworld.github.io/Card.api/?id=mep-84
-Dhelmise [Staff],ME Black Star Promos,084,mep-84-staff,https://nymsworld.github.io/Card.api/?id=mep-84-staff
-Bastiodon (Pitch Black Stamped),ME Black Star Promos,085,mep-85,https://nymsworld.github.io/Card.api/?id=mep-85
-Bastiodon [Staff],ME Black Star Promos,085,mep-85-staff,https://nymsworld.github.io/Card.api/?id=mep-85-staff
-Slowpoke (Cosmos Holo),ME Black Star Promos,086,mep-86,https://nymsworld.github.io/Card.api/?id=mep-86
-Binacle (Cosmos Holo),ME Black Star Promos,087,mep-87,https://nymsworld.github.io/Card.api/?id=mep-87
-Zarude,ME Black Star Promos,088,mep-88,https://nymsworld.github.io/Card.api/?id=mep-88
-Zarude (Pokemon Center Exclusive),ME Black Star Promos,088,mep-88-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=mep-88-pokemon-center-exclusive
-Mega Zeraora ex,ME Black Star Promos,089,mep-89,https://nymsworld.github.io/Card.api/?id=mep-89
-Mega Darkrai ex,ME Black Star Promos,090,mep-90,https://nymsworld.github.io/Card.api/?id=mep-90
-Mega Dragonite ex,ME Black Star Promos,091,mep-91,https://nymsworld.github.io/Card.api/?id=mep-91
-Paradise Resort (World Championships 2026),ME Black Star Promos,092,mep-92,https://nymsworld.github.io/Card.api/?id=mep-92
-Paradise Resort (World Championships 2026) [Staff],ME Black Star Promos,092,mep-92-world-championships-2026-staff,https://nymsworld.github.io/Card.api/?id=mep-92-world-championships-2026-staff
-Pikachu,ME Black Star Promos,093,mep-93,https://nymsworld.github.io/Card.api/?id=mep-93
-Pikachu (Winner),ME Black Star Promos,093,mep-93-winner,https://nymsworld.github.io/Card.api/?id=mep-93-winner
-Alolan Exeggutor (30th Celebration),ME Black Star Promos,094,mep-94,https://nymsworld.github.io/Card.api/?id=mep-94
-Lucario (30th Celebration),ME Black Star Promos,095,mep-95,https://nymsworld.github.io/Card.api/?id=mep-95
-Moltres (30th Celebration),ME Black Star Promos,096,mep-96,https://nymsworld.github.io/Card.api/?id=mep-96
-Articuno (30th Celebration),ME Black Star Promos,097,mep-97,https://nymsworld.github.io/Card.api/?id=mep-97
-Zapdos (30th Celebration),ME Black Star Promos,098,mep-98,https://nymsworld.github.io/Card.api/?id=mep-98
-Greninja ex (30th Celebration),ME Black Star Promos,099,mep-99,https://nymsworld.github.io/Card.api/?id=mep-99
-Sylveon ex (30th Celebration),ME Black Star Promos,100,mep-100,https://nymsworld.github.io/Card.api/?id=mep-100
-Nidorina (30th Celebration),ME Black Star Promos,101,mep-101,https://nymsworld.github.io/Card.api/?id=mep-101
-Nidorina (30th Celebration) (Pokemon Center Exclusive),ME Black Star Promos,101,mep-101-30th-celebration-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=mep-101-30th-celebration-pokemon-center-exclusive
-Victini (30th Celebration),ME Black Star Promos,102,mep-102,https://nymsworld.github.io/Card.api/?id=mep-102
-Zeraora (30th Celebration),ME Black Star Promos,103,mep-103,https://nymsworld.github.io/Card.api/?id=mep-103
-Mewtwo (30th Celebration),ME Black Star Promos,104,mep-104,https://nymsworld.github.io/Card.api/?id=mep-104
-Mew (30th Celebration),ME Black Star Promos,105,mep-105,https://nymsworld.github.io/Card.api/?id=mep-105
-Ditto (30th Celebration),ME Black Star Promos,106,mep-106,https://nymsworld.github.io/Card.api/?id=mep-106
-Pikachu ex (30th Celebration),ME Black Star Promos,107,mep-107,https://nymsworld.github.io/Card.api/?id=mep-107
-Espeon ex (30th Celebration),ME Black Star Promos,108,mep-108,https://nymsworld.github.io/Card.api/?id=mep-108
-Pikachu ex (30th Celebration),ME Black Star Promos,109,mep-109,https://nymsworld.github.io/Card.api/?id=mep-109
-Umbreon ex (30th Celebration),ME Black Star Promos,110,mep-110,https://nymsworld.github.io/Card.api/?id=mep-110
-Sprigatito,SV Black Star Promos,001,svp-1,https://nymsworld.github.io/Card.api/?id=svp-1
-Fuecoco,SV Black Star Promos,002,svp-2,https://nymsworld.github.io/Card.api/?id=svp-2
-Quaxly,SV Black Star Promos,003,svp-3,https://nymsworld.github.io/Card.api/?id=svp-3
-Mimikyu ex,SV Black Star Promos,004,svp-4,https://nymsworld.github.io/Card.api/?id=svp-4
-Quaquaval (Prerelease),SV Black Star Promos,005,svp-5,https://nymsworld.github.io/Card.api/?id=svp-5
-Quaquaval (Prerelease) [Staff],SV Black Star Promos,005,svp-5-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-5-prerelease-staff
-Pawmot (Prerelease),SV Black Star Promos,006,svp-6,https://nymsworld.github.io/Card.api/?id=svp-6
-Pawmot (Prerelease) [Staff],SV Black Star Promos,006,svp-6-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-6-prerelease-staff
-Hawlucha (Prerelease),SV Black Star Promos,007,svp-7,https://nymsworld.github.io/Card.api/?id=svp-7
-Hawlucha (Prerelease) [Staff],SV Black Star Promos,007,svp-7-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-7-prerelease-staff
-Revavroom (Prerelease),SV Black Star Promos,008,svp-8,https://nymsworld.github.io/Card.api/?id=svp-8
-Revavroom (Prerelease) [Staff],SV Black Star Promos,008,svp-8-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-8-prerelease-staff
-Spidops,SV Black Star Promos,009,svp-9,https://nymsworld.github.io/Card.api/?id=svp-9
-Espathra,SV Black Star Promos,010,svp-10,https://nymsworld.github.io/Card.api/?id=svp-10
-Arcanine,SV Black Star Promos,011,svp-11,https://nymsworld.github.io/Card.api/?id=svp-11
-Dondozo,SV Black Star Promos,012,svp-12,https://nymsworld.github.io/Card.api/?id=svp-12
-Dondozo (Cosmos Holofoil),SV Black Star Promos,012,svp-12-cosmos-holofoil,https://nymsworld.github.io/Card.api/?id=svp-12-cosmos-holofoil
-Miraidon,SV Black Star Promos,013,svp-13,https://nymsworld.github.io/Card.api/?id=svp-13
-Miraidon (Pokemon Center Exclusive),SV Black Star Promos,013,svp-13-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-13-pokemon-center-exclusive
-Koraidon,SV Black Star Promos,014,svp-14,https://nymsworld.github.io/Card.api/?id=svp-14
-Koraidon (Pokemon Center Exclusive),SV Black Star Promos,014,svp-14-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-14-pokemon-center-exclusive
-Flaaffy,SV Black Star Promos,015,svp-15,https://nymsworld.github.io/Card.api/?id=svp-15
-Ampharos ex,SV Black Star Promos,016,svp-16,https://nymsworld.github.io/Card.api/?id=svp-16
-Lucario ex,SV Black Star Promos,017,svp-17,https://nymsworld.github.io/Card.api/?id=svp-17
-Cyclizar ex,SV Black Star Promos,018,svp-18,https://nymsworld.github.io/Card.api/?id=svp-18
-Baxcalibur (Prerelease),SV Black Star Promos,019,svp-19,https://nymsworld.github.io/Card.api/?id=svp-19
-Baxcalibur (Prerelease) [Staff],SV Black Star Promos,019,svp-19-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-19-prerelease-staff
-Tinkaton (Prerelease),SV Black Star Promos,020,svp-20,https://nymsworld.github.io/Card.api/?id=svp-20
-Tinkaton (Prerelease) [Staff],SV Black Star Promos,020,svp-20-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-20-prerelease-staff
-Murkrow (Prerelease),SV Black Star Promos,021,svp-21,https://nymsworld.github.io/Card.api/?id=svp-21
-Murkrow (Prerelease) [Staff],SV Black Star Promos,021,svp-21-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-21-prerelease-staff
-Pelipper (Prerelease),SV Black Star Promos,022,svp-22,https://nymsworld.github.io/Card.api/?id=svp-22
-Pelipper (Prerelease) [Staff],SV Black Star Promos,022,svp-22-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-22-prerelease-staff
-Smoliv,SV Black Star Promos,023,svp-23,https://nymsworld.github.io/Card.api/?id=svp-23
-Growlithe,SV Black Star Promos,024,svp-24,https://nymsworld.github.io/Card.api/?id=svp-24
-Tinkatink (Cosmo Holofoil),SV Black Star Promos,025,svp-25,https://nymsworld.github.io/Card.api/?id=svp-25
-Varoom (Cosmos Holo),SV Black Star Promos,026,svp-26,https://nymsworld.github.io/Card.api/?id=svp-26
-Pikachu,SV Black Star Promos,027,svp-27,https://nymsworld.github.io/Card.api/?id=svp-27
-Pikachu (Pokemon Center Exclusive),SV Black Star Promos,027,svp-27-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-27-pokemon-center-exclusive
-Miraidon ex,SV Black Star Promos,028,svp-28,https://nymsworld.github.io/Card.api/?id=svp-28
-Koraidon ex,SV Black Star Promos,029,svp-29,https://nymsworld.github.io/Card.api/?id=svp-29
-Chien-Pao ex,SV Black Star Promos,030,svp-30,https://nymsworld.github.io/Card.api/?id=svp-30
-Tinkaton ex,SV Black Star Promos,031,svp-31,https://nymsworld.github.io/Card.api/?id=svp-31
-Annihilape ex,SV Black Star Promos,032,svp-32,https://nymsworld.github.io/Card.api/?id=svp-32
-Meowscarada ex,SV Black Star Promos,033,svp-33,https://nymsworld.github.io/Card.api/?id=svp-33
-Skeledirge ex,SV Black Star Promos,034,svp-34,https://nymsworld.github.io/Card.api/?id=svp-34
-Quaquaval ex,SV Black Star Promos,035,svp-35,https://nymsworld.github.io/Card.api/?id=svp-35
-Palafin (Prerelease),SV Black Star Promos,036,svp-36,https://nymsworld.github.io/Card.api/?id=svp-36
-Palafin (Prerelease) [Staff],SV Black Star Promos,036,svp-36-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-36-prerelease-staff
-Cleffa (Prerelease),SV Black Star Promos,037,svp-37,https://nymsworld.github.io/Card.api/?id=svp-37
-Cleffa (Prerelease) [Staff],SV Black Star Promos,037,svp-37-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-37-prerelease-staff
-Togekiss (Prerelease),SV Black Star Promos,038,svp-38,https://nymsworld.github.io/Card.api/?id=svp-38
-Togekiss (Prerelease) [Staff],SV Black Star Promos,038,svp-38-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-38-prerelease-staff
-Mawile (Prerelease),SV Black Star Promos,039,svp-39,https://nymsworld.github.io/Card.api/?id=svp-39
-Mawile (Prerelease) [Staff],SV Black Star Promos,039,svp-39-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-39-prerelease-staff
-Pawmi,SV Black Star Promos,040,svp-40,https://nymsworld.github.io/Card.api/?id=svp-40
-Pawmi (Cosmos Holo),SV Black Star Promos,040,svp-40-cosmos-holo,https://nymsworld.github.io/Card.api/?id=svp-40-cosmos-holo
-Paldean Wooper,SV Black Star Promos,041,svp-41,https://nymsworld.github.io/Card.api/?id=svp-41
-Houndstone (Cosmos Holo),SV Black Star Promos,042,svp-42,https://nymsworld.github.io/Card.api/?id=svp-42
-Eevee,SV Black Star Promos,043,svp-43,https://nymsworld.github.io/Card.api/?id=svp-43
-Charmander,SV Black Star Promos,044,svp-44,https://nymsworld.github.io/Card.api/?id=svp-44
-Charmander (Pokemon Center Exclusive),SV Black Star Promos,044,svp-44-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-44-pokemon-center-exclusive
-Paradise Resort (World Championships 2023),SV Black Star Promos,045,svp-45,https://nymsworld.github.io/Card.api/?id=svp-45
-Paradise Resort (World Championships 2023) [Staff],SV Black Star Promos,045,svp-45-world-championships-2023-staff,https://nymsworld.github.io/Card.api/?id=svp-45-world-championships-2023-staff
-Bulbasaur (Cosmos Holo),SV Black Star Promos,046,svp-46,https://nymsworld.github.io/Card.api/?id=svp-46
-Charmander (Cosmos Holo),SV Black Star Promos,047,svp-47,https://nymsworld.github.io/Card.api/?id=svp-47
-Squirtle (Cosmos Holo),SV Black Star Promos,048,svp-48,https://nymsworld.github.io/Card.api/?id=svp-48
-Zapdos ex,SV Black Star Promos,049,svp-49,https://nymsworld.github.io/Card.api/?id=svp-49
-Alakazam ex,SV Black Star Promos,050,svp-50,https://nymsworld.github.io/Card.api/?id=svp-50
-Snorlax,SV Black Star Promos,051,svp-51,https://nymsworld.github.io/Card.api/?id=svp-51
-Snorlax (Pokemon Center Exclusive),SV Black Star Promos,051,svp-51-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-51-pokemon-center-exclusive
-Mewtwo,SV Black Star Promos,052,svp-52,https://nymsworld.github.io/Card.api/?id=svp-52
-Mew ex,SV Black Star Promos,053,svp-53,https://nymsworld.github.io/Card.api/?id=svp-53
-Greninja ex,SV Black Star Promos,054,svp-54,https://nymsworld.github.io/Card.api/?id=svp-54
-Kangaskhan ex,SV Black Star Promos,055,svp-55,https://nymsworld.github.io/Card.api/?id=svp-55
-Charizard ex,SV Black Star Promos,056,svp-56,https://nymsworld.github.io/Card.api/?id=svp-56
-Chi-Yu (Prerelease),SV Black Star Promos,057,svp-57,https://nymsworld.github.io/Card.api/?id=svp-57
-Chi-Yu (Prerelease) [Staff],SV Black Star Promos,057,svp-57-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-57-prerelease-staff
-Iron Bundle (Prerelease),SV Black Star Promos,058,svp-58,https://nymsworld.github.io/Card.api/?id=svp-58
-Iron Bundle (Prerelease) [Staff],SV Black Star Promos,058,svp-58-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-58-prerelease-staff
-Xatu (Prerelease),SV Black Star Promos,059,svp-59,https://nymsworld.github.io/Card.api/?id=svp-59
-Xatu (Prerelease) [Staff],SV Black Star Promos,059,svp-59-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-59-prerelease-staff
-Aegislash (Prerelease),SV Black Star Promos,060,svp-60,https://nymsworld.github.io/Card.api/?id=svp-60
-Aegislash (Prerelease) [Staff],SV Black Star Promos,060,svp-60-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-60-prerelease-staff
-Pineco,SV Black Star Promos,061,svp-61,https://nymsworld.github.io/Card.api/?id=svp-61
-Sinistea,SV Black Star Promos,062,svp-62,https://nymsworld.github.io/Card.api/?id=svp-62
-Cetitan,SV Black Star Promos,063,svp-63,https://nymsworld.github.io/Card.api/?id=svp-63
-Cetitan (Cosmos Holo),SV Black Star Promos,063,svp-63-cosmos-holo,https://nymsworld.github.io/Card.api/?id=svp-63-cosmos-holo
-Arctibax,SV Black Star Promos,064,svp-64,https://nymsworld.github.io/Card.api/?id=svp-64
-Arctibax (Cosmos Holo),SV Black Star Promos,064,svp-64-cosmos-holo,https://nymsworld.github.io/Card.api/?id=svp-64-cosmos-holo
-Scream Tail,SV Black Star Promos,065,svp-65,https://nymsworld.github.io/Card.api/?id=svp-65
-Scream Tail (Pokemon Center Exclusive),SV Black Star Promos,065,svp-65-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-65-pokemon-center-exclusive
-Iron Bundle,SV Black Star Promos,066,svp-66,https://nymsworld.github.io/Card.api/?id=svp-66
-Iron Bundle (Pokemon Center Exclusive),SV Black Star Promos,066,svp-66-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-66-pokemon-center-exclusive
-Roaring Moon ex,SV Black Star Promos,067,svp-67,https://nymsworld.github.io/Card.api/?id=svp-67
-Iron Valiant ex,SV Black Star Promos,068,svp-68,https://nymsworld.github.io/Card.api/?id=svp-68
-Fidough,SV Black Star Promos,069,svp-69,https://nymsworld.github.io/Card.api/?id=svp-69
-Greavard,SV Black Star Promos,070,svp-70,https://nymsworld.github.io/Card.api/?id=svp-70
-Maschiff,SV Black Star Promos,071,svp-71,https://nymsworld.github.io/Card.api/?id=svp-71
-Great Tusk ex,SV Black Star Promos,072,svp-72,https://nymsworld.github.io/Card.api/?id=svp-72
-Iron Treads ex,SV Black Star Promos,073,svp-73,https://nymsworld.github.io/Card.api/?id=svp-73
-Charizard ex,SV Black Star Promos,074,svp-74,https://nymsworld.github.io/Card.api/?id=svp-74
-Mimikyu,SV Black Star Promos,075,svp-75,https://nymsworld.github.io/Card.api/?id=svp-75
-Mimikyu (Pokemon Center Exclusive),SV Black Star Promos,075,svp-75-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-75-pokemon-center-exclusive
-Sprigatito,SV Black Star Promos,076,svp-76,https://nymsworld.github.io/Card.api/?id=svp-76
-Floragato,SV Black Star Promos,077,svp-77,https://nymsworld.github.io/Card.api/?id=svp-77
-Meowscarada ex,SV Black Star Promos,078,svp-78,https://nymsworld.github.io/Card.api/?id=svp-78
-Fuecoco,SV Black Star Promos,079,svp-79,https://nymsworld.github.io/Card.api/?id=svp-79
-Crocalor,SV Black Star Promos,080,svp-80,https://nymsworld.github.io/Card.api/?id=svp-80
-Skeledirge ex,SV Black Star Promos,081,svp-81,https://nymsworld.github.io/Card.api/?id=svp-81
-Quaxly,SV Black Star Promos,082,svp-82,https://nymsworld.github.io/Card.api/?id=svp-82
-Quaxwell,SV Black Star Promos,083,svp-83,https://nymsworld.github.io/Card.api/?id=svp-83
-Quaquaval ex,SV Black Star Promos,084,svp-84,https://nymsworld.github.io/Card.api/?id=svp-84
-Pikachu with Grey Felt Hat,SV Black Star Promos,085,svp-85,https://nymsworld.github.io/Card.api/?id=svp-85
-Mabosstiff ex,SV Black Star Promos,086,svp-86,https://nymsworld.github.io/Card.api/?id=svp-86
-Sprigatito ex,SV Black Star Promos,087,svp-87,https://nymsworld.github.io/Card.api/?id=svp-87
-Pikachu,SV Black Star Promos,088,svp-88,https://nymsworld.github.io/Card.api/?id=svp-88
-Feraligatr (Prerelease),SV Black Star Promos,089,svp-89,https://nymsworld.github.io/Card.api/?id=svp-89
-Feraligatr (Prerelease) [Staff],SV Black Star Promos,089,svp-89-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-89-prerelease-staff
-Metang (Prerelease),SV Black Star Promos,090,svp-90,https://nymsworld.github.io/Card.api/?id=svp-90
-Metang (Prerelease) [Staff],SV Black Star Promos,090,svp-90-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-90-prerelease-staff
-Koraidon (Prerelease),SV Black Star Promos,091,svp-91,https://nymsworld.github.io/Card.api/?id=svp-91
-Koraidon (Prerelease) [Staff],SV Black Star Promos,091,svp-91-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-91-prerelease-staff
-Miraidon (Prerelease),SV Black Star Promos,092,svp-92,https://nymsworld.github.io/Card.api/?id=svp-92
-Miraidon (Prerelease) [Staff],SV Black Star Promos,092,svp-92-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-92-prerelease-staff
-Carvanha,SV Black Star Promos,093,svp-93,https://nymsworld.github.io/Card.api/?id=svp-93
-Bellibolt,SV Black Star Promos,094,svp-94,https://nymsworld.github.io/Card.api/?id=svp-94
-Cleffa,SV Black Star Promos,095,svp-95,https://nymsworld.github.io/Card.api/?id=svp-95
-Cyclizar,SV Black Star Promos,096,svp-96,https://nymsworld.github.io/Card.api/?id=svp-96
-Flutter Mane,SV Black Star Promos,097,svp-97,https://nymsworld.github.io/Card.api/?id=svp-97
-Flutter Mane (Pokemon Center),SV Black Star Promos,097,svp-97-pokemon-center,https://nymsworld.github.io/Card.api/?id=svp-97-pokemon-center
-Iron Thorns,SV Black Star Promos,098,svp-98,https://nymsworld.github.io/Card.api/?id=svp-98
-Iron Thorns (Pokemon Center),SV Black Star Promos,098,svp-98-pokemon-center,https://nymsworld.github.io/Card.api/?id=svp-98-pokemon-center
-Shroodle,SV Black Star Promos,099,svp-99,https://nymsworld.github.io/Card.api/?id=svp-99
-Grafaiai ex,SV Black Star Promos,100,svp-100,https://nymsworld.github.io/Card.api/?id=svp-100
-Pikachu,SV Black Star Promos,101,svp-101,https://nymsworld.github.io/Card.api/?id=svp-101
-Pikachu (Asia Championship Series 23-24),SV Black Star Promos,101,svp-101-asia-championship-series-23-24,https://nymsworld.github.io/Card.api/?id=svp-101-asia-championship-series-23-24
-Oddish,SV Black Star Promos,102,svp-102,https://nymsworld.github.io/Card.api/?id=svp-102
-Houndoom ex,SV Black Star Promos,103,svp-103,https://nymsworld.github.io/Card.api/?id=svp-103
-Melmetal ex,SV Black Star Promos,104,svp-104,https://nymsworld.github.io/Card.api/?id=svp-104
-Picnicker,SV Black Star Promos,114,svp-114,https://nymsworld.github.io/Card.api/?id=svp-114
-Thwackey,SV Black Star Promos,115,svp-115,https://nymsworld.github.io/Card.api/?id=svp-115
-Thwackey (Prerelease) [Staff],SV Black Star Promos,115,svp-115-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-115-prerelease-staff
-Infernape,SV Black Star Promos,116,svp-116,https://nymsworld.github.io/Card.api/?id=svp-116
-Infernape (Prerelease) [Staff],SV Black Star Promos,116,svp-116-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-116-prerelease-staff
-Froslass,SV Black Star Promos,117,svp-117,https://nymsworld.github.io/Card.api/?id=svp-117
-Froslass (Prerelease) [Staff],SV Black Star Promos,117,svp-117-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-117-prerelease-staff
-Tatsugiri,SV Black Star Promos,118,svp-118,https://nymsworld.github.io/Card.api/?id=svp-118
-Tatsugiri (Prerelease) [Staff],SV Black Star Promos,118,svp-118-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-118-prerelease-staff
-Toxel,SV Black Star Promos,119,svp-119,https://nymsworld.github.io/Card.api/?id=svp-119
-Pupitar,SV Black Star Promos,120,svp-120,https://nymsworld.github.io/Card.api/?id=svp-120
-Revavroom,SV Black Star Promos,121,svp-121,https://nymsworld.github.io/Card.api/?id=svp-121
-Revavroom (Cosmos Holo),SV Black Star Promos,121,svp-121-cosmos-holo,https://nymsworld.github.io/Card.api/?id=svp-121-cosmos-holo
-Snorlax,SV Black Star Promos,122,svp-122,https://nymsworld.github.io/Card.api/?id=svp-122
-Teal Mask Ogerpon,SV Black Star Promos,123,svp-123,https://nymsworld.github.io/Card.api/?id=svp-123
-Teal Mask Ogerpon (Pokemon Center Exclusive),SV Black Star Promos,123,svp-123-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-123-pokemon-center-exclusive
-Iono,SV Black Star Promos,124,svp-124,https://nymsworld.github.io/Card.api/?id=svp-124
-Armarouge ex,SV Black Star Promos,125,svp-125,https://nymsworld.github.io/Card.api/?id=svp-125
-Palafin ex,SV Black Star Promos,126,svp-126,https://nymsworld.github.io/Card.api/?id=svp-126
-Walking Wake ex,SV Black Star Promos,127,svp-127,https://nymsworld.github.io/Card.api/?id=svp-127
-Iron Leaves ex,SV Black Star Promos,128,svp-128,https://nymsworld.github.io/Card.api/?id=svp-128
-Pecharunt,SV Black Star Promos,129,svp-129,https://nymsworld.github.io/Card.api/?id=svp-129
-Pecharunt (Pokemon Center Exclusive),SV Black Star Promos,129,svp-129-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-129-pokemon-center-exclusive
-Kingambit,SV Black Star Promos,130,svp-130,https://nymsworld.github.io/Card.api/?id=svp-130
-Kingdra ex,SV Black Star Promos,131,svp-131,https://nymsworld.github.io/Card.api/?id=svp-131
-Greninja ex,SV Black Star Promos,132,svp-132,https://nymsworld.github.io/Card.api/?id=svp-132
-Ledian,SV Black Star Promos,133,svp-133,https://nymsworld.github.io/Card.api/?id=svp-133
-Ledian (Prerelease) [Staff],SV Black Star Promos,133,svp-133-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-133-prerelease-staff
-Crabominable (Prerelease),SV Black Star Promos,134,svp-134,https://nymsworld.github.io/Card.api/?id=svp-134
-Crabominable (Prerelease) [Staff],SV Black Star Promos,134,svp-134-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-134-prerelease-staff
-Drifblim,SV Black Star Promos,135,svp-135,https://nymsworld.github.io/Card.api/?id=svp-135
-Drifblim (Prerelease) [Staff],SV Black Star Promos,135,svp-135-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-135-prerelease-staff
-Bouffalant,SV Black Star Promos,136,svp-136,https://nymsworld.github.io/Card.api/?id=svp-136
-Bouffalant (Prerelease) [Staff],SV Black Star Promos,136,svp-136-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-136-prerelease-staff
-Horsea (Cosmo Holo),SV Black Star Promos,137,svp-137,https://nymsworld.github.io/Card.api/?id=svp-137
-Porygon2 (Cosmos Holo),SV Black Star Promos,138,svp-138,https://nymsworld.github.io/Card.api/?id=svp-138
-Latias (Cosmo Holo),SV Black Star Promos,139,svp-139,https://nymsworld.github.io/Card.api/?id=svp-139
-Tinkaton (Cosmo Holo),SV Black Star Promos,140,svp-140,https://nymsworld.github.io/Card.api/?id=svp-140
-Noctowl,SV Black Star Promos,141,svp-141,https://nymsworld.github.io/Card.api/?id=svp-141
-Noctowl (Pokemon Center Exclusive),SV Black Star Promos,141,svp-141-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-141-pokemon-center-exclusive
-Victini ex,SV Black Star Promos,142,svp-142,https://nymsworld.github.io/Card.api/?id=svp-142
-Miraidon ex,SV Black Star Promos,143,svp-143,https://nymsworld.github.io/Card.api/?id=svp-143
-Gouging Fire ex,SV Black Star Promos,144,svp-144,https://nymsworld.github.io/Card.api/?id=svp-144
-Raging Bolt ex,SV Black Star Promos,145,svp-145,https://nymsworld.github.io/Card.api/?id=svp-145
-Iron Crown ex,SV Black Star Promos,146,svp-146,https://nymsworld.github.io/Card.api/?id=svp-146
-Iron Boulder ex,SV Black Star Promos,147,svp-147,https://nymsworld.github.io/Card.api/?id=svp-147
-Pecharunt,SV Black Star Promos,149,svp-149,https://nymsworld.github.io/Card.api/?id=svp-149
-Paradise Resort (World Championships 2024),SV Black Star Promos,150,svp-150,https://nymsworld.github.io/Card.api/?id=svp-150
-Paradise Resort (World Championships 2024) [Staff],SV Black Star Promos,150,svp-150-world-championships-2024-staff,https://nymsworld.github.io/Card.api/?id=svp-150-world-championships-2024-staff
-Gouging Fire,SV Black Star Promos,151,svp-151,https://nymsworld.github.io/Card.api/?id=svp-151
-Gouging Fire (Staff),SV Black Star Promos,151,svp-151-staff,https://nymsworld.github.io/Card.api/?id=svp-151-staff
-Chien-Pao,SV Black Star Promos,152,svp-152,https://nymsworld.github.io/Card.api/?id=svp-152
-Chien-Pao (Staff),SV Black Star Promos,152,svp-152-staff,https://nymsworld.github.io/Card.api/?id=svp-152-staff
-Magneton,SV Black Star Promos,153,svp-153,https://nymsworld.github.io/Card.api/?id=svp-153
-Magneton (Staff),SV Black Star Promos,153,svp-153-staff,https://nymsworld.github.io/Card.api/?id=svp-153-staff
-Indeedee,SV Black Star Promos,154,svp-154,https://nymsworld.github.io/Card.api/?id=svp-154
-Indeedee (Staff),SV Black Star Promos,154,svp-154-staff,https://nymsworld.github.io/Card.api/?id=svp-154-staff
-Wooper,SV Black Star Promos,155,svp-155,https://nymsworld.github.io/Card.api/?id=svp-155
-Quagsire,SV Black Star Promos,156,svp-156,https://nymsworld.github.io/Card.api/?id=svp-156
-Zapdos (Cosmos Holo),SV Black Star Promos,157,svp-157,https://nymsworld.github.io/Card.api/?id=svp-157
-Pachirisu,SV Black Star Promos,158,svp-158,https://nymsworld.github.io/Card.api/?id=svp-158
-Magneton,SV Black Star Promos,159,svp-159,https://nymsworld.github.io/Card.api/?id=svp-159
-Magneton (Pokémon Center Exclusive),SV Black Star Promos,159,svp-159-pok-mon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-159-pok-mon-center-exclusive
-Squawkabilly ex,SV Black Star Promos,160,svp-160,https://nymsworld.github.io/Card.api/?id=svp-160
-Charizard ex,SV Black Star Promos,161,svp-161,https://nymsworld.github.io/Card.api/?id=svp-161
-Houndstone ex,SV Black Star Promos,162,svp-162,https://nymsworld.github.io/Card.api/?id=svp-162
-Cinderace ex,SV Black Star Promos,163,svp-163,https://nymsworld.github.io/Card.api/?id=svp-163
-Lapras ex,SV Black Star Promos,164,svp-164,https://nymsworld.github.io/Card.api/?id=svp-164
-Terapagos ex,SV Black Star Promos,165,svp-165,https://nymsworld.github.io/Card.api/?id=svp-165
-Teal Mask Ogerpon ex,SV Black Star Promos,166,svp-166,https://nymsworld.github.io/Card.api/?id=svp-166
-Flareon (Cosmos Holo),SV Black Star Promos,167,svp-167,https://nymsworld.github.io/Card.api/?id=svp-167
-Vaporeon (Cosmos Holo),SV Black Star Promos,168,svp-168,https://nymsworld.github.io/Card.api/?id=svp-168
-Jolteon (Cosmos Holo),SV Black Star Promos,169,svp-169,https://nymsworld.github.io/Card.api/?id=svp-169
-Leafeon (Cosmos Holo),SV Black Star Promos,170,svp-170,https://nymsworld.github.io/Card.api/?id=svp-170
-Glaceon (Cosmos Holo),SV Black Star Promos,171,svp-171,https://nymsworld.github.io/Card.api/?id=svp-171
-Sylveon (Cosmos Holo),SV Black Star Promos,172,svp-172,https://nymsworld.github.io/Card.api/?id=svp-172
-Eevee,SV Black Star Promos,173,svp-173,https://nymsworld.github.io/Card.api/?id=svp-173
-Eevee (Pokemon Center Exclusive),SV Black Star Promos,173,svp-173-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-173-pokemon-center-exclusive
-Eevee ex,SV Black Star Promos,174,svp-174,https://nymsworld.github.io/Card.api/?id=svp-174
-Espeon ex,SV Black Star Promos,175,svp-175,https://nymsworld.github.io/Card.api/?id=svp-175
-Umbreon ex,SV Black Star Promos,176,svp-176,https://nymsworld.github.io/Card.api/?id=svp-176
-Bloodmoon Ursaluna ex,SV Black Star Promos,177,svp-177,https://nymsworld.github.io/Card.api/?id=svp-177
-Kyogre ex,SV Black Star Promos,178,svp-178,https://nymsworld.github.io/Card.api/?id=svp-178
-Xerneas ex,SV Black Star Promos,179,svp-179,https://nymsworld.github.io/Card.api/?id=svp-179
-Dialga ex,SV Black Star Promos,180,svp-180,https://nymsworld.github.io/Card.api/?id=svp-180
-N's Darmanitan (Prerelease),SV Black Star Promos,181,svp-181,https://nymsworld.github.io/Card.api/?id=svp-181
-N's Darmanitan (Prerelease) [Staff],SV Black Star Promos,181,svp-181-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-181-prerelease-staff
-Iono's Kilowattrel (Prerelease),SV Black Star Promos,182,svp-182,https://nymsworld.github.io/Card.api/?id=svp-182
-Iono's Kilowattrel (Prerelease) [Staff],SV Black Star Promos,182,svp-182-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-182-prerelease-staff
-Lillie's Ribombee (Prerelease),SV Black Star Promos,183,svp-183,https://nymsworld.github.io/Card.api/?id=svp-183
-Lillie's Ribombee (Prerelease) [Staff],SV Black Star Promos,183,svp-183-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-183-prerelease-staff
-Hop's Snorlax (Prerelease),SV Black Star Promos,184,svp-184,https://nymsworld.github.io/Card.api/?id=svp-184
-Hop's Snorlax (Prerelease) [Staff],SV Black Star Promos,184,svp-184-prerelease-staff,https://nymsworld.github.io/Card.api/?id=svp-184-prerelease-staff
-Yanma (Cosmos Holo),SV Black Star Promos,185,svp-185,https://nymsworld.github.io/Card.api/?id=svp-185
-Scraggy (Cosmos Holo),SV Black Star Promos,186,svp-186,https://nymsworld.github.io/Card.api/?id=svp-186
-Yanmega (Cosmos Holo),SV Black Star Promos,187,svp-187,https://nymsworld.github.io/Card.api/?id=svp-187
-Scrafty (Cosmos Holo),SV Black Star Promos,188,svp-188,https://nymsworld.github.io/Card.api/?id=svp-188
-N's Zorua,SV Black Star Promos,189,svp-189,https://nymsworld.github.io/Card.api/?id=svp-189
-N's Zorua (Pokemon Center Exclusive),SV Black Star Promos,189,svp-189-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-189-pokemon-center-exclusive
-Pikachu,SV Black Star Promos,190,svp-190,https://nymsworld.github.io/Card.api/?id=svp-190
-Sprigatito (Pokemon Horizons Stamped),SV Black Star Promos,191,svp-191,https://nymsworld.github.io/Card.api/?id=svp-191
-Fuecoco,SV Black Star Promos,192,svp-192,https://nymsworld.github.io/Card.api/?id=svp-192
-Hop's Zacian ex,SV Black Star Promos,193,svp-193,https://nymsworld.github.io/Card.api/?id=svp-193
-Iono's Bellibolt ex,SV Black Star Promos,194,svp-194,https://nymsworld.github.io/Card.api/?id=svp-194
-Lillie's Clefairy ex,SV Black Star Promos,195,svp-195,https://nymsworld.github.io/Card.api/?id=svp-195
-Charizard ex -196,SV Black Star Promos,196,svp-196,https://nymsworld.github.io/Card.api/?id=svp-196
-Koraidon ex,SV Black Star Promos,197,svp-197,https://nymsworld.github.io/Card.api/?id=svp-197
-Zacian ex,SV Black Star Promos,198,svp-198,https://nymsworld.github.io/Card.api/?id=svp-198
-Zarude (Cosmos Holo),SV Black Star Promos,199,svp-199,https://nymsworld.github.io/Card.api/?id=svp-199
-Eevee (Cosmos Holo),SV Black Star Promos,200,svp-200,https://nymsworld.github.io/Card.api/?id=svp-200
-Zebstrika (Cosmos Holo),SV Black Star Promos,201,svp-201,https://nymsworld.github.io/Card.api/?id=svp-201
-Kangaskhan (Cosmos Holo),SV Black Star Promos,202,svp-202,https://nymsworld.github.io/Card.api/?id=svp-202
-Team Rocket's Wobbuffet,SV Black Star Promos,203,svp-203,https://nymsworld.github.io/Card.api/?id=svp-203
-Team Rocket's Wobbuffet (Pokemon Center Exclusive),SV Black Star Promos,203,svp-203-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-203-pokemon-center-exclusive
-Cynthia's Garchomp ex,SV Black Star Promos,204,svp-204,https://nymsworld.github.io/Card.api/?id=svp-204
-Team Rocket's Mewtwo ex,SV Black Star Promos,205,svp-205,https://nymsworld.github.io/Card.api/?id=svp-205
-Marnie's Morpeko,SV Black Star Promos,206,svp-206,https://nymsworld.github.io/Card.api/?id=svp-206
-Steven's Beldum,SV Black Star Promos,207,svp-207,https://nymsworld.github.io/Card.api/?id=svp-207
-Victini,SV Black Star Promos,208,svp-208,https://nymsworld.github.io/Card.api/?id=svp-208
-Thundurus,SV Black Star Promos,209,svp-209,https://nymsworld.github.io/Card.api/?id=svp-209
-Thundurus (Pokemon Center Exclusive),SV Black Star Promos,209,svp-209-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-209-pokemon-center-exclusive
-Tornadus,SV Black Star Promos,210,svp-210,https://nymsworld.github.io/Card.api/?id=svp-210
-Tornadus (Pokemon Center Exclusive),SV Black Star Promos,210,svp-210-pokemon-center-exclusive,https://nymsworld.github.io/Card.api/?id=svp-210-pokemon-center-exclusive
-Gothitelle,SV Black Star Promos,211,svp-211,https://nymsworld.github.io/Card.api/?id=svp-211
-Reuniclus,SV Black Star Promos,212,svp-212,https://nymsworld.github.io/Card.api/?id=svp-212
-Feraligatr (Illustration Contest 2024),SV Black Star Promos,213,svp-213,https://nymsworld.github.io/Card.api/?id=svp-213
-Pikachu (Illustration Contest 2024),SV Black Star Promos,214,svp-214,https://nymsworld.github.io/Card.api/?id=svp-214
-Toxtricity ex (Illustration Contest 2024),SV Black Star Promos,215,svp-215,https://nymsworld.github.io/Card.api/?id=svp-215
-Team Rocket's Mewtwo ex,SV Black Star Promos,216,svp-216,https://nymsworld.github.io/Card.api/?id=svp-216
-Team Rocket's Nidoking ex,SV Black Star Promos,217,svp-217,https://nymsworld.github.io/Card.api/?id=svp-217
-Team Rocket's Persian ex,SV Black Star Promos,218,svp-218,https://nymsworld.github.io/Card.api/?id=svp-218
-Black Belt's Training,SV Black Star Promos,219,svp-219,https://nymsworld.github.io/Card.api/?id=svp-219
-Black Belt's Training,SV Black Star Promos,220,svp-220,https://nymsworld.github.io/Card.api/?id=svp-220
-Professor's Research [Professor Birch],SV Black Star Promos,221,svp-221,https://nymsworld.github.io/Card.api/?id=svp-221
-Professor's Research [Professor Kukui],SV Black Star Promos,222,svp-222,https://nymsworld.github.io/Card.api/?id=svp-222
-Professor's Research [Professor Magnolia],SV Black Star Promos,223,svp-223,https://nymsworld.github.io/Card.api/?id=svp-223
-Paradise Resort (World Championships 2025),SV Black Star Promos,224,svp-224,https://nymsworld.github.io/Card.api/?id=svp-224
-Paradise Resort (World Championships 2025) [Staff],SV Black Star Promos,224,svp-224-world-championships-2025-staff,https://nymsworld.github.io/Card.api/?id=svp-224-world-championships-2025-staff
-Pikachu (World Championship 2025),SV Black Star Promos,225,svp-225,https://nymsworld.github.io/Card.api/?id=svp-225
-Pikachu (World Championship 2025) [Winner],SV Black Star Promos,225,svp-225-world-championship-2025-winner,https://nymsworld.github.io/Card.api/?id=svp-225-world-championship-2025-winner
-Dunsparce,Journey Together,120,sv9-120,https://nymsworld.github.io/Card.api/?id=sv9-120
-Dunsparce (Reverse Holo),Journey Together,120,sv9-120-reverse,https://nymsworld.github.io/Card.api/?id=sv9-120-reverse
-Slowpoke,Stellar Crown,57,sv7-57,https://nymsworld.github.io/Card.api/?id=sv7-57
-Slowpoke (Reverse Holo),Stellar Crown,57,sv7-57-reverse,https://nymsworld.github.io/Card.api/?id=sv7-57-reverse
-Metang,Temporal Forces,114,sv5-114,https://nymsworld.github.io/Card.api/?id=sv5-114
-Metang (Reverse Holo),Temporal Forces,114,sv5-114-reverse,https://nymsworld.github.io/Card.api/?id=sv5-114-reverse
-Dudunsparce,Temporal Forces,129,sv5-129,https://nymsworld.github.io/Card.api/?id=sv5-129
-Dudunsparce (Reverse Holo),Temporal Forces,129,sv5-129-reverse,https://nymsworld.github.io/Card.api/?id=sv5-129-reverse
-Mist Energy,Temporal Forces,161,sv5-161,https://nymsworld.github.io/Card.api/?id=sv5-161
-Mist Energy (Reverse Holo),Temporal Forces,161,sv5-161-reverse,https://nymsworld.github.io/Card.api/?id=sv5-161-reverse
-Hilda,White Flare,84,rsv10pt5-84,https://nymsworld.github.io/Card.api/?id=rsv10pt5-84
-Bulbasaur (Reverse Holo),151,1,sv3pt5-1-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-1-reverse
-Charmander (Reverse Holo),151,4,sv3pt5-4-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-4-reverse
-Squirtle (Reverse Holo),151,7,sv3pt5-7-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-7-reverse
-Wartortle (Reverse Holo),151,8,sv3pt5-8-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-8-reverse
-Caterpie (Reverse Holo),151,10,sv3pt5-10-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-10-reverse
-Metapod (Reverse Holo),151,11,sv3pt5-11-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-11-reverse
-Butterfree (Reverse Holo),151,12,sv3pt5-12-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-12-reverse
-Weedle (Reverse Holo),151,13,sv3pt5-13-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-13-reverse
-Kakuna (Reverse Holo),151,14,sv3pt5-14-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-14-reverse
-Beedrill,151,15,sv3pt5-15,https://nymsworld.github.io/Card.api/?id=sv3pt5-15
-Beedrill (Reverse Holo),151,15,sv3pt5-15-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-15-reverse
-Pidgey (Reverse Holo),151,16,sv3pt5-16-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-16-reverse
-Pidgeotto (Reverse Holo),151,17,sv3pt5-17-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-17-reverse
-Pidgeot (Reverse Holo),151,18,sv3pt5-18-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-18-reverse
-Rattata (Reverse Holo),151,19,sv3pt5-19-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-19-reverse
-Raticate (Reverse Holo),151,20,sv3pt5-20-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-20-reverse
-Spearow (Reverse Holo),151,21,sv3pt5-21-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-21-reverse
-Fearow (Reverse Holo),151,22,sv3pt5-22-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-22-reverse
-Ekans (Reverse Holo),151,23,sv3pt5-23-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-23-reverse
-Pikachu (Reverse Holo),151,25,sv3pt5-25-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-25-reverse
-Raichu,151,26,sv3pt5-26,https://nymsworld.github.io/Card.api/?id=sv3pt5-26
-Raichu (Reverse Holo),151,26,sv3pt5-26-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-26-reverse
-Sandshrew (Reverse Holo),151,27,sv3pt5-27-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-27-reverse
-Sandslash (Reverse Holo),151,28,sv3pt5-28-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-28-reverse
-Nidorina (Reverse Holo),151,30,sv3pt5-30-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-30-reverse
-Nidoqueen (Reverse Holo),151,31,sv3pt5-31-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-31-reverse
-Nidorino (Reverse Holo),151,33,sv3pt5-33-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-33-reverse
-Nidoking,151,34,sv3pt5-34,https://nymsworld.github.io/Card.api/?id=sv3pt5-34
-Nidoking (Reverse Holo),151,34,sv3pt5-34-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-34-reverse
-Clefairy (Reverse Holo),151,35,sv3pt5-35-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-35-reverse
-Clefable (Reverse Holo),151,36,sv3pt5-36-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-36-reverse
-Vulpix (Reverse Holo),151,37,sv3pt5-37-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-37-reverse
-Jigglypuff (Reverse Holo),151,39,sv3pt5-39-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-39-reverse
-Zubat (Reverse Holo),151,41,sv3pt5-41-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-41-reverse
-Golbat (Reverse Holo),151,42,sv3pt5-42-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-42-reverse
-Oddish (Reverse Holo),151,43,sv3pt5-43-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-43-reverse
-Gloom (Reverse Holo),151,44,sv3pt5-44-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-44-reverse
-Vileplume,151,45,sv3pt5-45,https://nymsworld.github.io/Card.api/?id=sv3pt5-45
-Vileplume (Reverse Holo),151,45,sv3pt5-45-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-45-reverse
-Paras (Reverse Holo),151,46,sv3pt5-46-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-46-reverse
-Parasect (Reverse Holo),151,47,sv3pt5-47-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-47-reverse
-Venonat (Reverse Holo),151,48,sv3pt5-48-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-48-reverse
-Venomoth (Reverse Holo),151,49,sv3pt5-49-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-49-reverse
-Diglett (Reverse Holo),151,50,sv3pt5-50-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-50-reverse
-Dugtrio (Reverse Holo),151,51,sv3pt5-51-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-51-reverse
-Meowth (Reverse Holo),151,52,sv3pt5-52-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-52-reverse
-Persian (Reverse Holo),151,53,sv3pt5-53-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-53-reverse
-Golduck (Reverse Holo),151,55,sv3pt5-55-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-55-reverse
-Mankey (Reverse Holo),151,56,sv3pt5-56-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-56-reverse
-Primeape (Reverse Holo),151,57,sv3pt5-57-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-57-reverse
-Growlithe (Reverse Holo),151,58,sv3pt5-58-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-58-reverse
-Arcanine (Reverse Holo),151,59,sv3pt5-59-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-59-reverse
-Poliwag (Reverse Holo),151,60,sv3pt5-60-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-60-reverse
-Poliwhirl (Reverse Holo),151,61,sv3pt5-61-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-61-reverse
-Poliwrath (Reverse Holo),151,62,sv3pt5-62-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-62-reverse
-Abra (Reverse Holo),151,63,sv3pt5-63-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-63-reverse
-Kadabra (Reverse Holo),151,64,sv3pt5-64-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-64-reverse
-Machop (Reverse Holo),151,66,sv3pt5-66-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-66-reverse
-Machoke (Reverse Holo),151,67,sv3pt5-67-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-67-reverse
-Machamp,151,68,sv3pt5-68,https://nymsworld.github.io/Card.api/?id=sv3pt5-68
-Machamp (Reverse Holo),151,68,sv3pt5-68-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-68-reverse
-Bellsprout (Reverse Holo),151,69,sv3pt5-69-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-69-reverse
-Weepinbell (Reverse Holo),151,70,sv3pt5-70-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-70-reverse
-Victreebel (Reverse Holo),151,71,sv3pt5-71-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-71-reverse
-Tentacool (Reverse Holo),151,72,sv3pt5-72-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-72-reverse
-Tentacruel (Reverse Holo),151,73,sv3pt5-73-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-73-reverse
-Geodude (Reverse Holo),151,74,sv3pt5-74-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-74-reverse
-Graveler (Reverse Holo),151,75,sv3pt5-75-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-75-reverse
-Ponyta (Reverse Holo),151,77,sv3pt5-77-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-77-reverse
-Rapidash (Reverse Holo),151,78,sv3pt5-78-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-78-reverse
-Slowpoke (Reverse Holo),151,79,sv3pt5-79-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-79-reverse
-Slowbro (Reverse Holo),151,80,sv3pt5-80-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-80-reverse
-Magnemite (Reverse Holo),151,81,sv3pt5-81-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-81-reverse
-Magneton (Reverse Holo),151,82,sv3pt5-82-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-82-reverse
-Farfetch'd (Reverse Holo),151,83,sv3pt5-83-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-83-reverse
-Doduo (Reverse Holo),151,84,sv3pt5-84-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-84-reverse
-Dodrio,151,85,sv3pt5-85,https://nymsworld.github.io/Card.api/?id=sv3pt5-85
-Dodrio (Reverse Holo),151,85,sv3pt5-85-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-85-reverse
-Seel (Reverse Holo),151,86,sv3pt5-86-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-86-reverse
-Dewgong (Reverse Holo),151,87,sv3pt5-87-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-87-reverse
-Grimer (Reverse Holo),151,88,sv3pt5-88-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-88-reverse
-Muk (Reverse Holo),151,89,sv3pt5-89-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-89-reverse
-Shellder (Reverse Holo),151,90,sv3pt5-90-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-90-reverse
-Cloyster (Reverse Holo),151,91,sv3pt5-91-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-91-reverse
-Gastly (Reverse Holo),151,92,sv3pt5-92-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-92-reverse
-Haunter (Reverse Holo),151,93,sv3pt5-93-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-93-reverse
-Gengar,151,94,sv3pt5-94,https://nymsworld.github.io/Card.api/?id=sv3pt5-94
-Gengar (Reverse Holo),151,94,sv3pt5-94-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-94-reverse
-Onix (Reverse Holo),151,95,sv3pt5-95-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-95-reverse
-Drowzee (Reverse Holo),151,96,sv3pt5-96-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-96-reverse
-Hypno (Reverse Holo),151,97,sv3pt5-97-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-97-reverse
-Krabby (Reverse Holo),151,98,sv3pt5-98-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-98-reverse
-Kingler (Reverse Holo),151,99,sv3pt5-99-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-99-reverse
-Voltorb (Reverse Holo),151,100,sv3pt5-100-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-100-reverse
-Electrode,151,101,sv3pt5-101,https://nymsworld.github.io/Card.api/?id=sv3pt5-101
-Electrode (Reverse Holo),151,101,sv3pt5-101-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-101-reverse
-Exeggcute (Reverse Holo),151,102,sv3pt5-102-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-102-reverse
-Exeggutor (Reverse Holo),151,103,sv3pt5-103-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-103-reverse
-Cubone (Reverse Holo),151,104,sv3pt5-104-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-104-reverse
-Marowak,151,105,sv3pt5-105,https://nymsworld.github.io/Card.api/?id=sv3pt5-105
-Marowak (Reverse Holo),151,105,sv3pt5-105-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-105-reverse
-Hitmonlee (Reverse Holo),151,106,sv3pt5-106-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-106-reverse
-Hitmonchan (Reverse Holo),151,107,sv3pt5-107-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-107-reverse
-Lickitung (Reverse Holo),151,108,sv3pt5-108-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-108-reverse
-Koffing (Reverse Holo),151,109,sv3pt5-109-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-109-reverse
-Weezing,151,110,sv3pt5-110,https://nymsworld.github.io/Card.api/?id=sv3pt5-110
-Weezing (Reverse Holo),151,110,sv3pt5-110-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-110-reverse
-Rhyhorn (Reverse Holo),151,111,sv3pt5-111-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-111-reverse
-Rhydon (Reverse Holo),151,112,sv3pt5-112-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-112-reverse
-Chansey,151,113,sv3pt5-113,https://nymsworld.github.io/Card.api/?id=sv3pt5-113
-Chansey (Reverse Holo),151,113,sv3pt5-113-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-113-reverse
-Tangela (Reverse Holo),151,114,sv3pt5-114-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-114-reverse
-Horsea (Reverse Holo),151,116,sv3pt5-116-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-116-reverse
-Seadra (Reverse Holo),151,117,sv3pt5-117-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-117-reverse
-Goldeen (Reverse Holo),151,118,sv3pt5-118-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-118-reverse
-Seaking (Reverse Holo),151,119,sv3pt5-119-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-119-reverse
-Staryu (Reverse Holo),151,120,sv3pt5-120-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-120-reverse
-Starmie,151,121,sv3pt5-121,https://nymsworld.github.io/Card.api/?id=sv3pt5-121
-Starmie (Reverse Holo),151,121,sv3pt5-121-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-121-reverse
-Mr. Mime,151,122,sv3pt5-122,https://nymsworld.github.io/Card.api/?id=sv3pt5-122
-Mr. Mime (Reverse Holo),151,122,sv3pt5-122-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-122-reverse
-Scyther (Reverse Holo),151,123,sv3pt5-123-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-123-reverse
-Electabuzz (Reverse Holo),151,125,sv3pt5-125-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-125-reverse
-Magmar (Reverse Holo),151,126,sv3pt5-126-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-126-reverse
-Pinsir (Reverse Holo),151,127,sv3pt5-127-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-127-reverse
-Tauros (Reverse Holo),151,128,sv3pt5-128-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-128-reverse
-Magikarp (Reverse Holo),151,129,sv3pt5-129-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-129-reverse
-Gyarados,151,130,sv3pt5-130,https://nymsworld.github.io/Card.api/?id=sv3pt5-130
-Gyarados (Reverse Holo),151,130,sv3pt5-130-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-130-reverse
-Lapras (Reverse Holo),151,131,sv3pt5-131-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-131-reverse
-Ditto,151,132,sv3pt5-132,https://nymsworld.github.io/Card.api/?id=sv3pt5-132
-Ditto (Reverse Holo),151,132,sv3pt5-132-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-132-reverse
-Eevee (Reverse Holo),151,133,sv3pt5-133-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-133-reverse
-Vaporeon,151,134,sv3pt5-134,https://nymsworld.github.io/Card.api/?id=sv3pt5-134
-Vaporeon (Reverse Holo),151,134,sv3pt5-134-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-134-reverse
-Jolteon,151,135,sv3pt5-135,https://nymsworld.github.io/Card.api/?id=sv3pt5-135
-Jolteon (Reverse Holo),151,135,sv3pt5-135-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-135-reverse
-Flareon,151,136,sv3pt5-136,https://nymsworld.github.io/Card.api/?id=sv3pt5-136
-Flareon (Reverse Holo),151,136,sv3pt5-136-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-136-reverse
-Porygon (Reverse Holo),151,137,sv3pt5-137-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-137-reverse
-Omanyte (Reverse Holo),151,138,sv3pt5-138-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-138-reverse
-Omastar,151,139,sv3pt5-139,https://nymsworld.github.io/Card.api/?id=sv3pt5-139
-Omastar (Reverse Holo),151,139,sv3pt5-139-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-139-reverse
-Kabuto (Reverse Holo),151,140,sv3pt5-140-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-140-reverse
-Kabutops,151,141,sv3pt5-141,https://nymsworld.github.io/Card.api/?id=sv3pt5-141
-Kabutops (Reverse Holo),151,141,sv3pt5-141-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-141-reverse
-Aerodactyl,151,142,sv3pt5-142,https://nymsworld.github.io/Card.api/?id=sv3pt5-142
-Aerodactyl (Reverse Holo),151,142,sv3pt5-142-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-142-reverse
-Snorlax (Reverse Holo),151,143,sv3pt5-143-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-143-reverse
-Articuno,151,144,sv3pt5-144,https://nymsworld.github.io/Card.api/?id=sv3pt5-144
-Articuno (Reverse Holo),151,144,sv3pt5-144-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-144-reverse
-Moltres,151,146,sv3pt5-146,https://nymsworld.github.io/Card.api/?id=sv3pt5-146
-Moltres (Reverse Holo),151,146,sv3pt5-146-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-146-reverse
-Dratini (Reverse Holo),151,147,sv3pt5-147-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-147-reverse
-Dragonair (Reverse Holo),151,148,sv3pt5-148-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-148-reverse
-Dragonite,151,149,sv3pt5-149,https://nymsworld.github.io/Card.api/?id=sv3pt5-149
-Dragonite (Reverse Holo),151,149,sv3pt5-149-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-149-reverse
-Mewtwo,151,150,sv3pt5-150,https://nymsworld.github.io/Card.api/?id=sv3pt5-150
-Mewtwo (Reverse Holo),151,150,sv3pt5-150-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-150-reverse
-Antique Dome Fossil (Reverse Holo),151,152,sv3pt5-152-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-152-reverse
-Antique Helix Fossil (Reverse Holo),151,153,sv3pt5-153-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-153-reverse
-Antique Old Amber (Reverse Holo),151,154,sv3pt5-154-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-154-reverse
-Big Air Balloon (Reverse Holo),151,155,sv3pt5-155-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-155-reverse
-Bill's Transfer (Reverse Holo),151,156,sv3pt5-156-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-156-reverse
-Cycling Road (Reverse Holo),151,157,sv3pt5-157-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-157-reverse
-Daisy's Help (Reverse Holo),151,158,sv3pt5-158-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-158-reverse
-Energy Sticker (Reverse Holo),151,159,sv3pt5-159-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-159-reverse
-Erika's Invitation (Reverse Holo),151,160,sv3pt5-160-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-160-reverse
-Giovanni's Charisma (Reverse Holo),151,161,sv3pt5-161-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-161-reverse
-Grabber (Reverse Holo),151,162,sv3pt5-162-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-162-reverse
-Leftovers (Reverse Holo),151,163,sv3pt5-163-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-163-reverse
-Protective Goggles (Reverse Holo),151,164,sv3pt5-164-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-164-reverse
-Rigid Band (Reverse Holo),151,165,sv3pt5-165-reverse,https://nymsworld.github.io/Card.api/?id=sv3pt5-165-reverse
-Bulbasaur,151,166,sv3pt5-166,https://nymsworld.github.io/Card.api/?id=sv3pt5-166
-Ivysaur,151,167,sv3pt5-167,https://nymsworld.github.io/Card.api/?id=sv3pt5-167
-Charmander,151,168,sv3pt5-168,https://nymsworld.github.io/Card.api/?id=sv3pt5-168
-Charmeleon,151,169,sv3pt5-169,https://nymsworld.github.io/Card.api/?id=sv3pt5-169
-Squirtle,151,170,sv3pt5-170,https://nymsworld.github.io/Card.api/?id=sv3pt5-170
-Wartortle,151,171,sv3pt5-171,https://nymsworld.github.io/Card.api/?id=sv3pt5-171
-Caterpie,151,172,sv3pt5-172,https://nymsworld.github.io/Card.api/?id=sv3pt5-172
-Pikachu,151,173,sv3pt5-173,https://nymsworld.github.io/Card.api/?id=sv3pt5-173
-Nidoking,151,174,sv3pt5-174,https://nymsworld.github.io/Card.api/?id=sv3pt5-174
-Psyduck,151,175,sv3pt5-175,https://nymsworld.github.io/Card.api/?id=sv3pt5-175
-Poliwhirl,151,176,sv3pt5-176,https://nymsworld.github.io/Card.api/?id=sv3pt5-176
-Machoke,151,177,sv3pt5-177,https://nymsworld.github.io/Card.api/?id=sv3pt5-177
-Tangela,151,178,sv3pt5-178,https://nymsworld.github.io/Card.api/?id=sv3pt5-178
-Mr. Mime,151,179,sv3pt5-179,https://nymsworld.github.io/Card.api/?id=sv3pt5-179
-Omanyte,151,180,sv3pt5-180,https://nymsworld.github.io/Card.api/?id=sv3pt5-180
-Dragonair,151,181,sv3pt5-181,https://nymsworld.github.io/Card.api/?id=sv3pt5-181
-Venusaur ex,151,182,sv3pt5-182,https://nymsworld.github.io/Card.api/?id=sv3pt5-182
-Charizard ex,151,183,sv3pt5-183,https://nymsworld.github.io/Card.api/?id=sv3pt5-183
-Blastoise ex,151,184,sv3pt5-184,https://nymsworld.github.io/Card.api/?id=sv3pt5-184
-Arbok ex,151,185,sv3pt5-185,https://nymsworld.github.io/Card.api/?id=sv3pt5-185
-Ninetales ex,151,186,sv3pt5-186,https://nymsworld.github.io/Card.api/?id=sv3pt5-186
-Wigglytuff ex,151,187,sv3pt5-187,https://nymsworld.github.io/Card.api/?id=sv3pt5-187
-Alakazam ex,151,188,sv3pt5-188,https://nymsworld.github.io/Card.api/?id=sv3pt5-188
-Golem ex,151,189,sv3pt5-189,https://nymsworld.github.io/Card.api/?id=sv3pt5-189
-Kangaskhan ex,151,190,sv3pt5-190,https://nymsworld.github.io/Card.api/?id=sv3pt5-190
-Jynx ex,151,191,sv3pt5-191,https://nymsworld.github.io/Card.api/?id=sv3pt5-191
-Zapdos ex,151,192,sv3pt5-192,https://nymsworld.github.io/Card.api/?id=sv3pt5-192
-Mew ex,151,193,sv3pt5-193,https://nymsworld.github.io/Card.api/?id=sv3pt5-193
-Bill's Transfer,151,194,sv3pt5-194,https://nymsworld.github.io/Card.api/?id=sv3pt5-194
-Daisy's Help,151,195,sv3pt5-195,https://nymsworld.github.io/Card.api/?id=sv3pt5-195
-Erika's Invitation,151,196,sv3pt5-196,https://nymsworld.github.io/Card.api/?id=sv3pt5-196
-Giovanni's Charisma,151,197,sv3pt5-197,https://nymsworld.github.io/Card.api/?id=sv3pt5-197
-Venusaur ex,151,198,sv3pt5-198,https://nymsworld.github.io/Card.api/?id=sv3pt5-198
-Charizard ex,151,199,sv3pt5-199,https://nymsworld.github.io/Card.api/?id=sv3pt5-199
-Blastoise ex,151,200,sv3pt5-200,https://nymsworld.github.io/Card.api/?id=sv3pt5-200
-Alakazam ex,151,201,sv3pt5-201,https://nymsworld.github.io/Card.api/?id=sv3pt5-201
-Zapdos ex,151,202,sv3pt5-202,https://nymsworld.github.io/Card.api/?id=sv3pt5-202
-Erika's Invitation,151,203,sv3pt5-203,https://nymsworld.github.io/Card.api/?id=sv3pt5-203
-Giovanni's Charisma,151,204,sv3pt5-204,https://nymsworld.github.io/Card.api/?id=sv3pt5-204
-Mew ex,151,205,sv3pt5-205,https://nymsworld.github.io/Card.api/?id=sv3pt5-205
-Switch,151,206,sv3pt5-206,https://nymsworld.github.io/Card.api/?id=sv3pt5-206
-Basic Psychic Energy,151,207,sv3pt5-207,https://nymsworld.github.io/Card.api/?id=sv3pt5-207
-Alolan Exeggutor,30th Celebration,129,me55-129,https://nymsworld.github.io/Card.api/?id=me55-129
-Moltres,30th Celebration,130,me55-130,https://nymsworld.github.io/Card.api/?id=me55-130
-Lapras,30th Celebration,131,me55-131,https://nymsworld.github.io/Card.api/?id=me55-131
-Articuno,30th Celebration,132,me55-132,https://nymsworld.github.io/Card.api/?id=me55-132
-Zapdos,30th Celebration,133,me55-133,https://nymsworld.github.io/Card.api/?id=me55-133
-Toxtricity,30th Celebration,134,me55-134,https://nymsworld.github.io/Card.api/?id=me55-134
-Morpeko,30th Celebration,135,me55-135,https://nymsworld.github.io/Card.api/?id=me55-135
-Drifloon,30th Celebration,136,me55-136,https://nymsworld.github.io/Card.api/?id=me55-136
-Chandelure,30th Celebration,137,me55-137,https://nymsworld.github.io/Card.api/?id=me55-137
-Lycanroc,30th Celebration,138,me55-138,https://nymsworld.github.io/Card.api/?id=me55-138
-Alolan Meowth,30th Celebration,139,me55-139,https://nymsworld.github.io/Card.api/?id=me55-139
-Scraggy,30th Celebration,140,me55-140,https://nymsworld.github.io/Card.api/?id=me55-140
-Galarian Meowth,30th Celebration,141,me55-141,https://nymsworld.github.io/Card.api/?id=me55-141
-Gholdengo,30th Celebration,142,me55-142,https://nymsworld.github.io/Card.api/?id=me55-142
-Kommo-o,30th Celebration,143,me55-143,https://nymsworld.github.io/Card.api/?id=me55-143
-Meowth,30th Celebration,144,me55-144,https://nymsworld.github.io/Card.api/?id=me55-144
-Hisuian Zorua,30th Celebration,145,me55-145,https://nymsworld.github.io/Card.api/?id=me55-145
-Maushold,30th Celebration,146,me55-146,https://nymsworld.github.io/Card.api/?id=me55-146
-Fuecoco ex,30th Celebration,147,me55-147,https://nymsworld.github.io/Card.api/?id=me55-147
-Greninja ex,30th Celebration,148,me55-148,https://nymsworld.github.io/Card.api/?id=me55-148
-Pikachu ex,30th Celebration,149,me55-149,https://nymsworld.github.io/Card.api/?id=me55-149
-Pikachu ex,30th Celebration,150,me55-150,https://nymsworld.github.io/Card.api/?id=me55-150
-Mewtwo ex,30th Celebration,151,me55-151,https://nymsworld.github.io/Card.api/?id=me55-151
-Mew ex,30th Celebration,152,me55-152,https://nymsworld.github.io/Card.api/?id=me55-152
-Sylveon ex,30th Celebration,153,me55-153,https://nymsworld.github.io/Card.api/?id=me55-153
-Gengar ex,30th Celebration,154,me55-154,https://nymsworld.github.io/Card.api/?id=me55-154
-Jirachi ex,30th Celebration,155,me55-155,https://nymsworld.github.io/Card.api/?id=me55-155
-Salamence ex,30th Celebration,156,me55-156,https://nymsworld.github.io/Card.api/?id=me55-156
-Mewtwo ex,30th Celebration,157,me55-157,https://nymsworld.github.io/Card.api/?id=me55-157
-Mew ex,30th Celebration,158,me55-158,https://nymsworld.github.io/Card.api/?id=me55-158
-Mew,30th Celebration,B,me55-B,https://nymsworld.github.io/Card.api/?id=me55-B
-Mew,30th Celebration,G,me55-G,https://nymsworld.github.io/Card.api/?id=me55-G
-Mew,30th Celebration,R,me55-R,https://nymsworld.github.io/Card.api/?id=me55-R
-Erika's Tangela,Ascended Heroes,218,me2pt5-218,https://nymsworld.github.io/Card.api/?id=me2pt5-218
-Beautifly,Ascended Heroes,219,me2pt5-219,https://nymsworld.github.io/Card.api/?id=me2pt5-219
-Dustox,Ascended Heroes,220,me2pt5-220,https://nymsworld.github.io/Card.api/?id=me2pt5-220
-Budew,Ascended Heroes,221,me2pt5-221,https://nymsworld.github.io/Card.api/?id=me2pt5-221
-Ethan's Magcargo,Ascended Heroes,222,me2pt5-222,https://nymsworld.github.io/Card.api/?id=me2pt5-222
-Numel,Ascended Heroes,223,me2pt5-223,https://nymsworld.github.io/Card.api/?id=me2pt5-223
-Salazzle,Ascended Heroes,224,me2pt5-224,https://nymsworld.github.io/Card.api/?id=me2pt5-224
-Scorbunny,Ascended Heroes,225,me2pt5-225,https://nymsworld.github.io/Card.api/?id=me2pt5-225
-Psyduck,Ascended Heroes,226,me2pt5-226,https://nymsworld.github.io/Card.api/?id=me2pt5-226
-Snorunt,Ascended Heroes,227,me2pt5-227,https://nymsworld.github.io/Card.api/?id=me2pt5-227
-Weavile,Ascended Heroes,228,me2pt5-228,https://nymsworld.github.io/Card.api/?id=me2pt5-228
-Heliolisk,Ascended Heroes,229,me2pt5-229,https://nymsworld.github.io/Card.api/?id=me2pt5-229
-Vikavolt,Ascended Heroes,230,me2pt5-230,https://nymsworld.github.io/Card.api/?id=me2pt5-230
-Iono's Wattrel,Ascended Heroes,231,me2pt5-231,https://nymsworld.github.io/Card.api/?id=me2pt5-231
-Marill,Ascended Heroes,232,me2pt5-232,https://nymsworld.github.io/Card.api/?id=me2pt5-232
-Misdreavus,Ascended Heroes,233,me2pt5-233,https://nymsworld.github.io/Card.api/?id=me2pt5-233
-Banette,Ascended Heroes,234,me2pt5-234,https://nymsworld.github.io/Card.api/?id=me2pt5-234
-Togekiss,Ascended Heroes,235,me2pt5-235,https://nymsworld.github.io/Card.api/?id=me2pt5-235
-Slurpuff,Ascended Heroes,236,me2pt5-236,https://nymsworld.github.io/Card.api/?id=me2pt5-236
-Hop's Trevenant,Ascended Heroes,237,me2pt5-237,https://nymsworld.github.io/Card.api/?id=me2pt5-237
-Team Rocket's Mimikyu,Ascended Heroes,238,me2pt5-238,https://nymsworld.github.io/Card.api/?id=me2pt5-238
-Team Rocket's Dugtrio,Ascended Heroes,239,me2pt5-239,https://nymsworld.github.io/Card.api/?id=me2pt5-239
-Hitmontop,Ascended Heroes,240,me2pt5-240,https://nymsworld.github.io/Card.api/?id=me2pt5-240
-Medicham,Ascended Heroes,241,me2pt5-241,https://nymsworld.github.io/Card.api/?id=me2pt5-241
-Carbink,Ascended Heroes,242,me2pt5-242,https://nymsworld.github.io/Card.api/?id=me2pt5-242
-Mightyena,Ascended Heroes,243,me2pt5-243,https://nymsworld.github.io/Card.api/?id=me2pt5-243
-Cynthia's Spiritomb,Ascended Heroes,244,me2pt5-244,https://nymsworld.github.io/Card.api/?id=me2pt5-244
-Galarian Obstagoon,Ascended Heroes,245,me2pt5-245,https://nymsworld.github.io/Card.api/?id=me2pt5-245
-Mawile,Ascended Heroes,246,me2pt5-246,https://nymsworld.github.io/Card.api/?id=me2pt5-246
-Dreepy,Ascended Heroes,247,me2pt5-247,https://nymsworld.github.io/Card.api/?id=me2pt5-247
-Drakloak,Ascended Heroes,248,me2pt5-248,https://nymsworld.github.io/Card.api/?id=me2pt5-248
-Larry's Staraptor,Ascended Heroes,249,me2pt5-249,https://nymsworld.github.io/Card.api/?id=me2pt5-249
-Fan Rotom,Ascended Heroes,250,me2pt5-250,https://nymsworld.github.io/Card.api/?id=me2pt5-250
-Sprigatito ex,Ascended Heroes,251,me2pt5-251,https://nymsworld.github.io/Card.api/?id=me2pt5-251
-Stunfisk ex,Ascended Heroes,252,me2pt5-252,https://nymsworld.github.io/Card.api/?id=me2pt5-252
-Mega Audino ex,Ascended Heroes,253,me2pt5-253,https://nymsworld.github.io/Card.api/?id=me2pt5-253
-Anthea & Concordia,Ascended Heroes,254,me2pt5-254,https://nymsworld.github.io/Card.api/?id=me2pt5-254
-Black Belt's Training,Ascended Heroes,255,me2pt5-255,https://nymsworld.github.io/Card.api/?id=me2pt5-255
-Boss's Orders,Ascended Heroes,256,me2pt5-256,https://nymsworld.github.io/Card.api/?id=me2pt5-256
-Canari,Ascended Heroes,257,me2pt5-257,https://nymsworld.github.io/Card.api/?id=me2pt5-257
-Cheren,Ascended Heroes,258,me2pt5-258,https://nymsworld.github.io/Card.api/?id=me2pt5-258
-Counter Gain,Ascended Heroes,259,me2pt5-259,https://nymsworld.github.io/Card.api/?id=me2pt5-259
-Glass Trumpet,Ascended Heroes,260,me2pt5-260,https://nymsworld.github.io/Card.api/?id=me2pt5-260
-Jamming Tower,Ascended Heroes,261,me2pt5-261,https://nymsworld.github.io/Card.api/?id=me2pt5-261
-N's PP Up,Ascended Heroes,262,me2pt5-262,https://nymsworld.github.io/Card.api/?id=me2pt5-262
-Team Rocket's Transceiver,Ascended Heroes,263,me2pt5-263,https://nymsworld.github.io/Card.api/?id=me2pt5-263
-Ultra Ball,Ascended Heroes,264,me2pt5-264,https://nymsworld.github.io/Card.api/?id=me2pt5-264
-Mega Froslass ex,Ascended Heroes,265,me2pt5-265,https://nymsworld.github.io/Card.api/?id=me2pt5-265
-Mega Eelektross ex,Ascended Heroes,266,me2pt5-266,https://nymsworld.github.io/Card.api/?id=me2pt5-266
-Mega Diancie ex,Ascended Heroes,267,me2pt5-267,https://nymsworld.github.io/Card.api/?id=me2pt5-267
-Mega Hawlucha ex,Ascended Heroes,268,me2pt5-268,https://nymsworld.github.io/Card.api/?id=me2pt5-268
-Mega Gengar ex,Ascended Heroes,269,me2pt5-269,https://nymsworld.github.io/Card.api/?id=me2pt5-269
-Mega Scrafty ex,Ascended Heroes,270,me2pt5-270,https://nymsworld.github.io/Card.api/?id=me2pt5-270
-Mega Dragonite ex,Ascended Heroes,271,me2pt5-271,https://nymsworld.github.io/Card.api/?id=me2pt5-271
-Mega Meganium ex,Ascended Heroes,272,me2pt5-272,https://nymsworld.github.io/Card.api/?id=me2pt5-272
-Mega Emboar ex,Ascended Heroes,273,me2pt5-273,https://nymsworld.github.io/Card.api/?id=me2pt5-273
-Mega Feraligatr ex,Ascended Heroes,274,me2pt5-274,https://nymsworld.github.io/Card.api/?id=me2pt5-274
-Mega Froslass ex,Ascended Heroes,275,me2pt5-275,https://nymsworld.github.io/Card.api/?id=me2pt5-275
-Pikachu ex,Ascended Heroes,276,me2pt5-276,https://nymsworld.github.io/Card.api/?id=me2pt5-276
-Pikachu ex,Ascended Heroes,277,me2pt5-277,https://nymsworld.github.io/Card.api/?id=me2pt5-277
-Mega Eelektross ex,Ascended Heroes,278,me2pt5-278,https://nymsworld.github.io/Card.api/?id=me2pt5-278
-Iono's Bellibolt ex,Ascended Heroes,279,me2pt5-279,https://nymsworld.github.io/Card.api/?id=me2pt5-279
-Lillie's Clefairy ex,Ascended Heroes,280,me2pt5-280,https://nymsworld.github.io/Card.api/?id=me2pt5-280
-Team Rocket's Mewtwo ex,Ascended Heroes,281,me2pt5-281,https://nymsworld.github.io/Card.api/?id=me2pt5-281
-Mega Diancie ex,Ascended Heroes,282,me2pt5-282,https://nymsworld.github.io/Card.api/?id=me2pt5-282
-Mega Hawlucha ex,Ascended Heroes,283,me2pt5-283,https://nymsworld.github.io/Card.api/?id=me2pt5-283
-Mega Gengar ex,Ascended Heroes,284,me2pt5-284,https://nymsworld.github.io/Card.api/?id=me2pt5-284
-Mega Scrafty ex,Ascended Heroes,285,me2pt5-285,https://nymsworld.github.io/Card.api/?id=me2pt5-285
-N's Zoroark ex,Ascended Heroes,286,me2pt5-286,https://nymsworld.github.io/Card.api/?id=me2pt5-286
-Marnie's Grimmsnarl ex,Ascended Heroes,287,me2pt5-287,https://nymsworld.github.io/Card.api/?id=me2pt5-287
-Fezandipiti ex,Ascended Heroes,288,me2pt5-288,https://nymsworld.github.io/Card.api/?id=me2pt5-288
-Steven's Metagross ex,Ascended Heroes,289,me2pt5-289,https://nymsworld.github.io/Card.api/?id=me2pt5-289
-Mega Dragonite ex,Ascended Heroes,290,me2pt5-290,https://nymsworld.github.io/Card.api/?id=me2pt5-290
-Canari,Ascended Heroes,291,me2pt5-291,https://nymsworld.github.io/Card.api/?id=me2pt5-291
-Iris's Fighting Spirit,Ascended Heroes,292,me2pt5-292,https://nymsworld.github.io/Card.api/?id=me2pt5-292
-Surfer,Ascended Heroes,293,me2pt5-293,https://nymsworld.github.io/Card.api/?id=me2pt5-293
-Mega Charizard Y ex,Ascended Heroes,294,me2pt5-294,https://nymsworld.github.io/Card.api/?id=me2pt5-294
-Mega Dragonite ex,Ascended Heroes,295,me2pt5-295,https://nymsworld.github.io/Card.api/?id=me2pt5-295
-Snivy,Black Bolt,87,zsv10pt5-87,https://nymsworld.github.io/Card.api/?id=zsv10pt5-87
-Servine,Black Bolt,88,zsv10pt5-88,https://nymsworld.github.io/Card.api/?id=zsv10pt5-88
-Pansage,Black Bolt,89,zsv10pt5-89,https://nymsworld.github.io/Card.api/?id=zsv10pt5-89
-Simisage,Black Bolt,90,zsv10pt5-90,https://nymsworld.github.io/Card.api/?id=zsv10pt5-90
-Petilil,Black Bolt,91,zsv10pt5-91,https://nymsworld.github.io/Card.api/?id=zsv10pt5-91
-Lilligant,Black Bolt,92,zsv10pt5-92,https://nymsworld.github.io/Card.api/?id=zsv10pt5-92
-Maractus,Black Bolt,93,zsv10pt5-93,https://nymsworld.github.io/Card.api/?id=zsv10pt5-93
-Karrablast,Black Bolt,94,zsv10pt5-94,https://nymsworld.github.io/Card.api/?id=zsv10pt5-94
-Foongus,Black Bolt,95,zsv10pt5-95,https://nymsworld.github.io/Card.api/?id=zsv10pt5-95
-Amoonguss,Black Bolt,96,zsv10pt5-96,https://nymsworld.github.io/Card.api/?id=zsv10pt5-96
-Darumaka,Black Bolt,97,zsv10pt5-97,https://nymsworld.github.io/Card.api/?id=zsv10pt5-97
-Darmanitan,Black Bolt,98,zsv10pt5-98,https://nymsworld.github.io/Card.api/?id=zsv10pt5-98
-Larvesta,Black Bolt,99,zsv10pt5-99,https://nymsworld.github.io/Card.api/?id=zsv10pt5-99
-Volcarona,Black Bolt,100,zsv10pt5-100,https://nymsworld.github.io/Card.api/?id=zsv10pt5-100
-Panpour,Black Bolt,101,zsv10pt5-101,https://nymsworld.github.io/Card.api/?id=zsv10pt5-101
-Simipour,Black Bolt,102,zsv10pt5-102,https://nymsworld.github.io/Card.api/?id=zsv10pt5-102
-Tympole,Black Bolt,103,zsv10pt5-103,https://nymsworld.github.io/Card.api/?id=zsv10pt5-103
-Palpitoad,Black Bolt,104,zsv10pt5-104,https://nymsworld.github.io/Card.api/?id=zsv10pt5-104
-Seismitoad,Black Bolt,105,zsv10pt5-105,https://nymsworld.github.io/Card.api/?id=zsv10pt5-105
-Tirtouga,Black Bolt,106,zsv10pt5-106,https://nymsworld.github.io/Card.api/?id=zsv10pt5-106
-Carracosta,Black Bolt,107,zsv10pt5-107,https://nymsworld.github.io/Card.api/?id=zsv10pt5-107
-Alomomola,Black Bolt,108,zsv10pt5-108,https://nymsworld.github.io/Card.api/?id=zsv10pt5-108
-Cubchoo,Black Bolt,109,zsv10pt5-109,https://nymsworld.github.io/Card.api/?id=zsv10pt5-109
-Beartic,Black Bolt,110,zsv10pt5-110,https://nymsworld.github.io/Card.api/?id=zsv10pt5-110
-Cryogonal,Black Bolt,111,zsv10pt5-111,https://nymsworld.github.io/Card.api/?id=zsv10pt5-111
-Emolga,Black Bolt,112,zsv10pt5-112,https://nymsworld.github.io/Card.api/?id=zsv10pt5-112
-Tynamo,Black Bolt,113,zsv10pt5-113,https://nymsworld.github.io/Card.api/?id=zsv10pt5-113
-Eelektrik,Black Bolt,114,zsv10pt5-114,https://nymsworld.github.io/Card.api/?id=zsv10pt5-114
-Eelektross,Black Bolt,115,zsv10pt5-115,https://nymsworld.github.io/Card.api/?id=zsv10pt5-115
-Munna,Black Bolt,116,zsv10pt5-116,https://nymsworld.github.io/Card.api/?id=zsv10pt5-116
-Musharna,Black Bolt,117,zsv10pt5-117,https://nymsworld.github.io/Card.api/?id=zsv10pt5-117
-Solosis,Black Bolt,118,zsv10pt5-118,https://nymsworld.github.io/Card.api/?id=zsv10pt5-118
-Duosion,Black Bolt,119,zsv10pt5-119,https://nymsworld.github.io/Card.api/?id=zsv10pt5-119
-Elgyem,Black Bolt,120,zsv10pt5-120,https://nymsworld.github.io/Card.api/?id=zsv10pt5-120
-Beheeyem,Black Bolt,121,zsv10pt5-121,https://nymsworld.github.io/Card.api/?id=zsv10pt5-121
-Golett,Black Bolt,122,zsv10pt5-122,https://nymsworld.github.io/Card.api/?id=zsv10pt5-122
-Golurk,Black Bolt,123,zsv10pt5-123,https://nymsworld.github.io/Card.api/?id=zsv10pt5-123
-Drilbur,Black Bolt,124,zsv10pt5-124,https://nymsworld.github.io/Card.api/?id=zsv10pt5-124
-Timburr,Black Bolt,125,zsv10pt5-125,https://nymsworld.github.io/Card.api/?id=zsv10pt5-125
-Gurdurr,Black Bolt,126,zsv10pt5-126,https://nymsworld.github.io/Card.api/?id=zsv10pt5-126
-Conkeldurr,Black Bolt,127,zsv10pt5-127,https://nymsworld.github.io/Card.api/?id=zsv10pt5-127
-Throh,Black Bolt,128,zsv10pt5-128,https://nymsworld.github.io/Card.api/?id=zsv10pt5-128
-Dwebble,Black Bolt,129,zsv10pt5-129,https://nymsworld.github.io/Card.api/?id=zsv10pt5-129
-Crustle,Black Bolt,130,zsv10pt5-130,https://nymsworld.github.io/Card.api/?id=zsv10pt5-130
-Landorus,Black Bolt,131,zsv10pt5-131,https://nymsworld.github.io/Card.api/?id=zsv10pt5-131
-Venipede,Black Bolt,132,zsv10pt5-132,https://nymsworld.github.io/Card.api/?id=zsv10pt5-132
-Whirlipede,Black Bolt,133,zsv10pt5-133,https://nymsworld.github.io/Card.api/?id=zsv10pt5-133
-Scolipede,Black Bolt,134,zsv10pt5-134,https://nymsworld.github.io/Card.api/?id=zsv10pt5-134
-Sandile,Black Bolt,135,zsv10pt5-135,https://nymsworld.github.io/Card.api/?id=zsv10pt5-135
-Krokorok,Black Bolt,136,zsv10pt5-136,https://nymsworld.github.io/Card.api/?id=zsv10pt5-136
-Krookodile,Black Bolt,137,zsv10pt5-137,https://nymsworld.github.io/Card.api/?id=zsv10pt5-137
-Escavalier,Black Bolt,138,zsv10pt5-138,https://nymsworld.github.io/Card.api/?id=zsv10pt5-138
-Klink,Black Bolt,139,zsv10pt5-139,https://nymsworld.github.io/Card.api/?id=zsv10pt5-139
-Klang,Black Bolt,140,zsv10pt5-140,https://nymsworld.github.io/Card.api/?id=zsv10pt5-140
-Klinklang,Black Bolt,141,zsv10pt5-141,https://nymsworld.github.io/Card.api/?id=zsv10pt5-141
-Pawniard,Black Bolt,142,zsv10pt5-142,https://nymsworld.github.io/Card.api/?id=zsv10pt5-142
-Bisharp,Black Bolt,143,zsv10pt5-143,https://nymsworld.github.io/Card.api/?id=zsv10pt5-143
-Cobalion,Black Bolt,144,zsv10pt5-144,https://nymsworld.github.io/Card.api/?id=zsv10pt5-144
-Axew,Black Bolt,145,zsv10pt5-145,https://nymsworld.github.io/Card.api/?id=zsv10pt5-145
-Fraxure,Black Bolt,146,zsv10pt5-146,https://nymsworld.github.io/Card.api/?id=zsv10pt5-146
-Haxorus,Black Bolt,147,zsv10pt5-147,https://nymsworld.github.io/Card.api/?id=zsv10pt5-147
-Pidove,Black Bolt,148,zsv10pt5-148,https://nymsworld.github.io/Card.api/?id=zsv10pt5-148
-Tranquill,Black Bolt,149,zsv10pt5-149,https://nymsworld.github.io/Card.api/?id=zsv10pt5-149
-Unfezant,Black Bolt,150,zsv10pt5-150,https://nymsworld.github.io/Card.api/?id=zsv10pt5-150
-Audino,Black Bolt,151,zsv10pt5-151,https://nymsworld.github.io/Card.api/?id=zsv10pt5-151
-Minccino,Black Bolt,152,zsv10pt5-152,https://nymsworld.github.io/Card.api/?id=zsv10pt5-152
-Cinccino,Black Bolt,153,zsv10pt5-153,https://nymsworld.github.io/Card.api/?id=zsv10pt5-153
-Rufflet,Black Bolt,154,zsv10pt5-154,https://nymsworld.github.io/Card.api/?id=zsv10pt5-154
-Braviary,Black Bolt,155,zsv10pt5-155,https://nymsworld.github.io/Card.api/?id=zsv10pt5-155
-Serperior ex,Black Bolt,156,zsv10pt5-156,https://nymsworld.github.io/Card.api/?id=zsv10pt5-156
-Kyurem ex,Black Bolt,157,zsv10pt5-157,https://nymsworld.github.io/Card.api/?id=zsv10pt5-157
-Zekrom ex,Black Bolt,158,zsv10pt5-158,https://nymsworld.github.io/Card.api/?id=zsv10pt5-158
-Meloetta ex,Black Bolt,159,zsv10pt5-159,https://nymsworld.github.io/Card.api/?id=zsv10pt5-159
-Excadrill ex,Black Bolt,160,zsv10pt5-160,https://nymsworld.github.io/Card.api/?id=zsv10pt5-160
-Genesect ex,Black Bolt,161,zsv10pt5-161,https://nymsworld.github.io/Card.api/?id=zsv10pt5-161
-Fennel,Black Bolt,162,zsv10pt5-162,https://nymsworld.github.io/Card.api/?id=zsv10pt5-162
-N's Plan,Black Bolt,163,zsv10pt5-163,https://nymsworld.github.io/Card.api/?id=zsv10pt5-163
-Serperior ex,Black Bolt,164,zsv10pt5-164,https://nymsworld.github.io/Card.api/?id=zsv10pt5-164
-Kyurem ex,Black Bolt,165,zsv10pt5-165,https://nymsworld.github.io/Card.api/?id=zsv10pt5-165
-Zekrom ex,Black Bolt,166,zsv10pt5-166,https://nymsworld.github.io/Card.api/?id=zsv10pt5-166
-Meloetta ex,Black Bolt,167,zsv10pt5-167,https://nymsworld.github.io/Card.api/?id=zsv10pt5-167
-Excadrill ex,Black Bolt,168,zsv10pt5-168,https://nymsworld.github.io/Card.api/?id=zsv10pt5-168
-Genesect ex,Black Bolt,169,zsv10pt5-169,https://nymsworld.github.io/Card.api/?id=zsv10pt5-169
-N's Plan,Black Bolt,170,zsv10pt5-170,https://nymsworld.github.io/Card.api/?id=zsv10pt5-170
-Victini,Black Bolt,171,zsv10pt5-171,https://nymsworld.github.io/Card.api/?id=zsv10pt5-171
-Zekrom ex,Black Bolt,172,zsv10pt5-172,https://nymsworld.github.io/Card.api/?id=zsv10pt5-172
-Chespin,Chaos Rising,87,me4-87,https://nymsworld.github.io/Card.api/?id=me4-87
-Froakie,Chaos Rising,88,me4-88,https://nymsworld.github.io/Card.api/?id=me4-88
-Frogadier,Chaos Rising,89,me4-89,https://nymsworld.github.io/Card.api/?id=me4-89
-Ampharos,Chaos Rising,90,me4-90,https://nymsworld.github.io/Card.api/?id=me4-90
-Xerneas,Chaos Rising,91,me4-91,https://nymsworld.github.io/Card.api/?id=me4-91
-Claydol,Chaos Rising,92,me4-92,https://nymsworld.github.io/Card.api/?id=me4-92
-Crobat,Chaos Rising,93,me4-93,https://nymsworld.github.io/Card.api/?id=me4-93
-Metang,Chaos Rising,94,me4-94,https://nymsworld.github.io/Card.api/?id=me4-94
-Sliggoo,Chaos Rising,95,me4-95,https://nymsworld.github.io/Card.api/?id=me4-95
-Tauros,Chaos Rising,96,me4-96,https://nymsworld.github.io/Card.api/?id=me4-96
-Watchog,Chaos Rising,97,me4-97,https://nymsworld.github.io/Card.api/?id=me4-97
-Beedrill ex,Chaos Rising,98,me4-98,https://nymsworld.github.io/Card.api/?id=me4-98
-Mega Pyroar ex,Chaos Rising,99,me4-99,https://nymsworld.github.io/Card.api/?id=me4-99
-Mega Greninja ex,Chaos Rising,100,me4-100,https://nymsworld.github.io/Card.api/?id=me4-100
-Mega Floette ex,Chaos Rising,101,me4-101,https://nymsworld.github.io/Card.api/?id=me4-101
-Gourgeist ex,Chaos Rising,102,me4-102,https://nymsworld.github.io/Card.api/?id=me4-102
-Cobalion ex,Chaos Rising,103,me4-103,https://nymsworld.github.io/Card.api/?id=me4-103
-Mega Dragalge ex,Chaos Rising,104,me4-104,https://nymsworld.github.io/Card.api/?id=me4-104
-Cinccino ex,Chaos Rising,105,me4-105,https://nymsworld.github.io/Card.api/?id=me4-105
-AZ's Tranquility,Chaos Rising,106,me4-106,https://nymsworld.github.io/Card.api/?id=me4-106
-Emma,Chaos Rising,107,me4-107,https://nymsworld.github.io/Card.api/?id=me4-107
-Energy Retrieval,Chaos Rising,108,me4-108,https://nymsworld.github.io/Card.api/?id=me4-108
-Jumbo Ice Cream,Chaos Rising,109,me4-109,https://nymsworld.github.io/Card.api/?id=me4-109
-Philippe,Chaos Rising,110,me4-110,https://nymsworld.github.io/Card.api/?id=me4-110
-Prism Tower,Chaos Rising,111,me4-111,https://nymsworld.github.io/Card.api/?id=me4-111
-Roxie's Performance,Chaos Rising,112,me4-112,https://nymsworld.github.io/Card.api/?id=me4-112
-Special Red Card,Chaos Rising,113,me4-113,https://nymsworld.github.io/Card.api/?id=me4-113
-Surfing Beach,Chaos Rising,114,me4-114,https://nymsworld.github.io/Card.api/?id=me4-114
-Tool Scrapper,Chaos Rising,115,me4-115,https://nymsworld.github.io/Card.api/?id=me4-115
-Mega Greninja ex,Chaos Rising,116,me4-116,https://nymsworld.github.io/Card.api/?id=me4-116
-Mega Floette ex,Chaos Rising,117,me4-117,https://nymsworld.github.io/Card.api/?id=me4-117
-Mega Dragalge ex,Chaos Rising,118,me4-118,https://nymsworld.github.io/Card.api/?id=me4-118
-Cinccino ex,Chaos Rising,119,me4-119,https://nymsworld.github.io/Card.api/?id=me4-119
-AZ's Tranquility,Chaos Rising,120,me4-120,https://nymsworld.github.io/Card.api/?id=me4-120
-Roxie's Performance,Chaos Rising,121,me4-121,https://nymsworld.github.io/Card.api/?id=me4-121
-Mega Greninja ex,Chaos Rising,122,me4-122,https://nymsworld.github.io/Card.api/?id=me4-122
-Yanma,Destined Rivals,183,sv10-183,https://nymsworld.github.io/Card.api/?id=sv10-183
-Cynthia's Roserade,Destined Rivals,184,sv10-184,https://nymsworld.github.io/Card.api/?id=sv10-184
-Shaymin,Destined Rivals,185,sv10-185,https://nymsworld.github.io/Card.api/?id=sv10-185
-Crustle,Destined Rivals,186,sv10-186,https://nymsworld.github.io/Card.api/?id=sv10-186
-Team Rocket's Spidops,Destined Rivals,187,sv10-187,https://nymsworld.github.io/Card.api/?id=sv10-187
-Hydrapple,Destined Rivals,188,sv10-188,https://nymsworld.github.io/Card.api/?id=sv10-188
-Rapidash,Destined Rivals,189,sv10-189,https://nymsworld.github.io/Card.api/?id=sv10-189
-Ethan's Typhlosion,Destined Rivals,190,sv10-190,https://nymsworld.github.io/Card.api/?id=sv10-190
-Team Rocket's Houndoom,Destined Rivals,191,sv10-191,https://nymsworld.github.io/Card.api/?id=sv10-191
-Blaziken,Destined Rivals,192,sv10-192,https://nymsworld.github.io/Card.api/?id=sv10-192
-Misty's Psyduck,Destined Rivals,193,sv10-193,https://nymsworld.github.io/Card.api/?id=sv10-193
-Misty's Lapras,Destined Rivals,194,sv10-194,https://nymsworld.github.io/Card.api/?id=sv10-194
-Clamperl,Destined Rivals,195,sv10-195,https://nymsworld.github.io/Card.api/?id=sv10-195
-Electrike,Destined Rivals,196,sv10-196,https://nymsworld.github.io/Card.api/?id=sv10-196
-Rotom,Destined Rivals,197,sv10-197,https://nymsworld.github.io/Card.api/?id=sv10-197
-Team Rocket's Orbeetle,Destined Rivals,198,sv10-198,https://nymsworld.github.io/Card.api/?id=sv10-198
-Team Rocket's Weezing,Destined Rivals,199,sv10-199,https://nymsworld.github.io/Card.api/?id=sv10-199
-Team Rocket's Murkrow,Destined Rivals,200,sv10-200,https://nymsworld.github.io/Card.api/?id=sv10-200
-Zamazenta,Destined Rivals,201,sv10-201,https://nymsworld.github.io/Card.api/?id=sv10-201
-Team Rocket's Raticate,Destined Rivals,202,sv10-202,https://nymsworld.github.io/Card.api/?id=sv10-202
-Team Rocket's Meowth,Destined Rivals,203,sv10-203,https://nymsworld.github.io/Card.api/?id=sv10-203
-Kangaskhan,Destined Rivals,204,sv10-204,https://nymsworld.github.io/Card.api/?id=sv10-204
-Arven's Greedent,Destined Rivals,205,sv10-205,https://nymsworld.github.io/Card.api/?id=sv10-205
-Yanmega ex,Destined Rivals,206,sv10-206,https://nymsworld.github.io/Card.api/?id=sv10-206
-Arboliva ex,Destined Rivals,207,sv10-207,https://nymsworld.github.io/Card.api/?id=sv10-207
-Team Rocket's Moltres ex,Destined Rivals,208,sv10-208,https://nymsworld.github.io/Card.api/?id=sv10-208
-Ethan's Ho-Oh ex,Destined Rivals,209,sv10-209,https://nymsworld.github.io/Card.api/?id=sv10-209
-Cetitan ex,Destined Rivals,210,sv10-210,https://nymsworld.github.io/Card.api/?id=sv10-210
-Dondozo ex,Destined Rivals,211,sv10-211,https://nymsworld.github.io/Card.api/?id=sv10-211
-Electivire ex,Destined Rivals,212,sv10-212,https://nymsworld.github.io/Card.api/?id=sv10-212
-Team Rocket's Mewtwo ex,Destined Rivals,213,sv10-213,https://nymsworld.github.io/Card.api/?id=sv10-213
-Regirock ex,Destined Rivals,214,sv10-214,https://nymsworld.github.io/Card.api/?id=sv10-214
-Cynthia's Garchomp ex,Destined Rivals,215,sv10-215,https://nymsworld.github.io/Card.api/?id=sv10-215
-Team Rocket's Nidoking ex,Destined Rivals,216,sv10-216,https://nymsworld.github.io/Card.api/?id=sv10-216
-Team Rocket's Crobat ex,Destined Rivals,217,sv10-217,https://nymsworld.github.io/Card.api/?id=sv10-217
-Arven's Mabosstiff ex,Destined Rivals,218,sv10-218,https://nymsworld.github.io/Card.api/?id=sv10-218
-Team Rocket's Persian ex,Destined Rivals,219,sv10-219,https://nymsworld.github.io/Card.api/?id=sv10-219
-Emcee's Hype,Destined Rivals,220,sv10-220,https://nymsworld.github.io/Card.api/?id=sv10-220
-Ethan's Adventure,Destined Rivals,221,sv10-221,https://nymsworld.github.io/Card.api/?id=sv10-221
-Judge,Destined Rivals,222,sv10-222,https://nymsworld.github.io/Card.api/?id=sv10-222
-Team Rocket's Archer,Destined Rivals,223,sv10-223,https://nymsworld.github.io/Card.api/?id=sv10-223
-Team Rocket's Ariana,Destined Rivals,224,sv10-224,https://nymsworld.github.io/Card.api/?id=sv10-224
-Team Rocket's Giovanni,Destined Rivals,225,sv10-225,https://nymsworld.github.io/Card.api/?id=sv10-225
-Team Rocket's Petrel,Destined Rivals,226,sv10-226,https://nymsworld.github.io/Card.api/?id=sv10-226
-Team Rocket's Proton,Destined Rivals,227,sv10-227,https://nymsworld.github.io/Card.api/?id=sv10-227
-Yanmega ex,Destined Rivals,228,sv10-228,https://nymsworld.github.io/Card.api/?id=sv10-228
-Team Rocket's Moltres ex,Destined Rivals,229,sv10-229,https://nymsworld.github.io/Card.api/?id=sv10-229
-Ethan's Ho-Oh ex,Destined Rivals,230,sv10-230,https://nymsworld.github.io/Card.api/?id=sv10-230
-Team Rocket's Mewtwo ex,Destined Rivals,231,sv10-231,https://nymsworld.github.io/Card.api/?id=sv10-231
-Cynthia's Garchomp ex,Destined Rivals,232,sv10-232,https://nymsworld.github.io/Card.api/?id=sv10-232
-Team Rocket's Nidoking ex,Destined Rivals,233,sv10-233,https://nymsworld.github.io/Card.api/?id=sv10-233
-Team Rocket's Crobat ex,Destined Rivals,234,sv10-234,https://nymsworld.github.io/Card.api/?id=sv10-234
-Arven's Mabosstiff ex,Destined Rivals,235,sv10-235,https://nymsworld.github.io/Card.api/?id=sv10-235
-Ethan's Adventure,Destined Rivals,236,sv10-236,https://nymsworld.github.io/Card.api/?id=sv10-236
-Team Rocket's Ariana,Destined Rivals,237,sv10-237,https://nymsworld.github.io/Card.api/?id=sv10-237
-Team Rocket's Giovanni,Destined Rivals,238,sv10-238,https://nymsworld.github.io/Card.api/?id=sv10-238
-Ethan's Ho-Oh ex,Destined Rivals,239,sv10-239,https://nymsworld.github.io/Card.api/?id=sv10-239
-Team Rocket's Mewtwo ex,Destined Rivals,240,sv10-240,https://nymsworld.github.io/Card.api/?id=sv10-240
-Cynthia's Garchomp ex,Destined Rivals,241,sv10-241,https://nymsworld.github.io/Card.api/?id=sv10-241
-Team Rocket's Crobat ex,Destined Rivals,242,sv10-242,https://nymsworld.github.io/Card.api/?id=sv10-242
-Jamming Tower,Destined Rivals,243,sv10-243,https://nymsworld.github.io/Card.api/?id=sv10-243
-Levincia,Destined Rivals,244,sv10-244,https://nymsworld.github.io/Card.api/?id=sv10-244
-Maractus,Journey Together,160,sv9-160,https://nymsworld.github.io/Card.api/?id=sv9-160
-Articuno,Journey Together,161,sv9-161,https://nymsworld.github.io/Card.api/?id=sv9-161
-Wailord,Journey Together,162,sv9-162,https://nymsworld.github.io/Card.api/?id=sv9-162
-Iono's Kilowattrel,Journey Together,163,sv9-163,https://nymsworld.github.io/Card.api/?id=sv9-163
-Lillie's Ribombee,Journey Together,164,sv9-164,https://nymsworld.github.io/Card.api/?id=sv9-164
-Swinub,Journey Together,165,sv9-165,https://nymsworld.github.io/Card.api/?id=sv9-165
-Lycanroc,Journey Together,166,sv9-166,https://nymsworld.github.io/Card.api/?id=sv9-166
-N's Reshiram,Journey Together,167,sv9-167,https://nymsworld.github.io/Card.api/?id=sv9-167
-Furret,Journey Together,168,sv9-168,https://nymsworld.github.io/Card.api/?id=sv9-168
-Noibat,Journey Together,169,sv9-169,https://nymsworld.github.io/Card.api/?id=sv9-169
-Hop's Wooloo,Journey Together,170,sv9-170,https://nymsworld.github.io/Card.api/?id=sv9-170
-Volcanion ex,Journey Together,171,sv9-171,https://nymsworld.github.io/Card.api/?id=sv9-171
-Iono's Bellibolt ex,Journey Together,172,sv9-172,https://nymsworld.github.io/Card.api/?id=sv9-172
-Lillie's Clefairy ex,Journey Together,173,sv9-173,https://nymsworld.github.io/Card.api/?id=sv9-173
-Mamoswine ex,Journey Together,174,sv9-174,https://nymsworld.github.io/Card.api/?id=sv9-174
-N's Zoroark ex,Journey Together,175,sv9-175,https://nymsworld.github.io/Card.api/?id=sv9-175
-Hop's Zacian ex,Journey Together,176,sv9-176,https://nymsworld.github.io/Card.api/?id=sv9-176
-Salamence ex,Journey Together,177,sv9-177,https://nymsworld.github.io/Card.api/?id=sv9-177
-Dudunsparce ex,Journey Together,178,sv9-178,https://nymsworld.github.io/Card.api/?id=sv9-178
-Brock's Scouting,Journey Together,179,sv9-179,https://nymsworld.github.io/Card.api/?id=sv9-179
-Iris's Fighting Spirit,Journey Together,180,sv9-180,https://nymsworld.github.io/Card.api/?id=sv9-180
-Ruffian,Journey Together,181,sv9-181,https://nymsworld.github.io/Card.api/?id=sv9-181
-Volcanion ex,Journey Together,182,sv9-182,https://nymsworld.github.io/Card.api/?id=sv9-182
-Iono's Bellibolt ex,Journey Together,183,sv9-183,https://nymsworld.github.io/Card.api/?id=sv9-183
-Lillie's Clefairy ex,Journey Together,184,sv9-184,https://nymsworld.github.io/Card.api/?id=sv9-184
-N's Zoroark ex,Journey Together,185,sv9-185,https://nymsworld.github.io/Card.api/?id=sv9-185
-Hop's Zacian ex,Journey Together,186,sv9-186,https://nymsworld.github.io/Card.api/?id=sv9-186
-Salamence ex,Journey Together,187,sv9-187,https://nymsworld.github.io/Card.api/?id=sv9-187
-Iono's Bellibolt ex,Journey Together,188,sv9-188,https://nymsworld.github.io/Card.api/?id=sv9-188
-N's Zoroark ex,Journey Together,189,sv9-189,https://nymsworld.github.io/Card.api/?id=sv9-189
-Spiky Energy,Journey Together,190,sv9-190,https://nymsworld.github.io/Card.api/?id=sv9-190
-Bulbasaur,Mega Evolution,133,me1-133,https://nymsworld.github.io/Card.api/?id=me1-133
-Ivysaur,Mega Evolution,134,me1-134,https://nymsworld.github.io/Card.api/?id=me1-134
-Exeggutor,Mega Evolution,135,me1-135,https://nymsworld.github.io/Card.api/?id=me1-135
-Shuckle,Mega Evolution,136,me1-136,https://nymsworld.github.io/Card.api/?id=me1-136
-Ninjask,Mega Evolution,137,me1-137,https://nymsworld.github.io/Card.api/?id=me1-137
-Vulpix,Mega Evolution,138,me1-138,https://nymsworld.github.io/Card.api/?id=me1-138
-Litleo,Mega Evolution,139,me1-139,https://nymsworld.github.io/Card.api/?id=me1-139
-Snover,Mega Evolution,140,me1-140,https://nymsworld.github.io/Card.api/?id=me1-140
-Clawitzer,Mega Evolution,141,me1-141,https://nymsworld.github.io/Card.api/?id=me1-141
-Inteleon,Mega Evolution,142,me1-142,https://nymsworld.github.io/Card.api/?id=me1-142
-Helioptile,Mega Evolution,143,me1-143,https://nymsworld.github.io/Card.api/?id=me1-143
-Shedinja,Mega Evolution,144,me1-144,https://nymsworld.github.io/Card.api/?id=me1-144
-Houndstone,Mega Evolution,145,me1-145,https://nymsworld.github.io/Card.api/?id=me1-145
-Marshadow,Mega Evolution,146,me1-146,https://nymsworld.github.io/Card.api/?id=me1-146
-Garganacl,Mega Evolution,147,me1-147,https://nymsworld.github.io/Card.api/?id=me1-147
-Spiritomb,Mega Evolution,148,me1-148,https://nymsworld.github.io/Card.api/?id=me1-148
-Shroodle,Mega Evolution,149,me1-149,https://nymsworld.github.io/Card.api/?id=me1-149
-Steelix,Mega Evolution,150,me1-150,https://nymsworld.github.io/Card.api/?id=me1-150
-Spearow,Mega Evolution,151,me1-151,https://nymsworld.github.io/Card.api/?id=me1-151
-Delibird,Mega Evolution,152,me1-152,https://nymsworld.github.io/Card.api/?id=me1-152
-Gumshoos,Mega Evolution,153,me1-153,https://nymsworld.github.io/Card.api/?id=me1-153
-Stufful,Mega Evolution,154,me1-154,https://nymsworld.github.io/Card.api/?id=me1-154
-Mega Venusaur ex,Mega Evolution,155,me1-155,https://nymsworld.github.io/Card.api/?id=me1-155
-Mega Camerupt ex,Mega Evolution,156,me1-156,https://nymsworld.github.io/Card.api/?id=me1-156
-Mega Abomasnow ex,Mega Evolution,157,me1-157,https://nymsworld.github.io/Card.api/?id=me1-157
-Mega Manectric ex,Mega Evolution,158,me1-158,https://nymsworld.github.io/Card.api/?id=me1-158
-Mega Gardevoir ex,Mega Evolution,159,me1-159,https://nymsworld.github.io/Card.api/?id=me1-159
-Mega Lucario ex,Mega Evolution,160,me1-160,https://nymsworld.github.io/Card.api/?id=me1-160
-Mega Absol ex,Mega Evolution,161,me1-161,https://nymsworld.github.io/Card.api/?id=me1-161
-Mega Mawile ex,Mega Evolution,162,me1-162,https://nymsworld.github.io/Card.api/?id=me1-162
-Mega Latias ex,Mega Evolution,163,me1-163,https://nymsworld.github.io/Card.api/?id=me1-163
-Mega Kangaskhan ex,Mega Evolution,164,me1-164,https://nymsworld.github.io/Card.api/?id=me1-164
-Acerola's Mischief,Mega Evolution,165,me1-165,https://nymsworld.github.io/Card.api/?id=me1-165
-Air Balloon,Mega Evolution,166,me1-166,https://nymsworld.github.io/Card.api/?id=me1-166
-Buddy-Buddy Poffin,Mega Evolution,167,me1-167,https://nymsworld.github.io/Card.api/?id=me1-167
-Fighting Gong,Mega Evolution,168,me1-168,https://nymsworld.github.io/Card.api/?id=me1-168
-Lillie's Determination,Mega Evolution,169,me1-169,https://nymsworld.github.io/Card.api/?id=me1-169
-Lt. Surge's Bargain,Mega Evolution,170,me1-170,https://nymsworld.github.io/Card.api/?id=me1-170
-Mega Signal,Mega Evolution,171,me1-171,https://nymsworld.github.io/Card.api/?id=me1-171
-Mystery Garden,Mega Evolution,172,me1-172,https://nymsworld.github.io/Card.api/?id=me1-172
-Night Stretcher,Mega Evolution,173,me1-173,https://nymsworld.github.io/Card.api/?id=me1-173
-Premium Power Pro,Mega Evolution,174,me1-174,https://nymsworld.github.io/Card.api/?id=me1-174
-Rare Candy,Mega Evolution,175,me1-175,https://nymsworld.github.io/Card.api/?id=me1-175
-Wally's Compassion,Mega Evolution,176,me1-176,https://nymsworld.github.io/Card.api/?id=me1-176
-Mega Venusaur ex,Mega Evolution,177,me1-177,https://nymsworld.github.io/Card.api/?id=me1-177
-Mega Gardevoir ex,Mega Evolution,178,me1-178,https://nymsworld.github.io/Card.api/?id=me1-178
-Mega Lucario ex,Mega Evolution,179,me1-179,https://nymsworld.github.io/Card.api/?id=me1-179
-Mega Absol ex,Mega Evolution,180,me1-180,https://nymsworld.github.io/Card.api/?id=me1-180
-Mega Latias ex,Mega Evolution,181,me1-181,https://nymsworld.github.io/Card.api/?id=me1-181
-Mega Kangaskhan ex,Mega Evolution,182,me1-182,https://nymsworld.github.io/Card.api/?id=me1-182
-Acerola's Mischief,Mega Evolution,183,me1-183,https://nymsworld.github.io/Card.api/?id=me1-183
-Lillie's Determination,Mega Evolution,184,me1-184,https://nymsworld.github.io/Card.api/?id=me1-184
-Lt. Surge's Bargain,Mega Evolution,185,me1-185,https://nymsworld.github.io/Card.api/?id=me1-185
-Wally's Compassion,Mega Evolution,186,me1-186,https://nymsworld.github.io/Card.api/?id=me1-186
-Mega Gardevoir ex,Mega Evolution,187,me1-187,https://nymsworld.github.io/Card.api/?id=me1-187
-Mega Lucario ex,Mega Evolution,188,me1-188,https://nymsworld.github.io/Card.api/?id=me1-188
-Gloom,Obsidian Flames,198,sv3-198,https://nymsworld.github.io/Card.api/?id=sv3-198
-Ninetales,Obsidian Flames,199,sv3-199,https://nymsworld.github.io/Card.api/?id=sv3-199
-Palafin,Obsidian Flames,200,sv3-200,https://nymsworld.github.io/Card.api/?id=sv3-200
-Bellibolt,Obsidian Flames,201,sv3-201,https://nymsworld.github.io/Card.api/?id=sv3-201
-Cleffa,Obsidian Flames,202,sv3-202,https://nymsworld.github.io/Card.api/?id=sv3-202
-Larvitar,Obsidian Flames,203,sv3-203,https://nymsworld.github.io/Card.api/?id=sv3-203
-Houndour,Obsidian Flames,204,sv3-204,https://nymsworld.github.io/Card.api/?id=sv3-204
-Scizor,Obsidian Flames,205,sv3-205,https://nymsworld.github.io/Card.api/?id=sv3-205
-Varoom,Obsidian Flames,206,sv3-206,https://nymsworld.github.io/Card.api/?id=sv3-206
-Pidgey,Obsidian Flames,207,sv3-207,https://nymsworld.github.io/Card.api/?id=sv3-207
-Pidgeotto,Obsidian Flames,208,sv3-208,https://nymsworld.github.io/Card.api/?id=sv3-208
-Lechonk,Obsidian Flames,209,sv3-209,https://nymsworld.github.io/Card.api/?id=sv3-209
-Eiscue ex,Obsidian Flames,210,sv3-210,https://nymsworld.github.io/Card.api/?id=sv3-210
-Tyranitar ex,Obsidian Flames,211,sv3-211,https://nymsworld.github.io/Card.api/?id=sv3-211
-Vespiquen ex,Obsidian Flames,212,sv3-212,https://nymsworld.github.io/Card.api/?id=sv3-212
-Glimmora ex,Obsidian Flames,213,sv3-213,https://nymsworld.github.io/Card.api/?id=sv3-213
-Absol ex,Obsidian Flames,214,sv3-214,https://nymsworld.github.io/Card.api/?id=sv3-214
-Charizard ex,Obsidian Flames,215,sv3-215,https://nymsworld.github.io/Card.api/?id=sv3-215
-Revavroom ex,Obsidian Flames,216,sv3-216,https://nymsworld.github.io/Card.api/?id=sv3-216
-Pidgeot ex,Obsidian Flames,217,sv3-217,https://nymsworld.github.io/Card.api/?id=sv3-217
-Geeta,Obsidian Flames,218,sv3-218,https://nymsworld.github.io/Card.api/?id=sv3-218
-Ortega,Obsidian Flames,219,sv3-219,https://nymsworld.github.io/Card.api/?id=sv3-219
-Poppy,Obsidian Flames,220,sv3-220,https://nymsworld.github.io/Card.api/?id=sv3-220
-Ryme,Obsidian Flames,221,sv3-221,https://nymsworld.github.io/Card.api/?id=sv3-221
-Eiscue ex,Obsidian Flames,222,sv3-222,https://nymsworld.github.io/Card.api/?id=sv3-222
-Charizard ex,Obsidian Flames,223,sv3-223,https://nymsworld.github.io/Card.api/?id=sv3-223
-Revavroom ex,Obsidian Flames,224,sv3-224,https://nymsworld.github.io/Card.api/?id=sv3-224
-Pidgeot ex,Obsidian Flames,225,sv3-225,https://nymsworld.github.io/Card.api/?id=sv3-225
-Geeta,Obsidian Flames,226,sv3-226,https://nymsworld.github.io/Card.api/?id=sv3-226
-Poppy,Obsidian Flames,227,sv3-227,https://nymsworld.github.io/Card.api/?id=sv3-227
-Charizard ex,Obsidian Flames,228,sv3-228,https://nymsworld.github.io/Card.api/?id=sv3-228
-Artazon,Obsidian Flames,229,sv3-229,https://nymsworld.github.io/Card.api/?id=sv3-229
-Basic Fire Energy,Obsidian Flames,230,sv3-230,https://nymsworld.github.io/Card.api/?id=sv3-230
-Heracross,Paldea Evolved,194,sv2-194,https://nymsworld.github.io/Card.api/?id=sv2-194
-Tropius,Paldea Evolved,195,sv2-195,https://nymsworld.github.io/Card.api/?id=sv2-195
-Sprigatito,Paldea Evolved,196,sv2-196,https://nymsworld.github.io/Card.api/?id=sv2-196
-Floragato,Paldea Evolved,197,sv2-197,https://nymsworld.github.io/Card.api/?id=sv2-197
-Bramblin,Paldea Evolved,198,sv2-198,https://nymsworld.github.io/Card.api/?id=sv2-198
-Fletchinder,Paldea Evolved,199,sv2-199,https://nymsworld.github.io/Card.api/?id=sv2-199
-Pyroar,Paldea Evolved,200,sv2-200,https://nymsworld.github.io/Card.api/?id=sv2-200
-Fuecoco,Paldea Evolved,201,sv2-201,https://nymsworld.github.io/Card.api/?id=sv2-201
-Crocalor,Paldea Evolved,202,sv2-202,https://nymsworld.github.io/Card.api/?id=sv2-202
-Magikarp,Paldea Evolved,203,sv2-203,https://nymsworld.github.io/Card.api/?id=sv2-203
-Marill,Paldea Evolved,204,sv2-204,https://nymsworld.github.io/Card.api/?id=sv2-204
-Eiscue,Paldea Evolved,205,sv2-205,https://nymsworld.github.io/Card.api/?id=sv2-205
-Quaxly,Paldea Evolved,206,sv2-206,https://nymsworld.github.io/Card.api/?id=sv2-206
-Quaxwell,Paldea Evolved,207,sv2-207,https://nymsworld.github.io/Card.api/?id=sv2-207
-Frigibax,Paldea Evolved,208,sv2-208,https://nymsworld.github.io/Card.api/?id=sv2-208
-Arctibax,Paldea Evolved,209,sv2-209,https://nymsworld.github.io/Card.api/?id=sv2-209
-Baxcalibur,Paldea Evolved,210,sv2-210,https://nymsworld.github.io/Card.api/?id=sv2-210
-Raichu,Paldea Evolved,211,sv2-211,https://nymsworld.github.io/Card.api/?id=sv2-211
-Mismagius,Paldea Evolved,212,sv2-212,https://nymsworld.github.io/Card.api/?id=sv2-212
-Gothorita,Paldea Evolved,213,sv2-213,https://nymsworld.github.io/Card.api/?id=sv2-213
-Sandygast,Paldea Evolved,214,sv2-214,https://nymsworld.github.io/Card.api/?id=sv2-214
-Rabsca,Paldea Evolved,215,sv2-215,https://nymsworld.github.io/Card.api/?id=sv2-215
-Tinkatink,Paldea Evolved,216,sv2-216,https://nymsworld.github.io/Card.api/?id=sv2-216
-Tinkatuff,Paldea Evolved,217,sv2-217,https://nymsworld.github.io/Card.api/?id=sv2-217
-Paldean Tauros,Paldea Evolved,218,sv2-218,https://nymsworld.github.io/Card.api/?id=sv2-218
-Sudowoodo,Paldea Evolved,219,sv2-219,https://nymsworld.github.io/Card.api/?id=sv2-219
-Nacli,Paldea Evolved,220,sv2-220,https://nymsworld.github.io/Card.api/?id=sv2-220
-Paldean Wooper,Paldea Evolved,221,sv2-221,https://nymsworld.github.io/Card.api/?id=sv2-221
-Tyranitar,Paldea Evolved,222,sv2-222,https://nymsworld.github.io/Card.api/?id=sv2-222
-Grafaiai,Paldea Evolved,223,sv2-223,https://nymsworld.github.io/Card.api/?id=sv2-223
-Orthworm,Paldea Evolved,224,sv2-224,https://nymsworld.github.io/Card.api/?id=sv2-224
-Rookidee,Paldea Evolved,225,sv2-225,https://nymsworld.github.io/Card.api/?id=sv2-225
-Maushold,Paldea Evolved,226,sv2-226,https://nymsworld.github.io/Card.api/?id=sv2-226
-Flamigo,Paldea Evolved,227,sv2-227,https://nymsworld.github.io/Card.api/?id=sv2-227
-Farigiraf,Paldea Evolved,228,sv2-228,https://nymsworld.github.io/Card.api/?id=sv2-228
-Dudunsparce,Paldea Evolved,229,sv2-229,https://nymsworld.github.io/Card.api/?id=sv2-229
-Forretress ex,Paldea Evolved,230,sv2-230,https://nymsworld.github.io/Card.api/?id=sv2-230
-Meowscarada ex,Paldea Evolved,231,sv2-231,https://nymsworld.github.io/Card.api/?id=sv2-231
-Wo-Chien ex,Paldea Evolved,232,sv2-232,https://nymsworld.github.io/Card.api/?id=sv2-232
-Skeledirge ex,Paldea Evolved,233,sv2-233,https://nymsworld.github.io/Card.api/?id=sv2-233
-Chi-Yu ex,Paldea Evolved,234,sv2-234,https://nymsworld.github.io/Card.api/?id=sv2-234
-Quaquaval ex,Paldea Evolved,235,sv2-235,https://nymsworld.github.io/Card.api/?id=sv2-235
-Chien-Pao ex,Paldea Evolved,236,sv2-236,https://nymsworld.github.io/Card.api/?id=sv2-236
-Bellibolt ex,Paldea Evolved,237,sv2-237,https://nymsworld.github.io/Card.api/?id=sv2-237
-Slowking ex,Paldea Evolved,238,sv2-238,https://nymsworld.github.io/Card.api/?id=sv2-238
-Dedenne ex,Paldea Evolved,239,sv2-239,https://nymsworld.github.io/Card.api/?id=sv2-239
-Tinkaton ex,Paldea Evolved,240,sv2-240,https://nymsworld.github.io/Card.api/?id=sv2-240
-Lycanroc ex,Paldea Evolved,241,sv2-241,https://nymsworld.github.io/Card.api/?id=sv2-241
-Annihilape ex,Paldea Evolved,242,sv2-242,https://nymsworld.github.io/Card.api/?id=sv2-242
-Ting-Lu ex,Paldea Evolved,243,sv2-243,https://nymsworld.github.io/Card.api/?id=sv2-243
-Paldean Clodsire ex,Paldea Evolved,244,sv2-244,https://nymsworld.github.io/Card.api/?id=sv2-244
-Copperajah ex,Paldea Evolved,245,sv2-245,https://nymsworld.github.io/Card.api/?id=sv2-245
-Noivern ex,Paldea Evolved,246,sv2-246,https://nymsworld.github.io/Card.api/?id=sv2-246
-Squawkabilly ex,Paldea Evolved,247,sv2-247,https://nymsworld.github.io/Card.api/?id=sv2-247
-Boss's Orders,Paldea Evolved,248,sv2-248,https://nymsworld.github.io/Card.api/?id=sv2-248
-Clavell,Paldea Evolved,249,sv2-249,https://nymsworld.github.io/Card.api/?id=sv2-249
-Dendra,Paldea Evolved,250,sv2-250,https://nymsworld.github.io/Card.api/?id=sv2-250
-Falkner,Paldea Evolved,251,sv2-251,https://nymsworld.github.io/Card.api/?id=sv2-251
-Giacomo,Paldea Evolved,252,sv2-252,https://nymsworld.github.io/Card.api/?id=sv2-252
-Grusha,Paldea Evolved,253,sv2-253,https://nymsworld.github.io/Card.api/?id=sv2-253
-Iono,Paldea Evolved,254,sv2-254,https://nymsworld.github.io/Card.api/?id=sv2-254
-Saguaro,Paldea Evolved,255,sv2-255,https://nymsworld.github.io/Card.api/?id=sv2-255
-Meowscarada ex,Paldea Evolved,256,sv2-256,https://nymsworld.github.io/Card.api/?id=sv2-256
-Wo-Chien ex,Paldea Evolved,257,sv2-257,https://nymsworld.github.io/Card.api/?id=sv2-257
-Skeledirge ex,Paldea Evolved,258,sv2-258,https://nymsworld.github.io/Card.api/?id=sv2-258
-Chi-Yu ex,Paldea Evolved,259,sv2-259,https://nymsworld.github.io/Card.api/?id=sv2-259
-Quaquaval ex,Paldea Evolved,260,sv2-260,https://nymsworld.github.io/Card.api/?id=sv2-260
-Chien-Pao ex,Paldea Evolved,261,sv2-261,https://nymsworld.github.io/Card.api/?id=sv2-261
-Tinkaton ex,Paldea Evolved,262,sv2-262,https://nymsworld.github.io/Card.api/?id=sv2-262
-Ting-Lu ex,Paldea Evolved,263,sv2-263,https://nymsworld.github.io/Card.api/?id=sv2-263
-Squawkabilly ex,Paldea Evolved,264,sv2-264,https://nymsworld.github.io/Card.api/?id=sv2-264
-Boss's Orders,Paldea Evolved,265,sv2-265,https://nymsworld.github.io/Card.api/?id=sv2-265
-Dendra,Paldea Evolved,266,sv2-266,https://nymsworld.github.io/Card.api/?id=sv2-266
-Giacomo,Paldea Evolved,267,sv2-267,https://nymsworld.github.io/Card.api/?id=sv2-267
-Grusha,Paldea Evolved,268,sv2-268,https://nymsworld.github.io/Card.api/?id=sv2-268
-Iono,Paldea Evolved,269,sv2-269,https://nymsworld.github.io/Card.api/?id=sv2-269
-Saguaro,Paldea Evolved,270,sv2-270,https://nymsworld.github.io/Card.api/?id=sv2-270
-Meowscarada ex,Paldea Evolved,271,sv2-271,https://nymsworld.github.io/Card.api/?id=sv2-271
-Skeledirge ex,Paldea Evolved,272,sv2-272,https://nymsworld.github.io/Card.api/?id=sv2-272
-Quaquaval ex,Paldea Evolved,273,sv2-273,https://nymsworld.github.io/Card.api/?id=sv2-273
-Chien-Pao ex,Paldea Evolved,274,sv2-274,https://nymsworld.github.io/Card.api/?id=sv2-274
-Ting-Lu ex,Paldea Evolved,275,sv2-275,https://nymsworld.github.io/Card.api/?id=sv2-275
-Super Rod,Paldea Evolved,276,sv2-276,https://nymsworld.github.io/Card.api/?id=sv2-276
-Superior Energy Retrieval,Paldea Evolved,277,sv2-277,https://nymsworld.github.io/Card.api/?id=sv2-277
-Basic Grass Energy,Paldea Evolved,278,sv2-278,https://nymsworld.github.io/Card.api/?id=sv2-278
-Basic Water Energy,Paldea Evolved,279,sv2-279,https://nymsworld.github.io/Card.api/?id=sv2-279
-Oddish,Paldean Fates,92,sv4pt5-92,https://nymsworld.github.io/Card.api/?id=sv4pt5-92
-Gloom,Paldean Fates,93,sv4pt5-93,https://nymsworld.github.io/Card.api/?id=sv4pt5-93
-Vileplume,Paldean Fates,94,sv4pt5-94,https://nymsworld.github.io/Card.api/?id=sv4pt5-94
-Scyther,Paldean Fates,95,sv4pt5-95,https://nymsworld.github.io/Card.api/?id=sv4pt5-95
-Hoppip,Paldean Fates,96,sv4pt5-96,https://nymsworld.github.io/Card.api/?id=sv4pt5-96
-Skiploom,Paldean Fates,97,sv4pt5-97,https://nymsworld.github.io/Card.api/?id=sv4pt5-97
-Jumpluff,Paldean Fates,98,sv4pt5-98,https://nymsworld.github.io/Card.api/?id=sv4pt5-98
-Pineco,Paldean Fates,99,sv4pt5-99,https://nymsworld.github.io/Card.api/?id=sv4pt5-99
-Snover,Paldean Fates,100,sv4pt5-100,https://nymsworld.github.io/Card.api/?id=sv4pt5-100
-Abomasnow,Paldean Fates,101,sv4pt5-101,https://nymsworld.github.io/Card.api/?id=sv4pt5-101
-Smoliv,Paldean Fates,102,sv4pt5-102,https://nymsworld.github.io/Card.api/?id=sv4pt5-102
-Dolliv,Paldean Fates,103,sv4pt5-103,https://nymsworld.github.io/Card.api/?id=sv4pt5-103
-Arboliva,Paldean Fates,104,sv4pt5-104,https://nymsworld.github.io/Card.api/?id=sv4pt5-104
-Toedscool,Paldean Fates,105,sv4pt5-105,https://nymsworld.github.io/Card.api/?id=sv4pt5-105
-Capsakid,Paldean Fates,106,sv4pt5-106,https://nymsworld.github.io/Card.api/?id=sv4pt5-106
-Scovillain,Paldean Fates,107,sv4pt5-107,https://nymsworld.github.io/Card.api/?id=sv4pt5-107
-Rellor,Paldean Fates,108,sv4pt5-108,https://nymsworld.github.io/Card.api/?id=sv4pt5-108
-Charmander,Paldean Fates,109,sv4pt5-109,https://nymsworld.github.io/Card.api/?id=sv4pt5-109
-Charmeleon,Paldean Fates,110,sv4pt5-110,https://nymsworld.github.io/Card.api/?id=sv4pt5-110
-Paldean Tauros,Paldean Fates,111,sv4pt5-111,https://nymsworld.github.io/Card.api/?id=sv4pt5-111
-Entei,Paldean Fates,112,sv4pt5-112,https://nymsworld.github.io/Card.api/?id=sv4pt5-112
-Oricorio,Paldean Fates,113,sv4pt5-113,https://nymsworld.github.io/Card.api/?id=sv4pt5-113
-Charcadet,Paldean Fates,114,sv4pt5-114,https://nymsworld.github.io/Card.api/?id=sv4pt5-114
-Armarouge,Paldean Fates,115,sv4pt5-115,https://nymsworld.github.io/Card.api/?id=sv4pt5-115
-Slowpoke,Paldean Fates,116,sv4pt5-116,https://nymsworld.github.io/Card.api/?id=sv4pt5-116
-Slowbro,Paldean Fates,117,sv4pt5-117,https://nymsworld.github.io/Card.api/?id=sv4pt5-117
-Staryu,Paldean Fates,118,sv4pt5-118,https://nymsworld.github.io/Card.api/?id=sv4pt5-118
-Starmie,Paldean Fates,119,sv4pt5-119,https://nymsworld.github.io/Card.api/?id=sv4pt5-119
-Paldean Tauros,Paldean Fates,120,sv4pt5-120,https://nymsworld.github.io/Card.api/?id=sv4pt5-120
-Wiglett,Paldean Fates,121,sv4pt5-121,https://nymsworld.github.io/Card.api/?id=sv4pt5-121
-Wugtrio,Paldean Fates,122,sv4pt5-122,https://nymsworld.github.io/Card.api/?id=sv4pt5-122
-Finizen,Paldean Fates,123,sv4pt5-123,https://nymsworld.github.io/Card.api/?id=sv4pt5-123
-Palafin,Paldean Fates,124,sv4pt5-124,https://nymsworld.github.io/Card.api/?id=sv4pt5-124
-Veluza,Paldean Fates,125,sv4pt5-125,https://nymsworld.github.io/Card.api/?id=sv4pt5-125
-Dondozo,Paldean Fates,126,sv4pt5-126,https://nymsworld.github.io/Card.api/?id=sv4pt5-126
-Tatsugiri,Paldean Fates,127,sv4pt5-127,https://nymsworld.github.io/Card.api/?id=sv4pt5-127
-Frigibax,Paldean Fates,128,sv4pt5-128,https://nymsworld.github.io/Card.api/?id=sv4pt5-128
-Arctibax,Paldean Fates,129,sv4pt5-129,https://nymsworld.github.io/Card.api/?id=sv4pt5-129
-Baxcalibur,Paldean Fates,130,sv4pt5-130,https://nymsworld.github.io/Card.api/?id=sv4pt5-130
-Pikachu,Paldean Fates,131,sv4pt5-131,https://nymsworld.github.io/Card.api/?id=sv4pt5-131
-Raichu,Paldean Fates,132,sv4pt5-132,https://nymsworld.github.io/Card.api/?id=sv4pt5-132
-Voltorb,Paldean Fates,133,sv4pt5-133,https://nymsworld.github.io/Card.api/?id=sv4pt5-133
-Electrode,Paldean Fates,134,sv4pt5-134,https://nymsworld.github.io/Card.api/?id=sv4pt5-134
-Shinx,Paldean Fates,135,sv4pt5-135,https://nymsworld.github.io/Card.api/?id=sv4pt5-135
-Luxio,Paldean Fates,136,sv4pt5-136,https://nymsworld.github.io/Card.api/?id=sv4pt5-136
-Luxray,Paldean Fates,137,sv4pt5-137,https://nymsworld.github.io/Card.api/?id=sv4pt5-137
-Pachirisu,Paldean Fates,138,sv4pt5-138,https://nymsworld.github.io/Card.api/?id=sv4pt5-138
-Thundurus,Paldean Fates,139,sv4pt5-139,https://nymsworld.github.io/Card.api/?id=sv4pt5-139
-Toxel,Paldean Fates,140,sv4pt5-140,https://nymsworld.github.io/Card.api/?id=sv4pt5-140
-Toxtricity,Paldean Fates,141,sv4pt5-141,https://nymsworld.github.io/Card.api/?id=sv4pt5-141
-Pawmi,Paldean Fates,142,sv4pt5-142,https://nymsworld.github.io/Card.api/?id=sv4pt5-142
-Pawmo,Paldean Fates,143,sv4pt5-143,https://nymsworld.github.io/Card.api/?id=sv4pt5-143
-Pawmot,Paldean Fates,144,sv4pt5-144,https://nymsworld.github.io/Card.api/?id=sv4pt5-144
-Wattrel,Paldean Fates,145,sv4pt5-145,https://nymsworld.github.io/Card.api/?id=sv4pt5-145
-Kilowattrel,Paldean Fates,146,sv4pt5-146,https://nymsworld.github.io/Card.api/?id=sv4pt5-146
-Wigglytuff,Paldean Fates,147,sv4pt5-147,https://nymsworld.github.io/Card.api/?id=sv4pt5-147
-Abra,Paldean Fates,148,sv4pt5-148,https://nymsworld.github.io/Card.api/?id=sv4pt5-148
-Kadabra,Paldean Fates,149,sv4pt5-149,https://nymsworld.github.io/Card.api/?id=sv4pt5-149
-Cleffa,Paldean Fates,150,sv4pt5-150,https://nymsworld.github.io/Card.api/?id=sv4pt5-150
-Natu,Paldean Fates,151,sv4pt5-151,https://nymsworld.github.io/Card.api/?id=sv4pt5-151
-Xatu,Paldean Fates,152,sv4pt5-152,https://nymsworld.github.io/Card.api/?id=sv4pt5-152
-Ralts,Paldean Fates,153,sv4pt5-153,https://nymsworld.github.io/Card.api/?id=sv4pt5-153
-Kirlia,Paldean Fates,154,sv4pt5-154,https://nymsworld.github.io/Card.api/?id=sv4pt5-154
-Drifloon,Paldean Fates,155,sv4pt5-155,https://nymsworld.github.io/Card.api/?id=sv4pt5-155
-Drifblim,Paldean Fates,156,sv4pt5-156,https://nymsworld.github.io/Card.api/?id=sv4pt5-156
-Mime Jr.,Paldean Fates,157,sv4pt5-157,https://nymsworld.github.io/Card.api/?id=sv4pt5-157
-Spiritomb,Paldean Fates,158,sv4pt5-158,https://nymsworld.github.io/Card.api/?id=sv4pt5-158
-Klefki,Paldean Fates,159,sv4pt5-159,https://nymsworld.github.io/Card.api/?id=sv4pt5-159
-Mimikyu,Paldean Fates,160,sv4pt5-160,https://nymsworld.github.io/Card.api/?id=sv4pt5-160
-Dachsbun,Paldean Fates,161,sv4pt5-161,https://nymsworld.github.io/Card.api/?id=sv4pt5-161
-Ceruledge,Paldean Fates,162,sv4pt5-162,https://nymsworld.github.io/Card.api/?id=sv4pt5-162
-Rabsca,Paldean Fates,163,sv4pt5-163,https://nymsworld.github.io/Card.api/?id=sv4pt5-163
-Flittle,Paldean Fates,164,sv4pt5-164,https://nymsworld.github.io/Card.api/?id=sv4pt5-164
-Tinkatink,Paldean Fates,165,sv4pt5-165,https://nymsworld.github.io/Card.api/?id=sv4pt5-165
-Tinkatuff,Paldean Fates,166,sv4pt5-166,https://nymsworld.github.io/Card.api/?id=sv4pt5-166
-Tinkaton,Paldean Fates,167,sv4pt5-167,https://nymsworld.github.io/Card.api/?id=sv4pt5-167
-Houndstone,Paldean Fates,168,sv4pt5-168,https://nymsworld.github.io/Card.api/?id=sv4pt5-168
-Mankey,Paldean Fates,169,sv4pt5-169,https://nymsworld.github.io/Card.api/?id=sv4pt5-169
-Primeape,Paldean Fates,170,sv4pt5-170,https://nymsworld.github.io/Card.api/?id=sv4pt5-170
-Annihilape,Paldean Fates,171,sv4pt5-171,https://nymsworld.github.io/Card.api/?id=sv4pt5-171
-Paldean Tauros,Paldean Fates,172,sv4pt5-172,https://nymsworld.github.io/Card.api/?id=sv4pt5-172
-Riolu,Paldean Fates,173,sv4pt5-173,https://nymsworld.github.io/Card.api/?id=sv4pt5-173
-Lucario,Paldean Fates,174,sv4pt5-174,https://nymsworld.github.io/Card.api/?id=sv4pt5-174
-Hawlucha,Paldean Fates,175,sv4pt5-175,https://nymsworld.github.io/Card.api/?id=sv4pt5-175
-Nacli,Paldean Fates,176,sv4pt5-176,https://nymsworld.github.io/Card.api/?id=sv4pt5-176
-Naclstack,Paldean Fates,177,sv4pt5-177,https://nymsworld.github.io/Card.api/?id=sv4pt5-177
-Garganacl,Paldean Fates,178,sv4pt5-178,https://nymsworld.github.io/Card.api/?id=sv4pt5-178
-Glimmet,Paldean Fates,179,sv4pt5-179,https://nymsworld.github.io/Card.api/?id=sv4pt5-179
-Paldean Wooper,Paldean Fates,180,sv4pt5-180,https://nymsworld.github.io/Card.api/?id=sv4pt5-180
-Murkrow,Paldean Fates,181,sv4pt5-181,https://nymsworld.github.io/Card.api/?id=sv4pt5-181
-Sneasel,Paldean Fates,182,sv4pt5-182,https://nymsworld.github.io/Card.api/?id=sv4pt5-182
-Weavile,Paldean Fates,183,sv4pt5-183,https://nymsworld.github.io/Card.api/?id=sv4pt5-183
-Sableye,Paldean Fates,184,sv4pt5-184,https://nymsworld.github.io/Card.api/?id=sv4pt5-184
-Pawniard,Paldean Fates,185,sv4pt5-185,https://nymsworld.github.io/Card.api/?id=sv4pt5-185
-Bisharp,Paldean Fates,186,sv4pt5-186,https://nymsworld.github.io/Card.api/?id=sv4pt5-186
-Kingambit,Paldean Fates,187,sv4pt5-187,https://nymsworld.github.io/Card.api/?id=sv4pt5-187
-Mabosstiff,Paldean Fates,188,sv4pt5-188,https://nymsworld.github.io/Card.api/?id=sv4pt5-188
-Shroodle,Paldean Fates,189,sv4pt5-189,https://nymsworld.github.io/Card.api/?id=sv4pt5-189
-Grafaiai,Paldean Fates,190,sv4pt5-190,https://nymsworld.github.io/Card.api/?id=sv4pt5-190
-Scizor,Paldean Fates,191,sv4pt5-191,https://nymsworld.github.io/Card.api/?id=sv4pt5-191
-Varoom,Paldean Fates,192,sv4pt5-192,https://nymsworld.github.io/Card.api/?id=sv4pt5-192
-Revavroom,Paldean Fates,193,sv4pt5-193,https://nymsworld.github.io/Card.api/?id=sv4pt5-193
-Noibat,Paldean Fates,194,sv4pt5-194,https://nymsworld.github.io/Card.api/?id=sv4pt5-194
-Cyclizar,Paldean Fates,195,sv4pt5-195,https://nymsworld.github.io/Card.api/?id=sv4pt5-195
-Pidgey,Paldean Fates,196,sv4pt5-196,https://nymsworld.github.io/Card.api/?id=sv4pt5-196
-Pidgeotto,Paldean Fates,197,sv4pt5-197,https://nymsworld.github.io/Card.api/?id=sv4pt5-197
-Jigglypuff,Paldean Fates,198,sv4pt5-198,https://nymsworld.github.io/Card.api/?id=sv4pt5-198
-Doduo,Paldean Fates,199,sv4pt5-199,https://nymsworld.github.io/Card.api/?id=sv4pt5-199
-Dodrio,Paldean Fates,200,sv4pt5-200,https://nymsworld.github.io/Card.api/?id=sv4pt5-200
-Ditto,Paldean Fates,201,sv4pt5-201,https://nymsworld.github.io/Card.api/?id=sv4pt5-201
-Snorlax,Paldean Fates,202,sv4pt5-202,https://nymsworld.github.io/Card.api/?id=sv4pt5-202
-Wingull,Paldean Fates,203,sv4pt5-203,https://nymsworld.github.io/Card.api/?id=sv4pt5-203
-Pelipper,Paldean Fates,204,sv4pt5-204,https://nymsworld.github.io/Card.api/?id=sv4pt5-204
-Skwovet,Paldean Fates,205,sv4pt5-205,https://nymsworld.github.io/Card.api/?id=sv4pt5-205
-Greedent,Paldean Fates,206,sv4pt5-206,https://nymsworld.github.io/Card.api/?id=sv4pt5-206
-Lechonk,Paldean Fates,207,sv4pt5-207,https://nymsworld.github.io/Card.api/?id=sv4pt5-207
-Oinkologne,Paldean Fates,208,sv4pt5-208,https://nymsworld.github.io/Card.api/?id=sv4pt5-208
-Tandemaus,Paldean Fates,209,sv4pt5-209,https://nymsworld.github.io/Card.api/?id=sv4pt5-209
-Maushold,Paldean Fates,210,sv4pt5-210,https://nymsworld.github.io/Card.api/?id=sv4pt5-210
-Flamigo,Paldean Fates,211,sv4pt5-211,https://nymsworld.github.io/Card.api/?id=sv4pt5-211
-Forretress ex,Paldean Fates,212,sv4pt5-212,https://nymsworld.github.io/Card.api/?id=sv4pt5-212
-Toedscruel ex,Paldean Fates,213,sv4pt5-213,https://nymsworld.github.io/Card.api/?id=sv4pt5-213
-Espathra ex,Paldean Fates,214,sv4pt5-214,https://nymsworld.github.io/Card.api/?id=sv4pt5-214
-Alakazam ex,Paldean Fates,215,sv4pt5-215,https://nymsworld.github.io/Card.api/?id=sv4pt5-215
-Mew ex,Paldean Fates,216,sv4pt5-216,https://nymsworld.github.io/Card.api/?id=sv4pt5-216
-Gardevoir ex,Paldean Fates,217,sv4pt5-217,https://nymsworld.github.io/Card.api/?id=sv4pt5-217
-Glimmora ex,Paldean Fates,218,sv4pt5-218,https://nymsworld.github.io/Card.api/?id=sv4pt5-218
-Paldean Clodsire ex,Paldean Fates,219,sv4pt5-219,https://nymsworld.github.io/Card.api/?id=sv4pt5-219
-Noivern ex,Paldean Fates,220,sv4pt5-220,https://nymsworld.github.io/Card.api/?id=sv4pt5-220
-Pidgeot ex,Paldean Fates,221,sv4pt5-221,https://nymsworld.github.io/Card.api/?id=sv4pt5-221
-Wigglytuff ex,Paldean Fates,222,sv4pt5-222,https://nymsworld.github.io/Card.api/?id=sv4pt5-222
-Squawkabilly ex,Paldean Fates,223,sv4pt5-223,https://nymsworld.github.io/Card.api/?id=sv4pt5-223
-Wugtrio,Paldean Fates,224,sv4pt5-224,https://nymsworld.github.io/Card.api/?id=sv4pt5-224
-Palafin,Paldean Fates,225,sv4pt5-225,https://nymsworld.github.io/Card.api/?id=sv4pt5-225
-Pawmi,Paldean Fates,226,sv4pt5-226,https://nymsworld.github.io/Card.api/?id=sv4pt5-226
-Clive,Paldean Fates,227,sv4pt5-227,https://nymsworld.github.io/Card.api/?id=sv4pt5-227
-Judge,Paldean Fates,228,sv4pt5-228,https://nymsworld.github.io/Card.api/?id=sv4pt5-228
-Nemona,Paldean Fates,229,sv4pt5-229,https://nymsworld.github.io/Card.api/?id=sv4pt5-229
-Paldean Student,Paldean Fates,230,sv4pt5-230,https://nymsworld.github.io/Card.api/?id=sv4pt5-230
-Paldean Student,Paldean Fates,231,sv4pt5-231,https://nymsworld.github.io/Card.api/?id=sv4pt5-231
-Mew ex,Paldean Fates,232,sv4pt5-232,https://nymsworld.github.io/Card.api/?id=sv4pt5-232
-Gardevoir ex,Paldean Fates,233,sv4pt5-233,https://nymsworld.github.io/Card.api/?id=sv4pt5-233
-Charizard ex,Paldean Fates,234,sv4pt5-234,https://nymsworld.github.io/Card.api/?id=sv4pt5-234
-Arven,Paldean Fates,235,sv4pt5-235,https://nymsworld.github.io/Card.api/?id=sv4pt5-235
-Clive,Paldean Fates,236,sv4pt5-236,https://nymsworld.github.io/Card.api/?id=sv4pt5-236
-Iono,Paldean Fates,237,sv4pt5-237,https://nymsworld.github.io/Card.api/?id=sv4pt5-237
-Nemona,Paldean Fates,238,sv4pt5-238,https://nymsworld.github.io/Card.api/?id=sv4pt5-238
-Penny,Paldean Fates,239,sv4pt5-239,https://nymsworld.github.io/Card.api/?id=sv4pt5-239
-Wo-Chien ex,Paldean Fates,240,sv4pt5-240,https://nymsworld.github.io/Card.api/?id=sv4pt5-240
-Chi-Yu ex,Paldean Fates,241,sv4pt5-241,https://nymsworld.github.io/Card.api/?id=sv4pt5-241
-Chien-Pao ex,Paldean Fates,242,sv4pt5-242,https://nymsworld.github.io/Card.api/?id=sv4pt5-242
-Miraidon ex,Paldean Fates,243,sv4pt5-243,https://nymsworld.github.io/Card.api/?id=sv4pt5-243
-Ting-Lu ex,Paldean Fates,244,sv4pt5-244,https://nymsworld.github.io/Card.api/?id=sv4pt5-244
-Koraidon ex,Paldean Fates,245,sv4pt5-245,https://nymsworld.github.io/Card.api/?id=sv4pt5-245
-Crustle,Paradox Rift,183,sv4-183,https://nymsworld.github.io/Card.api/?id=sv4-183
-Dottler,Paradox Rift,184,sv4-184,https://nymsworld.github.io/Card.api/?id=sv4-184
-Toedscruel,Paradox Rift,185,sv4-185,https://nymsworld.github.io/Card.api/?id=sv4-185
-Magby,Paradox Rift,186,sv4-186,https://nymsworld.github.io/Card.api/?id=sv4-186
-Iron Moth,Paradox Rift,187,sv4-187,https://nymsworld.github.io/Card.api/?id=sv4-187
-Snorunt,Paradox Rift,188,sv4-188,https://nymsworld.github.io/Card.api/?id=sv4-188
-Mantyke,Paradox Rift,189,sv4-189,https://nymsworld.github.io/Card.api/?id=sv4-189
-Vanillish,Paradox Rift,190,sv4-190,https://nymsworld.github.io/Card.api/?id=sv4-190
-Wimpod,Paradox Rift,191,sv4-191,https://nymsworld.github.io/Card.api/?id=sv4-191
-Veluza,Paradox Rift,192,sv4-192,https://nymsworld.github.io/Card.api/?id=sv4-192
-Plusle,Paradox Rift,193,sv4-193,https://nymsworld.github.io/Card.api/?id=sv4-193
-Minun,Paradox Rift,194,sv4-194,https://nymsworld.github.io/Card.api/?id=sv4-194
-Blitzle,Paradox Rift,195,sv4-195,https://nymsworld.github.io/Card.api/?id=sv4-195
-Joltik,Paradox Rift,196,sv4-196,https://nymsworld.github.io/Card.api/?id=sv4-196
-Espathra,Paradox Rift,197,sv4-197,https://nymsworld.github.io/Card.api/?id=sv4-197
-Gimmighoul,Paradox Rift,198,sv4-198,https://nymsworld.github.io/Card.api/?id=sv4-198
-Groudon,Paradox Rift,199,sv4-199,https://nymsworld.github.io/Card.api/?id=sv4-199
-Mienshao,Paradox Rift,200,sv4-200,https://nymsworld.github.io/Card.api/?id=sv4-200
-Minior,Paradox Rift,201,sv4-201,https://nymsworld.github.io/Card.api/?id=sv4-201
-Garganacl,Paradox Rift,202,sv4-202,https://nymsworld.github.io/Card.api/?id=sv4-202
-Slither Wing,Paradox Rift,203,sv4-203,https://nymsworld.github.io/Card.api/?id=sv4-203
-Garbodor,Paradox Rift,204,sv4-204,https://nymsworld.github.io/Card.api/?id=sv4-204
-Yveltal,Paradox Rift,205,sv4-205,https://nymsworld.github.io/Card.api/?id=sv4-205
-Morpeko,Paradox Rift,206,sv4-206,https://nymsworld.github.io/Card.api/?id=sv4-206
-Brute Bonnet,Paradox Rift,207,sv4-207,https://nymsworld.github.io/Card.api/?id=sv4-207
-Steelix,Paradox Rift,208,sv4-208,https://nymsworld.github.io/Card.api/?id=sv4-208
-Ferrothorn,Paradox Rift,209,sv4-209,https://nymsworld.github.io/Card.api/?id=sv4-209
-Aegislash,Paradox Rift,210,sv4-210,https://nymsworld.github.io/Card.api/?id=sv4-210
-Aipom,Paradox Rift,211,sv4-211,https://nymsworld.github.io/Card.api/?id=sv4-211
-Loudred,Paradox Rift,212,sv4-212,https://nymsworld.github.io/Card.api/?id=sv4-212
-Swablu,Paradox Rift,213,sv4-213,https://nymsworld.github.io/Card.api/?id=sv4-213
-Porygon-Z,Paradox Rift,214,sv4-214,https://nymsworld.github.io/Card.api/?id=sv4-214
-Cyclizar,Paradox Rift,215,sv4-215,https://nymsworld.github.io/Card.api/?id=sv4-215
-Iron Jugulis,Paradox Rift,216,sv4-216,https://nymsworld.github.io/Card.api/?id=sv4-216
-Froslass ex,Paradox Rift,217,sv4-217,https://nymsworld.github.io/Card.api/?id=sv4-217
-Armarouge ex,Paradox Rift,218,sv4-218,https://nymsworld.github.io/Card.api/?id=sv4-218
-Garchomp ex,Paradox Rift,219,sv4-219,https://nymsworld.github.io/Card.api/?id=sv4-219
-Tsareena ex,Paradox Rift,220,sv4-220,https://nymsworld.github.io/Card.api/?id=sv4-220
-Golisopod ex,Paradox Rift,221,sv4-221,https://nymsworld.github.io/Card.api/?id=sv4-221
-Tapu Koko ex,Paradox Rift,222,sv4-222,https://nymsworld.github.io/Card.api/?id=sv4-222
-Iron Hands ex,Paradox Rift,223,sv4-223,https://nymsworld.github.io/Card.api/?id=sv4-223
-Cofagrigus ex,Paradox Rift,224,sv4-224,https://nymsworld.github.io/Card.api/?id=sv4-224
-Iron Valiant ex,Paradox Rift,225,sv4-225,https://nymsworld.github.io/Card.api/?id=sv4-225
-Hoopa ex,Paradox Rift,226,sv4-226,https://nymsworld.github.io/Card.api/?id=sv4-226
-Toxtricity ex,Paradox Rift,227,sv4-227,https://nymsworld.github.io/Card.api/?id=sv4-227
-Sandy Shocks ex,Paradox Rift,228,sv4-228,https://nymsworld.github.io/Card.api/?id=sv4-228
-Roaring Moon ex,Paradox Rift,229,sv4-229,https://nymsworld.github.io/Card.api/?id=sv4-229
-Aegislash ex,Paradox Rift,230,sv4-230,https://nymsworld.github.io/Card.api/?id=sv4-230
-Gholdengo ex,Paradox Rift,231,sv4-231,https://nymsworld.github.io/Card.api/?id=sv4-231
-Altaria ex,Paradox Rift,232,sv4-232,https://nymsworld.github.io/Card.api/?id=sv4-232
-Maushold ex,Paradox Rift,233,sv4-233,https://nymsworld.github.io/Card.api/?id=sv4-233
-Bombirdier ex,Paradox Rift,234,sv4-234,https://nymsworld.github.io/Card.api/?id=sv4-234
-Larry,Paradox Rift,235,sv4-235,https://nymsworld.github.io/Card.api/?id=sv4-235
-Mela,Paradox Rift,236,sv4-236,https://nymsworld.github.io/Card.api/?id=sv4-236
-Norman,Paradox Rift,237,sv4-237,https://nymsworld.github.io/Card.api/?id=sv4-237
-Parasol Lady,Paradox Rift,238,sv4-238,https://nymsworld.github.io/Card.api/?id=sv4-238
-Professor Sada's Vitality,Paradox Rift,239,sv4-239,https://nymsworld.github.io/Card.api/?id=sv4-239
-Professor Turo's Scenario,Paradox Rift,240,sv4-240,https://nymsworld.github.io/Card.api/?id=sv4-240
-Rika,Paradox Rift,241,sv4-241,https://nymsworld.github.io/Card.api/?id=sv4-241
-Roark,Paradox Rift,242,sv4-242,https://nymsworld.github.io/Card.api/?id=sv4-242
-Shauntal,Paradox Rift,243,sv4-243,https://nymsworld.github.io/Card.api/?id=sv4-243
-Tulip,Paradox Rift,244,sv4-244,https://nymsworld.github.io/Card.api/?id=sv4-244
-Garchomp ex,Paradox Rift,245,sv4-245,https://nymsworld.github.io/Card.api/?id=sv4-245
-Golisopod ex,Paradox Rift,246,sv4-246,https://nymsworld.github.io/Card.api/?id=sv4-246
-Tapu Koko ex,Paradox Rift,247,sv4-247,https://nymsworld.github.io/Card.api/?id=sv4-247
-Iron Hands ex,Paradox Rift,248,sv4-248,https://nymsworld.github.io/Card.api/?id=sv4-248
-Iron Valiant ex,Paradox Rift,249,sv4-249,https://nymsworld.github.io/Card.api/?id=sv4-249
-Sandy Shocks ex,Paradox Rift,250,sv4-250,https://nymsworld.github.io/Card.api/?id=sv4-250
-Roaring Moon ex,Paradox Rift,251,sv4-251,https://nymsworld.github.io/Card.api/?id=sv4-251
-Gholdengo ex,Paradox Rift,252,sv4-252,https://nymsworld.github.io/Card.api/?id=sv4-252
-Altaria ex,Paradox Rift,253,sv4-253,https://nymsworld.github.io/Card.api/?id=sv4-253
-Mela,Paradox Rift,254,sv4-254,https://nymsworld.github.io/Card.api/?id=sv4-254
-Parasol Lady,Paradox Rift,255,sv4-255,https://nymsworld.github.io/Card.api/?id=sv4-255
-Professor Sada's Vitality,Paradox Rift,256,sv4-256,https://nymsworld.github.io/Card.api/?id=sv4-256
-Professor Turo's Scenario,Paradox Rift,257,sv4-257,https://nymsworld.github.io/Card.api/?id=sv4-257
-Rika,Paradox Rift,258,sv4-258,https://nymsworld.github.io/Card.api/?id=sv4-258
-Tulip,Paradox Rift,259,sv4-259,https://nymsworld.github.io/Card.api/?id=sv4-259
-Garchomp ex,Paradox Rift,260,sv4-260,https://nymsworld.github.io/Card.api/?id=sv4-260
-Iron Valiant ex,Paradox Rift,261,sv4-261,https://nymsworld.github.io/Card.api/?id=sv4-261
-Roaring Moon ex,Paradox Rift,262,sv4-262,https://nymsworld.github.io/Card.api/?id=sv4-262
-Beach Court,Paradox Rift,263,sv4-263,https://nymsworld.github.io/Card.api/?id=sv4-263
-Counter Catcher,Paradox Rift,264,sv4-264,https://nymsworld.github.io/Card.api/?id=sv4-264
-Luxurious Cape,Paradox Rift,265,sv4-265,https://nymsworld.github.io/Card.api/?id=sv4-265
-Reversal Energy,Paradox Rift,266,sv4-266,https://nymsworld.github.io/Card.api/?id=sv4-266
-Spewpa,Perfect Order,89,me3-89,https://nymsworld.github.io/Card.api/?id=me3-89
-Rowlet,Perfect Order,90,me3-90,https://nymsworld.github.io/Card.api/?id=me3-90
-Talonflame,Perfect Order,91,me3-91,https://nymsworld.github.io/Card.api/?id=me3-91
-Aurorus,Perfect Order,92,me3-92,https://nymsworld.github.io/Card.api/?id=me3-92
-Dedenne,Perfect Order,93,me3-93,https://nymsworld.github.io/Card.api/?id=me3-93
-Clefairy,Perfect Order,94,me3-94,https://nymsworld.github.io/Card.api/?id=me3-94
-Espurr,Perfect Order,95,me3-95,https://nymsworld.github.io/Card.api/?id=me3-95
-Probopass,Perfect Order,96,me3-96,https://nymsworld.github.io/Card.api/?id=me3-96
-Drapion,Perfect Order,97,me3-97,https://nymsworld.github.io/Card.api/?id=me3-97
-Doublade,Perfect Order,98,me3-98,https://nymsworld.github.io/Card.api/?id=me3-98
-Raticate,Perfect Order,99,me3-99,https://nymsworld.github.io/Card.api/?id=me3-99
-Decidueye ex,Perfect Order,100,me3-100,https://nymsworld.github.io/Card.api/?id=me3-100
-Salazzle ex,Perfect Order,101,me3-101,https://nymsworld.github.io/Card.api/?id=me3-101
-Mega Starmie ex,Perfect Order,102,me3-102,https://nymsworld.github.io/Card.api/?id=me3-102
-Mega Clefable ex,Perfect Order,103,me3-103,https://nymsworld.github.io/Card.api/?id=me3-103
-Mega Zygarde ex,Perfect Order,104,me3-104,https://nymsworld.github.io/Card.api/?id=me3-104
-Yveltal ex,Perfect Order,105,me3-105,https://nymsworld.github.io/Card.api/?id=me3-105
-Mega Skarmory ex,Perfect Order,106,me3-106,https://nymsworld.github.io/Card.api/?id=me3-106
-Meowth ex,Perfect Order,107,me3-107,https://nymsworld.github.io/Card.api/?id=me3-107
-Energy Recycler,Perfect Order,108,me3-108,https://nymsworld.github.io/Card.api/?id=me3-108
-Forest of Vitality,Perfect Order,109,me3-109,https://nymsworld.github.io/Card.api/?id=me3-109
-Jacinthe,Perfect Order,110,me3-110,https://nymsworld.github.io/Card.api/?id=me3-110
-Lumiose City,Perfect Order,111,me3-111,https://nymsworld.github.io/Card.api/?id=me3-111
-Naveen,Perfect Order,112,me3-112,https://nymsworld.github.io/Card.api/?id=me3-112
-Poké Pad,Perfect Order,113,me3-113,https://nymsworld.github.io/Card.api/?id=me3-113
-Rosa's Encouragement,Perfect Order,114,me3-114,https://nymsworld.github.io/Card.api/?id=me3-114
-Sacred Ash,Perfect Order,115,me3-115,https://nymsworld.github.io/Card.api/?id=me3-115
-Tarragon,Perfect Order,116,me3-116,https://nymsworld.github.io/Card.api/?id=me3-116
-Wondrous Patch,Perfect Order,117,me3-117,https://nymsworld.github.io/Card.api/?id=me3-117
-Mega Starmie ex,Perfect Order,118,me3-118,https://nymsworld.github.io/Card.api/?id=me3-118
-Mega Clefable ex,Perfect Order,119,me3-119,https://nymsworld.github.io/Card.api/?id=me3-119
-Mega Zygarde ex,Perfect Order,120,me3-120,https://nymsworld.github.io/Card.api/?id=me3-120
-Meowth ex,Perfect Order,121,me3-121,https://nymsworld.github.io/Card.api/?id=me3-121
-Jacinthe,Perfect Order,122,me3-122,https://nymsworld.github.io/Card.api/?id=me3-122
-Rosa's Encouragement,Perfect Order,123,me3-123,https://nymsworld.github.io/Card.api/?id=me3-123
-Mega Zygarde ex,Perfect Order,124,me3-124,https://nymsworld.github.io/Card.api/?id=me3-124
-Ludicolo,Phantasmal Flames,95,me2-95,https://nymsworld.github.io/Card.api/?id=me2-95
-Nymble,Phantasmal Flames,96,me2-96,https://nymsworld.github.io/Card.api/?id=me2-96
-Dewgong,Phantasmal Flames,97,me2-97,https://nymsworld.github.io/Card.api/?id=me2-97
-Piplup,Phantasmal Flames,98,me2-98,https://nymsworld.github.io/Card.api/?id=me2-98
-Yamper,Phantasmal Flames,99,me2-99,https://nymsworld.github.io/Card.api/?id=me2-99
-Zacian,Phantasmal Flames,100,me2-100,https://nymsworld.github.io/Card.api/?id=me2-100
-Flygon,Phantasmal Flames,101,me2-101,https://nymsworld.github.io/Card.api/?id=me2-101
-Paldean Wooper,Phantasmal Flames,102,me2-102,https://nymsworld.github.io/Card.api/?id=me2-102
-Toxtricity,Phantasmal Flames,103,me2-103,https://nymsworld.github.io/Card.api/?id=me2-103
-Togedemaru,Phantasmal Flames,104,me2-104,https://nymsworld.github.io/Card.api/?id=me2-104
-Wigglytuff,Phantasmal Flames,105,me2-105,https://nymsworld.github.io/Card.api/?id=me2-105
-Meowth,Phantasmal Flames,106,me2-106,https://nymsworld.github.io/Card.api/?id=me2-106
-Ambipom,Phantasmal Flames,107,me2-107,https://nymsworld.github.io/Card.api/?id=me2-107
-Mega Heracross ex,Phantasmal Flames,108,me2-108,https://nymsworld.github.io/Card.api/?id=me2-108
-Mega Charizard X ex,Phantasmal Flames,109,me2-109,https://nymsworld.github.io/Card.api/?id=me2-109
-Oricorio ex,Phantasmal Flames,110,me2-110,https://nymsworld.github.io/Card.api/?id=me2-110
-Rotom ex,Phantasmal Flames,111,me2-111,https://nymsworld.github.io/Card.api/?id=me2-111
-Mismagius ex,Phantasmal Flames,112,me2-112,https://nymsworld.github.io/Card.api/?id=me2-112
-Mega Sharpedo ex,Phantasmal Flames,113,me2-113,https://nymsworld.github.io/Card.api/?id=me2-113
-Empoleon ex,Phantasmal Flames,114,me2-114,https://nymsworld.github.io/Card.api/?id=me2-114
-Mega Lopunny ex,Phantasmal Flames,115,me2-115,https://nymsworld.github.io/Card.api/?id=me2-115
-Battle Cage,Phantasmal Flames,116,me2-116,https://nymsworld.github.io/Card.api/?id=me2-116
-Blowtorch,Phantasmal Flames,117,me2-117,https://nymsworld.github.io/Card.api/?id=me2-117
-Dawn,Phantasmal Flames,118,me2-118,https://nymsworld.github.io/Card.api/?id=me2-118
-Firebreather,Phantasmal Flames,119,me2-119,https://nymsworld.github.io/Card.api/?id=me2-119
-Grimsley's Move,Phantasmal Flames,120,me2-120,https://nymsworld.github.io/Card.api/?id=me2-120
-Punk Helmet,Phantasmal Flames,121,me2-121,https://nymsworld.github.io/Card.api/?id=me2-121
-Sacred Charm,Phantasmal Flames,122,me2-122,https://nymsworld.github.io/Card.api/?id=me2-122
-Switch,Phantasmal Flames,123,me2-123,https://nymsworld.github.io/Card.api/?id=me2-123
-Ignition Energy,Phantasmal Flames,124,me2-124,https://nymsworld.github.io/Card.api/?id=me2-124
-Mega Charizard X ex,Phantasmal Flames,125,me2-125,https://nymsworld.github.io/Card.api/?id=me2-125
-Rotom ex,Phantasmal Flames,126,me2-126,https://nymsworld.github.io/Card.api/?id=me2-126
-Mega Sharpedo ex,Phantasmal Flames,127,me2-127,https://nymsworld.github.io/Card.api/?id=me2-127
-Mega Lopunny ex,Phantasmal Flames,128,me2-128,https://nymsworld.github.io/Card.api/?id=me2-128
-Dawn,Phantasmal Flames,129,me2-129,https://nymsworld.github.io/Card.api/?id=me2-129
-Mega Charizard X ex,Phantasmal Flames,130,me2-130,https://nymsworld.github.io/Card.api/?id=me2-130
-Fomantis,Pitch Black,85,me5-85,https://nymsworld.github.io/Card.api/?id=me5-85
-Armarouge,Pitch Black,86,me5-86,https://nymsworld.github.io/Card.api/?id=me5-86
-Goldeen,Pitch Black,87,me5-87,https://nymsworld.github.io/Card.api/?id=me5-87
-Primarina,Pitch Black,88,me5-88,https://nymsworld.github.io/Card.api/?id=me5-88
-Manectric,Pitch Black,89,me5-89,https://nymsworld.github.io/Card.api/?id=me5-89
-Slowbro,Pitch Black,90,me5-90,https://nymsworld.github.io/Card.api/?id=me5-90
-Dhelmise,Pitch Black,91,me5-91,https://nymsworld.github.io/Card.api/?id=me5-91
-Thievul,Pitch Black,92,me5-92,https://nymsworld.github.io/Card.api/?id=me5-92
-Bastiodon,Pitch Black,93,me5-93,https://nymsworld.github.io/Card.api/?id=me5-93
-Toucannon,Pitch Black,94,me5-94,https://nymsworld.github.io/Card.api/?id=me5-94
-Silvally,Pitch Black,95,me5-95,https://nymsworld.github.io/Card.api/?id=me5-95
-Lurantis ex,Pitch Black,96,me5-96,https://nymsworld.github.io/Card.api/?id=me5-96
-Wailord ex,Pitch Black,97,me5-97,https://nymsworld.github.io/Card.api/?id=me5-97
-Mega Zeraora ex,Pitch Black,98,me5-98,https://nymsworld.github.io/Card.api/?id=me5-98
-Mega Chandelure ex,Pitch Black,99,me5-99,https://nymsworld.github.io/Card.api/?id=me5-99
-Rampardos ex,Pitch Black,100,me5-100,https://nymsworld.github.io/Card.api/?id=me5-100
-Mega Darkrai ex,Pitch Black,101,me5-101,https://nymsworld.github.io/Card.api/?id=me5-101
-Morpeko ex,Pitch Black,102,me5-102,https://nymsworld.github.io/Card.api/?id=me5-102
-Mega Excadrill ex,Pitch Black,103,me5-103,https://nymsworld.github.io/Card.api/?id=me5-103
-Brave Bangle,Pitch Black,104,me5-104,https://nymsworld.github.io/Card.api/?id=me5-104
-Crushing Hammer,Pitch Black,105,me5-105,https://nymsworld.github.io/Card.api/?id=me5-105
-Dark Bell,Pitch Black,106,me5-106,https://nymsworld.github.io/Card.api/?id=me5-106
-Energy Switch,Pitch Black,107,me5-107,https://nymsworld.github.io/Card.api/?id=me5-107
-Gladion's Final Battle,Pitch Black,108,me5-108,https://nymsworld.github.io/Card.api/?id=me5-108
-Gwynn,Pitch Black,109,me5-109,https://nymsworld.github.io/Card.api/?id=me5-109
-Iron Defender,Pitch Black,110,me5-110,https://nymsworld.github.io/Card.api/?id=me5-110
-Misty's Vitality,Pitch Black,111,me5-111,https://nymsworld.github.io/Card.api/?id=me5-111
-Rust Syndicate Grunt,Pitch Black,112,me5-112,https://nymsworld.github.io/Card.api/?id=me5-112
-Tremendous Bomb,Pitch Black,113,me5-113,https://nymsworld.github.io/Card.api/?id=me5-113
-Mega Zeraora ex,Pitch Black,114,me5-114,https://nymsworld.github.io/Card.api/?id=me5-114
-Mega Chandelure ex,Pitch Black,115,me5-115,https://nymsworld.github.io/Card.api/?id=me5-115
-Mega Darkrai ex,Pitch Black,116,me5-116,https://nymsworld.github.io/Card.api/?id=me5-116
-Morpeko ex,Pitch Black,117,me5-117,https://nymsworld.github.io/Card.api/?id=me5-117
-Gladion's Final Battle,Pitch Black,118,me5-118,https://nymsworld.github.io/Card.api/?id=me5-118
-Gwynn,Pitch Black,119,me5-119,https://nymsworld.github.io/Card.api/?id=me5-119
-Mega Darkrai ex,Pitch Black,120,me5-120,https://nymsworld.github.io/Card.api/?id=me5-120
-Amarys,Prismatic Evolutions,132,sv8pt5-132,https://nymsworld.github.io/Card.api/?id=sv8pt5-132
-Atticus,Prismatic Evolutions,133,sv8pt5-133,https://nymsworld.github.io/Card.api/?id=sv8pt5-133
-Atticus,Prismatic Evolutions,134,sv8pt5-134,https://nymsworld.github.io/Card.api/?id=sv8pt5-134
-Brassius,Prismatic Evolutions,135,sv8pt5-135,https://nymsworld.github.io/Card.api/?id=sv8pt5-135
-Eri,Prismatic Evolutions,136,sv8pt5-136,https://nymsworld.github.io/Card.api/?id=sv8pt5-136
-Friends in Paldea,Prismatic Evolutions,137,sv8pt5-137,https://nymsworld.github.io/Card.api/?id=sv8pt5-137
-Giacomo,Prismatic Evolutions,138,sv8pt5-138,https://nymsworld.github.io/Card.api/?id=sv8pt5-138
-Larry's Skill,Prismatic Evolutions,139,sv8pt5-139,https://nymsworld.github.io/Card.api/?id=sv8pt5-139
-Mela,Prismatic Evolutions,140,sv8pt5-140,https://nymsworld.github.io/Card.api/?id=sv8pt5-140
-Ortega,Prismatic Evolutions,141,sv8pt5-141,https://nymsworld.github.io/Card.api/?id=sv8pt5-141
-Raifort,Prismatic Evolutions,142,sv8pt5-142,https://nymsworld.github.io/Card.api/?id=sv8pt5-142
-Tyme,Prismatic Evolutions,143,sv8pt5-143,https://nymsworld.github.io/Card.api/?id=sv8pt5-143
-Leafeon ex,Prismatic Evolutions,144,sv8pt5-144,https://nymsworld.github.io/Card.api/?id=sv8pt5-144
-Teal Mask Ogerpon ex,Prismatic Evolutions,145,sv8pt5-145,https://nymsworld.github.io/Card.api/?id=sv8pt5-145
-Flareon ex,Prismatic Evolutions,146,sv8pt5-146,https://nymsworld.github.io/Card.api/?id=sv8pt5-146
-Ceruledge ex,Prismatic Evolutions,147,sv8pt5-147,https://nymsworld.github.io/Card.api/?id=sv8pt5-147
-Hearthflame Mask Ogerpon ex,Prismatic Evolutions,148,sv8pt5-148,https://nymsworld.github.io/Card.api/?id=sv8pt5-148
-Vaporeon ex,Prismatic Evolutions,149,sv8pt5-149,https://nymsworld.github.io/Card.api/?id=sv8pt5-149
-Glaceon ex,Prismatic Evolutions,150,sv8pt5-150,https://nymsworld.github.io/Card.api/?id=sv8pt5-150
-Palafin ex,Prismatic Evolutions,151,sv8pt5-151,https://nymsworld.github.io/Card.api/?id=sv8pt5-151
-Wellspring Mask Ogerpon ex,Prismatic Evolutions,152,sv8pt5-152,https://nymsworld.github.io/Card.api/?id=sv8pt5-152
-Jolteon ex,Prismatic Evolutions,153,sv8pt5-153,https://nymsworld.github.io/Card.api/?id=sv8pt5-153
-Iron Hands ex,Prismatic Evolutions,154,sv8pt5-154,https://nymsworld.github.io/Card.api/?id=sv8pt5-154
-Espeon ex,Prismatic Evolutions,155,sv8pt5-155,https://nymsworld.github.io/Card.api/?id=sv8pt5-155
-Sylveon ex,Prismatic Evolutions,156,sv8pt5-156,https://nymsworld.github.io/Card.api/?id=sv8pt5-156
-Iron Valiant ex,Prismatic Evolutions,157,sv8pt5-157,https://nymsworld.github.io/Card.api/?id=sv8pt5-157
-Iron Crown ex,Prismatic Evolutions,158,sv8pt5-158,https://nymsworld.github.io/Card.api/?id=sv8pt5-158
-Sandy Shocks ex,Prismatic Evolutions,159,sv8pt5-159,https://nymsworld.github.io/Card.api/?id=sv8pt5-159
-Cornerstone Mask Ogerpon ex,Prismatic Evolutions,160,sv8pt5-160,https://nymsworld.github.io/Card.api/?id=sv8pt5-160
-Umbreon ex,Prismatic Evolutions,161,sv8pt5-161,https://nymsworld.github.io/Card.api/?id=sv8pt5-161
-Roaring Moon ex,Prismatic Evolutions,162,sv8pt5-162,https://nymsworld.github.io/Card.api/?id=sv8pt5-162
-Pecharunt ex,Prismatic Evolutions,163,sv8pt5-163,https://nymsworld.github.io/Card.api/?id=sv8pt5-163
-Gholdengo ex,Prismatic Evolutions,164,sv8pt5-164,https://nymsworld.github.io/Card.api/?id=sv8pt5-164
-Dragapult ex,Prismatic Evolutions,165,sv8pt5-165,https://nymsworld.github.io/Card.api/?id=sv8pt5-165
-Raging Bolt ex,Prismatic Evolutions,166,sv8pt5-166,https://nymsworld.github.io/Card.api/?id=sv8pt5-166
-Eevee ex,Prismatic Evolutions,167,sv8pt5-167,https://nymsworld.github.io/Card.api/?id=sv8pt5-167
-Bloodmoon Ursaluna ex,Prismatic Evolutions,168,sv8pt5-168,https://nymsworld.github.io/Card.api/?id=sv8pt5-168
-Terapagos ex,Prismatic Evolutions,169,sv8pt5-169,https://nymsworld.github.io/Card.api/?id=sv8pt5-169
-Amarys,Prismatic Evolutions,170,sv8pt5-170,https://nymsworld.github.io/Card.api/?id=sv8pt5-170
-Crispin,Prismatic Evolutions,171,sv8pt5-171,https://nymsworld.github.io/Card.api/?id=sv8pt5-171
-Drayton,Prismatic Evolutions,172,sv8pt5-172,https://nymsworld.github.io/Card.api/?id=sv8pt5-172
-Janine's Secret Art,Prismatic Evolutions,173,sv8pt5-173,https://nymsworld.github.io/Card.api/?id=sv8pt5-173
-Kieran,Prismatic Evolutions,174,sv8pt5-174,https://nymsworld.github.io/Card.api/?id=sv8pt5-174
-Lacey,Prismatic Evolutions,175,sv8pt5-175,https://nymsworld.github.io/Card.api/?id=sv8pt5-175
-Iron Leaves ex,Prismatic Evolutions,176,sv8pt5-176,https://nymsworld.github.io/Card.api/?id=sv8pt5-176
-Teal Mask Ogerpon ex,Prismatic Evolutions,177,sv8pt5-177,https://nymsworld.github.io/Card.api/?id=sv8pt5-177
-Walking Wake ex,Prismatic Evolutions,178,sv8pt5-178,https://nymsworld.github.io/Card.api/?id=sv8pt5-178
-Pikachu ex,Prismatic Evolutions,179,sv8pt5-179,https://nymsworld.github.io/Card.api/?id=sv8pt5-179
-Terapagos ex,Prismatic Evolutions,180,sv8pt5-180,https://nymsworld.github.io/Card.api/?id=sv8pt5-180
-Tarountula,Scarlet & Violet,199,sv1-199,https://nymsworld.github.io/Card.api/?id=sv1-199
-Dolliv,Scarlet & Violet,200,sv1-200,https://nymsworld.github.io/Card.api/?id=sv1-200
-Toedscool,Scarlet & Violet,201,sv1-201,https://nymsworld.github.io/Card.api/?id=sv1-201
-Scovillain,Scarlet & Violet,202,sv1-202,https://nymsworld.github.io/Card.api/?id=sv1-202
-Armarouge,Scarlet & Violet,203,sv1-203,https://nymsworld.github.io/Card.api/?id=sv1-203
-Slowpoke,Scarlet & Violet,204,sv1-204,https://nymsworld.github.io/Card.api/?id=sv1-204
-Clauncher,Scarlet & Violet,205,sv1-205,https://nymsworld.github.io/Card.api/?id=sv1-205
-Wiglett,Scarlet & Violet,206,sv1-206,https://nymsworld.github.io/Card.api/?id=sv1-206
-Dondozo,Scarlet & Violet,207,sv1-207,https://nymsworld.github.io/Card.api/?id=sv1-207
-Pachirisu,Scarlet & Violet,208,sv1-208,https://nymsworld.github.io/Card.api/?id=sv1-208
-Pawmot,Scarlet & Violet,209,sv1-209,https://nymsworld.github.io/Card.api/?id=sv1-209
-Drowzee,Scarlet & Violet,210,sv1-210,https://nymsworld.github.io/Card.api/?id=sv1-210
-Ralts,Scarlet & Violet,211,sv1-211,https://nymsworld.github.io/Card.api/?id=sv1-211
-Kirlia,Scarlet & Violet,212,sv1-212,https://nymsworld.github.io/Card.api/?id=sv1-212
-Fidough,Scarlet & Violet,213,sv1-213,https://nymsworld.github.io/Card.api/?id=sv1-213
-Greavard,Scarlet & Violet,214,sv1-214,https://nymsworld.github.io/Card.api/?id=sv1-214
-Riolu,Scarlet & Violet,215,sv1-215,https://nymsworld.github.io/Card.api/?id=sv1-215
-Sandile,Scarlet & Violet,216,sv1-216,https://nymsworld.github.io/Card.api/?id=sv1-216
-Klawf,Scarlet & Violet,217,sv1-217,https://nymsworld.github.io/Card.api/?id=sv1-217
-Mabosstiff,Scarlet & Violet,218,sv1-218,https://nymsworld.github.io/Card.api/?id=sv1-218
-Bombirdier,Scarlet & Violet,219,sv1-219,https://nymsworld.github.io/Card.api/?id=sv1-219
-Kingambit,Scarlet & Violet,220,sv1-220,https://nymsworld.github.io/Card.api/?id=sv1-220
-Starly,Scarlet & Violet,221,sv1-221,https://nymsworld.github.io/Card.api/?id=sv1-221
-Skwovet,Scarlet & Violet,222,sv1-222,https://nymsworld.github.io/Card.api/?id=sv1-222
-Spidops ex,Scarlet & Violet,223,sv1-223,https://nymsworld.github.io/Card.api/?id=sv1-223
-Arcanine ex,Scarlet & Violet,224,sv1-224,https://nymsworld.github.io/Card.api/?id=sv1-224
-Gyarados ex,Scarlet & Violet,225,sv1-225,https://nymsworld.github.io/Card.api/?id=sv1-225
-Magnezone ex,Scarlet & Violet,226,sv1-226,https://nymsworld.github.io/Card.api/?id=sv1-226
-Miraidon ex,Scarlet & Violet,227,sv1-227,https://nymsworld.github.io/Card.api/?id=sv1-227
-Gardevoir ex,Scarlet & Violet,228,sv1-228,https://nymsworld.github.io/Card.api/?id=sv1-228
-Banette ex,Scarlet & Violet,229,sv1-229,https://nymsworld.github.io/Card.api/?id=sv1-229
-Great Tusk ex,Scarlet & Violet,230,sv1-230,https://nymsworld.github.io/Card.api/?id=sv1-230
-Koraidon ex,Scarlet & Violet,231,sv1-231,https://nymsworld.github.io/Card.api/?id=sv1-231
-Toxicroak ex,Scarlet & Violet,232,sv1-232,https://nymsworld.github.io/Card.api/?id=sv1-232
-Iron Treads ex,Scarlet & Violet,233,sv1-233,https://nymsworld.github.io/Card.api/?id=sv1-233
-Oinkologne ex,Scarlet & Violet,234,sv1-234,https://nymsworld.github.io/Card.api/?id=sv1-234
-Arven,Scarlet & Violet,235,sv1-235,https://nymsworld.github.io/Card.api/?id=sv1-235
-Jacq,Scarlet & Violet,236,sv1-236,https://nymsworld.github.io/Card.api/?id=sv1-236
-Katy,Scarlet & Violet,237,sv1-237,https://nymsworld.github.io/Card.api/?id=sv1-237
-Miriam,Scarlet & Violet,238,sv1-238,https://nymsworld.github.io/Card.api/?id=sv1-238
-Penny,Scarlet & Violet,239,sv1-239,https://nymsworld.github.io/Card.api/?id=sv1-239
-Professor's Research,Scarlet & Violet,240,sv1-240,https://nymsworld.github.io/Card.api/?id=sv1-240
-Professor's Research,Scarlet & Violet,241,sv1-241,https://nymsworld.github.io/Card.api/?id=sv1-241
-Team Star Grunt,Scarlet & Violet,242,sv1-242,https://nymsworld.github.io/Card.api/?id=sv1-242
-Spidops ex,Scarlet & Violet,243,sv1-243,https://nymsworld.github.io/Card.api/?id=sv1-243
-Miraidon ex,Scarlet & Violet,244,sv1-244,https://nymsworld.github.io/Card.api/?id=sv1-244
-Gardevoir ex,Scarlet & Violet,245,sv1-245,https://nymsworld.github.io/Card.api/?id=sv1-245
-Great Tusk ex,Scarlet & Violet,246,sv1-246,https://nymsworld.github.io/Card.api/?id=sv1-246
-Koraidon ex,Scarlet & Violet,247,sv1-247,https://nymsworld.github.io/Card.api/?id=sv1-247
-Iron Treads ex,Scarlet & Violet,248,sv1-248,https://nymsworld.github.io/Card.api/?id=sv1-248
-Arven,Scarlet & Violet,249,sv1-249,https://nymsworld.github.io/Card.api/?id=sv1-249
-Jacq,Scarlet & Violet,250,sv1-250,https://nymsworld.github.io/Card.api/?id=sv1-250
-Miriam,Scarlet & Violet,251,sv1-251,https://nymsworld.github.io/Card.api/?id=sv1-251
-Penny,Scarlet & Violet,252,sv1-252,https://nymsworld.github.io/Card.api/?id=sv1-252
-Miraidon ex,Scarlet & Violet,253,sv1-253,https://nymsworld.github.io/Card.api/?id=sv1-253
-Koraidon ex,Scarlet & Violet,254,sv1-254,https://nymsworld.github.io/Card.api/?id=sv1-254
-Nest Ball,Scarlet & Violet,255,sv1-255,https://nymsworld.github.io/Card.api/?id=sv1-255
-Rare Candy,Scarlet & Violet,256,sv1-256,https://nymsworld.github.io/Card.api/?id=sv1-256
-Basic Lightning Energy,Scarlet & Violet,257,sv1-257,https://nymsworld.github.io/Card.api/?id=sv1-257
-Basic Fighting Energy,Scarlet & Violet,258,sv1-258,https://nymsworld.github.io/Card.api/?id=sv1-258
-Tapu Bulu,Shrouded Fable,65,sv6pt5-65,https://nymsworld.github.io/Card.api/?id=sv6pt5-65
-Houndoom,Shrouded Fable,66,sv6pt5-66,https://nymsworld.github.io/Card.api/?id=sv6pt5-66
-Horsea,Shrouded Fable,67,sv6pt5-67,https://nymsworld.github.io/Card.api/?id=sv6pt5-67
-Duskull,Shrouded Fable,68,sv6pt5-68,https://nymsworld.github.io/Card.api/?id=sv6pt5-68
-Dusclops,Shrouded Fable,69,sv6pt5-69,https://nymsworld.github.io/Card.api/?id=sv6pt5-69
-Dusknoir,Shrouded Fable,70,sv6pt5-70,https://nymsworld.github.io/Card.api/?id=sv6pt5-70
-Cresselia,Shrouded Fable,71,sv6pt5-71,https://nymsworld.github.io/Card.api/?id=sv6pt5-71
-Munkidori,Shrouded Fable,72,sv6pt5-72,https://nymsworld.github.io/Card.api/?id=sv6pt5-72
-Fezandipiti,Shrouded Fable,73,sv6pt5-73,https://nymsworld.github.io/Card.api/?id=sv6pt5-73
-Okidogi,Shrouded Fable,74,sv6pt5-74,https://nymsworld.github.io/Card.api/?id=sv6pt5-74
-Zorua,Shrouded Fable,75,sv6pt5-75,https://nymsworld.github.io/Card.api/?id=sv6pt5-75
-Cufant,Shrouded Fable,76,sv6pt5-76,https://nymsworld.github.io/Card.api/?id=sv6pt5-76
-Fraxure,Shrouded Fable,77,sv6pt5-77,https://nymsworld.github.io/Card.api/?id=sv6pt5-77
-Persian,Shrouded Fable,78,sv6pt5-78,https://nymsworld.github.io/Card.api/?id=sv6pt5-78
-Bewear,Shrouded Fable,79,sv6pt5-79,https://nymsworld.github.io/Card.api/?id=sv6pt5-79
-Kingdra ex,Shrouded Fable,80,sv6pt5-80,https://nymsworld.github.io/Card.api/?id=sv6pt5-80
-Revavroom ex,Shrouded Fable,81,sv6pt5-81,https://nymsworld.github.io/Card.api/?id=sv6pt5-81
-Okidogi ex,Shrouded Fable,82,sv6pt5-82,https://nymsworld.github.io/Card.api/?id=sv6pt5-82
-Munkidori ex,Shrouded Fable,83,sv6pt5-83,https://nymsworld.github.io/Card.api/?id=sv6pt5-83
-Fezandipiti ex,Shrouded Fable,84,sv6pt5-84,https://nymsworld.github.io/Card.api/?id=sv6pt5-84
-Pecharunt ex,Shrouded Fable,85,sv6pt5-85,https://nymsworld.github.io/Card.api/?id=sv6pt5-85
-Cassiopeia,Shrouded Fable,86,sv6pt5-86,https://nymsworld.github.io/Card.api/?id=sv6pt5-86
-Colress's Tenacity,Shrouded Fable,87,sv6pt5-87,https://nymsworld.github.io/Card.api/?id=sv6pt5-87
-Janine's Secret Art,Shrouded Fable,88,sv6pt5-88,https://nymsworld.github.io/Card.api/?id=sv6pt5-88
-Xerosic's Machinations,Shrouded Fable,89,sv6pt5-89,https://nymsworld.github.io/Card.api/?id=sv6pt5-89
-Okidogi ex,Shrouded Fable,90,sv6pt5-90,https://nymsworld.github.io/Card.api/?id=sv6pt5-90
-Munkidori ex,Shrouded Fable,91,sv6pt5-91,https://nymsworld.github.io/Card.api/?id=sv6pt5-91
-Fezandipiti ex,Shrouded Fable,92,sv6pt5-92,https://nymsworld.github.io/Card.api/?id=sv6pt5-92
-Pecharunt ex,Shrouded Fable,93,sv6pt5-93,https://nymsworld.github.io/Card.api/?id=sv6pt5-93
-Cassiopeia,Shrouded Fable,94,sv6pt5-94,https://nymsworld.github.io/Card.api/?id=sv6pt5-94
-Pecharunt ex,Shrouded Fable,95,sv6pt5-95,https://nymsworld.github.io/Card.api/?id=sv6pt5-95
-Earthen Vessel,Shrouded Fable,96,sv6pt5-96,https://nymsworld.github.io/Card.api/?id=sv6pt5-96
-Powerglass,Shrouded Fable,97,sv6pt5-97,https://nymsworld.github.io/Card.api/?id=sv6pt5-97
-Basic Darkness Energy,Shrouded Fable,98,sv6pt5-98,https://nymsworld.github.io/Card.api/?id=sv6pt5-98
-Basic Metal Energy,Shrouded Fable,99,sv6pt5-99,https://nymsworld.github.io/Card.api/?id=sv6pt5-99
-Bulbasaur,Stellar Crown,143,sv7-143,https://nymsworld.github.io/Card.api/?id=sv7-143
-Ledian,Stellar Crown,144,sv7-144,https://nymsworld.github.io/Card.api/?id=sv7-144
-Lileep,Stellar Crown,145,sv7-145,https://nymsworld.github.io/Card.api/?id=sv7-145
-Turtonator,Stellar Crown,146,sv7-146,https://nymsworld.github.io/Card.api/?id=sv7-146
-Raboot,Stellar Crown,147,sv7-147,https://nymsworld.github.io/Card.api/?id=sv7-147
-Squirtle,Stellar Crown,148,sv7-148,https://nymsworld.github.io/Card.api/?id=sv7-148
-Crabominable,Stellar Crown,149,sv7-149,https://nymsworld.github.io/Card.api/?id=sv7-149
-Joltik,Stellar Crown,150,sv7-150,https://nymsworld.github.io/Card.api/?id=sv7-150
-Zeraora,Stellar Crown,151,sv7-151,https://nymsworld.github.io/Card.api/?id=sv7-151
-Milcery,Stellar Crown,152,sv7-152,https://nymsworld.github.io/Card.api/?id=sv7-152
-Meditite,Stellar Crown,153,sv7-153,https://nymsworld.github.io/Card.api/?id=sv7-153
-Gulpin,Stellar Crown,154,sv7-154,https://nymsworld.github.io/Card.api/?id=sv7-154
-Archaludon,Stellar Crown,155,sv7-155,https://nymsworld.github.io/Card.api/?id=sv7-155
-Hydrapple ex,Stellar Crown,156,sv7-156,https://nymsworld.github.io/Card.api/?id=sv7-156
-Cinderace ex,Stellar Crown,157,sv7-157,https://nymsworld.github.io/Card.api/?id=sv7-157
-Lapras ex,Stellar Crown,158,sv7-158,https://nymsworld.github.io/Card.api/?id=sv7-158
-Galvantula ex,Stellar Crown,159,sv7-159,https://nymsworld.github.io/Card.api/?id=sv7-159
-Dachsbun ex,Stellar Crown,160,sv7-160,https://nymsworld.github.io/Card.api/?id=sv7-160
-Medicham ex,Stellar Crown,161,sv7-161,https://nymsworld.github.io/Card.api/?id=sv7-161
-Orthworm ex,Stellar Crown,162,sv7-162,https://nymsworld.github.io/Card.api/?id=sv7-162
-Briar,Stellar Crown,163,sv7-163,https://nymsworld.github.io/Card.api/?id=sv7-163
-Crispin,Stellar Crown,164,sv7-164,https://nymsworld.github.io/Card.api/?id=sv7-164
-Kofu,Stellar Crown,165,sv7-165,https://nymsworld.github.io/Card.api/?id=sv7-165
-Lacey,Stellar Crown,166,sv7-166,https://nymsworld.github.io/Card.api/?id=sv7-166
-Hydrapple ex,Stellar Crown,167,sv7-167,https://nymsworld.github.io/Card.api/?id=sv7-167
-Galvantula ex,Stellar Crown,168,sv7-168,https://nymsworld.github.io/Card.api/?id=sv7-168
-Dachsbun ex,Stellar Crown,169,sv7-169,https://nymsworld.github.io/Card.api/?id=sv7-169
-Terapagos ex,Stellar Crown,170,sv7-170,https://nymsworld.github.io/Card.api/?id=sv7-170
-Briar,Stellar Crown,171,sv7-171,https://nymsworld.github.io/Card.api/?id=sv7-171
-Lacey,Stellar Crown,172,sv7-172,https://nymsworld.github.io/Card.api/?id=sv7-172
-Terapagos ex,Stellar Crown,173,sv7-173,https://nymsworld.github.io/Card.api/?id=sv7-173
-Area Zero Underdepths,Stellar Crown,174,sv7-174,https://nymsworld.github.io/Card.api/?id=sv7-174
-Bravery Charm,Stellar Crown,175,sv7-175,https://nymsworld.github.io/Card.api/?id=sv7-175
-Exeggcute,Surging Sparks,192,sv8-192,https://nymsworld.github.io/Card.api/?id=sv8-192
-Vivillon,Surging Sparks,193,sv8-193,https://nymsworld.github.io/Card.api/?id=sv8-193
-Shiinotic,Surging Sparks,194,sv8-194,https://nymsworld.github.io/Card.api/?id=sv8-194
-Castform Sunny Form,Surging Sparks,195,sv8-195,https://nymsworld.github.io/Card.api/?id=sv8-195
-Larvesta,Surging Sparks,196,sv8-196,https://nymsworld.github.io/Card.api/?id=sv8-196
-Ceruledge,Surging Sparks,197,sv8-197,https://nymsworld.github.io/Card.api/?id=sv8-197
-Feebas,Surging Sparks,198,sv8-198,https://nymsworld.github.io/Card.api/?id=sv8-198
-Spheal,Surging Sparks,199,sv8-199,https://nymsworld.github.io/Card.api/?id=sv8-199
-Bruxish,Surging Sparks,200,sv8-200,https://nymsworld.github.io/Card.api/?id=sv8-200
-Cetitan,Surging Sparks,201,sv8-201,https://nymsworld.github.io/Card.api/?id=sv8-201
-Stunfisk,Surging Sparks,202,sv8-202,https://nymsworld.github.io/Card.api/?id=sv8-202
-Latios,Surging Sparks,203,sv8-203,https://nymsworld.github.io/Card.api/?id=sv8-203
-Mesprit,Surging Sparks,204,sv8-204,https://nymsworld.github.io/Card.api/?id=sv8-204
-Phanpy,Surging Sparks,205,sv8-205,https://nymsworld.github.io/Card.api/?id=sv8-205
-Vibrava,Surging Sparks,206,sv8-206,https://nymsworld.github.io/Card.api/?id=sv8-206
-Clobbopus,Surging Sparks,207,sv8-207,https://nymsworld.github.io/Card.api/?id=sv8-207
-Alolan Dugtrio,Surging Sparks,208,sv8-208,https://nymsworld.github.io/Card.api/?id=sv8-208
-Skarmory,Surging Sparks,209,sv8-209,https://nymsworld.github.io/Card.api/?id=sv8-209
-Flapple,Surging Sparks,210,sv8-210,https://nymsworld.github.io/Card.api/?id=sv8-210
-Appletun,Surging Sparks,211,sv8-211,https://nymsworld.github.io/Card.api/?id=sv8-211
-Slakoth,Surging Sparks,212,sv8-212,https://nymsworld.github.io/Card.api/?id=sv8-212
-Kecleon,Surging Sparks,213,sv8-213,https://nymsworld.github.io/Card.api/?id=sv8-213
-Braviary,Surging Sparks,214,sv8-214,https://nymsworld.github.io/Card.api/?id=sv8-214
-Durant ex,Surging Sparks,215,sv8-215,https://nymsworld.github.io/Card.api/?id=sv8-215
-Scovillain ex,Surging Sparks,216,sv8-216,https://nymsworld.github.io/Card.api/?id=sv8-216
-Milotic ex,Surging Sparks,217,sv8-217,https://nymsworld.github.io/Card.api/?id=sv8-217
-Black Kyurem ex,Surging Sparks,218,sv8-218,https://nymsworld.github.io/Card.api/?id=sv8-218
-Pikachu ex,Surging Sparks,219,sv8-219,https://nymsworld.github.io/Card.api/?id=sv8-219
-Latias ex,Surging Sparks,220,sv8-220,https://nymsworld.github.io/Card.api/?id=sv8-220
-Palossand ex,Surging Sparks,221,sv8-221,https://nymsworld.github.io/Card.api/?id=sv8-221
-Flygon ex,Surging Sparks,222,sv8-222,https://nymsworld.github.io/Card.api/?id=sv8-222
-Hydreigon ex,Surging Sparks,223,sv8-223,https://nymsworld.github.io/Card.api/?id=sv8-223
-Archaludon ex,Surging Sparks,224,sv8-224,https://nymsworld.github.io/Card.api/?id=sv8-224
-Alolan Exeggutor ex,Surging Sparks,225,sv8-225,https://nymsworld.github.io/Card.api/?id=sv8-225
-Tatsugiri ex,Surging Sparks,226,sv8-226,https://nymsworld.github.io/Card.api/?id=sv8-226
-Slaking ex,Surging Sparks,227,sv8-227,https://nymsworld.github.io/Card.api/?id=sv8-227
-Cyclizar ex,Surging Sparks,228,sv8-228,https://nymsworld.github.io/Card.api/?id=sv8-228
-Clemont's Quick Wit,Surging Sparks,229,sv8-229,https://nymsworld.github.io/Card.api/?id=sv8-229
-Cyrano,Surging Sparks,230,sv8-230,https://nymsworld.github.io/Card.api/?id=sv8-230
-Drasna,Surging Sparks,231,sv8-231,https://nymsworld.github.io/Card.api/?id=sv8-231
-Drayton,Surging Sparks,232,sv8-232,https://nymsworld.github.io/Card.api/?id=sv8-232
-Jasmine's Gaze,Surging Sparks,233,sv8-233,https://nymsworld.github.io/Card.api/?id=sv8-233
-Lisia's Appeal,Surging Sparks,234,sv8-234,https://nymsworld.github.io/Card.api/?id=sv8-234
-Surfer,Surging Sparks,235,sv8-235,https://nymsworld.github.io/Card.api/?id=sv8-235
-Durant ex,Surging Sparks,236,sv8-236,https://nymsworld.github.io/Card.api/?id=sv8-236
-Milotic ex,Surging Sparks,237,sv8-237,https://nymsworld.github.io/Card.api/?id=sv8-237
-Pikachu ex,Surging Sparks,238,sv8-238,https://nymsworld.github.io/Card.api/?id=sv8-238
-Latias ex,Surging Sparks,239,sv8-239,https://nymsworld.github.io/Card.api/?id=sv8-239
-Hydreigon ex,Surging Sparks,240,sv8-240,https://nymsworld.github.io/Card.api/?id=sv8-240
-Archaludon ex,Surging Sparks,241,sv8-241,https://nymsworld.github.io/Card.api/?id=sv8-241
-Alolan Exeggutor ex,Surging Sparks,242,sv8-242,https://nymsworld.github.io/Card.api/?id=sv8-242
-Clemont's Quick Wit,Surging Sparks,243,sv8-243,https://nymsworld.github.io/Card.api/?id=sv8-243
-Drayton,Surging Sparks,244,sv8-244,https://nymsworld.github.io/Card.api/?id=sv8-244
-Jasmine's Gaze,Surging Sparks,245,sv8-245,https://nymsworld.github.io/Card.api/?id=sv8-245
-Lisia's Appeal,Surging Sparks,246,sv8-246,https://nymsworld.github.io/Card.api/?id=sv8-246
-Pikachu ex,Surging Sparks,247,sv8-247,https://nymsworld.github.io/Card.api/?id=sv8-247
-Alolan Exeggutor ex,Surging Sparks,248,sv8-248,https://nymsworld.github.io/Card.api/?id=sv8-248
-Counter Gain,Surging Sparks,249,sv8-249,https://nymsworld.github.io/Card.api/?id=sv8-249
-Gravity Mountain,Surging Sparks,250,sv8-250,https://nymsworld.github.io/Card.api/?id=sv8-250
-Night Stretcher,Surging Sparks,251,sv8-251,https://nymsworld.github.io/Card.api/?id=sv8-251
-Jet Energy,Surging Sparks,252,sv8-252,https://nymsworld.github.io/Card.api/?id=sv8-252
-Shiftry,Temporal Forces,163,sv5-163,https://nymsworld.github.io/Card.api/?id=sv5-163
-Grotle,Temporal Forces,164,sv5-164,https://nymsworld.github.io/Card.api/?id=sv5-164
-Deerling,Temporal Forces,165,sv5-165,https://nymsworld.github.io/Card.api/?id=sv5-165
-Sawsbuck,Temporal Forces,166,sv5-166,https://nymsworld.github.io/Card.api/?id=sv5-166
-Litten,Temporal Forces,167,sv5-167,https://nymsworld.github.io/Card.api/?id=sv5-167
-Snom,Temporal Forces,168,sv5-168,https://nymsworld.github.io/Card.api/?id=sv5-168
-Charjabug,Temporal Forces,169,sv5-169,https://nymsworld.github.io/Card.api/?id=sv5-169
-Bronzor,Temporal Forces,170,sv5-170,https://nymsworld.github.io/Card.api/?id=sv5-170
-Reuniclus,Temporal Forces,171,sv5-171,https://nymsworld.github.io/Card.api/?id=sv5-171
-Cutiefly,Temporal Forces,172,sv5-172,https://nymsworld.github.io/Card.api/?id=sv5-172
-Relicanth,Temporal Forces,173,sv5-173,https://nymsworld.github.io/Card.api/?id=sv5-173
-Excadrill,Temporal Forces,174,sv5-174,https://nymsworld.github.io/Card.api/?id=sv5-174
-Mudsdale,Temporal Forces,175,sv5-175,https://nymsworld.github.io/Card.api/?id=sv5-175
-Arbok,Temporal Forces,176,sv5-176,https://nymsworld.github.io/Card.api/?id=sv5-176
-Gastly,Temporal Forces,177,sv5-177,https://nymsworld.github.io/Card.api/?id=sv5-177
-Metagross,Temporal Forces,178,sv5-178,https://nymsworld.github.io/Card.api/?id=sv5-178
-Meltan,Temporal Forces,179,sv5-179,https://nymsworld.github.io/Card.api/?id=sv5-179
-Lickitung,Temporal Forces,180,sv5-180,https://nymsworld.github.io/Card.api/?id=sv5-180
-Chatot,Temporal Forces,181,sv5-181,https://nymsworld.github.io/Card.api/?id=sv5-181
-Minccino,Temporal Forces,182,sv5-182,https://nymsworld.github.io/Card.api/?id=sv5-182
-Cinccino,Temporal Forces,183,sv5-183,https://nymsworld.github.io/Card.api/?id=sv5-183
-Drampa,Temporal Forces,184,sv5-184,https://nymsworld.github.io/Card.api/?id=sv5-184
-Torterra ex,Temporal Forces,185,sv5-185,https://nymsworld.github.io/Card.api/?id=sv5-185
-Iron Leaves ex,Temporal Forces,186,sv5-186,https://nymsworld.github.io/Card.api/?id=sv5-186
-Incineroar ex,Temporal Forces,187,sv5-187,https://nymsworld.github.io/Card.api/?id=sv5-187
-Gouging Fire ex,Temporal Forces,188,sv5-188,https://nymsworld.github.io/Card.api/?id=sv5-188
-Walking Wake ex,Temporal Forces,189,sv5-189,https://nymsworld.github.io/Card.api/?id=sv5-189
-Wugtrio ex,Temporal Forces,190,sv5-190,https://nymsworld.github.io/Card.api/?id=sv5-190
-Iron Crown ex,Temporal Forces,191,sv5-191,https://nymsworld.github.io/Card.api/?id=sv5-191
-Iron Boulder ex,Temporal Forces,192,sv5-192,https://nymsworld.github.io/Card.api/?id=sv5-192
-Gengar ex,Temporal Forces,193,sv5-193,https://nymsworld.github.io/Card.api/?id=sv5-193
-Farigiraf ex,Temporal Forces,194,sv5-194,https://nymsworld.github.io/Card.api/?id=sv5-194
-Scizor ex,Temporal Forces,195,sv5-195,https://nymsworld.github.io/Card.api/?id=sv5-195
-Raging Bolt ex,Temporal Forces,196,sv5-196,https://nymsworld.github.io/Card.api/?id=sv5-196
-Bianca's Devotion,Temporal Forces,197,sv5-197,https://nymsworld.github.io/Card.api/?id=sv5-197
-Ciphermaniac's Codebreaking,Temporal Forces,198,sv5-198,https://nymsworld.github.io/Card.api/?id=sv5-198
-Eri,Temporal Forces,199,sv5-199,https://nymsworld.github.io/Card.api/?id=sv5-199
-Explorer's Guidance,Temporal Forces,200,sv5-200,https://nymsworld.github.io/Card.api/?id=sv5-200
-Morty's Conviction,Temporal Forces,201,sv5-201,https://nymsworld.github.io/Card.api/?id=sv5-201
-Salvatore,Temporal Forces,202,sv5-202,https://nymsworld.github.io/Card.api/?id=sv5-202
-Iron Leaves ex,Temporal Forces,203,sv5-203,https://nymsworld.github.io/Card.api/?id=sv5-203
-Gouging Fire ex,Temporal Forces,204,sv5-204,https://nymsworld.github.io/Card.api/?id=sv5-204
-Walking Wake ex,Temporal Forces,205,sv5-205,https://nymsworld.github.io/Card.api/?id=sv5-205
-Iron Crown ex,Temporal Forces,206,sv5-206,https://nymsworld.github.io/Card.api/?id=sv5-206
-Iron Boulder ex,Temporal Forces,207,sv5-207,https://nymsworld.github.io/Card.api/?id=sv5-207
-Raging Bolt ex,Temporal Forces,208,sv5-208,https://nymsworld.github.io/Card.api/?id=sv5-208
-Bianca's Devotion,Temporal Forces,209,sv5-209,https://nymsworld.github.io/Card.api/?id=sv5-209
-Eri,Temporal Forces,210,sv5-210,https://nymsworld.github.io/Card.api/?id=sv5-210
-Morty's Conviction,Temporal Forces,211,sv5-211,https://nymsworld.github.io/Card.api/?id=sv5-211
-Salvatore,Temporal Forces,212,sv5-212,https://nymsworld.github.io/Card.api/?id=sv5-212
-Iron Leaves ex,Temporal Forces,213,sv5-213,https://nymsworld.github.io/Card.api/?id=sv5-213
-Gouging Fire ex,Temporal Forces,214,sv5-214,https://nymsworld.github.io/Card.api/?id=sv5-214
-Walking Wake ex,Temporal Forces,215,sv5-215,https://nymsworld.github.io/Card.api/?id=sv5-215
-Iron Crown ex,Temporal Forces,216,sv5-216,https://nymsworld.github.io/Card.api/?id=sv5-216
-Iron Boulder ex,Temporal Forces,217,sv5-217,https://nymsworld.github.io/Card.api/?id=sv5-217
-Raging Bolt ex,Temporal Forces,218,sv5-218,https://nymsworld.github.io/Card.api/?id=sv5-218
-Pinsir,Twilight Masquerade,168,sv6-168,https://nymsworld.github.io/Card.api/?id=sv6-168
-Sunflora,Twilight Masquerade,169,sv6-169,https://nymsworld.github.io/Card.api/?id=sv6-169
-Dipplin,Twilight Masquerade,170,sv6-170,https://nymsworld.github.io/Card.api/?id=sv6-170
-Poltchageist,Twilight Masquerade,171,sv6-171,https://nymsworld.github.io/Card.api/?id=sv6-171
-Torkoal,Twilight Masquerade,172,sv6-172,https://nymsworld.github.io/Card.api/?id=sv6-172
-Infernape,Twilight Masquerade,173,sv6-173,https://nymsworld.github.io/Card.api/?id=sv6-173
-Froslass,Twilight Masquerade,174,sv6-174,https://nymsworld.github.io/Card.api/?id=sv6-174
-Phione,Twilight Masquerade,175,sv6-175,https://nymsworld.github.io/Card.api/?id=sv6-175
-Cramorant,Twilight Masquerade,176,sv6-176,https://nymsworld.github.io/Card.api/?id=sv6-176
-Heliolisk,Twilight Masquerade,177,sv6-177,https://nymsworld.github.io/Card.api/?id=sv6-177
-Wattrel,Twilight Masquerade,178,sv6-178,https://nymsworld.github.io/Card.api/?id=sv6-178
-Chimecho,Twilight Masquerade,179,sv6-179,https://nymsworld.github.io/Card.api/?id=sv6-179
-Enamorus,Twilight Masquerade,180,sv6-180,https://nymsworld.github.io/Card.api/?id=sv6-180
-Hisuian Growlithe,Twilight Masquerade,181,sv6-181,https://nymsworld.github.io/Card.api/?id=sv6-181
-Probopass,Twilight Masquerade,182,sv6-182,https://nymsworld.github.io/Card.api/?id=sv6-182
-Timburr,Twilight Masquerade,183,sv6-183,https://nymsworld.github.io/Card.api/?id=sv6-183
-Lairon,Twilight Masquerade,184,sv6-184,https://nymsworld.github.io/Card.api/?id=sv6-184
-Applin,Twilight Masquerade,185,sv6-185,https://nymsworld.github.io/Card.api/?id=sv6-185
-Tatsugiri,Twilight Masquerade,186,sv6-186,https://nymsworld.github.io/Card.api/?id=sv6-186
-Chansey,Twilight Masquerade,187,sv6-187,https://nymsworld.github.io/Card.api/?id=sv6-187
-Eevee,Twilight Masquerade,188,sv6-188,https://nymsworld.github.io/Card.api/?id=sv6-188
-Sinistcha ex,Twilight Masquerade,189,sv6-189,https://nymsworld.github.io/Card.api/?id=sv6-189
-Teal Mask Ogerpon ex,Twilight Masquerade,190,sv6-190,https://nymsworld.github.io/Card.api/?id=sv6-190
-Magcargo ex,Twilight Masquerade,191,sv6-191,https://nymsworld.github.io/Card.api/?id=sv6-191
-Hearthflame Mask Ogerpon ex,Twilight Masquerade,192,sv6-192,https://nymsworld.github.io/Card.api/?id=sv6-192
-Palafin ex,Twilight Masquerade,193,sv6-193,https://nymsworld.github.io/Card.api/?id=sv6-193
-Wellspring Mask Ogerpon ex,Twilight Masquerade,194,sv6-194,https://nymsworld.github.io/Card.api/?id=sv6-194
-Luxray ex,Twilight Masquerade,195,sv6-195,https://nymsworld.github.io/Card.api/?id=sv6-195
-Iron Thorns ex,Twilight Masquerade,196,sv6-196,https://nymsworld.github.io/Card.api/?id=sv6-196
-Scream Tail ex,Twilight Masquerade,197,sv6-197,https://nymsworld.github.io/Card.api/?id=sv6-197
-Greninja ex,Twilight Masquerade,198,sv6-198,https://nymsworld.github.io/Card.api/?id=sv6-198
-Cornerstone Mask Ogerpon ex,Twilight Masquerade,199,sv6-199,https://nymsworld.github.io/Card.api/?id=sv6-199
-Dragapult ex,Twilight Masquerade,200,sv6-200,https://nymsworld.github.io/Card.api/?id=sv6-200
-Blissey ex,Twilight Masquerade,201,sv6-201,https://nymsworld.github.io/Card.api/?id=sv6-201
-Bloodmoon Ursaluna ex,Twilight Masquerade,202,sv6-202,https://nymsworld.github.io/Card.api/?id=sv6-202
-Caretaker,Twilight Masquerade,203,sv6-203,https://nymsworld.github.io/Card.api/?id=sv6-203
-Carmine,Twilight Masquerade,204,sv6-204,https://nymsworld.github.io/Card.api/?id=sv6-204
-Hassel,Twilight Masquerade,205,sv6-205,https://nymsworld.github.io/Card.api/?id=sv6-205
-Kieran,Twilight Masquerade,206,sv6-206,https://nymsworld.github.io/Card.api/?id=sv6-206
-Lana's Aid,Twilight Masquerade,207,sv6-207,https://nymsworld.github.io/Card.api/?id=sv6-207
-Lucian,Twilight Masquerade,208,sv6-208,https://nymsworld.github.io/Card.api/?id=sv6-208
-Perrin,Twilight Masquerade,209,sv6-209,https://nymsworld.github.io/Card.api/?id=sv6-209
-Sinistcha ex,Twilight Masquerade,210,sv6-210,https://nymsworld.github.io/Card.api/?id=sv6-210
-Teal Mask Ogerpon ex,Twilight Masquerade,211,sv6-211,https://nymsworld.github.io/Card.api/?id=sv6-211
-Hearthflame Mask Ogerpon ex,Twilight Masquerade,212,sv6-212,https://nymsworld.github.io/Card.api/?id=sv6-212
-Wellspring Mask Ogerpon ex,Twilight Masquerade,213,sv6-213,https://nymsworld.github.io/Card.api/?id=sv6-213
-Greninja ex,Twilight Masquerade,214,sv6-214,https://nymsworld.github.io/Card.api/?id=sv6-214
-Cornerstone Mask Ogerpon ex,Twilight Masquerade,215,sv6-215,https://nymsworld.github.io/Card.api/?id=sv6-215
-Bloodmoon Ursaluna ex,Twilight Masquerade,216,sv6-216,https://nymsworld.github.io/Card.api/?id=sv6-216
-Carmine,Twilight Masquerade,217,sv6-217,https://nymsworld.github.io/Card.api/?id=sv6-217
-Kieran,Twilight Masquerade,218,sv6-218,https://nymsworld.github.io/Card.api/?id=sv6-218
-Lana's Aid,Twilight Masquerade,219,sv6-219,https://nymsworld.github.io/Card.api/?id=sv6-219
-Perrin,Twilight Masquerade,220,sv6-220,https://nymsworld.github.io/Card.api/?id=sv6-220
-Teal Mask Ogerpon ex,Twilight Masquerade,221,sv6-221,https://nymsworld.github.io/Card.api/?id=sv6-221
-Bloodmoon Ursaluna ex,Twilight Masquerade,222,sv6-222,https://nymsworld.github.io/Card.api/?id=sv6-222
-Buddy-Buddy Poffin,Twilight Masquerade,223,sv6-223,https://nymsworld.github.io/Card.api/?id=sv6-223
-Enhanced Hammer,Twilight Masquerade,224,sv6-224,https://nymsworld.github.io/Card.api/?id=sv6-224
-Rescue Board,Twilight Masquerade,225,sv6-225,https://nymsworld.github.io/Card.api/?id=sv6-225
-Luminous Energy,Twilight Masquerade,226,sv6-226,https://nymsworld.github.io/Card.api/?id=sv6-226
-Sewaddle,White Flare,87,rsv10pt5-87,https://nymsworld.github.io/Card.api/?id=rsv10pt5-87
-Swadloon,White Flare,88,rsv10pt5-88,https://nymsworld.github.io/Card.api/?id=rsv10pt5-88
-Leavanny,White Flare,89,rsv10pt5-89,https://nymsworld.github.io/Card.api/?id=rsv10pt5-89
-Cottonee,White Flare,90,rsv10pt5-90,https://nymsworld.github.io/Card.api/?id=rsv10pt5-90
-Deerling,White Flare,91,rsv10pt5-91,https://nymsworld.github.io/Card.api/?id=rsv10pt5-91
-Sawsbuck,White Flare,92,rsv10pt5-92,https://nymsworld.github.io/Card.api/?id=rsv10pt5-92
-Shelmet,White Flare,93,rsv10pt5-93,https://nymsworld.github.io/Card.api/?id=rsv10pt5-93
-Accelgor,White Flare,94,rsv10pt5-94,https://nymsworld.github.io/Card.api/?id=rsv10pt5-94
-Virizion,White Flare,95,rsv10pt5-95,https://nymsworld.github.io/Card.api/?id=rsv10pt5-95
-Tepig,White Flare,96,rsv10pt5-96,https://nymsworld.github.io/Card.api/?id=rsv10pt5-96
-Pignite,White Flare,97,rsv10pt5-97,https://nymsworld.github.io/Card.api/?id=rsv10pt5-97
-Emboar,White Flare,98,rsv10pt5-98,https://nymsworld.github.io/Card.api/?id=rsv10pt5-98
-Pansear,White Flare,99,rsv10pt5-99,https://nymsworld.github.io/Card.api/?id=rsv10pt5-99
-Simisear,White Flare,100,rsv10pt5-100,https://nymsworld.github.io/Card.api/?id=rsv10pt5-100
-Litwick,White Flare,101,rsv10pt5-101,https://nymsworld.github.io/Card.api/?id=rsv10pt5-101
-Lampent,White Flare,102,rsv10pt5-102,https://nymsworld.github.io/Card.api/?id=rsv10pt5-102
-Chandelure,White Flare,103,rsv10pt5-103,https://nymsworld.github.io/Card.api/?id=rsv10pt5-103
-Heatmor,White Flare,104,rsv10pt5-104,https://nymsworld.github.io/Card.api/?id=rsv10pt5-104
-Oshawott,White Flare,105,rsv10pt5-105,https://nymsworld.github.io/Card.api/?id=rsv10pt5-105
-Dewott,White Flare,106,rsv10pt5-106,https://nymsworld.github.io/Card.api/?id=rsv10pt5-106
-Samurott,White Flare,107,rsv10pt5-107,https://nymsworld.github.io/Card.api/?id=rsv10pt5-107
-Basculin,White Flare,108,rsv10pt5-108,https://nymsworld.github.io/Card.api/?id=rsv10pt5-108
-Ducklett,White Flare,109,rsv10pt5-109,https://nymsworld.github.io/Card.api/?id=rsv10pt5-109
-Swanna,White Flare,110,rsv10pt5-110,https://nymsworld.github.io/Card.api/?id=rsv10pt5-110
-Vanillite,White Flare,111,rsv10pt5-111,https://nymsworld.github.io/Card.api/?id=rsv10pt5-111
-Vanillish,White Flare,112,rsv10pt5-112,https://nymsworld.github.io/Card.api/?id=rsv10pt5-112
-Vanilluxe,White Flare,113,rsv10pt5-113,https://nymsworld.github.io/Card.api/?id=rsv10pt5-113
-Blitzle,White Flare,114,rsv10pt5-114,https://nymsworld.github.io/Card.api/?id=rsv10pt5-114
-Zebstrika,White Flare,115,rsv10pt5-115,https://nymsworld.github.io/Card.api/?id=rsv10pt5-115
-Joltik,White Flare,116,rsv10pt5-116,https://nymsworld.github.io/Card.api/?id=rsv10pt5-116
-Galvantula,White Flare,117,rsv10pt5-117,https://nymsworld.github.io/Card.api/?id=rsv10pt5-117
-Stunfisk,White Flare,118,rsv10pt5-118,https://nymsworld.github.io/Card.api/?id=rsv10pt5-118
-Woobat,White Flare,119,rsv10pt5-119,https://nymsworld.github.io/Card.api/?id=rsv10pt5-119
-Swoobat,White Flare,120,rsv10pt5-120,https://nymsworld.github.io/Card.api/?id=rsv10pt5-120
-Sigilyph,White Flare,121,rsv10pt5-121,https://nymsworld.github.io/Card.api/?id=rsv10pt5-121
-Yamask,White Flare,122,rsv10pt5-122,https://nymsworld.github.io/Card.api/?id=rsv10pt5-122
-Cofagrigus,White Flare,123,rsv10pt5-123,https://nymsworld.github.io/Card.api/?id=rsv10pt5-123
-Gothita,White Flare,124,rsv10pt5-124,https://nymsworld.github.io/Card.api/?id=rsv10pt5-124
-Gothorita,White Flare,125,rsv10pt5-125,https://nymsworld.github.io/Card.api/?id=rsv10pt5-125
-Frillish,White Flare,126,rsv10pt5-126,https://nymsworld.github.io/Card.api/?id=rsv10pt5-126
-Roggenrola,White Flare,127,rsv10pt5-127,https://nymsworld.github.io/Card.api/?id=rsv10pt5-127
-Boldore,White Flare,128,rsv10pt5-128,https://nymsworld.github.io/Card.api/?id=rsv10pt5-128
-Gigalith,White Flare,129,rsv10pt5-129,https://nymsworld.github.io/Card.api/?id=rsv10pt5-129
-Sawk,White Flare,130,rsv10pt5-130,https://nymsworld.github.io/Card.api/?id=rsv10pt5-130
-Archen,White Flare,131,rsv10pt5-131,https://nymsworld.github.io/Card.api/?id=rsv10pt5-131
-Archeops,White Flare,132,rsv10pt5-132,https://nymsworld.github.io/Card.api/?id=rsv10pt5-132
-Mienfoo,White Flare,133,rsv10pt5-133,https://nymsworld.github.io/Card.api/?id=rsv10pt5-133
-Mienshao,White Flare,134,rsv10pt5-134,https://nymsworld.github.io/Card.api/?id=rsv10pt5-134
-Terrakion,White Flare,135,rsv10pt5-135,https://nymsworld.github.io/Card.api/?id=rsv10pt5-135
-Purrloin,White Flare,136,rsv10pt5-136,https://nymsworld.github.io/Card.api/?id=rsv10pt5-136
-Liepard,White Flare,137,rsv10pt5-137,https://nymsworld.github.io/Card.api/?id=rsv10pt5-137
-Scraggy,White Flare,138,rsv10pt5-138,https://nymsworld.github.io/Card.api/?id=rsv10pt5-138
-Scrafty,White Flare,139,rsv10pt5-139,https://nymsworld.github.io/Card.api/?id=rsv10pt5-139
-Trubbish,White Flare,140,rsv10pt5-140,https://nymsworld.github.io/Card.api/?id=rsv10pt5-140
-Garbodor,White Flare,141,rsv10pt5-141,https://nymsworld.github.io/Card.api/?id=rsv10pt5-141
-Zorua,White Flare,142,rsv10pt5-142,https://nymsworld.github.io/Card.api/?id=rsv10pt5-142
-Zoroark,White Flare,143,rsv10pt5-143,https://nymsworld.github.io/Card.api/?id=rsv10pt5-143
-Vullaby,White Flare,144,rsv10pt5-144,https://nymsworld.github.io/Card.api/?id=rsv10pt5-144
-Mandibuzz,White Flare,145,rsv10pt5-145,https://nymsworld.github.io/Card.api/?id=rsv10pt5-145
-Deino,White Flare,146,rsv10pt5-146,https://nymsworld.github.io/Card.api/?id=rsv10pt5-146
-Zweilous,White Flare,147,rsv10pt5-147,https://nymsworld.github.io/Card.api/?id=rsv10pt5-147
-Ferroseed,White Flare,148,rsv10pt5-148,https://nymsworld.github.io/Card.api/?id=rsv10pt5-148
-Ferrothorn,White Flare,149,rsv10pt5-149,https://nymsworld.github.io/Card.api/?id=rsv10pt5-149
-Durant,White Flare,150,rsv10pt5-150,https://nymsworld.github.io/Card.api/?id=rsv10pt5-150
-Druddigon,White Flare,151,rsv10pt5-151,https://nymsworld.github.io/Card.api/?id=rsv10pt5-151
-Patrat,White Flare,152,rsv10pt5-152,https://nymsworld.github.io/Card.api/?id=rsv10pt5-152
-Watchog,White Flare,153,rsv10pt5-153,https://nymsworld.github.io/Card.api/?id=rsv10pt5-153
-Lillipup,White Flare,154,rsv10pt5-154,https://nymsworld.github.io/Card.api/?id=rsv10pt5-154
-Herdier,White Flare,155,rsv10pt5-155,https://nymsworld.github.io/Card.api/?id=rsv10pt5-155
-Stoutland,White Flare,156,rsv10pt5-156,https://nymsworld.github.io/Card.api/?id=rsv10pt5-156
-Whimsicott ex,White Flare,157,rsv10pt5-157,https://nymsworld.github.io/Card.api/?id=rsv10pt5-157
-Reshiram ex,White Flare,158,rsv10pt5-158,https://nymsworld.github.io/Card.api/?id=rsv10pt5-158
-Keldeo ex,White Flare,159,rsv10pt5-159,https://nymsworld.github.io/Card.api/?id=rsv10pt5-159
-Jellicent ex,White Flare,160,rsv10pt5-160,https://nymsworld.github.io/Card.api/?id=rsv10pt5-160
-Hydreigon ex,White Flare,161,rsv10pt5-161,https://nymsworld.github.io/Card.api/?id=rsv10pt5-161
-Bouffalant ex,White Flare,162,rsv10pt5-162,https://nymsworld.github.io/Card.api/?id=rsv10pt5-162
-Harlequin,White Flare,163,rsv10pt5-163,https://nymsworld.github.io/Card.api/?id=rsv10pt5-163
-Hilda,White Flare,164,rsv10pt5-164,https://nymsworld.github.io/Card.api/?id=rsv10pt5-164
-Whimsicott ex,White Flare,165,rsv10pt5-165,https://nymsworld.github.io/Card.api/?id=rsv10pt5-165
-Reshiram ex,White Flare,166,rsv10pt5-166,https://nymsworld.github.io/Card.api/?id=rsv10pt5-166
-Keldeo ex,White Flare,167,rsv10pt5-167,https://nymsworld.github.io/Card.api/?id=rsv10pt5-167
-Jellicent ex,White Flare,168,rsv10pt5-168,https://nymsworld.github.io/Card.api/?id=rsv10pt5-168
-Hydreigon ex,White Flare,169,rsv10pt5-169,https://nymsworld.github.io/Card.api/?id=rsv10pt5-169
-Bouffalant ex,White Flare,170,rsv10pt5-170,https://nymsworld.github.io/Card.api/?id=rsv10pt5-170
-Hilda,White Flare,171,rsv10pt5-171,https://nymsworld.github.io/Card.api/?id=rsv10pt5-171
-Victini,White Flare,172,rsv10pt5-172,https://nymsworld.github.io/Card.api/?id=rsv10pt5-172
-Reshiram ex,White Flare,173,rsv10pt5-173,https://nymsworld.github.io/Card.api/?id=rsv10pt5-173
-Charizard,30th Classic Collection,4,me55c-4,https://nymsworld.github.io/Card.api/?id=me55c-4
-Delcatty,30th Classic Collection,5,me55c-5,https://nymsworld.github.io/Card.api/?id=me55c-5
-Metagross,30th Classic Collection,11,me55c-11,https://nymsworld.github.io/Card.api/?id=me55c-11
-Genesect EX,30th Classic Collection,11,me55c-11g,https://nymsworld.github.io/Card.api/?id=me55c-11g
-Misty,30th Classic Collection,18,me55c-18,https://nymsworld.github.io/Card.api/?id=me55c-18
-Dark Tyranitar,30th Classic Collection,19,me55c-19,https://nymsworld.github.io/Card.api/?id=me55c-19
-Sneasel,30th Classic Collection,25,me55c-25,https://nymsworld.github.io/Card.api/?id=me55c-25
-Pikachu & Zekrom GX,30th Classic Collection,33,me55c-33,https://nymsworld.github.io/Card.api/?id=me55c-33
-Greninja BREAK,30th Classic Collection,41,me55c-41,https://nymsworld.github.io/Card.api/?id=me55c-41
-Uxie,30th Classic Collection,43,me55c-43,https://nymsworld.github.io/Card.api/?id=me55c-43
-Crobat G,30th Classic Collection,47,me55c-47,https://nymsworld.github.io/Card.api/?id=me55c-47
-Raikou,30th Classic Collection,50,me55c-50,https://nymsworld.github.io/Card.api/?id=me55c-50
-Buzzwole GX,30th Classic Collection,57,me55c-57,https://nymsworld.github.io/Card.api/?id=me55c-57
-Pikachu,30th Classic Collection,58,me55c-58,https://nymsworld.github.io/Card.api/?id=me55c-58
-Erika's Jigglypuff,30th Classic Collection,69,me55c-69,https://nymsworld.github.io/Card.api/?id=me55c-69
-Rayquaza EX,30th Classic Collection,85,me55c-85,https://nymsworld.github.io/Card.api/?id=me55c-85
-Solgaleo GX,30th Classic Collection,89,me55c-89,https://nymsworld.github.io/Card.api/?id=me55c-89
-Gengar,30th Classic Collection,94,me55c-94,https://nymsworld.github.io/Card.api/?id=me55c-94
-Darkrai & Cresselia LEGEND,30th Classic Collection,99,me55c-99,https://nymsworld.github.io/Card.api/?id=me55c-99
-Darkrai & Cresselia LEGEND,30th Classic Collection,100,me55c-100,https://nymsworld.github.io/Card.api/?id=me55c-100
-N,30th Classic Collection,101,me55c-101,https://nymsworld.github.io/Card.api/?id=me55c-101
-Shining Celebi,30th Classic Collection,106,me55c-106,https://nymsworld.github.io/Card.api/?id=me55c-106
-M Gardevoir EX,30th Classic Collection,106,me55c-106m,https://nymsworld.github.io/Card.api/?id=me55c-106m
-Palkia,30th Classic Collection,106,me55c-106p,https://nymsworld.github.io/Card.api/?id=me55c-106p
-Scizor ex,30th Classic Collection,108,me55c-108,https://nymsworld.github.io/Card.api/?id=me55c-108
-Mew VMAX,30th Classic Collection,114,me55c-114,https://nymsworld.github.io/Card.api/?id=me55c-114
-Arceus VSTAR,30th Classic Collection,123,me55c-123,https://nymsworld.github.io/Card.api/?id=me55c-123
-Zacian V,30th Classic Collection,138,me55c-138,https://nymsworld.github.io/Card.api/?id=me55c-138
-Lugia,30th Classic Collection,149,me55c-149,https://nymsworld.github.io/Card.api/?id=me55c-149
-Magikarp,30th Classic Collection,203,me55c-203,https://nymsworld.github.io/Card.api/?id=me55c-203
-Hilda (Reverse Holo),White Flare,84,rsv10pt5-84-reverse,https://nymsworld.github.io/Card.api/?id=rsv10pt5-84-reverse
+import re
+import sys
+import time
+import json
+import math
+import requests
+
+PAGE_SIZE = 250
+REQUEST_DELAY = 1.5  # seconds between requests, to stay under the API's rate limit
+MAX_RETRIES = 6
+RETRY_STATUSES = (429, 500, 502, 503, 504)
+
+API_BASE = "https://api.carddex.dev/compat/pokemontcg/v2"
+CARD_FIELDS = "id,name,number,set,tcgplayer,images,rarity"
+
+# Rarities pulled from the Pokemon TCG API (Scarlet & Violet + Mega Evolution only)
+RARITY_QUERIES = ["Double Rare", "ACE SPEC Rare"]
+
+# Individual cards stocked by request (a reverse holo entry is added when one exists)
+SINGLE_CARD_IDS = [
+    "sv7-57",       # Slowpoke 057/142 (Stellar Crown)
+    "sv5-114",      # Metang 114/162 (Temporal Forces)
+    "sv9-120",      # Dunsparce 120/159 (Journey Together)
+    "sv5-161",      # Mist Energy 161/162 (Temporal Forces)
+    "rsv10pt5-84",  # Hilda 084/086 (White Flare)
+    "sv5-129",      # Dudunsparce 129/162 (Temporal Forces)
+]
+
+# Sets where every holofoil and reverse holo card is stocked
+ALL_HOLO_SETS = ["sv3pt5"]  # Scarlet & Violet 151
+
+# Sets where every card is stocked
+ALL_CARD_SETS = ["me55c"]  # 30th Classic Collection
+
+# Sets that get the condition picker on the price page (overnumbered cards always do)
+CONDITION_PRICING_SETS = ["me55c"]  # 30th Classic Collection
+
+# Every set in these eras is scanned for overnumbered (secret) cards
+OVERNUMBERED_SERIES = ["Scarlet & Violet", "Mega Evolution"]
+# Promos are numbered past their printed total by design, and Classic Collection
+# reprints keep their original numbers (e.g. Magikarp 203 in a 30-card set)
+OVERNUMBERED_SKIP_SETS = ["svp", "me55c"]
+
+# Black Star Promo sets pulled straight from TCGplayer's data via tcgcsv.com
+# (the Pokemon TCG API is missing many SV promos and has no Mega Evolution promos)
+TCGCSV_BASE = "https://tcgcsv.com/tcgplayer/3"
+# tcgcsv.com blocks requests that don't name the app sending them
+TCGCSV_HEADERS = {"User-Agent": "KantoMisplaySociety-PriceSync/1.0"}
+PROMO_GROUPS = [
+    {"groupId": 22872, "prefix": "svp", "setName": "SV Black Star Promos"},
+    {"groupId": 24451, "prefix": "mep", "setName": "ME Black Star Promos"},
+]
+PRICE_VARIANT_ORDER = ["Holofoil", "Normal", "Reverse Holofoil"]
+
+# The daily update runs in 4 parts, 30 minutes apart, so no single run sends
+# enough requests to get rate limited. Each part only replaces its own cards.
+PARTS = {
+    "1": "Double Rares, ACE SPECs, single cards, 30th Classic Collection and promos",
+    "2": "151 holos and reverse holos, plus overnumbered cards from the first half of Scarlet & Violet",
+    "3": "Overnumbered cards from the second half of Scarlet & Violet",
+    "4": "Overnumbered cards from Mega Evolution",
+}
+
+_tcgcsv_groups = None
+_tcgcsv_prices = {}
+
+
+def calculate_store_price(raw_market_price):
+    if raw_market_price is None:
+        return 1.00
+    try:
+        val = float(raw_market_price)
+    except (ValueError, TypeError):
+        return 1.00
+
+    dollar_part = math.floor(val)
+    cents_part = val - dollar_part
+    rounded_price = (dollar_part + 1) if cents_part >= 0.30 else dollar_part
+    return max(1.00, float(rounded_price))
+
+
+def get_json(url, headers=None):
+    """GETs a URL, waiting and retrying when the server says to slow down.
+    Raises if it still fails, so a partial prices.json is never saved."""
+    error = None
+    for attempt in range(MAX_RETRIES):
+        retry_after = None
+        try:
+            resp = requests.get(url, headers=headers, timeout=30)
+            if resp.status_code == 200:
+                return resp.json()
+            error = f"HTTP {resp.status_code}"
+            if resp.status_code not in RETRY_STATUSES:
+                break
+            retry_after = resp.headers.get("Retry-After")
+        except requests.RequestException as e:
+            error = str(e)
+
+        wait = int(retry_after) if retry_after and retry_after.isdigit() else min(60, 5 * 2 ** attempt)
+        print(f"  {error}, retrying in {wait}s...")
+        time.sleep(wait)
+
+    raise RuntimeError(f"Could not fetch {url}: {error}")
+
+
+def fetch_cards(query):
+    """Returns every card matching a Pokemon TCG API search, across all pages."""
+    cards = []
+    page = 1
+
+    while True:
+        url = f"{API_BASE}/cards?q={query}&page={page}&pageSize={PAGE_SIZE}&select={CARD_FIELDS}"
+        data = get_json(url)
+        page_cards = data.get("data", [])
+        if not page_cards:
+            break
+        cards.extend(page_cards)
+
+        if page * PAGE_SIZE >= data.get("totalCount", 0):
+            break
+
+        page += 1
+        time.sleep(REQUEST_DELAY)
+
+    time.sleep(REQUEST_DELAY)
+    return cards
+
+
+def market_price(card, variants):
+    prices = card.get("tcgplayer", {}).get("prices", {})
+    for variant in variants:
+        if variant in prices and prices[variant].get("market") is not None:
+            return prices[variant]["market"]
+    return None
+
+
+def has_variant(card, variant):
+    return variant in card.get("tcgplayer", {}).get("prices", {})
+
+
+def add_card(catalog, card, raw_market, card_id=None, reverse=False):
+    card_id = card_id or card.get("id")
+    name = card.get("name")
+    rarity = card.get("rarity") or "Single"
+    if reverse:
+        name += " (Reverse Holo)"
+        rarity += " Reverse Holo"
+
+    entry = {
+        "id": card_id,
+        "name": name,
+        "setName": card.get("set", {}).get("name", "Scarlet & Violet"),
+        "number": card.get("number", "???"),
+        "printedTotal": card.get("set", {}).get("printedTotal", ""),
+        "rarity": rarity,
+        "price": calculate_store_price(raw_market),
+        "rawMarket": raw_market,
+        "image": card.get("images", {}).get("small", ""),
+        "tcgUrl": card.get("tcgplayer", {}).get("url", "https://www.tcgplayer.com")
+    }
+    # The price page shows a condition picker for these cards
+    if is_overnumbered(card):
+        entry["overnumbered"] = True
+    if entry.get("overnumbered") or card.get("set", {}).get("id") in CONDITION_PRICING_SETS:
+        entry["conditionPricing"] = True
+    catalog[card_id] = entry
+
+
+def add_reverse_holo(catalog, card):
+    if has_variant(card, "reverseHolofoil"):
+        add_card(catalog, card, market_price(card, ["reverseHolofoil"]),
+                 card_id=f"{card['id']}-reverse", reverse=True)
+
+
+def tcgplayer_reverse_price(card):
+    """Looks up a card's reverse holo price straight from TCGplayer's data, for
+    cards where the Pokemon TCG API is missing it. Returns None if there isn't one."""
+    global _tcgcsv_groups
+    match = re.search(r"/product/(\d+)", card.get("tcgplayer", {}).get("url", ""))
+    if not match:
+        return None
+
+    if _tcgcsv_groups is None:
+        groups = get_json(f"{TCGCSV_BASE}/groups", headers=TCGCSV_HEADERS).get("results", [])
+        # "SV: White Flare" / "SV08: Surging Sparks" -> "white flare" / "surging sparks"
+        _tcgcsv_groups = {g["name"].split(": ", 1)[-1].lower(): g["groupId"] for g in groups}
+
+    group_id = _tcgcsv_groups.get(card.get("set", {}).get("name", "").lower())
+    if not group_id:
+        return None
+
+    if group_id not in _tcgcsv_prices:
+        rows = get_json(f"{TCGCSV_BASE}/{group_id}/prices", headers=TCGCSV_HEADERS).get("results", [])
+        _tcgcsv_prices[group_id] = rows
+        time.sleep(REQUEST_DELAY)
+
+    for row in _tcgcsv_prices[group_id]:
+        if row["productId"] == int(match.group(1)) and row.get("subTypeName") == "Reverse Holofoil":
+            return row.get("marketPrice")
+    return None
+
+
+def is_overnumbered(card):
+    if card.get("set", {}).get("id") in OVERNUMBERED_SKIP_SETS:
+        return False
+    number = str(card.get("number", ""))
+    if number and not re.search(r"\d", number):
+        return True  # letter-numbered secrets, e.g. the 30th Celebration RGB Mews
+    match = re.match(r"\d+", number)
+    printed_total = card.get("set", {}).get("printedTotal") or 0
+    return bool(match) and printed_total > 0 and int(match.group()) > printed_total
+
+
+def fetch_rarity(catalog, rarity):
+    print(f"Fetching live prices for all {rarity} cards...")
+    count = 0
+    for card in fetch_cards(f'rarity:"{rarity}"'):
+        series = card.get("set", {}).get("series", "")
+        if "Scarlet" not in series and "Mega" not in series:
+            continue
+        add_card(catalog, card, market_price(card, ["holofoil", "normal", "reverseHolofoil"]))
+        count += 1
+    print(f"Synced {count} {rarity} cards")
+
+
+def fetch_singles(catalog):
+    print("Fetching live prices for individual cards...")
+    query = " OR ".join(f"id:{card_id}" for card_id in SINGLE_CARD_IDS)
+    cards = fetch_cards(query)
+    for card in cards:
+        add_card(catalog, card, market_price(card, ["holofoil", "normal", "reverseHolofoil"]))
+        if has_variant(card, "reverseHolofoil"):
+            add_reverse_holo(catalog, card)
+        else:
+            # e.g. Hilda 084/086: TCGplayer sells a reverse holo the API doesn't list
+            reverse_price = tcgplayer_reverse_price(card)
+            if reverse_price is not None:
+                add_card(catalog, card, reverse_price, card_id=f"{card['id']}-reverse", reverse=True)
+
+    found = set(card["id"] for card in cards)
+    missing = [card_id for card_id in SINGLE_CARD_IDS if card_id not in found]
+    print(f"Synced {len(cards)} individual cards" + (f" (not found: {', '.join(missing)})" if missing else ""))
+
+
+def fetch_all_holos(catalog, set_id):
+    print(f"Fetching live prices for every holo and reverse holo in {set_id}...")
+    holos = reverses = 0
+    for card in fetch_cards(f"set.id:{set_id}"):
+        if has_variant(card, "holofoil"):
+            add_card(catalog, card, market_price(card, ["holofoil"]))
+            holos += 1
+        if has_variant(card, "reverseHolofoil"):
+            add_reverse_holo(catalog, card)
+            reverses += 1
+    print(f"Synced {holos} holofoils and {reverses} reverse holos from {set_id}")
+
+
+def fetch_all_cards(catalog, set_id):
+    print(f"Fetching live prices for every card in {set_id}...")
+    cards = fetch_cards(f"set.id:{set_id}")
+    for card in cards:
+        add_card(catalog, card, market_price(card, ["holofoil", "normal", "reverseHolofoil"]))
+    print(f"Synced {len(cards)} cards from {set_id}")
+
+
+def overnumbered_sets(part):
+    """Splits the overnumbered sets between parts 2, 3 and 4 (or returns all of them)."""
+    sets = get_json(f"{API_BASE}/sets?pageSize=250").get("data", [])
+    time.sleep(REQUEST_DELAY)
+    sets = [s for s in sets if s.get("series") in OVERNUMBERED_SERIES and s.get("id") not in OVERNUMBERED_SKIP_SETS]
+    sets.sort(key=lambda s: s.get("releaseDate", ""))
+
+    sv_sets = [s for s in sets if s.get("series") == "Scarlet & Violet"]
+    other_sets = [s for s in sets if s.get("series") != "Scarlet & Violet"]
+    half = (len(sv_sets) + 1) // 2
+    return {"2": sv_sets[:half], "3": sv_sets[half:], "4": other_sets}.get(part, sets)
+
+
+def fetch_overnumbered(catalog, part):
+    print("Fetching live prices for overnumbered cards...")
+    for card_set in overnumbered_sets(part):
+        count = 0
+        for card in fetch_cards(f"set.id:{card_set['id']}"):
+            if is_overnumbered(card):
+                add_card(catalog, card, market_price(card, ["holofoil", "normal", "reverseHolofoil"]))
+                count += 1
+        print(f"  {card_set.get('name')}: {count} overnumbered cards")
+
+
+def get_extended(product, field):
+    for item in product.get("extendedData", []):
+        if item.get("name") == field:
+            return item.get("value")
+    return None
+
+
+def slugify(text):
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def variant_label(product_name):
+    # "Pikachu - 027 (Pokemon Center Exclusive)" -> "Pokemon Center Exclusive"
+    parts = re.findall(r"\(([^)]*)\)|\[([^\]]*)\]", product_name)
+    return " ".join(a or b for a, b in parts)
+
+
+def display_name(product_name):
+    # "Meganium - 001 [Staff]" -> "Meganium [Staff]"
+    return re.sub(r"\s+-\s+\d+[A-Za-z]?\b", "", product_name).strip()
+
+
+def fetch_promo_group(catalog, group):
+    print(f"Fetching live prices for {group['setName']}...")
+    products = get_json(f"{TCGCSV_BASE}/{group['groupId']}/products", headers=TCGCSV_HEADERS).get("results", [])
+    price_rows = get_json(f"{TCGCSV_BASE}/{group['groupId']}/prices", headers=TCGCSV_HEADERS).get("results", [])
+
+    prices_by_product = {}
+    for row in price_rows:
+        prices_by_product.setdefault(row["productId"], {})[row.get("subTypeName")] = row.get("marketPrice")
+
+    # Group products by card number so the plain version gets the simple ID
+    # (svp-161) and stamped / staff / exclusive versions get a suffix
+    by_number = {}
+    for product in products:
+        number = get_extended(product, "Number")
+        if not number:
+            continue
+        # A few promos are listed as "134/142"; the promo number is the first part
+        number = number.split("/")[0].strip()
+        by_number.setdefault(number, []).append(product)
+
+    added = 0
+    for number, group_products in by_number.items():
+        def plainness(p):
+            name = p.get("name", "")
+            return ("[" in name) * 2 + ("(" in name), p["productId"]
+
+        group_products.sort(key=plainness)
+        base_id = f"{group['prefix']}-{number.lstrip('0') or '0'}"
+
+        for i, product in enumerate(group_products):
+            card_id = base_id
+            if i > 0:
+                card_id = f"{base_id}-{slugify(variant_label(product['name'])) or product['productId']}"
+                if card_id in catalog:
+                    card_id = f"{base_id}-{product['productId']}"
+
+            variants = prices_by_product.get(product["productId"], {})
+            raw_market = None
+            for variant in PRICE_VARIANT_ORDER:
+                if variants.get(variant) is not None:
+                    raw_market = variants[variant]
+                    break
+            if raw_market is None:
+                raw_market = next((v for v in variants.values() if v is not None), None)
+
+            catalog[card_id] = {
+                "id": card_id,
+                "name": display_name(product.get("name", "")),
+                "setName": group["setName"],
+                "number": number,
+                "printedTotal": "",
+                "rarity": "Promo",
+                "price": calculate_store_price(raw_market),
+                "rawMarket": raw_market,
+                "image": product.get("imageUrl", ""),
+                "tcgUrl": product.get("url", "https://www.tcgplayer.com")
+            }
+            added += 1
+
+    print(f"Synced {added} cards from {group['setName']}")
+    time.sleep(0.5)
+
+
+def build_price_catalog(part):
+    updates = {}
+
+    if part in ("all", "1"):
+        for rarity in RARITY_QUERIES:
+            fetch_rarity(updates, rarity)
+        fetch_singles(updates)
+        for set_id in ALL_CARD_SETS:
+            fetch_all_cards(updates, set_id)
+        for group in PROMO_GROUPS:
+            fetch_promo_group(updates, group)
+
+    if part in ("all", "2"):
+        for set_id in ALL_HOLO_SETS:
+            fetch_all_holos(updates, set_id)
+
+    if part in ("all", "2", "3", "4"):
+        fetch_overnumbered(updates, part)
+
+    # A single part only replaces its own cards and keeps everything else as it was
+    catalog = {}
+    if part != "all":
+        try:
+            with open("prices.json", encoding="utf-8") as f:
+                catalog = json.load(f)
+        except (OSError, ValueError):
+            catalog = {}
+    catalog.update(updates)
+
+    # Save to prices.json
+    with open("prices.json", "w", encoding="utf-8") as f:
+        json.dump(catalog, f, indent=2)
+
+    print(f"Successfully updated {len(updates)} cards (part {part}); prices.json has {len(catalog)} cards.")
+
+if __name__ == "__main__":
+    # Usage: python update_prices.py [all|1|2|3|4]   (defaults to all)
+    part = sys.argv[1] if len(sys.argv) > 1 else "all"
+    if part != "all" and part not in PARTS:
+        print(f"Unknown part '{part}'. Use all, {', '.join(PARTS)}.")
+        sys.exit(2)
+    print(f"Running part {part}: {PARTS.get(part, 'everything')}")
+
+    try:
+        build_price_catalog(part)
+    except RuntimeError as e:
+        # Leave the existing prices.json untouched rather than publish a partial one
+        print(f"Price update stopped, prices.json was not changed: {e}")
+        sys.exit(1)
