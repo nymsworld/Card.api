@@ -795,7 +795,7 @@
           '<div class="card-details">' +
             '<div class="badge">' + (card.rarity || 'Double Rare') + '</div>' +
             '<h1>' + card.name + '</h1>' +
-            '<div class="set-info">' + card.setName + ' · #' + card.number + numTotal + '</div>' +
+            '<div class="set-info">' + card.setName + (card.number ? ' · #' + card.number + numTotal : '') + '</div>' +
             conditionHtml +
             '<div class="price-container">' +
               '<div class="label">Store Price' + (currentCondition ? ' · ' + currentCondition.code : '') + '</div>' +
@@ -1127,7 +1127,7 @@
           '<div class="cart-item">' +
             '<div class="cart-item-info">' +
               '<div class="cart-item-title">' + it.name + '</div>' +
-              '<div class="cart-item-meta">' + it.setName + ' #' + it.number + (cond ? ' · ' + cond.label : '') + '</div>' +
+              '<div class="cart-item-meta">' + it.setName + (it.number ? ' #' + it.number : '') + (cond ? ' · ' + cond.label : '') + '</div>' +
               '<div class="cart-item-price">' + money(it.price * it.qty) + ' (' + money(it.price) + ' ea)</div>' +
             '</div>' +
             '<div class="qty-controls">' +
