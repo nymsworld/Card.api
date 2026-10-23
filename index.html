@@ -235,6 +235,28 @@
       margin-top: 0.1rem;
     }
 
+    /* Condition picker (overnumbered cards only) */
+    .condition-picker { margin: 0.25rem 0 0.75rem 0; }
+    .condition-picker .label { color: var(--text-sub); margin-bottom: 0.4rem; }
+    .condition-options { display: flex; gap: 0.35rem; }
+    .condition-btn {
+      flex: 1;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 0.5rem 0;
+      border-radius: 10px;
+      border: 2px solid var(--border-color);
+      background: var(--surface);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .condition-btn.active {
+      background: var(--kms-red);
+      border-color: var(--kms-red);
+      color: var(--kms-white);
+    }
+
     .floor-note {
       font-size: 0.72rem;
       color: rgba(255, 255, 255, 0.7);
@@ -617,8 +639,20 @@
 
   <script>
     var cardId = new URLSearchParams(window.location.search).get('id');
+    var cardCondition = new URLSearchParams(window.location.search).get('cond');
     var priceCatalog = null;
     var currentCardData = null;
+    var currentCondition = null;
+
+    // Condition pricing for overnumbered and Classic Collection cards, as a percent of the Near Mint market price.
+    // Change the percents here to adjust store pricing.
+    var CONDITIONS = [
+      { code: 'NM', label: 'Near Mint', percent: 100 },
+      { code: 'LP', label: 'Lightly Played', percent: 85 },
+      { code: 'MP', label: 'Moderately Played', percent: 70 },
+      { code: 'HP', label: 'Heavily Played', percent: 50 },
+      { code: 'DMG', label: 'Damaged', percent: 30 }
+    ];
     var html5QrScanner = null;
     var scannerStopping = Promise.resolve();
     var scanHandled = false;
@@ -698,13 +732,58 @@
       return null;
     }
 
-    function displayCard(card) {
+    function findCondition(code) {
+      code = String(code || '').toUpperCase();
+      for (var i = 0; i < CONDITIONS.length; i++) {
+        if (CONDITIONS[i].code === code) return CONDITIONS[i];
+      }
+      return null;
+    }
+
+    // Same rounding as update_prices.py: round up from 30 cents, $1.00 minimum
+    function storePrice(rawMarket) {
+      var dollars = Math.floor(rawMarket);
+      var rounded = (rawMarket - dollars >= 0.30) ? dollars + 1 : dollars;
+      return Math.max(1, rounded);
+    }
+
+    function priceForCondition(card, condition) {
+      if (!condition || condition.percent === 100 || card.rawMarket == null) return Number(card.price) || 0;
+      return storePrice(card.rawMarket * condition.percent / 100);
+    }
+
+    function setCondition(code) {
+      if (!currentCardData) return;
+      var params = new URLSearchParams(window.location.search);
+      params.set('cond', code);
+      window.history.replaceState({}, '', '?' + params.toString());
+      displayCard(currentCardData, code);
+    }
+
+    function displayCard(card, conditionCode) {
       var container = document.getElementById('cardContainer');
       currentCardData = card;
+      // Overnumbered cards and Classic Collection cards are priced by condition
+      var hasConditions = card.conditionPricing || card.overnumbered;
+      currentCondition = hasConditions ? (findCondition(conditionCode) || CONDITIONS[0]) : null;
+      var price = priceForCondition(card, currentCondition);
 
       var floorNote = '';
-      if (card.rawMarket != null && card.rawMarket < 1.00) {
+      var conditionRaw = card.rawMarket != null && currentCondition ? card.rawMarket * currentCondition.percent / 100 : card.rawMarket;
+      if (conditionRaw != null && conditionRaw < 1.00) {
         floorNote = '<div class="floor-note">($1.00 store floor applied)</div>';
+      } else if (currentCondition && currentCondition.percent !== 100) {
+        floorNote = '<div class="floor-note">' + currentCondition.label + ' · ' + currentCondition.percent + '% of Near Mint</div>';
+      }
+
+      var conditionHtml = '';
+      if (currentCondition) {
+        conditionHtml = '<div class="condition-picker"><div class="label">Condition</div><div class="condition-options">';
+        for (var i = 0; i < CONDITIONS.length; i++) {
+          var c = CONDITIONS[i];
+          conditionHtml += '<button class="condition-btn' + (c.code === currentCondition.code ? ' active' : '') + '" onclick="setCondition(\'' + c.code + '\')" title="' + c.label + '">' + c.code + '</button>';
+        }
+        conditionHtml += '</div></div>';
       }
 
       var imgHtml = card.image ? '<img src="' + card.image + '" alt="' + card.name + '" class="card-art">' : '';
@@ -717,9 +796,10 @@
             '<div class="badge">' + (card.rarity || 'Double Rare') + '</div>' +
             '<h1>' + card.name + '</h1>' +
             '<div class="set-info">' + card.setName + ' · #' + card.number + numTotal + '</div>' +
+            conditionHtml +
             '<div class="price-container">' +
-              '<div class="label">Store Price</div>' +
-              '<div class="price">' + money(card.price) + '</div>' +
+              '<div class="label">Store Price' + (currentCondition ? ' · ' + currentCondition.code : '') + '</div>' +
+              '<div class="price">' + money(price) + '</div>' +
               floorNote +
             '</div>' +
             '<div class="action-stack">' +
@@ -731,7 +811,7 @@
         '</div>';
     }
 
-    async function loadCard(targetId) {
+    async function loadCard(targetId, conditionCode) {
       var container = document.getElementById('cardContainer');
       if (!targetId) {
         currentCardData = null;
@@ -757,7 +837,7 @@
         }
 
         if (!card.id) card.id = targetId;
-        displayCard(card);
+        displayCard(card, conditionCode);
       } catch (err) {
         container.innerHTML = '<div class="error">' + err.message + '<br><br><button class="btn btn-link" onclick="location.reload()">Tap to Retry</button></div>';
       }
@@ -770,14 +850,16 @@
 
       var text = (decodedText || '').trim();
       var id = text;
+      var cond = null;
       try {
-        var parsedId = new URL(text).searchParams.get('id');
-        if (parsedId) id = parsedId.trim();
+        var params = new URL(text).searchParams;
+        if (params.get('id')) id = params.get('id').trim();
+        cond = params.get('cond');
       } catch (e) {}
 
       stopInAppScanner();
-      window.history.pushState({}, '', '?id=' + encodeURIComponent(id));
-      loadCard(id);
+      window.history.pushState({}, '', '?id=' + encodeURIComponent(id) + (cond ? '&cond=' + encodeURIComponent(cond) : ''));
+      loadCard(id, cond);
     }
 
     var DEFAULT_SCAN_HINT = 'Camera will automatically detect the card sticker.';
@@ -972,14 +1054,22 @@
       startInAppScanner();
     });
 
+    // The same card in two conditions gets two separate cart lines
+    function cartKey(item) {
+      return item.cartKey || item.id;
+    }
+
     function addToCartCurrent() {
       if (!currentCardData) return;
-      var existing = cart.find(function(item) { return item.id === currentCardData.id; });
+      var key = currentCardData.id + (currentCondition ? '|' + currentCondition.code : '');
+      var existing = cart.find(function(item) { return cartKey(item) === key; });
       if (existing) {
         existing.qty += 1;
       } else {
         var copy = Object.assign({}, currentCardData);
-        copy.price = Number(copy.price) || 0;
+        copy.cartKey = key;
+        copy.condition = currentCondition ? currentCondition.code : null;
+        copy.price = priceForCondition(currentCardData, currentCondition);
         copy.qty = 1;
         cart.push(copy);
       }
@@ -987,18 +1077,18 @@
       toggleCartDrawer(true);
     }
 
-    function updateQty(id, delta) {
-      var item = cart.find(function(i) { return i.id === id; });
+    function updateQty(key, delta) {
+      var item = cart.find(function(i) { return cartKey(i) === key; });
       if (!item) return;
       item.qty += delta;
       if (item.qty <= 0) {
-        cart = cart.filter(function(i) { return i.id !== id; });
+        cart = cart.filter(function(i) { return cartKey(i) !== key; });
       }
       saveCart();
     }
 
-    function removeItem(id) {
-      cart = cart.filter(function(i) { return i.id !== id; });
+    function removeItem(key) {
+      cart = cart.filter(function(i) { return cartKey(i) !== key; });
       saveCart();
     }
 
@@ -1031,18 +1121,20 @@
       var rows = '';
       for (var i = 0; i < cart.length; i++) {
         var it = cart[i];
+        var key = cartKey(it);
+        var cond = findCondition(it.condition);
         rows +=
           '<div class="cart-item">' +
             '<div class="cart-item-info">' +
               '<div class="cart-item-title">' + it.name + '</div>' +
-              '<div class="cart-item-meta">' + it.setName + ' #' + it.number + '</div>' +
+              '<div class="cart-item-meta">' + it.setName + ' #' + it.number + (cond ? ' · ' + cond.label : '') + '</div>' +
               '<div class="cart-item-price">' + money(it.price * it.qty) + ' (' + money(it.price) + ' ea)</div>' +
             '</div>' +
             '<div class="qty-controls">' +
-              '<button class="qty-btn" onclick="updateQty(\'' + it.id + '\', -1)">−</button>' +
+              '<button class="qty-btn" onclick="updateQty(\'' + key + '\', -1)">−</button>' +
               '<span class="qty-count">' + it.qty + '</span>' +
-              '<button class="qty-btn" onclick="updateQty(\'' + it.id + '\', 1)">+</button>' +
-              '<button class="del-btn" onclick="removeItem(\'' + it.id + '\')" title="Remove">&times;</button>' +
+              '<button class="qty-btn" onclick="updateQty(\'' + key + '\', 1)">+</button>' +
+              '<button class="del-btn" onclick="removeItem(\'' + key + '\')" title="Remove">&times;</button>' +
             '</div>' +
           '</div>';
       }
@@ -1066,11 +1158,12 @@
 
     // Browser back/forward buttons show the matching card
     window.addEventListener('popstate', function() {
-      loadCard(new URLSearchParams(window.location.search).get('id'));
+      var params = new URLSearchParams(window.location.search);
+      loadCard(params.get('id'), params.get('cond'));
     });
 
     updateThemeToggle();
-    loadCard(cardId);
+    loadCard(cardId, cardCondition);
     renderCartUI();
   </script>
 </body>
