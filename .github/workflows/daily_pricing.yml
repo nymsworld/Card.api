@@ -2,23 +2,24 @@ name: Update Pokemon Card Prices Daily
 
 on:
   schedule:
-    # The update is split into 4 parts, 30 minutes apart, so no single run sends
+    # The update is split into 5 parts, 25 minutes apart, so no single run sends
     # enough requests to the card APIs to get rate limited.
-    # GitHub schedules in UTC. 06:05-07:35 UTC stays inside 1-4 AM Eastern all year:
-    #   winter (EST): 1:05, 1:35, 2:05, 2:35 AM
-    #   summer (EDT): 2:05, 2:35, 3:05, 3:35 AM
+    # GitHub schedules in UTC. 06:05-07:45 UTC stays inside 1-4 AM Eastern all year:
+    #   winter (EST): 1:05, 1:30, 1:55, 2:20, 2:45 AM
+    #   summer (EDT): 2:05, 2:30, 2:55, 3:20, 3:45 AM
     # GitHub can start scheduled runs a few minutes late; the gaps leave room for that.
     - cron: '5 6 * * *'    # part 1: Double Rares, ACE SPECs, singles, Classic Collection, promos
-    - cron: '35 6 * * *'   # part 2: 151 holos + first half of SV overnumbered
-    - cron: '5 7 * * *'    # part 3: second half of SV overnumbered
-    - cron: '35 7 * * *'   # part 4: Mega Evolution overnumbered
+    - cron: '30 6 * * *'   # part 2: 151 holos + first half of SV overnumbered
+    - cron: '55 6 * * *'   # part 3: second half of SV overnumbered
+    - cron: '20 7 * * *'   # part 4: Mega Evolution overnumbered
+    - cron: '45 7 * * *'   # part 5: stocked cards from stock_cards.csv
   # Allows you to click a button and run it manually whenever you want
   workflow_dispatch:
     inputs:
       part:
         description: 'Which part to update (all = everything in one run)'
         type: choice
-        options: ['all', '1', '2', '3', '4']
+        options: ['all', '1', '2', '3', '4', '5']
         default: 'all'
 
 permissions:
@@ -51,9 +52,10 @@ jobs:
         run: |
           case "${{ github.event.schedule }}" in
             "5 6 * * *")  PART=1 ;;
-            "35 6 * * *") PART=2 ;;
-            "5 7 * * *")  PART=3 ;;
-            "35 7 * * *") PART=4 ;;
+            "30 6 * * *") PART=2 ;;
+            "55 6 * * *") PART=3 ;;
+            "20 7 * * *") PART=4 ;;
+            "45 7 * * *") PART=5 ;;
             *)            PART="${{ github.event.inputs.part || 'all' }}" ;;
           esac
           echo "part=$PART" >> "$GITHUB_OUTPUT"
