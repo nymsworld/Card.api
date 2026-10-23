@@ -59,7 +59,26 @@ PRICE_VARIANT_ORDER = ["Holofoil", "Normal", "Reverse Holofoil"]
 # cards not already in the database are added from TCGplayer's data. To update the list,
 # replace this file with a new export trimmed to the same columns.
 STOCK_FILE = "stock_cards.csv"
-TCGCSV_CATEGORIES = {"Pokemon": 3, "Pokemon Japan": 85}
+# Card games the stock list can include: TCGplayer product line -> TCGCSV category ID
+TCGCSV_CATEGORIES = {"Pokemon": 3, "Pokemon Japan": 85, "Magic": 1, "YuGiOh": 2}
+# Japanese Pokémon (TCGCSV category 85): every main Scarlet & Violet and Mega Evolution
+# expansion (set codes like "SV7: ...", "SV2a: ...", "m1L: ...", "M6a: ..."), Double Rare and
+# above, plus every card in the SV-P / M-P promo sets. IDs look like jp-<TCGplayer product ID>.
+JAPAN_CATEGORY = 85
+JAPAN_SET_CODE = re.compile(r"^(SV\d+[A-Za-z]?|[Mm]\d+[A-Za-z]?):\s")
+JAPAN_PROMO_SETS = {"SV-P Promotional Cards", "M-P Promotional Cards"}
+JAPAN_SKIP_RARITIES = {"", "Common", "Uncommon", "Rare", "None", "Code Card"}
+# Other spellings of those product lines seen in TCGplayer exports
+PRODUCT_LINE_ALIASES = {
+    "Pokémon": "Pokemon",
+    "Magic: The Gathering": "Magic",
+    "MTG": "Magic",
+    "Yu-Gi-Oh!": "YuGiOh",
+    "Yu-Gi-Oh": "YuGiOh",
+    "YuGiOh!": "YuGiOh",
+}
+# Shown on the price page and in the app
+GAME_NAMES = {"Pokemon": "Pokémon", "Pokemon Japan": "Pokémon (Japanese)", "Magic": "Magic: The Gathering", "YuGiOh": "Yu-Gi-Oh!"}
 
 # Bulk bin tags: fixed prices, no market lookup. Their QR stickers open the price page
 # like any card, and the app's Sales tab can add them in quantity.
@@ -83,7 +102,7 @@ PARTS = {
     "2": "151 holos and reverse holos, plus overnumbered cards from the first half of Scarlet & Violet",
     "3": "Overnumbered cards from the second half of Scarlet & Violet",
     "4": "Overnumbered cards from Mega Evolution",
-    "5": "Stocked cards from stock_cards.csv that aren't in the database yet",
+    "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
 }
 
 _tcgcsv_groups = None
@@ -405,6 +424,56 @@ def load_stock():
         return []
 
 
+def fetch_japanese(catalog):
+    """Japanese Scarlet & Violet / Mega Evolution cards, Double Rare and up, plus SV-P / M-P promos."""
+    base = f"https://tcgcsv.com/tcgplayer/{JAPAN_CATEGORY}"
+    groups = get_json(f"{base}/groups", headers=TCGCSV_HEADERS).get("results", [])
+    time.sleep(REQUEST_DELAY)
+    wanted = [g for g in groups if JAPAN_SET_CODE.match(g["name"]) or g["name"] in JAPAN_PROMO_SETS]
+    print(f"Fetching live prices for Japanese cards from {len(wanted)} sets...")
+    added = 0
+    for g in wanted:
+        promo = g["name"] in JAPAN_PROMO_SETS
+        products = get_json(f"{base}/{g['groupId']}/products", headers=TCGCSV_HEADERS).get("results", [])
+        time.sleep(REQUEST_DELAY)
+        prices = {}
+        for p in get_json(f"{base}/{g['groupId']}/prices", headers=TCGCSV_HEADERS).get("results", []):
+            prices.setdefault(p["productId"], {})[p.get("subTypeName")] = p.get("marketPrice")
+        time.sleep(REQUEST_DELAY)
+        set_name = g["name"].split(": ", 1)[-1] if not promo else g["name"].replace(" Promotional Cards", " Promos")
+        for product in products:
+            data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
+            rarity = (data.get("Rarity") or "").strip()
+            number = (data.get("Number") or "").strip()
+            if not number or (not promo and rarity in JAPAN_SKIP_RARITIES):
+                continue  # sealed products, code cards and lower rarities
+            raw_market = pick_price(prices.get(product["productId"], {}), "Holofoil")
+            card_number, _, total = number.partition("/")
+            card_id = f"jp-{product['productId']}"
+            catalog[card_id] = {
+                "id": card_id,
+                "name": re.sub(r"\s+-\s+\S*\d\S*$", "", product["name"]).strip(),
+                "setName": set_name,
+                "number": card_number.strip(),
+                "printedTotal": total.strip(),
+                "rarity": rarity or "Promo",
+                "price": calculate_store_price(raw_market),
+                "rawMarket": raw_market,
+                "image": product.get("imageUrl", ""),
+                "tcgUrl": product.get("url") or f"https://www.tcgplayer.com/product/{product['productId']}",
+                "conditionPricing": True,
+                "game": GAME_NAMES["Pokemon Japan"],
+            }
+            added += 1
+    print(f"Synced {added} Japanese cards")
+
+
+def product_line(row):
+    """The row's card game as a TCGCSV_CATEGORIES key, e.g. 'Magic: The Gathering' -> 'Magic'."""
+    line = (row.get("Product Line") or "Pokemon").strip()
+    return PRODUCT_LINE_ALIASES.get(line, line)
+
+
 def printing_kind(printing):
     return "reverse" if "reverse" in (printing or "").lower() else "base"
 
@@ -427,7 +496,7 @@ def pick_price(variants, printing):
         # Prefer the regular printing over 1st Edition unless 1st Edition was asked for
         close.sort(key=lambda name: ("1st" in name.lower()) != ("1st" in wanted))
         return variants[close[0]]
-    for name in ["Holofoil", "Normal", "Unlimited Holofoil", "Unlimited", "Reverse Holofoil"]:
+    for name in ["Holofoil", "Normal", "Unlimited Holofoil", "Unlimited", "Reverse Holofoil", "Foil", "1st Edition", "Limited"]:
         if variants.get(name) is not None:
             return variants[name]
     return next((v for v in variants.values() if v is not None), None)
@@ -445,11 +514,17 @@ def fetch_stock(catalog, stock, existing):
     if not todo:
         return
 
+    # Only look up the games that are actually stocked
     groups = {}
+    needed = {product_line(row) for row in todo}
     for line, category in TCGCSV_CATEGORIES.items():
+        if line not in needed:
+            continue
         for g in get_json(f"https://tcgcsv.com/tcgplayer/{category}/groups", headers=TCGCSV_HEADERS).get("results", []):
             groups[(line, g["name"])] = (category, g["groupId"], g["name"])
         time.sleep(REQUEST_DELAY)
+    for line in needed - set(TCGCSV_CATEGORIES):
+        print(f"  Skipping {line} cards: not a supported card game")
 
     def find_group(line, set_name):
         if (line, set_name) in groups:
@@ -460,14 +535,17 @@ def fetch_stock(catalog, stock, existing):
 
     by_group = {}
     for row in todo:
-        group = find_group(row.get("Product Line") or "Pokemon", row["Set Name"])
-        if not group:
-            print(f"  Skipped {row['Product Name']}: no TCGplayer set named {row['Set Name']}")
+        line = product_line(row)
+        if line not in TCGCSV_CATEGORIES:
             continue
-        by_group.setdefault(group, []).append(row)
+        group = find_group(line, row["Set Name"])
+        if not group:
+            print(f"  Skipped {row['Product Name']}: no TCGplayer {line} set named {row['Set Name']}")
+            continue
+        by_group.setdefault((group, line), []).append(row)
 
     added = 0
-    for (category, group_id, group_name), rows in by_group.items():
+    for ((category, group_id, group_name), line), rows in by_group.items():
         prices = {}
         for p in get_json(f"https://tcgcsv.com/tcgplayer/{category}/{group_id}/prices", headers=TCGCSV_HEADERS).get("results", []):
             prices.setdefault(str(p["productId"]), {})[p.get("subTypeName")] = p.get("marketPrice")
@@ -483,14 +561,20 @@ def fetch_stock(catalog, stock, existing):
                 suffix, label = "", ""
             else:
                 suffix = "-" + slugify(printing)
-                label = " (1st Edition)" if "1st" in printing else ""
+                if "1st" in printing:
+                    label = " (1st Edition)"
+                elif "foil" in printing.lower():
+                    label = " (Foil)"
+                else:
+                    label = ""
             number, _, total = (row.get("Number") or "").partition("/")
             raw_market = pick_price(prices.get(pid, {}), printing)
             card_id = f"tcg-{pid}{suffix}"
             catalog[card_id] = {
                 "id": card_id,
                 "name": re.sub(r"\s+-\s+\S*\d\S*$", "", row["Product Name"]).strip() + label,
-                "setName": group_name.split(": ", 1)[-1],
+                # Pokémon set names start with a set code ("SV07: Stellar Crown"); other games keep the full name
+                "setName": group_name.split(": ", 1)[-1] if line.startswith("Pokemon") else group_name,
                 "number": number.strip() or "???",
                 "printedTotal": total.strip(),
                 "rarity": row.get("Rarity") or "Single",
@@ -499,6 +583,7 @@ def fetch_stock(catalog, stock, existing):
                 "image": row.get("Photo URL") or "",
                 "tcgUrl": f"https://www.tcgplayer.com/product/{pid}",
                 "conditionPricing": True,
+                "game": GAME_NAMES.get(line, line),
             }
             added += 1
     print(f"Synced {added} stocked cards from {len(by_group)} sets")
@@ -598,11 +683,14 @@ def build_price_catalog(part):
 
     stock = load_stock()
     if part in ("all", "5"):
+        # Japanese cards and stocked cards are rebuilt every run (cards that left the
+        # list drop out, and stocked cards now covered elsewhere aren't listed twice)
+        rebuilt = ("tcg-", "jp-")
+        catalog = {k: v for k, v in catalog.items() if not k.startswith(rebuilt)}
+        fetch_japanese(updates)
         existing = dict(catalog)
         existing.update(updates)
-        # Drop last run's stocked cards so cards now covered elsewhere aren't listed twice
         existing = {k: v for k, v in existing.items() if not k.startswith("tcg-")}
-        catalog = {k: v for k, v in catalog.items() if not k.startswith("tcg-")}
         fetch_stock(updates, stock, existing)
 
     catalog.update(updates)
