@@ -795,7 +795,7 @@
           '<div class="card-details">' +
             '<div class="badge">' + (card.rarity || 'Double Rare') + '</div>' +
             '<h1>' + card.name + '</h1>' +
-            '<div class="set-info">' + card.setName + (card.number ? ' · #' + card.number + numTotal : '') + '</div>' +
+            '<div class="set-info">' + (card.game && card.game !== 'Pokémon' ? card.game + ' · ' : '') + card.setName + (card.number ? ' · #' + card.number + numTotal : '') + '</div>' +
             conditionHtml +
             '<div class="price-container">' +
               '<div class="label">Store Price' + (currentCondition ? ' · ' + currentCondition.code : '') + '</div>' +
