@@ -1,5 +1,6 @@
 import re
 import sys
+import csv
 import time
 import json
 import math
@@ -52,6 +53,13 @@ PROMO_GROUPS = [
 ]
 PRICE_VARIANT_ORDER = ["Holofoil", "Normal", "Reverse Holofoil"]
 
+# Cards the shop stocks, from a TCGplayer inventory export (only the product columns are
+# kept: no quantities or prices). Every card listed gets condition pricing (NM-DMG), and
+# cards not already in the database are added from TCGplayer's data. To update the list,
+# replace this file with a new export trimmed to the same columns.
+STOCK_FILE = "stock_cards.csv"
+TCGCSV_CATEGORIES = {"Pokemon": 3, "Pokemon Japan": 85}
+
 # The daily update runs in 4 parts, 30 minutes apart, so no single run sends
 # enough requests to get rate limited. Each part only replaces its own cards.
 PARTS = {
@@ -59,6 +67,7 @@ PARTS = {
     "2": "151 holos and reverse holos, plus overnumbered cards from the first half of Scarlet & Violet",
     "3": "Overnumbered cards from the second half of Scarlet & Violet",
     "4": "Overnumbered cards from Mega Evolution",
+    "5": "Stocked cards from stock_cards.csv that aren't in the database yet",
 }
 
 _tcgcsv_groups = None
@@ -372,6 +381,125 @@ def fetch_promo_group(catalog, group):
     time.sleep(0.5)
 
 
+def load_stock():
+    try:
+        with open(STOCK_FILE, encoding="utf-8-sig", newline="") as f:
+            return [row for row in csv.DictReader(f) if row.get("Product ID")]
+    except OSError:
+        return []
+
+
+def printing_kind(printing):
+    return "reverse" if "reverse" in (printing or "").lower() else "base"
+
+
+def entry_product_key(card_id, entry):
+    """(TCGplayer product ID, 'base' or 'reverse') for a prices.json entry."""
+    match = re.search(r"/product/(\d+)", entry.get("tcgUrl", ""))
+    if not match:
+        return None
+    return match.group(1), "reverse" if card_id.endswith("-reverse") else "base"
+
+
+def pick_price(variants, printing):
+    """Market price for the stocked printing, e.g. 'Holofoil' -> 'Unlimited Holofoil' for vintage cards."""
+    if variants.get(printing) is not None:
+        return variants[printing]
+    wanted = (printing or "").lower()
+    close = [name for name in variants if wanted and wanted in name.lower() and variants[name] is not None]
+    if close:
+        # Prefer the regular printing over 1st Edition unless 1st Edition was asked for
+        close.sort(key=lambda name: ("1st" in name.lower()) != ("1st" in wanted))
+        return variants[close[0]]
+    for name in ["Holofoil", "Normal", "Unlimited Holofoil", "Unlimited", "Reverse Holofoil"]:
+        if variants.get(name) is not None:
+            return variants[name]
+    return next((v for v in variants.values() if v is not None), None)
+
+
+def fetch_stock(catalog, stock, existing):
+    """Adds stocked cards that no existing entry covers, priced from TCGplayer's data."""
+    covered = set()
+    for card_id, entry in existing.items():
+        key = entry_product_key(card_id, entry)
+        if key:
+            covered.add(key)
+    todo = [row for row in stock if (row["Product ID"], printing_kind(row["Printing"])) not in covered]
+    print(f"Fetching live prices for {len(todo)} stocked cards not already in the database...")
+    if not todo:
+        return
+
+    groups = {}
+    for line, category in TCGCSV_CATEGORIES.items():
+        for g in get_json(f"https://tcgcsv.com/tcgplayer/{category}/groups", headers=TCGCSV_HEADERS).get("results", []):
+            groups[(line, g["name"])] = (category, g["groupId"], g["name"])
+        time.sleep(REQUEST_DELAY)
+
+    def find_group(line, set_name):
+        if (line, set_name) in groups:
+            return groups[(line, set_name)]
+        # e.g. "Power Keepers" is listed as "EX Power Keepers"
+        matches = [g for (l, name), g in groups.items() if l == line and name.endswith(" " + set_name)]
+        return matches[0] if len(matches) == 1 else None
+
+    by_group = {}
+    for row in todo:
+        group = find_group(row.get("Product Line") or "Pokemon", row["Set Name"])
+        if not group:
+            print(f"  Skipped {row['Product Name']}: no TCGplayer set named {row['Set Name']}")
+            continue
+        by_group.setdefault(group, []).append(row)
+
+    added = 0
+    for (category, group_id, group_name), rows in by_group.items():
+        prices = {}
+        for p in get_json(f"https://tcgcsv.com/tcgplayer/{category}/{group_id}/prices", headers=TCGCSV_HEADERS).get("results", []):
+            prices.setdefault(str(p["productId"]), {})[p.get("subTypeName")] = p.get("marketPrice")
+        time.sleep(REQUEST_DELAY)
+
+        for row in rows:
+            pid = row["Product ID"]
+            printing = row["Printing"] or ""
+            kind = printing_kind(printing)
+            if kind == "reverse":
+                suffix, label = "-reverse", " (Reverse Holo)"
+            elif printing in ("Holofoil", "Normal", ""):
+                suffix, label = "", ""
+            else:
+                suffix = "-" + slugify(printing)
+                label = " (1st Edition)" if "1st" in printing else ""
+            number, _, total = (row.get("Number") or "").partition("/")
+            raw_market = pick_price(prices.get(pid, {}), printing)
+            card_id = f"tcg-{pid}{suffix}"
+            catalog[card_id] = {
+                "id": card_id,
+                "name": re.sub(r"\s+-\s+\S*\d\S*$", "", row["Product Name"]).strip() + label,
+                "setName": group_name.split(": ", 1)[-1],
+                "number": number.strip() or "???",
+                "printedTotal": total.strip(),
+                "rarity": row.get("Rarity") or "Single",
+                "price": calculate_store_price(raw_market),
+                "rawMarket": raw_market,
+                "image": row.get("Photo URL") or "",
+                "tcgUrl": f"https://www.tcgplayer.com/product/{pid}",
+                "conditionPricing": True,
+            }
+            added += 1
+    print(f"Synced {added} stocked cards from {len(by_group)} sets")
+
+
+def mark_stocked(catalog, stock):
+    """Every stocked card gets the condition picker, whichever part added it."""
+    stocked = {(row["Product ID"], printing_kind(row["Printing"])) for row in stock}
+    marked = 0
+    for card_id, entry in catalog.items():
+        if entry_product_key(card_id, entry) in stocked and not entry.get("conditionPricing"):
+            entry["conditionPricing"] = True
+            marked += 1
+    if marked:
+        print(f"Turned on condition pricing for {marked} stocked cards")
+
+
 def build_price_catalog(part):
     updates = {}
 
@@ -399,7 +527,18 @@ def build_price_catalog(part):
                 catalog = json.load(f)
         except (OSError, ValueError):
             catalog = {}
+
+    stock = load_stock()
+    if part in ("all", "5"):
+        existing = dict(catalog)
+        existing.update(updates)
+        # Drop last run's stocked cards so cards now covered elsewhere aren't listed twice
+        existing = {k: v for k, v in existing.items() if not k.startswith("tcg-")}
+        catalog = {k: v for k, v in catalog.items() if not k.startswith("tcg-")}
+        fetch_stock(updates, stock, existing)
+
     catalog.update(updates)
+    mark_stocked(catalog, stock)
 
     # Save to prices.json
     with open("prices.json", "w", encoding="utf-8") as f:
@@ -408,7 +547,7 @@ def build_price_catalog(part):
     print(f"Successfully updated {len(updates)} cards (part {part}); prices.json has {len(catalog)} cards.")
 
 if __name__ == "__main__":
-    # Usage: python update_prices.py [all|1|2|3|4]   (defaults to all)
+    # Usage: python update_prices.py [all|1|2|3|4|5]   (defaults to all)
     part = sys.argv[1] if len(sys.argv) > 1 else "all"
     if part != "all" and part not in PARTS:
         print(f"Unknown part '{part}'. Use all, {', '.join(PARTS)}.")
