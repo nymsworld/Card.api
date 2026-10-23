@@ -1,6 +1,7 @@
 import re
 import sys
 import csv
+from datetime import datetime, timezone
 import time
 import json
 import math
@@ -59,6 +60,21 @@ PRICE_VARIANT_ORDER = ["Holofoil", "Normal", "Reverse Holofoil"]
 # replace this file with a new export trimmed to the same columns.
 STOCK_FILE = "stock_cards.csv"
 TCGCSV_CATEGORIES = {"Pokemon": 3, "Pokemon Japan": 85}
+
+# Bulk bin tags: fixed prices, no market lookup. Their QR stickers open the price page
+# like any card, and the app's Sales tab can add them in quantity.
+BULK_TAGS = [
+    {"id": "bulk-100", "price": 1.00},
+    {"id": "bulk-050", "price": 0.50},
+    {"id": "bulk-025", "price": 0.25},
+    {"id": "bulk-010", "price": 0.10},
+]
+
+# Rolling daily market prices, so the app can flag big price moves. Each run records
+# today's price for every card; only the last week is kept (8 daily prices, so today
+# can be compared with exactly 7 days ago).
+HISTORY_FILE = "price_history.json"
+HISTORY_DAYS = 8
 
 # The daily update runs in 4 parts, 30 minutes apart, so no single run sends
 # enough requests to get rate limited. Each part only replaces its own cards.
@@ -500,6 +516,58 @@ def mark_stocked(catalog, stock):
         print(f"Turned on condition pricing for {marked} stocked cards")
 
 
+def add_bulk_tags(catalog):
+    for tag in BULK_TAGS:
+        label = f"${tag['price']:.2f}"
+        catalog[tag["id"]] = {
+            "id": tag["id"],
+            "name": f"{label} Bulk Card",
+            "setName": "Bulk Bin",
+            "number": "",
+            "printedTotal": "",
+            "rarity": "Bulk",
+            "price": tag["price"],  # fixed price: no $1 store minimum
+            "rawMarket": None,
+            "image": "",
+            "tcgUrl": "",
+            "bulk": True,
+        }
+
+
+def update_history(catalog):
+    """Records today's market price for every card in price_history.json:
+    { "dates": [...], "prices": { cardId: [price per date, null if unknown] } }"""
+    try:
+        with open(HISTORY_FILE, encoding="utf-8") as f:
+            history = json.load(f)
+    except (OSError, ValueError):
+        history = {"dates": [], "prices": {}}
+
+    dates = history.get("dates", [])
+    prices = history.get("prices", {})
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if not dates or dates[-1] != today:
+        dates.append(today)
+    count = len(dates)
+
+    for card_id, entry in catalog.items():
+        series = prices.get(card_id, [])
+        series = series + [None] * (count - len(series))
+        if entry.get("rawMarket") is not None:
+            series[-1] = round(float(entry["rawMarket"]), 2)
+        prices[card_id] = series
+
+    # Keep the last HISTORY_DAYS days, and only cards that still exist
+    keep = max(0, count - HISTORY_DAYS)
+    history = {
+        "dates": dates[keep:],
+        "prices": {k: v[keep:] for k, v in prices.items() if k in catalog and any(p is not None for p in v[keep:])},
+    }
+    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(history, f, separators=(",", ":"))
+    print(f"Price history: {len(history['dates'])} day(s) for {len(history['prices'])} cards")
+
+
 def build_price_catalog(part):
     updates = {}
 
@@ -539,10 +607,13 @@ def build_price_catalog(part):
 
     catalog.update(updates)
     mark_stocked(catalog, stock)
+    add_bulk_tags(catalog)
 
     # Save to prices.json
     with open("prices.json", "w", encoding="utf-8") as f:
         json.dump(catalog, f, indent=2)
+
+    update_history(catalog)
 
     print(f"Successfully updated {len(updates)} cards (part {part}); prices.json has {len(catalog)} cards.")
 
