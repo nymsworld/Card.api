@@ -706,7 +706,7 @@ def update_condition_market(catalog):
             old = json.load(f)
     except (OSError, ValueError):
         old = {"prices": {}}
-    if old.get("fetchedAt"):
+    if old.get("fetchedAt") and old.get("prices"):  # an empty result doesn't count
         age = datetime.now(timezone.utc) - datetime.fromisoformat(old["fetchedAt"])
         if age.total_seconds() < CONDITION_MARKET_EVERY_HOURS * 3600:
             print(f"Condition prices: fetched {age.total_seconds() / 3600:.1f} hours ago, skipped")
@@ -729,32 +729,61 @@ def update_condition_market(catalog):
     ids = list(wanted)
     print(f"Condition prices: looking up {len(cards)} cards over ${CONDITION_MARKET_MIN} ({len(ids)} TCGplayer products)...")
     prices = {}
+    # What came back, saved in the file so problems can be seen without the Actions log
+    stats = {"cards": len(cards), "products": len(ids), "requests": 0, "returned": 0, "matched": 0, "sample": None}
+    problem = None
     try:
         for start in range(0, len(ids), JUSTTCG_BATCH):
             batch = ids[start:start + JUSTTCG_BATCH]
             resp = requests.post(JUSTTCG_URL, json=[{"tcgplayerId": pid} for pid in batch],
                                  headers={"x-api-key": key}, timeout=60)
+            stats["requests"] += 1
             if resp.status_code != 200:
-                raise RuntimeError(f"JustTCG HTTP {resp.status_code}: {resp.text[:200]}")
+                raise RuntimeError(f"JustTCG HTTP {resp.status_code}: {resp.text[:300]}")
             body = resp.json()
-            for card in body.get("data", []):
+            data = body.get("data") or []
+            stats["returned"] += len(data)
+            if stats["sample"] is None:
+                first = data[0] if data else {}
+                stats["sample"] = {
+                    "responseKeys": sorted(body.keys()),
+                    "error": body.get("error") or body.get("errors") or body.get("message"),
+                    "cardKeys": sorted(first.keys()),
+                    "tcgplayerId": first.get("tcgplayerId"),
+                    "asked": batch[:3],
+                    "variants": [{k: v.get(k) for k in ("printing", "condition", "price", "language", "priceStatus")}
+                                 for v in (first.get("variants") or [])[:8]],
+                }
+            for card in data:
                 for card_id, entry in wanted.get(str(card.get("tcgplayerId")), []):
                     found = pick_condition_prices(card, entry, card_id)
                     if found:
                         prices[card_id] = found
             remaining = (body.get("_metadata") or {}).get("apiRequestsRemaining")
+            stats["requestsRemaining"] = remaining
             if remaining is not None and remaining < 5:
                 print(f"  JustTCG has {remaining} requests left this period, stopping early")
                 break
             time.sleep(JUSTTCG_DELAY)
     except (requests.RequestException, RuntimeError, ValueError) as e:
-        print(f"Condition prices: kept the old file ({e})")
+        problem = str(e)
+    stats["matched"] = len(prices)
+    print(f"Condition prices: {json.dumps(stats)}")
+
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    if problem or not prices:
+        # Keep the old prices and fetch time, so the next run tries again
+        old.update({"lastAttempt": now, "lastProblem": problem or "no prices matched", "lastStats": stats})
+        with open(CONDITION_MARKET_FILE, "w", encoding="utf-8") as f:
+            json.dump(old, f, indent=2)
+        print(f"Condition prices: kept the old prices ({problem or 'no prices matched'})")
         return
 
     with open(CONDITION_MARKET_FILE, "w", encoding="utf-8") as f:
         json.dump({
-            "fetchedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "fetchedAt": now,
             "source": "JustTCG: TCGplayer market price by condition",
+            "lastStats": stats,
             "prices": prices,
         }, f, indent=2)
     print(f"Condition prices: saved for {len(prices)} cards")
