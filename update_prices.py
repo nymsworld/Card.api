@@ -113,6 +113,15 @@ JUSTTCG_URL = "https://api.justtcg.com/v1/cards"
 JUSTTCG_BATCH = 20
 JUSTTCG_DELAY = 6.5  # seconds between requests (10 per minute)
 JUSTTCG_CONDITIONS = {"Lightly Played": "LP", "Moderately Played": "MP", "Heavily Played": "HP", "Damaged": "DMG"}
+CONDITION_ORDER = ["LP", "MP", "HP", "DMG"]  # best to worst, after Near Mint
+# Inconclusive condition prices are left out, so the price page shows "Ask staff" for them:
+#   - stale: TCGplayer's last report for that condition is older than CONDITION_STALE_DAYS
+#   - out of order: more than CONDITION_ORDER_SLACK above a better condition (or Near Mint).
+#     Within the slack it's market noise, and the price is capped at the better condition's.
+# The raw prices are kept in the file ("raw"), and these rules re-applied on every part 5 / all
+# run, so changing a rule never needs a new JustTCG fetch.
+CONDITION_STALE_DAYS = 30
+CONDITION_ORDER_SLACK = 0.10
 
 # The daily update runs in 4 parts, 30 minutes apart, so no single run sends
 # enough requests to get rate limited. Each part only replaces its own cards.
@@ -695,8 +704,54 @@ def pick_condition_prices(card, entry, card_id):
     for v in best or []:
         code = JUSTTCG_CONDITIONS.get(v.get("condition"))
         if code and v.get("price") is not None:
-            prices[code] = round(float(v["price"]), 2)
+            prices[code] = {"price": round(float(v["price"]), 2), "updated": v.get("lastUpdated")}
     return prices
+
+
+def clean_condition_prices(raw, near_mint, counts):
+    """Usable prices ({ 'LP': 41.5, ... }) from one card's raw prices ({ 'LP': {price, updated} }),
+    leaving out inconclusive ones (see CONDITION_STALE_DAYS / CONDITION_ORDER_SLACK). counts
+    collects how many were 'capped', 'stale' and 'outOfOrder'."""
+    now = time.time()
+    clean = {}
+    better = near_mint
+    for code in CONDITION_ORDER:
+        item = raw.get(code)
+        if not item or item.get("price") is None:
+            continue
+        price = item["price"]
+        updated = item.get("updated")
+        if updated and now - updated > CONDITION_STALE_DAYS * 86400:
+            counts["stale"] += 1
+            continue
+        if better is not None and price > better:
+            if price > better * (1 + CONDITION_ORDER_SLACK):
+                counts["outOfOrder"] += 1
+                continue
+            counts["capped"] += 1
+            price = better
+        clean[code] = round(price, 2)
+        better = price
+    return clean
+
+
+def write_condition_prices(data, catalog):
+    """Re-applies the inconclusive-price rules to data["raw"] and saves the file."""
+    counts = {"capped": 0, "stale": 0, "outOfOrder": 0}
+    prices = {}
+    for card_id, raw in data.get("raw", {}).items():
+        entry = catalog.get(card_id)
+        if not entry:
+            continue
+        clean = clean_condition_prices(raw, entry.get("rawMarket"), counts)
+        if clean:
+            prices[card_id] = clean
+    data["prices"] = prices
+    data["cleaned"] = counts
+    with open(CONDITION_MARKET_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+    print(f"Condition prices: {len(prices)} cards usable ({counts['capped']} capped at a better condition, "
+          f"{counts['outOfOrder']} out of order and {counts['stale']} stale left for staff)")
 
 
 def update_condition_market(catalog):
@@ -711,10 +766,15 @@ def update_condition_market(catalog):
             old = json.load(f)
     except (OSError, ValueError):
         old = {"prices": {}}
-    if old.get("fetchedAt") and old.get("prices"):  # an empty result doesn't count
+    if "raw" not in old:
+        # Files from before "raw" was kept: their prices were the raw ones (no report dates)
+        old["raw"] = {card_id: {code: {"price": p} for code, p in found.items()}
+                      for card_id, found in old.get("prices", {}).items()}
+    if old.get("fetchedAt") and old.get("raw"):  # an empty result doesn't count
         age = datetime.now(timezone.utc) - datetime.fromisoformat(old["fetchedAt"])
         if age.total_seconds() < CONDITION_MARKET_EVERY_HOURS * 3600:
-            print(f"Condition prices: fetched {age.total_seconds() / 3600:.1f} hours ago, skipped")
+            print(f"Condition prices: fetched {age.total_seconds() / 3600:.1f} hours ago, not fetching; re-checking saved prices")
+            write_condition_prices(old, catalog)
             return
 
     wanted = {}  # TCGplayer product ID -> [(card ID, entry)]
@@ -779,19 +839,16 @@ def update_condition_market(catalog):
     if problem or not prices:
         # Keep the old prices and fetch time, so the next run tries again
         old.update({"lastAttempt": now, "lastProblem": problem or "no prices matched", "lastStats": stats})
-        with open(CONDITION_MARKET_FILE, "w", encoding="utf-8") as f:
-            json.dump(old, f, indent=2)
         print(f"Condition prices: kept the old prices ({problem or 'no prices matched'})")
+        write_condition_prices(old, catalog)
         return
 
-    with open(CONDITION_MARKET_FILE, "w", encoding="utf-8") as f:
-        json.dump({
-            "fetchedAt": now,
-            "source": "JustTCG: TCGplayer market price by condition",
-            "lastStats": stats,
-            "prices": prices,
-        }, f, indent=2)
-    print(f"Condition prices: saved for {len(prices)} cards")
+    write_condition_prices({
+        "fetchedAt": now,
+        "source": "JustTCG: TCGplayer market price by condition",
+        "lastStats": stats,
+        "raw": prices,
+    }, catalog)
 
 
 def build_price_catalog(part):
