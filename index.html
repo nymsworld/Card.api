@@ -722,12 +722,13 @@
 
     // Condition prices for expensive cards, each { prices: { cardId: { LP: 210, DMG: 37, ... } } }:
     //   condition_prices.json: set by staff in the shop app -> card.conditionPrices (store prices)
-    //   condition_market.json: TCGplayer market by condition, fetched nightly -> card.conditionMarket
+    //   condition_market.json: TCGplayer market by condition, fetched weekly -> card.conditionMarket,
+    //     and when it was fetched -> card.conditionMarketAt
     // Without them, cards over CONDITION_GUESS_MAX just show "Ask staff" below Near Mint.
     async function addConditionPrices(catalog) {
       await Promise.all([
         ['condition_prices.json', 'conditionPrices'],
-        ['condition_market.json', 'conditionMarket']
+        ['condition_market.json', 'conditionMarket', 'conditionMarketAt']
       ].map(async function (file) {
         var endpoints = [
           'https://raw.githubusercontent.com/nymsworld/Card.api/main/' + file[0] + '?v=' + Date.now(),
@@ -737,9 +738,12 @@
           try {
             var res = await fetch(endpoints[i]);
             if (!res.ok) continue;
-            var set = (await res.json()).prices || {};
+            var data = await res.json();
+            var set = data.prices || {};
             for (var id in set) {
-              if (catalog[id]) catalog[id][file[1]] = set[id];
+              if (!catalog[id]) continue;
+              catalog[id][file[1]] = set[id];
+              if (file[2]) catalog[id][file[2]] = data.fetchedAt || null;
             }
             return;
           } catch (e) {}
@@ -783,13 +787,17 @@
     var CONDITION_GUESS_MAX = 50;
 
     // Where a card's price in a condition comes from: 'nm', 'staff' (set in the shop app),
-    // 'market' (TCGplayer market for that condition), 'percent' (of Near Mint) or null (ask staff)
+    // 'market' (TCGplayer market for that condition), 'percent' (of Near Mint) or null (ask staff).
+    // A staff price holds until it's changed, or until a TCGplayer fetch made after it has a solid
+    // (conclusive) price for that condition; condition_market.json only keeps conclusive ones.
     function conditionSource(card, condition) {
       if (!condition || condition.percent === 100 || card.rawMarket == null) return 'nm';
-      if (card.conditionPrices && card.conditionPrices[condition.code] != null) return 'staff';
-      if (card.rawMarket > CONDITION_GUESS_MAX) {
-        return card.conditionMarket && card.conditionMarket[condition.code] != null ? 'market' : null;
-      }
+      var staff = card.conditionPrices && card.conditionPrices[condition.code] != null;
+      var market = card.conditionMarket && card.conditionMarket[condition.code] != null;
+      if (staff && market && card.conditionMarketAt && card.conditionPrices.updatedAt &&
+          Date.parse(card.conditionMarketAt) > Date.parse(card.conditionPrices.updatedAt)) return 'market';
+      if (staff) return 'staff';
+      if (card.rawMarket > CONDITION_GUESS_MAX) return market ? 'market' : null;
       return 'percent';
     }
 
