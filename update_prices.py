@@ -101,13 +101,14 @@ HISTORY_DAYS = 8
 # below that the page uses a percent of Near Mint, and worn expensive cards sell for far less
 # than a fixed percent. Written to condition_market.json (only this script writes it; staff
 # prices from the app are in condition_prices.json and win over these). Free plan: 100
-# requests/day, 1,000/month, 10/minute, 20 cards per request, so this runs at most once every
-# 20 hours (part 5 or all) for at most CONDITION_MARKET_MAX_CARDS cards. Needs the
-# JUSTTCG_API_KEY repo secret; without it this step is skipped.
+# requests/day, 1,000/month, 10/minute, 20 cards per request, so this runs once a week
+# (part 5 or all; 6.5 days so the nightly run on day 7 always catches it) for at most
+# CONDITION_MARKET_MAX_CARDS cards: about 11 requests a week. Needs the JUSTTCG_API_KEY repo
+# secret; without it this step is skipped.
 CONDITION_MARKET_FILE = "condition_market.json"
 CONDITION_MARKET_MIN = 50
 CONDITION_MARKET_MAX_CARDS = 400
-CONDITION_MARKET_EVERY_HOURS = 20
+CONDITION_MARKET_EVERY_HOURS = 6.5 * 24
 JUSTTCG_URL = "https://api.justtcg.com/v1/cards"
 JUSTTCG_BATCH = 20
 JUSTTCG_DELAY = 6.5  # seconds between requests (10 per minute)
