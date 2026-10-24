@@ -709,13 +709,36 @@
         try {
           var res = await fetch(endpoints[i]);
           if (res.ok) {
-            priceCatalog = await res.json();
+            var catalog = await res.json();
+            await addConditionPrices(catalog);
+            priceCatalog = catalog;
             return priceCatalog;
           }
         } catch (e) {}
       }
 
       throw new Error('Could not fetch price database from mirrors.');
+    }
+
+    // Condition prices set by staff (condition_prices.json, edited in the shop app):
+    // { prices: { cardId: { LP: 210, DMG: 37, ... } } }. Each card gets them as card.conditionPrices.
+    async function addConditionPrices(catalog) {
+      var endpoints = [
+        'https://raw.githubusercontent.com/nymsworld/Card.api/main/condition_prices.json?v=' + Date.now(),
+        'https://cdn.jsdelivr.net/gh/nymsworld/Card.api@main/condition_prices.json'
+      ];
+      for (var i = 0; i < endpoints.length; i++) {
+        try {
+          var res = await fetch(endpoints[i]);
+          if (!res.ok) continue;
+          var set = (await res.json()).prices || {};
+          for (var id in set) {
+            if (catalog[id]) catalog[id].conditionPrices = set[id];
+          }
+          return;
+        } catch (e) {}
+      }
+      // Without them, cards over CONDITION_GUESS_MAX just show "Ask staff" below Near Mint
     }
 
     // Finds a card by ID, ignoring case and leading zeros (MEP-023 = mep-23)
@@ -747,9 +770,24 @@
       return Math.max(1, rounded);
     }
 
-    function priceForCondition(card, condition) {
+    // Below Near Mint, expensive cards lose far more than the CONDITIONS percents (a damaged
+    // $300 card can sell for 12% of Near Mint), so above this Near Mint price a condition shows
+    // "Ask staff" unless staff have set its price (condition_prices.json).
+    var CONDITION_GUESS_MAX = 50;
+
+    // Store price for a card in a condition, or null when staff need to price it
+    function conditionPrice(card, condition) {
       if (!condition || condition.percent === 100 || card.rawMarket == null) return Number(card.price) || 0;
+      var set = card.conditionPrices && card.conditionPrices[condition.code];
+      if (set != null) return Number(set);
+      if (card.rawMarket > CONDITION_GUESS_MAX) return null;
       return storePrice(card.rawMarket * condition.percent / 100);
+    }
+
+    // Always a number: the staff price, or the percent-of-Near-Mint estimate when there isn't one
+    function priceForCondition(card, condition) {
+      var price = conditionPrice(card, condition);
+      return price != null ? price : storePrice(card.rawMarket * condition.percent / 100);
     }
 
     function setCondition(code) {
@@ -766,11 +804,16 @@
       // Overnumbered cards and Classic Collection cards are priced by condition
       var hasConditions = card.conditionPricing || card.overnumbered;
       currentCondition = hasConditions ? (findCondition(conditionCode) || CONDITIONS[0]) : null;
-      var price = priceForCondition(card, currentCondition);
+      var price = conditionPrice(card, currentCondition);
+      var staffSet = currentCondition && card.conditionPrices && card.conditionPrices[currentCondition.code] != null;
 
       var floorNote = '';
       var conditionRaw = card.rawMarket != null && currentCondition ? card.rawMarket * currentCondition.percent / 100 : card.rawMarket;
-      if (conditionRaw != null && conditionRaw < 1.00) {
+      if (price == null) {
+        floorNote = '<div class="floor-note">' + currentCondition.label + ' copies are priced by staff · ask at the counter</div>';
+      } else if (staffSet) {
+        floorNote = '<div class="floor-note">' + currentCondition.label + ' · priced by staff</div>';
+      } else if (conditionRaw != null && conditionRaw < 1.00) {
         floorNote = '<div class="floor-note">($1.00 store floor applied)</div>';
       } else if (currentCondition && currentCondition.percent !== 100) {
         floorNote = '<div class="floor-note">' + currentCondition.label + ' · ' + currentCondition.percent + '% of Near Mint</div>';
@@ -799,11 +842,11 @@
             conditionHtml +
             '<div class="price-container">' +
               '<div class="label">Store Price' + (currentCondition ? ' · ' + currentCondition.code : '') + '</div>' +
-              '<div class="price">' + money(price) + '</div>' +
+              '<div class="price">' + (price == null ? 'Ask staff' : money(price)) + '</div>' +
               floorNote +
             '</div>' +
             '<div class="action-stack">' +
-              '<button class="btn btn-cart" onclick="addToCartCurrent()">+ Add to List</button>' +
+              '<button class="btn btn-cart" onclick="addToCartCurrent()"' + (price == null ? ' disabled' : '') + '>+ Add to List</button>' +
               '<button class="btn btn-scan" onclick="startInAppScanner()">Scan Another Card</button>' +
               (card.tcgUrl ? '<a class="btn btn-link" href="' + card.tcgUrl + '" target="_blank" rel="noopener">View on TCGplayer</a>' : '') +
             '</div>' +
@@ -1060,7 +1103,7 @@
     }
 
     function addToCartCurrent() {
-      if (!currentCardData) return;
+      if (!currentCardData || conditionPrice(currentCardData, currentCondition) == null) return;
       var key = currentCardData.id + (currentCondition ? '|' + currentCondition.code : '');
       var existing = cart.find(function(item) { return cartKey(item) === key; });
       if (existing) {
