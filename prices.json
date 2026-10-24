@@ -63882,5 +63882,19 @@
     "tcgUrl": "https://www.tcgplayer.com/product/607943",
     "conditionPricing": true,
     "game": "Pok\u00e9mon (Japanese)"
+  },
+  "tcg-605464-1st-edition": {
+    "id": "tcg-605464-1st-edition",
+    "name": "Floette (1st Edition)",
+    "setName": "PokeKyun Collection",
+    "number": "022",
+    "printedTotal": "032",
+    "rarity": "Uncommon",
+    "price": 17.0,
+    "rawMarket": 17.2,
+    "image": "https://tcgplayer-cdn.tcgplayer.com/product/605464_in_400x400.jpg",
+    "tcgUrl": "https://www.tcgplayer.com/product/605464",
+    "conditionPricing": true,
+    "game": "Pok\u00e9mon (Japanese)"
   }
 }
