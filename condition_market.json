@@ -1,5 +1,80 @@
 {
   "fetchedAt": "2026-10-24T18:20:32+00:00",
   "source": "JustTCG: TCGplayer market price by condition",
-  "prices": {}
+  "prices": {},
+  "lastAttempt": "2026-10-24T19:04:57+00:00",
+  "lastProblem": "no prices matched",
+  "lastStats": {
+    "cards": 220,
+    "products": 220,
+    "requests": 11,
+    "returned": 220,
+    "matched": 0,
+    "sample": {
+      "responseKeys": [
+        "_metadata",
+        "data"
+      ],
+      "error": null,
+      "cardKeys": [
+        "details",
+        "game",
+        "id",
+        "mtgjsonId",
+        "name",
+        "number",
+        "rarity",
+        "scryfallId",
+        "set",
+        "set_name",
+        "tcgplayerId",
+        "uuid",
+        "variants"
+      ],
+      "tcgplayerId": "642289",
+      "asked": [
+        "717607",
+        "717609",
+        "717608"
+      ],
+      "variants": [
+        {
+          "printing": "Holofoil",
+          "condition": "Damaged",
+          "price": 200,
+          "language": "English",
+          "priceStatus": "current"
+        },
+        {
+          "printing": "Holofoil",
+          "condition": "Heavily Played",
+          "price": 275,
+          "language": "English",
+          "priceStatus": "current"
+        },
+        {
+          "printing": "Holofoil",
+          "condition": "Lightly Played",
+          "price": 465.38,
+          "language": "English",
+          "priceStatus": "current"
+        },
+        {
+          "printing": "Holofoil",
+          "condition": "Near Mint",
+          "price": 469.83,
+          "language": "English",
+          "priceStatus": "current"
+        },
+        {
+          "printing": "Holofoil",
+          "condition": "Moderately Played",
+          "price": null,
+          "language": "English",
+          "priceStatus": "expired"
+        }
+      ]
+    },
+    "requestsRemaining": 982
+  }
 }
