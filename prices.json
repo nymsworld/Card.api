@@ -63071,6 +63071,20 @@
     "conditionPricing": true,
     "game": "Pok\u00e9mon"
   },
+  "tcg-488271": {
+    "id": "tcg-488271",
+    "name": "Galarian Articuno",
+    "setName": "Sword & Shield Promo Cards",
+    "number": "SWSH282",
+    "printedTotal": "",
+    "rarity": "Promo",
+    "price": 5.0,
+    "rawMarket": 4.72,
+    "image": "https://tcgplayer-cdn.tcgplayer.com/product/488271_in_400x400.jpg",
+    "tcgUrl": "https://www.tcgplayer.com/product/488271",
+    "conditionPricing": true,
+    "game": "Pok\u00e9mon"
+  },
   "tcg-232524": {
     "id": "tcg-232524",
     "name": "Ditto V",
