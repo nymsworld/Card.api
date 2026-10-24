@@ -674,11 +674,15 @@ def update_history(catalog):
 
 def pick_condition_prices(card, entry, card_id):
     """{ 'LP': 41.5, ... } from a JustTCG card for a prices.json entry: the printing that
-    matches (reverse holo or not) with the Near Mint price closest to ours, English only."""
+    matches (reverse holo or not) with the Near Mint price closest to ours, in the card's
+    language (Japanese for jp- cards, else English; JustTCG labels English listings "English")."""
     want_reverse = card_id.endswith("-reverse")
+    want_language = "japanese" if card_id.startswith("jp-") else "english"
     printings = {}
     for v in card.get("variants", []):
-        if v.get("language") or ("reverse" in (v.get("printing") or "").lower()) != want_reverse:
+        if (v.get("language") or "english").lower() != want_language:
+            continue
+        if ("reverse" in (v.get("printing") or "").lower()) != want_reverse:
             continue
         printings.setdefault(v.get("printing"), []).append(v)
     best, best_gap = None, None
