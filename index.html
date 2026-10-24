@@ -720,25 +720,31 @@
       throw new Error('Could not fetch price database from mirrors.');
     }
 
-    // Condition prices set by staff (condition_prices.json, edited in the shop app):
-    // { prices: { cardId: { LP: 210, DMG: 37, ... } } }. Each card gets them as card.conditionPrices.
+    // Condition prices for expensive cards, each { prices: { cardId: { LP: 210, DMG: 37, ... } } }:
+    //   condition_prices.json: set by staff in the shop app -> card.conditionPrices (store prices)
+    //   condition_market.json: TCGplayer market by condition, fetched nightly -> card.conditionMarket
+    // Without them, cards over CONDITION_GUESS_MAX just show "Ask staff" below Near Mint.
     async function addConditionPrices(catalog) {
-      var endpoints = [
-        'https://raw.githubusercontent.com/nymsworld/Card.api/main/condition_prices.json?v=' + Date.now(),
-        'https://cdn.jsdelivr.net/gh/nymsworld/Card.api@main/condition_prices.json'
-      ];
-      for (var i = 0; i < endpoints.length; i++) {
-        try {
-          var res = await fetch(endpoints[i]);
-          if (!res.ok) continue;
-          var set = (await res.json()).prices || {};
-          for (var id in set) {
-            if (catalog[id]) catalog[id].conditionPrices = set[id];
-          }
-          return;
-        } catch (e) {}
-      }
-      // Without them, cards over CONDITION_GUESS_MAX just show "Ask staff" below Near Mint
+      await Promise.all([
+        ['condition_prices.json', 'conditionPrices'],
+        ['condition_market.json', 'conditionMarket']
+      ].map(async function (file) {
+        var endpoints = [
+          'https://raw.githubusercontent.com/nymsworld/Card.api/main/' + file[0] + '?v=' + Date.now(),
+          'https://cdn.jsdelivr.net/gh/nymsworld/Card.api@main/' + file[0]
+        ];
+        for (var i = 0; i < endpoints.length; i++) {
+          try {
+            var res = await fetch(endpoints[i]);
+            if (!res.ok) continue;
+            var set = (await res.json()).prices || {};
+            for (var id in set) {
+              if (catalog[id]) catalog[id][file[1]] = set[id];
+            }
+            return;
+          } catch (e) {}
+        }
+      }));
     }
 
     // Finds a card by ID, ignoring case and leading zeros (MEP-023 = mep-23)
@@ -771,17 +777,30 @@
     }
 
     // Below Near Mint, expensive cards lose far more than the CONDITIONS percents (a damaged
-    // $300 card can sell for 12% of Near Mint), so above this Near Mint price a condition shows
-    // "Ask staff" unless staff have set its price (condition_prices.json).
+    // $300 card can sell for 12% of Near Mint), so above this Near Mint price a condition uses
+    // its own TCGplayer market price (condition_market.json), or shows "Ask staff" without one.
+    // Must match CONDITION_MARKET_MIN in update_prices.py.
     var CONDITION_GUESS_MAX = 50;
+
+    // Where a card's price in a condition comes from: 'nm', 'staff' (set in the shop app),
+    // 'market' (TCGplayer market for that condition), 'percent' (of Near Mint) or null (ask staff)
+    function conditionSource(card, condition) {
+      if (!condition || condition.percent === 100 || card.rawMarket == null) return 'nm';
+      if (card.conditionPrices && card.conditionPrices[condition.code] != null) return 'staff';
+      if (card.rawMarket > CONDITION_GUESS_MAX) {
+        return card.conditionMarket && card.conditionMarket[condition.code] != null ? 'market' : null;
+      }
+      return 'percent';
+    }
 
     // Store price for a card in a condition, or null when staff need to price it
     function conditionPrice(card, condition) {
-      if (!condition || condition.percent === 100 || card.rawMarket == null) return Number(card.price) || 0;
-      var set = card.conditionPrices && card.conditionPrices[condition.code];
-      if (set != null) return Number(set);
-      if (card.rawMarket > CONDITION_GUESS_MAX) return null;
-      return storePrice(card.rawMarket * condition.percent / 100);
+      var source = conditionSource(card, condition);
+      if (source === 'nm') return Number(card.price) || 0;
+      if (source === 'staff') return Number(card.conditionPrices[condition.code]);
+      if (source === 'market') return storePrice(card.conditionMarket[condition.code]);
+      if (source === 'percent') return storePrice(card.rawMarket * condition.percent / 100);
+      return null;
     }
 
     // Always a number: the staff price, or the percent-of-Near-Mint estimate when there isn't one
@@ -805,14 +824,16 @@
       var hasConditions = card.conditionPricing || card.overnumbered;
       currentCondition = hasConditions ? (findCondition(conditionCode) || CONDITIONS[0]) : null;
       var price = conditionPrice(card, currentCondition);
-      var staffSet = currentCondition && card.conditionPrices && card.conditionPrices[currentCondition.code] != null;
+      var source = conditionSource(card, currentCondition);
 
       var floorNote = '';
       var conditionRaw = card.rawMarket != null && currentCondition ? card.rawMarket * currentCondition.percent / 100 : card.rawMarket;
       if (price == null) {
         floorNote = '<div class="floor-note">' + currentCondition.label + ' copies are priced by staff · ask at the counter</div>';
-      } else if (staffSet) {
+      } else if (source === 'staff') {
         floorNote = '<div class="floor-note">' + currentCondition.label + ' · priced by staff</div>';
+      } else if (source === 'market') {
+        floorNote = '<div class="floor-note">' + currentCondition.label + ' · TCGplayer market for this condition</div>';
       } else if (conditionRaw != null && conditionRaw < 1.00) {
         floorNote = '<div class="floor-note">($1.00 store floor applied)</div>';
       } else if (currentCondition && currentCondition.percent !== 100) {

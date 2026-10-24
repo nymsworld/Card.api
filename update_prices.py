@@ -1,3 +1,4 @@
+import os
 import re
 import sys
 import csv
@@ -94,6 +95,23 @@ BULK_TAGS = [
 # can be compared with exactly 7 days ago).
 HISTORY_FILE = "price_history.json"
 HISTORY_DAYS = 8
+
+# TCGplayer market prices by condition (LP / MP / HP / DMG) from JustTCG's free API, for
+# condition-priced cards over CONDITION_MARKET_MIN (the price page's CONDITION_GUESS_MAX):
+# below that the page uses a percent of Near Mint, and worn expensive cards sell for far less
+# than a fixed percent. Written to condition_market.json (only this script writes it; staff
+# prices from the app are in condition_prices.json and win over these). Free plan: 100
+# requests/day, 1,000/month, 10/minute, 20 cards per request, so this runs at most once every
+# 20 hours (part 5 or all) for at most CONDITION_MARKET_MAX_CARDS cards. Needs the
+# JUSTTCG_API_KEY repo secret; without it this step is skipped.
+CONDITION_MARKET_FILE = "condition_market.json"
+CONDITION_MARKET_MIN = 50
+CONDITION_MARKET_MAX_CARDS = 400
+CONDITION_MARKET_EVERY_HOURS = 20
+JUSTTCG_URL = "https://api.justtcg.com/v1/cards"
+JUSTTCG_BATCH = 20
+JUSTTCG_DELAY = 6.5  # seconds between requests (10 per minute)
+JUSTTCG_CONDITIONS = {"Lightly Played": "LP", "Moderately Played": "MP", "Heavily Played": "HP", "Damaged": "DMG"}
 
 # The daily update runs in 4 parts, 30 minutes apart, so no single run sends
 # enough requests to get rate limited. Each part only replaces its own cards.
@@ -653,6 +671,95 @@ def update_history(catalog):
     print(f"Price history: {len(history['dates'])} day(s) for {len(history['prices'])} cards")
 
 
+def pick_condition_prices(card, entry, card_id):
+    """{ 'LP': 41.5, ... } from a JustTCG card for a prices.json entry: the printing that
+    matches (reverse holo or not) with the Near Mint price closest to ours, English only."""
+    want_reverse = card_id.endswith("-reverse")
+    printings = {}
+    for v in card.get("variants", []):
+        if v.get("language") or ("reverse" in (v.get("printing") or "").lower()) != want_reverse:
+            continue
+        printings.setdefault(v.get("printing"), []).append(v)
+    best, best_gap = None, None
+    for variants in printings.values():
+        nm = next((v.get("price") for v in variants if v.get("condition") == "Near Mint" and v.get("price") is not None), None)
+        gap = abs(nm - entry["rawMarket"]) if nm is not None else float("inf")
+        if best is None or gap < best_gap:
+            best, best_gap = variants, gap
+    prices = {}
+    for v in best or []:
+        code = JUSTTCG_CONDITIONS.get(v.get("condition"))
+        if code and v.get("price") is not None:
+            prices[code] = round(float(v["price"]), 2)
+    return prices
+
+
+def update_condition_market(catalog):
+    """Refreshes condition_market.json from JustTCG. Never stops the price update: on any
+    problem the old file is kept."""
+    key = os.environ.get("JUSTTCG_API_KEY")
+    if not key:
+        print("Condition prices: no JUSTTCG_API_KEY, skipped")
+        return
+    try:
+        with open(CONDITION_MARKET_FILE, encoding="utf-8") as f:
+            old = json.load(f)
+    except (OSError, ValueError):
+        old = {"prices": {}}
+    if old.get("fetchedAt"):
+        age = datetime.now(timezone.utc) - datetime.fromisoformat(old["fetchedAt"])
+        if age.total_seconds() < CONDITION_MARKET_EVERY_HOURS * 3600:
+            print(f"Condition prices: fetched {age.total_seconds() / 3600:.1f} hours ago, skipped")
+            return
+
+    wanted = {}  # TCGplayer product ID -> [(card ID, entry)]
+    cards = sorted(
+        (
+            (card_id, entry) for card_id, entry in catalog.items()
+            if (entry.get("conditionPricing") or entry.get("overnumbered"))
+            and (entry.get("rawMarket") or 0) > CONDITION_MARKET_MIN
+        ),
+        key=lambda item: -item[1]["rawMarket"],
+    )[:CONDITION_MARKET_MAX_CARDS]
+    for card_id, entry in cards:
+        product = entry_product_key(card_id, entry)
+        if product:
+            wanted.setdefault(product[0], []).append((card_id, entry))
+
+    ids = list(wanted)
+    print(f"Condition prices: looking up {len(cards)} cards over ${CONDITION_MARKET_MIN} ({len(ids)} TCGplayer products)...")
+    prices = {}
+    try:
+        for start in range(0, len(ids), JUSTTCG_BATCH):
+            batch = ids[start:start + JUSTTCG_BATCH]
+            resp = requests.post(JUSTTCG_URL, json=[{"tcgplayerId": pid} for pid in batch],
+                                 headers={"x-api-key": key}, timeout=60)
+            if resp.status_code != 200:
+                raise RuntimeError(f"JustTCG HTTP {resp.status_code}: {resp.text[:200]}")
+            body = resp.json()
+            for card in body.get("data", []):
+                for card_id, entry in wanted.get(str(card.get("tcgplayerId")), []):
+                    found = pick_condition_prices(card, entry, card_id)
+                    if found:
+                        prices[card_id] = found
+            remaining = (body.get("_metadata") or {}).get("apiRequestsRemaining")
+            if remaining is not None and remaining < 5:
+                print(f"  JustTCG has {remaining} requests left this period, stopping early")
+                break
+            time.sleep(JUSTTCG_DELAY)
+    except (requests.RequestException, RuntimeError, ValueError) as e:
+        print(f"Condition prices: kept the old file ({e})")
+        return
+
+    with open(CONDITION_MARKET_FILE, "w", encoding="utf-8") as f:
+        json.dump({
+            "fetchedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "source": "JustTCG: TCGplayer market price by condition",
+            "prices": prices,
+        }, f, indent=2)
+    print(f"Condition prices: saved for {len(prices)} cards")
+
+
 def build_price_catalog(part):
     updates = {}
 
@@ -702,6 +809,8 @@ def build_price_catalog(part):
         json.dump(catalog, f, indent=2)
 
     update_history(catalog)
+    if part in ("all", "5"):
+        update_condition_market(catalog)
 
     print(f"Successfully updated {len(updates)} cards (part {part}); prices.json has {len(catalog)} cards.")
 
