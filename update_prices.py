@@ -55,6 +55,17 @@ PROMO_GROUPS = [
 ]
 PRICE_VARIANT_ORDER = ["Holofoil", "Normal", "Reverse Holofoil"]
 
+# Sword & Shield era, straight from TCGplayer's data (tcgcsv.com): every Pokémon V / VMAX / VSTAR /
+# V-UNION card and every overnumbered (secret) card in the era's sets, every card in the gallery
+# subsets (Trainer Gallery, Galarian Gallery, Shiny Vault), and every card in the Sword & Shield
+# Black Star Promos and Prize Pack Series. IDs are tcg-<TCGplayer product ID>, the same as stocked
+# cards, so stickers already printed for stocked cards keep working. Entries carry "group", so
+# part 5's rebuild of stocked cards leaves them alone (and doesn't list them twice).
+SWSH_ERA_GROUP = re.compile(r"^(SWSH\d+:|SWSH: Crown Zenith|Pokemon GO$|Champion's Path$|Shining Fates|Celebrations$)")
+SWSH_EXTRA_GROUPS = re.compile(r"^(SWSH: Sword & Shield Promo Cards|Prize Pack Series Cards)$")
+SWSH_GALLERY = re.compile(r"(Trainer Gallery|Galarian Gallery|Shiny Vault)$")
+V_FAMILY = re.compile(r"\b(V|VMAX|VSTAR|V-UNION)\b")
+
 # Cards the shop stocks, from a TCGplayer inventory export (only the product columns are
 # kept: no quantities or prices). Every card listed gets condition pricing (NM-DMG), and
 # cards not already in the database are added from TCGplayer's data. To update the list,
@@ -129,7 +140,7 @@ PARTS = {
     "1": "Double Rares, ACE SPECs, single cards, 30th Classic Collection and promos",
     "2": "151 holos and reverse holos, plus overnumbered cards from the first half of Scarlet & Violet",
     "3": "Overnumbered cards from the second half of Scarlet & Violet",
-    "4": "Overnumbered cards from Mega Evolution",
+    "4": "Overnumbered cards from Mega Evolution, then the Sword & Shield era: V cards, secrets, galleries, promos and Prize Packs",
     "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
 }
 
@@ -442,6 +453,71 @@ def fetch_promo_group(catalog, group):
 
     print(f"Synced {added} cards from {group['setName']}")
     time.sleep(0.5)
+
+
+def fetch_swsh_era(catalog):
+    """Sword & Shield era cards (see SWSH_ERA_GROUP, SWSH_GALLERY, SWSH_EXTRA_GROUPS), as tcg-<product ID> entries."""
+    groups = get_json(f"{TCGCSV_BASE}/groups", headers=TCGCSV_HEADERS).get("results", [])
+    time.sleep(REQUEST_DELAY)
+    wanted = [g for g in groups if SWSH_ERA_GROUP.match(g["name"]) or SWSH_EXTRA_GROUPS.match(g["name"])]
+    print(f"Fetching live prices for Sword & Shield era cards from {len(wanted)} sets...")
+    total = 0
+    for g in wanted:
+        # Galleries, promos and Prize Packs: every card; the main sets: V cards and secrets
+        whole = bool(SWSH_GALLERY.search(g["name"]) or SWSH_EXTRA_GROUPS.match(g["name"]))
+        products = get_json(f"{TCGCSV_BASE}/{g['groupId']}/products", headers=TCGCSV_HEADERS).get("results", [])
+        time.sleep(REQUEST_DELAY)
+        prices = {}
+        for p in get_json(f"{TCGCSV_BASE}/{g['groupId']}/prices", headers=TCGCSV_HEADERS).get("results", []):
+            prices.setdefault(p["productId"], {})[p.get("subTypeName")] = p.get("marketPrice")
+        time.sleep(REQUEST_DELAY)
+        # Drop only the set code: "SWSH07: Evolving Skies" -> "Evolving Skies", "SWSH: Crown Zenith: Galarian
+        # Gallery" -> "Crown Zenith: Galarian Gallery", "Shining Fates: Shiny Vault" stays as it is
+        set_name = re.sub(r"^SWSH\d*:\s*", "", g["name"])
+        added = 0
+        for product in products:
+            data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
+            number = (data.get("Number") or "").strip()
+            if not number:
+                continue  # sealed products and other non-cards
+            name = re.sub(r"\s+-\s+\S*\d\S*$", "", product["name"]).strip()
+            card_number, _, printed_total = number.partition("/")
+            card_number, printed_total = card_number.strip(), printed_total.strip()
+            overnumbered = (card_number.isdigit() and printed_total.isdigit()
+                            and int(card_number) > int(printed_total))
+            if not (whole or overnumbered or V_FAMILY.search(name)):
+                continue
+            raw_market = pick_price(prices.get(product["productId"], {}), "Holofoil")
+            card_id = f"tcg-{product['productId']}"
+            entry = {
+                "id": card_id,
+                "name": name,
+                "setName": set_name,
+                "number": card_number,
+                "printedTotal": printed_total,
+                "rarity": (data.get("Rarity") or "").strip() or ("Promo" if "Promo" in g["name"] else "Single"),
+                "price": calculate_store_price(raw_market),
+                "rawMarket": raw_market,
+                "image": product.get("imageUrl", ""),
+                "tcgUrl": product.get("url") or f"https://www.tcgplayer.com/product/{product['productId']}",
+                "game": GAME_NAMES["Pokemon"],
+                "group": "swsh",
+            }
+            # Like the Scarlet & Violet secrets: overnumbered and gallery cards get the condition picker
+            if overnumbered and "Prize Pack" not in g["name"] and "Promo" not in g["name"]:
+                entry["overnumbered"] = True
+            if entry.get("overnumbered") or SWSH_GALLERY.search(g["name"]):
+                entry["conditionPricing"] = True
+            catalog[card_id] = entry
+            added += 1
+        print(f"  {set_name}: {added} cards")
+        total += added
+    print(f"Synced {total} Sword & Shield era cards")
+
+
+def is_stock_entry(card_id, entry):
+    """A card that's in prices.json only because it's on the stock list (rebuilt by part 5)."""
+    return card_id.startswith("tcg-") and not entry.get("group")
 
 
 def load_stock():
@@ -870,6 +946,9 @@ def build_price_catalog(part):
     if part in ("all", "2", "3", "4"):
         fetch_overnumbered(updates, part)
 
+    if part in ("all", "4"):
+        fetch_swsh_era(updates)
+
     # A single part only replaces its own cards and keeps everything else as it was
     catalog = {}
     if part != "all":
@@ -882,13 +961,13 @@ def build_price_catalog(part):
     stock = load_stock()
     if part in ("all", "5"):
         # Japanese cards and stocked cards are rebuilt every run (cards that left the
-        # list drop out, and stocked cards now covered elsewhere aren't listed twice)
-        rebuilt = ("tcg-", "jp-")
-        catalog = {k: v for k, v in catalog.items() if not k.startswith(rebuilt)}
+        # list drop out, and stocked cards now covered elsewhere aren't listed twice).
+        # Sword & Shield era cards also have tcg- IDs but belong to part 4 ("group"): kept.
+        catalog = {k: v for k, v in catalog.items() if not (k.startswith("jp-") or is_stock_entry(k, v))}
         fetch_japanese(updates)
         existing = dict(catalog)
         existing.update(updates)
-        existing = {k: v for k, v in existing.items() if not k.startswith("tcg-")}
+        existing = {k: v for k, v in existing.items() if not is_stock_entry(k, v)}
         fetch_stock(updates, stock, existing)
 
     catalog.update(updates)
