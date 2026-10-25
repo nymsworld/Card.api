@@ -480,6 +480,7 @@
 
     .scanner-actions {
       display: flex;
+      flex-wrap: wrap;
       gap: 0.5rem;
       width: 100%;
       max-width: 360px;
@@ -488,7 +489,8 @@
     }
 
     .scan-tool-btn {
-      flex: 1;
+      flex: 1 1 auto;
+      white-space: nowrap;
       font-family: inherit;
       font-weight: 800;
       font-size: 0.85rem;
@@ -629,6 +631,7 @@
       <div id="scanner-container"></div>
       <div class="scanner-actions">
         <button class="scan-tool-btn" id="torchBtn" onclick="toggleTorch()" style="display:none">🔦 Flashlight</button>
+        <button class="scan-tool-btn" id="zoomBtn" onclick="toggleZoom()" style="display:none">🔍 Zoom 2×</button>
         <button class="scan-tool-btn" onclick="takePhoto()">📷 Take Photo</button>
       </div>
       <p class="scanner-hint" id="scannerHint">Camera will automatically detect the card sticker.</p>
@@ -1062,16 +1065,43 @@
 
       torchOn = false;
       updateTorchButton(!!caps.torch);
-      if (caps.focusMode && caps.focusMode.indexOf('continuous') !== -1) applyCameraSettings();
+      // Zoom: phones can't focus on a small sticker held very close, so zooming in lets it be read from
+      // further back. Shown only where the camera can zoom (not iPhone Safari); remembered on this device.
+      zoomRange = caps.zoom && caps.zoom.max >= 1.5 ? caps.zoom : null;
+      zoomOn = !!zoomRange && savedZoom();
+      updateZoomButton();
+      if (zoomOn || (caps.focusMode && caps.focusMode.indexOf('continuous') !== -1)) applyCameraSettings().catch(function() {});
     }
 
     function applyCameraSettings() {
-      // Separate sets so a camera without a flashlight still gets continuous focus
+      // Separate sets so a camera without a flashlight still gets continuous focus (and zoom)
+      var advanced = [{ torch: torchOn }, { focusMode: 'continuous' }];
+      if (zoomRange) advanced.push({ zoom: zoomOn ? Math.min(2, zoomRange.max) : Math.max(1, zoomRange.min || 1) });
       return html5QrScanner.applyVideoConstraints({
         width: VIDEO_WIDTH,
         height: VIDEO_HEIGHT,
-        advanced: [{ torch: torchOn }, { focusMode: 'continuous' }]
+        advanced: advanced
       });
+    }
+
+    var zoomRange = null;
+    var zoomOn = false;
+    function savedZoom() {
+      try { return localStorage.getItem('kms_scan_zoom') === '1'; } catch (e) { return false; }
+    }
+    function updateZoomButton() {
+      var btn = document.getElementById('zoomBtn');
+      btn.style.display = zoomRange ? '' : 'none';
+      btn.classList.toggle('on', zoomOn);
+      btn.textContent = zoomOn ? '🔍 Zoomed in' : '🔍 Zoom 2×';
+    }
+    function toggleZoom() {
+      if (!html5QrScanner || !html5QrScanner.isScanning || !zoomRange) return;
+      zoomOn = !zoomOn;
+      try { localStorage.setItem('kms_scan_zoom', zoomOn ? '1' : '0'); } catch (e) {}
+      applyCameraSettings().catch(function() {
+        zoomOn = !zoomOn;
+      }).then(updateZoomButton);
     }
 
     function updateTorchButton(show) {
@@ -1094,6 +1124,8 @@
     function stopCamera() {
       torchOn = false;
       updateTorchButton(false);
+      zoomRange = null;
+      updateZoomButton();
       if (html5QrScanner && html5QrScanner.isScanning) {
         scannerStopping = html5QrScanner.stop().catch(function() {});
       }
