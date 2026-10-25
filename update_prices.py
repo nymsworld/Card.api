@@ -77,6 +77,16 @@ SV_ME_SKIP_GROUPS = re.compile(r"Promo|Classic Collection")
 CHEAP_RARITIES = {"Common", "Uncommon", "Rare"}
 CHEAP_MIN_PRICE = 0.50
 
+# Variants that TCGplayer lists as their own products, from every English Pokémon group (part 6):
+#   - stamped cards ("Reshiram ex (White Flare Stamped)", "[W Stamped]"...): all of them, any price.
+#     Box and collection stamps are in TCGplayer's "Miscellaneous Cards & Products", not their set
+#   - Battle Academy cards (deck-stamped) and ball / Energy Symbol pattern variants ("(Poke Ball
+#     Pattern)", "(Dusk Ball)"...): those over CHEAP_MIN_PRICE, kept once added like the commons
+# Printings already listed another way (e.g. the SV / ME commons step) are skipped.
+STAMPED = re.compile(r"Stamp", re.IGNORECASE)
+BALL_PATTERN = re.compile(r"\((Poke Ball|Poké Ball|Master Ball|Dusk Ball|Love Ball|Friend Ball|Quick Ball|Great Ball|Ultra Ball|Energy Symbol)( Pattern)?\)", re.IGNORECASE)
+BATTLE_ACADEMY = re.compile(r"^Battle Academy")
+
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
 # spelled as printed on the cards; each run logs how many cards each name found.
@@ -169,6 +179,7 @@ PARTS = {
     "3": "Overnumbered cards from the second half of Scarlet & Violet, jumbo cards, and SV / ME commons, uncommons and rares over $0.50",
     "4": "Overnumbered cards from Mega Evolution, then the Sword & Shield era: V cards, secrets, galleries, promos and Prize Packs",
     "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
+    "6": "Stamped cards, Battle Academy cards and ball / Energy pattern variants from every TCGplayer Pokémon set",
 }
 
 _tcgcsv_groups = None
@@ -622,6 +633,54 @@ def fetch_sv_me_commons(catalog, groups, existing):
                 catalog[card_id] = tcgcsv_entry(product, card_id, set_name, raw_market, "svme-cheap", reverse=kind == "reverse")
                 added += 1
     print(f"Synced {added} commons, uncommons and rares")
+
+
+def fetch_variants(catalog, groups, existing):
+    """Stamped cards, Battle Academy cards and ball / Energy pattern variants (see STAMPED above), as
+    tcg- entries. existing: prices.json as it is now (kept cards, and printings listed another way)."""
+    covered = {}
+    for card_id, entry in existing.items():
+        key = entry_product_key(card_id, entry)
+        if key and not is_stock_entry(card_id, entry):
+            covered[key] = entry.get("group")
+    print(f"Looking for stamped cards and pattern variants in {len(groups)} sets...")
+    counts = {"stamped": 0, "pattern": 0, "battle academy": 0}
+    for g in groups:
+        products = get_json(f"{TCGCSV_BASE}/{g['groupId']}/products", headers=TCGCSV_HEADERS).get("results", [])
+        time.sleep(0.5)
+        candidates = []
+        for product in products:
+            data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
+            if not data.get("Number"):
+                continue  # sealed products, boxes, code cards
+            name = product.get("name", "")
+            if BATTLE_ACADEMY.match(g["name"]):
+                kind = "battle academy"
+            elif STAMPED.search(name) and not re.search(r"^(Unfair|Reset) Stamp\b", name):  # trainer cards named "... Stamp"
+                kind = "stamped"
+            elif BALL_PATTERN.search(name):
+                kind = "pattern"
+            else:
+                continue
+            owner = covered.get((str(product["productId"]), "base"), "none")
+            if owner not in ("none", "variants"):
+                continue  # already listed another way
+            candidates.append((product, kind, owner))
+        if not candidates:
+            continue
+        prices = {}
+        for p in get_json(f"{TCGCSV_BASE}/{g['groupId']}/prices", headers=TCGCSV_HEADERS).get("results", []):
+            prices.setdefault(p["productId"], {})[p.get("subTypeName")] = p.get("marketPrice")
+        time.sleep(0.5)
+        set_name = re.sub(r"^(SV\d*|ME\d*|SWSH\d*|SM\d*|XY\d*):\s*", "", g["name"])
+        for product, kind, owner in candidates:
+            raw_market = pick_price(prices.get(product["productId"], {}), "Holofoil")
+            if kind != "stamped" and owner != "variants" and (raw_market or 0) <= CHEAP_MIN_PRICE:
+                continue
+            card_id = f"tcg-{product['productId']}"
+            catalog[card_id] = tcgcsv_entry(product, card_id, set_name, raw_market, "variants")
+            counts[kind] += 1
+    print(f"Synced {counts['stamped']} stamped cards, {counts['pattern']} pattern variants and {counts['battle academy']} Battle Academy cards")
 
 
 def fetch_artists(catalog, existing):
@@ -1161,6 +1220,14 @@ def build_price_catalog(part):
         time.sleep(REQUEST_DELAY)
         fetch_jumbo(updates, groups)
         fetch_sv_me_commons(updates, groups, existing)
+
+    if part in ("all", "6"):
+        # Stamped cards and pattern variants, from every English Pokémon group
+        groups = get_json(f"{TCGCSV_BASE}/groups", headers=TCGCSV_HEADERS).get("results", [])
+        time.sleep(REQUEST_DELAY)
+        merged = dict(existing)
+        merged.update(updates)
+        fetch_variants(updates, groups, merged)
 
     stock = load_stock()
     if part in ("all", "5"):
