@@ -1,0 +1,3 @@
+# Python's compiled files (made when update_prices.py is run or checked locally)
+__pycache__/
+*.pyc
