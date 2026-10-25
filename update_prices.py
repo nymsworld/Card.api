@@ -77,6 +77,18 @@ SV_ME_SKIP_GROUPS = re.compile(r"Promo|Classic Collection")
 CHEAP_RARITIES = {"Common", "Uncommon", "Rare"}
 CHEAP_MIN_PRICE = 0.50
 
+# Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
+# reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
+# spelled as printed on the cards; each run logs how many cards each name found.
+ARTISTS = ["Mitsuhiro Arita", "Ken Sugimori", "Shinji Kanda", "Yuka Morii", "Kagemaru Himeno", "Tomokazu Komiya"]
+# The card API's printing names: the first one a card has is its main entry (plain ID); reverse holos
+# get -reverse like everywhere else; the rest get a suffix and a label, e.g. base1-4-1st-edition-holofoil
+PRINTING_ORDER = ["holofoil", "normal", "unlimitedHolofoil", "unlimited", "1stEditionHolofoil", "1stEditionNormal", "1stEdition"]
+PRINTING_LABELS = {
+    "holofoil": "Holo", "normal": "Non-Holo", "unlimitedHolofoil": "Unlimited Holo", "unlimited": "Unlimited",
+    "1stEditionHolofoil": "1st Edition Holo", "1stEditionNormal": "1st Edition", "1stEdition": "1st Edition",
+}
+
 # Cards the shop stocks, from a TCGplayer inventory export (only the product columns are
 # kept: no quantities or prices). Every card listed gets condition pricing (NM-DMG), and
 # cards not already in the database are added from TCGplayer's data. To update the list,
@@ -150,7 +162,7 @@ CONDITION_ORDER_SLACK = 0.10
 # enough requests to get rate limited. Each part only replaces its own cards.
 PARTS = {
     "1": "Double Rares, ACE SPECs, single cards, 30th Classic Collection and promos",
-    "2": "151 holos and reverse holos, plus overnumbered cards from the first half of Scarlet & Violet",
+    "2": "151 holos and reverse holos, overnumbered cards from the first half of Scarlet & Violet, and every card by the artists in ARTISTS",
     "3": "Overnumbered cards from the second half of Scarlet & Violet, jumbo cards, and SV / ME commons, uncommons and rares over $0.50",
     "4": "Overnumbered cards from Mega Evolution, then the Sword & Shield era: V cards, secrets, galleries, promos and Prize Packs",
     "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
@@ -609,6 +621,44 @@ def fetch_sv_me_commons(catalog, groups, existing):
     print(f"Synced {added} commons, uncommons and rares")
 
 
+def fetch_artists(catalog, existing):
+    """Every card by the illustrators in ARTISTS, one entry per priced printing.
+    existing: prices.json as it is now; printings already there as stocked cards are left to them,
+    so stickers printed with their tcg- IDs keep working."""
+    stocked = {entry_product_key(k, v) for k, v in existing.items() if is_stock_entry(k, v)} - {None}
+    print("Fetching live prices for cards by " + ", ".join(ARTISTS) + "...")
+    for artist in ARTISTS:
+        cards = fetch_cards(f'artist:"{artist}"')
+        if not cards:
+            print(f"  WARNING: no cards found for {artist} (check the spelling on the cards)")
+            continue
+        entries = 0
+        for card in cards:
+            prices = card.get("tcgplayer", {}).get("prices", {})
+            main = next((p for p in PRINTING_ORDER if p in prices), None)
+            match = re.search(r"/product/(\d+)", card.get("tcgplayer", {}).get("url", ""))
+            pid = match.group(1) if match else None
+            for printing in [p for p in PRINTING_ORDER if p in prices] + (["reverseHolofoil"] if "reverseHolofoil" in prices else []) or [None]:
+                reverse = printing == "reverseHolofoil"
+                if pid and (pid, "reverse" if reverse else "base") in stocked:
+                    continue  # a stocked card with its own sticker ID
+                raw_market = market_price(card, [printing]) if printing else None
+                if printing and raw_market is None and printing != main:
+                    continue  # printings with no price yet; the main one is listed anyway
+                if reverse:
+                    card_id = f"{card['id']}-reverse"
+                elif printing in (main, None):
+                    card_id = card["id"]
+                else:
+                    card_id = f"{card['id']}-{slugify(PRINTING_LABELS[printing])}"
+                add_card(catalog, card, raw_market, card_id=card_id, reverse=reverse)
+                if printing and not reverse and printing != main:
+                    catalog[card_id]["name"] += f" ({PRINTING_LABELS[printing]})"
+                catalog[card_id]["artist"] = card.get("artist") or artist
+                entries += 1
+        print(f"  {artist}: {len(cards)} cards, {entries} printings")
+
+
 def is_stock_entry(card_id, entry):
     """A card that's in prices.json only because it's on the stock list (rebuilt by part 5)."""
     return card_id.startswith("tcg-") and not entry.get("group")
@@ -1052,17 +1102,22 @@ def build_price_catalog(part):
         except (OSError, ValueError):
             catalog = {}
 
+    # The steps below look at prices.json as it is (cards added before stay; printings listed
+    # another way, or as stocked cards, are skipped)
+    try:
+        with open("prices.json", encoding="utf-8") as f:
+            previous = json.load(f)
+    except (OSError, ValueError):
+        previous = {}
+    existing = dict(previous)
+    existing.update(catalog)
+    existing.update(updates)
+
+    if part in ("all", "2"):
+        fetch_artists(updates, existing)
+
     if part in ("all", "3"):
-        # Jumbo cards, and SV / ME commons, uncommons and rares over CHEAP_MIN_PRICE. These look at
-        # prices.json as it is (cards added before stay; printings listed another way are skipped)
-        try:
-            with open("prices.json", encoding="utf-8") as f:
-                previous = json.load(f)
-        except (OSError, ValueError):
-            previous = {}
-        existing = dict(previous)
-        existing.update(catalog)
-        existing.update(updates)
+        # Jumbo cards, and SV / ME commons, uncommons and rares over CHEAP_MIN_PRICE
         groups = get_json(f"{TCGCSV_BASE}/groups", headers=TCGCSV_HEADERS).get("results", [])
         time.sleep(REQUEST_DELAY)
         fetch_jumbo(updates, groups)

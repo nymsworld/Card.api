@@ -9,7 +9,7 @@ on:
     #   summer (EDT): 2:05, 2:30, 2:55, 3:20, 3:45 AM
     # GitHub can start scheduled runs a few minutes late; the gaps leave room for that.
     - cron: '5 6 * * *'    # part 1: Double Rares, ACE SPECs, singles, Classic Collection, promos
-    - cron: '30 6 * * *'   # part 2: 151 holos + first half of SV overnumbered
+    - cron: '30 6 * * *'   # part 2: 151 holos + first half of SV overnumbered + cards by the artists in ARTISTS
     - cron: '55 6 * * *'   # part 3: second half of SV overnumbered + jumbo cards + SV/ME commons-rares over $0.50
     - cron: '20 7 * * *'   # part 4: Mega Evolution overnumbered + Sword & Shield era (V cards, secrets, galleries, promos, Prize Packs)
     - cron: '45 7 * * *'   # part 5: Japanese Pokémon cards + stocked cards (Pokémon, Magic, Yu-Gi-Oh)
