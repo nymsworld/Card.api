@@ -999,11 +999,12 @@
     }
 
     // 15 checks a second, and no second, mirrored try on each frame (printed stickers are never mirrored;
-    // on phones without a built-in QR detector that halves the work per frame)
+    // on phones without a built-in QR detector that halves the work per frame). The shop's app can ask
+    // for fewer to save battery (window.KMS_SCAN_FPS).
     function startCamera(videoConstraints) {
       return html5QrScanner.start(
         { facingMode: 'environment' },
-        { fps: 15, qrbox: scanBoxSize, disableFlip: true, videoConstraints: videoConstraints },
+        { fps: window.KMS_SCAN_FPS || 15, qrbox: scanBoxSize, disableFlip: true, videoConstraints: videoConstraints },
         handleScan,
         function() {}
       );

@@ -716,6 +716,8 @@ def fetch_artists(catalog, existing):
                 add_card(catalog, card, raw_market, card_id=card_id, reverse=reverse)
                 if printing and not reverse and printing != main:
                     catalog[card_id]["name"] += f" ({PRINTING_LABELS[printing]})"
+                if printing_kind(printing) == "1st" and "-1st-edition" not in card_id:
+                    catalog[card_id]["firstEdition"] = True  # a card only priced as 1st Edition keeps its plain ID
                 catalog[card_id]["artist"] = card.get("artist") or artist
                 entries += 1
         print(f"  {artist}: {len(cards)} cards, {entries} printings")
@@ -796,13 +798,14 @@ def printing_kind(printing):
 
 def entry_product_key(card_id, entry):
     """(TCGplayer product ID, 'base' / 'reverse' / '1st') for a prices.json entry, from its ID's suffix
-    (-reverse; -1st-edition... for 1st Edition entries added from the stock list or the artists' cards)."""
+    (-reverse; -1st-edition... for 1st Edition entries added from the stock list or the artists' cards), or
+    firstEdition on an artist's card whose only priced printing is 1st Edition (it keeps its plain ID)."""
     match = re.search(r"/product/(\d+)", entry.get("tcgUrl", ""))
     if not match:
         return None
     if card_id.endswith("-reverse"):
         return match.group(1), "reverse"
-    return match.group(1), "1st" if "-1st-edition" in card_id else "base"
+    return match.group(1), "1st" if "-1st-edition" in card_id or entry.get("firstEdition") else "base"
 
 
 def pick_price(variants, printing):
@@ -909,11 +912,15 @@ def fetch_stock(catalog, stock, existing):
 
 
 def mark_stocked(catalog, stock):
-    """Every stocked card gets the condition picker, whichever part added it."""
-    stocked = {(row["Product ID"], printing_kind(row["Printing"])) for row in stock}
+    """Every stocked card gets the condition picker, whichever part added it. Matched loosely (reverse holo or
+    not): a stocked 1st Edition also turns it on for the Unlimited printing and the other way round, as it
+    always has, so no card the shop sells loses its condition prices."""
+    def loose(key):
+        return key and (key[0], "reverse" if key[1] == "reverse" else "base")
+    stocked = {loose((row["Product ID"], printing_kind(row["Printing"]))) for row in stock}
     marked = 0
     for card_id, entry in catalog.items():
-        if entry_product_key(card_id, entry) in stocked and not entry.get("conditionPricing"):
+        if loose(entry_product_key(card_id, entry)) in stocked and not entry.get("conditionPricing"):
             entry["conditionPricing"] = True
             marked += 1
     if marked:
