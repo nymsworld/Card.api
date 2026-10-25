@@ -998,10 +998,12 @@
       document.getElementById('scannerHint').textContent = text;
     }
 
+    // 15 checks a second, and no second, mirrored try on each frame (printed stickers are never mirrored;
+    // on phones without a built-in QR detector that halves the work per frame)
     function startCamera(videoConstraints) {
       return html5QrScanner.start(
         { facingMode: 'environment' },
-        { fps: 10, qrbox: scanBoxSize, videoConstraints: videoConstraints },
+        { fps: 15, qrbox: scanBoxSize, disableFlip: true, videoConstraints: videoConstraints },
         handleScan,
         function() {}
       );
