@@ -1014,7 +1014,24 @@
         { fps: window.KMS_SCAN_FPS || 15, qrbox: scanBoxSize, disableFlip: true, videoConstraints: videoConstraints },
         handleScan,
         function() {}
-      );
+      ).then(function() { readFullDetail(html5QrScanner); });
+    }
+
+    // The scanner library shrinks the scan box's part of the camera picture to the box's size on screen
+    // before reading it (often half the camera's detail or less), so small stickers had to be held very
+    // close. This reads that part at the camera's own resolution instead (at most 800 px across).
+    function readFullDetail(scanner) {
+      var ctx = scanner && scanner.context;
+      if (!ctx || ctx.kmsFullDetail) return;
+      var draw = ctx.drawImage;
+      ctx.drawImage = function(image, sx, sy, sw, sh) {
+        if (arguments.length !== 9 || !sw || !sh) return draw.apply(this, arguments);
+        var k = Math.min(1, 800 / Math.max(sw, sh));
+        var w = Math.round(sw * k), h = Math.round(sh * k);
+        if (this.canvas.width !== w || this.canvas.height !== h) { this.canvas.width = w; this.canvas.height = h; }
+        return draw.call(this, image, sx, sy, sw, sh, 0, 0, w, h);
+      };
+      ctx.kmsFullDetail = true;
     }
 
     function startInAppScanner() {
