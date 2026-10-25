@@ -66,6 +66,17 @@ SWSH_EXTRA_GROUPS = re.compile(r"^(SWSH: Sword & Shield Promo Cards|Prize Pack S
 SWSH_GALLERY = re.compile(r"(Trainer Gallery|Galarian Gallery|Shiny Vault)$")
 V_FAMILY = re.compile(r"\b(V|VMAX|VSTAR|V-UNION)\b")
 
+# Every Pokémon jumbo (oversized) card, from TCGplayer's "Jumbo Cards" group
+JUMBO_GROUP = "Jumbo Cards"
+# Scarlet & Violet / Mega Evolution commons, uncommons and rares worth more than CHEAP_MIN_PRICE,
+# each printing on its own (a $2 reverse holo of a 20¢ common is added, its regular printing isn't).
+# Once added a card stays and keeps its price updated, even if it dips below, so stickers printed
+# for it keep working. Promo sets are covered above; Classic Collection reprints by ALL_CARD_SETS.
+SV_ME_GROUP = re.compile(r"^(SV\d+|SV|ME\d+|ME):\s")
+SV_ME_SKIP_GROUPS = re.compile(r"Promo|Classic Collection")
+CHEAP_RARITIES = {"Common", "Uncommon", "Rare"}
+CHEAP_MIN_PRICE = 0.50
+
 # Cards the shop stocks, from a TCGplayer inventory export (only the product columns are
 # kept: no quantities or prices). Every card listed gets condition pricing (NM-DMG), and
 # cards not already in the database are added from TCGplayer's data. To update the list,
@@ -140,7 +151,7 @@ CONDITION_ORDER_SLACK = 0.10
 PARTS = {
     "1": "Double Rares, ACE SPECs, single cards, 30th Classic Collection and promos",
     "2": "151 holos and reverse holos, plus overnumbered cards from the first half of Scarlet & Violet",
-    "3": "Overnumbered cards from the second half of Scarlet & Violet",
+    "3": "Overnumbered cards from the second half of Scarlet & Violet, jumbo cards, and SV / ME commons, uncommons and rares over $0.50",
     "4": "Overnumbered cards from Mega Evolution, then the Sword & Shield era: V cards, secrets, galleries, promos and Prize Packs",
     "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
 }
@@ -514,6 +525,88 @@ def fetch_swsh_era(catalog):
         print(f"  {set_name}: {added} cards")
         total += added
     print(f"Synced {total} Sword & Shield era cards")
+
+
+def tcgcsv_group(group_id):
+    """(products, {productId: {printing: market price}}) for a TCGplayer Pokémon group."""
+    products = get_json(f"{TCGCSV_BASE}/{group_id}/products", headers=TCGCSV_HEADERS).get("results", [])
+    time.sleep(REQUEST_DELAY)
+    prices = {}
+    for p in get_json(f"{TCGCSV_BASE}/{group_id}/prices", headers=TCGCSV_HEADERS).get("results", []):
+        prices.setdefault(p["productId"], {})[p.get("subTypeName")] = p.get("marketPrice")
+    time.sleep(REQUEST_DELAY)
+    return products, prices
+
+
+def tcgcsv_entry(product, card_id, set_name, raw_market, group, reverse=False):
+    """A prices.json entry for a TCGplayer product (tcg- IDs, like stocked cards)."""
+    data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
+    number, _, printed_total = (data.get("Number") or "").partition("/")
+    # "Charizard EX - XY17 (XY Black Star Promos)" -> "Charizard EX (XY Black Star Promos)"
+    name = re.sub(r"\s+-\s+\S*\d\S*", "", product["name"]).strip()
+    return {
+        "id": card_id,
+        "name": name + (" (Reverse Holo)" if reverse else ""),
+        "setName": set_name,
+        "number": number.strip(),
+        "printedTotal": printed_total.strip(),
+        "rarity": ((data.get("Rarity") or "Single").strip() + (" Reverse Holo" if reverse else "")),
+        "price": calculate_store_price(raw_market),
+        "rawMarket": raw_market,
+        "image": product.get("imageUrl", ""),
+        "tcgUrl": product.get("url") or f"https://www.tcgplayer.com/product/{product['productId']}",
+        "game": GAME_NAMES["Pokemon"],
+        "group": group,
+    }
+
+
+def fetch_jumbo(catalog, groups):
+    """Every card in TCGplayer's Jumbo Cards group."""
+    group = next((g for g in groups if g["name"] == JUMBO_GROUP), None)
+    if not group:
+        print("  No Jumbo Cards group on TCGplayer: skipped")
+        return
+    products, prices = tcgcsv_group(group["groupId"])
+    for product in products:
+        raw_market = pick_price(prices.get(product["productId"], {}), "Holofoil")
+        card_id = f"tcg-{product['productId']}"
+        catalog[card_id] = tcgcsv_entry(product, card_id, "Jumbo Cards", raw_market, "jumbo")
+    print(f"Synced {len(products)} jumbo cards")
+
+
+def fetch_sv_me_commons(catalog, groups, existing):
+    """Scarlet & Violet / Mega Evolution commons, uncommons and rares over CHEAP_MIN_PRICE (see above).
+    existing: prices.json as it is now, to keep cards added before and skip printings already listed."""
+    covered = {}
+    for card_id, entry in existing.items():
+        key = entry_product_key(card_id, entry)
+        if key and not is_stock_entry(card_id, entry):
+            covered[key] = entry.get("group")
+    wanted = [g for g in groups if SV_ME_GROUP.match(g["name"]) and not SV_ME_SKIP_GROUPS.search(g["name"])]
+    print(f"Fetching commons, uncommons and rares over ${CHEAP_MIN_PRICE:.2f} from {len(wanted)} Scarlet & Violet / Mega Evolution sets...")
+    added = 0
+    for g in wanted:
+        products, prices = tcgcsv_group(g["groupId"])
+        set_name = re.sub(r"^(SV\d*|ME\d*):\s*", "", g["name"])
+        for product in products:
+            data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
+            if (data.get("Rarity") or "").strip() not in CHEAP_RARITIES:
+                continue
+            variants = prices.get(product["productId"], {})
+            pid = str(product["productId"])
+            printings = [("base", f"tcg-{pid}", variants.get("Holofoil") if variants.get("Holofoil") is not None else variants.get("Normal")),
+                         ("reverse", f"tcg-{pid}-reverse", variants.get("Reverse Holofoil"))]
+            for kind, card_id, raw_market in printings:
+                if raw_market is None:
+                    continue
+                owner = covered.get((pid, kind), "none")
+                if owner not in ("none", "svme-cheap"):
+                    continue  # already listed another way (e.g. the 151 holos, single cards)
+                if raw_market <= CHEAP_MIN_PRICE and owner != "svme-cheap":
+                    continue
+                catalog[card_id] = tcgcsv_entry(product, card_id, set_name, raw_market, "svme-cheap", reverse=kind == "reverse")
+                added += 1
+    print(f"Synced {added} commons, uncommons and rares")
 
 
 def is_stock_entry(card_id, entry):
@@ -958,6 +1051,22 @@ def build_price_catalog(part):
                 catalog = json.load(f)
         except (OSError, ValueError):
             catalog = {}
+
+    if part in ("all", "3"):
+        # Jumbo cards, and SV / ME commons, uncommons and rares over CHEAP_MIN_PRICE. These look at
+        # prices.json as it is (cards added before stay; printings listed another way are skipped)
+        try:
+            with open("prices.json", encoding="utf-8") as f:
+                previous = json.load(f)
+        except (OSError, ValueError):
+            previous = {}
+        existing = dict(previous)
+        existing.update(catalog)
+        existing.update(updates)
+        groups = get_json(f"{TCGCSV_BASE}/groups", headers=TCGCSV_HEADERS).get("results", [])
+        time.sleep(REQUEST_DELAY)
+        fetch_jumbo(updates, groups)
+        fetch_sv_me_commons(updates, groups, existing)
 
     stock = load_stock()
     if part in ("all", "5"):
