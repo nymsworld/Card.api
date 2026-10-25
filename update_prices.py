@@ -105,6 +105,7 @@ BULK_TAGS = [
 # today's price for every card; only the last week is kept (8 daily prices, so today
 # can be compared with exactly 7 days ago).
 HISTORY_FILE = "price_history.json"
+VERSION_FILE = "prices_version.json"  # when prices.json last changed: { updatedAt, part, cards }
 HISTORY_DAYS = 8
 
 # TCGplayer market prices by condition (LP / MP / HP / DMG) from JustTCG's free API, for
@@ -977,6 +978,10 @@ def build_price_catalog(part):
     # Save to prices.json
     with open("prices.json", "w", encoding="utf-8") as f:
         json.dump(catalog, f, indent=2)
+    # A tiny file the shop app checks often, so it only downloads the big prices.json when it changed
+    # (also after a run started by hand during the day)
+    with open(VERSION_FILE, "w", encoding="utf-8") as f:
+        json.dump({"updatedAt": datetime.now(timezone.utc).isoformat(), "part": part, "cards": len(catalog)}, f)
 
     update_history(catalog)
     if part in ("all", "5"):
