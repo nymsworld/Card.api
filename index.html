@@ -1012,24 +1012,55 @@
         { fps: window.KMS_SCAN_FPS || 15, qrbox: scanBoxSize, disableFlip: true, videoConstraints: videoConstraints },
         handleScan,
         function() {}
-      ).then(function() { readFullDetail(html5QrScanner); });
+      );
     }
 
-    // The scanner library shrinks the scan box's part of the camera picture to the box's size on screen
-    // before reading it (often half the camera's detail or less), so small stickers had to be held very
-    // close. This reads that part at the camera's own resolution instead (at most 800 px across).
-    function readFullDetail(scanner) {
-      var ctx = scanner && scanner.context;
-      if (!ctx || ctx.kmsFullDetail) return;
-      var draw = ctx.drawImage;
-      ctx.drawImage = function(image, sx, sy, sw, sh) {
-        if (arguments.length !== 9 || !sw || !sh) return draw.apply(this, arguments);
-        var k = Math.min(1, 800 / Math.max(sw, sh));
-        var w = Math.round(sw * k), h = Math.round(sh * k);
-        if (this.canvas.width !== w || this.canvas.height !== h) { this.canvas.width = w; this.canvas.height = h; }
-        return draw.call(this, image, sx, sy, sw, sh, 0, 0, w, h);
+    // Reading small stickers from further away. The scanner library shrinks the scan box's part of the camera
+    // picture to the box's size on screen before reading it (half the camera's detail or less), so the scanner
+    // reads that part at the camera's own resolution instead (at most 800 px across); and two frames in three
+    // are sharpened first: a sticker a few inches away is only 2-3 camera pixels per QR square, where the
+    // slightest blur stopped every read. The library makes its canvas when the first frame arrives (setupUi,
+    // after start() resolves), so it's hooked there, once (the shop's app does the same, same flag).
+    var SHARPEN = [1, 2, 0]; // strength per frame, in turn (0 = as the camera saw it)
+    var sharpenGray = null;
+    function sharpenCanvas(ctx, w, h, amount) {
+      var img = ctx.getImageData(0, 0, w, h), d = img.data, n = w * h;
+      if (!sharpenGray || sharpenGray.length !== n) sharpenGray = new Uint8ClampedArray(n);
+      var gray = sharpenGray;
+      for (var i = 0, j = 0; i < n; i++, j += 4) gray[i] = (d[j] * 77 + d[j + 1] * 150 + d[j + 2] * 29) >> 8;
+      var centre = 1 + 4 * amount;
+      for (var y = 1; y < h - 1; y++) {
+        for (var p = y * w + 1, end = p + w - 2; p < end; p++) {
+          var o = p << 2;
+          d[o] = d[o + 1] = d[o + 2] = centre * gray[p] - amount * (gray[p - 1] + gray[p + 1] + gray[p - w] + gray[p + w]);
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+    function readFullDetail() {
+      if (typeof Html5Qrcode === 'undefined') return;
+      var proto = Html5Qrcode.prototype;
+      if (proto.kmsFullDetail || typeof proto.setupUi !== 'function') return;
+      var setupUi = proto.setupUi;
+      proto.setupUi = function() {
+        var result = setupUi.apply(this, arguments);
+        var ctx = this.context;
+        if (ctx && !ctx.kmsFullDetail) {
+          var draw = ctx.drawImage, frame = 0;
+          ctx.drawImage = function(image, sx, sy, sw, sh) {
+            if (arguments.length !== 9 || !sw || !sh) return draw.apply(this, arguments);
+            var k = Math.min(1, 800 / Math.max(sw, sh));
+            var w = Math.round(sw * k), h = Math.round(sh * k);
+            if (this.canvas.width !== w || this.canvas.height !== h) { this.canvas.width = w; this.canvas.height = h; }
+            draw.call(this, image, sx, sy, sw, sh, 0, 0, w, h);
+            var amount = SHARPEN[frame++ % SHARPEN.length];
+            if (amount) { try { sharpenCanvas(this, w, h, amount); } catch (e) {} }
+          };
+          ctx.kmsFullDetail = true;
+        }
+        return result;
       };
-      ctx.kmsFullDetail = true;
+      proto.kmsFullDetail = true;
     }
 
     function startInAppScanner() {
@@ -1044,6 +1075,7 @@
         return;
       }
 
+      readFullDetail();
       if (!html5QrScanner) {
         html5QrScanner = new Html5Qrcode('scanner-container', scannerOptions());
       }
@@ -1099,14 +1131,15 @@
       var advanced = [{ torch: torchOn }, { focusMode: 'continuous' }];
       if (zoomRange) advanced.push({ zoom: zoomOn ? Math.min(2, zoomRange.max) : Math.max(1, zoomRange.min || 1) });
       return html5QrScanner.applyVideoConstraints({
-        width: VIDEO_WIDTH,
-        height: VIDEO_HEIGHT,
+        width: farMode ? { ideal: 1920 } : VIDEO_WIDTH,
+        height: farMode ? { ideal: 1080 } : VIDEO_HEIGHT,
         advanced: advanced
       });
     }
 
     var zoomRange = null;
     var zoomOn = false;
+    var farMode = false; // zoomed without the camera's own zoom: 1080p while zoomed
     var cameraRunning = false;
     function savedZoom() {
       try { return localStorage.getItem('kms_scan_zoom') === '1'; } catch (e) { return false; }
@@ -1118,8 +1151,9 @@
       btn.textContent = zoomOn ? '🔍 Zoomed in' : '🔍 Zoom 2×';
     }
     // The camera's own zoom when it really zooms (checked afterwards: some phones say they can and then
-    // don't, and iPhone Safari can't); otherwise the picture on screen is shown at 2× (the scanner still
-    // reads the whole camera picture, so a sticker anywhere in view is still found)
+    // don't, and iPhone Safari can't); otherwise the camera switches to 1080p (more detail on a far sticker,
+    // ~6 inches; more work per frame, so only while zoomed) and the picture on screen is shown at 2× (the
+    // scanner still reads the whole camera picture, so a sticker anywhere in view is still found)
     function setZoom() {
       var on = zoomOn;
       var camera = zoomRange
@@ -1129,8 +1163,12 @@
           }, function() { return false; })
         : Promise.resolve(!on);
       return camera.then(function(zoomed) {
+        var far = on && !zoomed;
         var video = document.querySelector('#scanner-container video');
-        if (video) video.style.transform = on && !zoomed ? 'scale(2)' : '';
+        if (video) video.style.transform = far ? 'scale(2)' : '';
+        if (far === farMode || !cameraRunning) return;
+        farMode = far;
+        return applyCameraSettings().catch(function() {});
       });
     }
     function toggleZoom() {
@@ -1162,6 +1200,7 @@
       torchOn = false;
       updateTorchButton(false);
       zoomRange = null;
+      farMode = false;
       cameraRunning = false;
       updateZoomButton();
       if (html5QrScanner && html5QrScanner.isScanning) {
