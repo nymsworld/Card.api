@@ -702,7 +702,7 @@ def fetch_artists(catalog, existing):
             pid = match.group(1) if match else None
             for printing in [p for p in PRINTING_ORDER if p in prices] + (["reverseHolofoil"] if "reverseHolofoil" in prices else []) or [None]:
                 reverse = printing == "reverseHolofoil"
-                if pid and (pid, "reverse" if reverse else "base") in stocked:
+                if pid and (pid, printing_kind(printing)) in stocked:
                     continue  # a stocked card with its own sticker ID
                 raw_market = market_price(card, [printing]) if printing else None
                 if printing and raw_market is None and printing != main:
@@ -785,15 +785,24 @@ def product_line(row):
 
 
 def printing_kind(printing):
-    return "reverse" if "reverse" in (printing or "").lower() else "base"
+    """'reverse', '1st' or 'base' for a printing name, TCGplayer's ("1st Edition Holofoil") or the card
+    API's ("1stEditionHolofoil"). 1st Edition and Unlimited share one TCGplayer product but are priced
+    (and sold) separately, so they're different entries; other printings count as the base card."""
+    p = (printing or "").lower()
+    if "reverse" in p:
+        return "reverse"
+    return "1st" if "1st" in p else "base"
 
 
 def entry_product_key(card_id, entry):
-    """(TCGplayer product ID, 'base' or 'reverse') for a prices.json entry."""
+    """(TCGplayer product ID, 'base' / 'reverse' / '1st') for a prices.json entry, from its ID's suffix
+    (-reverse; -1st-edition... for 1st Edition entries added from the stock list or the artists' cards)."""
     match = re.search(r"/product/(\d+)", entry.get("tcgUrl", ""))
     if not match:
         return None
-    return match.group(1), "reverse" if card_id.endswith("-reverse") else "base"
+    if card_id.endswith("-reverse"):
+        return match.group(1), "reverse"
+    return match.group(1), "1st" if "-1st-edition" in card_id else "base"
 
 
 def pick_price(variants, printing):
