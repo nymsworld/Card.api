@@ -977,12 +977,10 @@
     }
 
     var DEFAULT_SCAN_HINT = 'Camera will automatically detect the card sticker.';
-    // A sharper picture lets a small sticker be read from further away (it needn't fill the box). Where the
-    // phone has a built-in QR reader (Android, Chrome) that costs little, so it asks for 1080p there; others
-    // read in software, where 1080p would about double the work, so they stay at 720p.
-    var HAS_QR_READER = typeof window.BarcodeDetector !== 'undefined';
-    var VIDEO_WIDTH = { ideal: HAS_QR_READER ? 1920 : 1280 };
-    var VIDEO_HEIGHT = { ideal: HAS_QR_READER ? 1080 : 720 };
+    // 720p everywhere: read at full detail (readFullDetail) a small sticker reads from further away; 1080p
+    // made Android phones scan slower with no gain
+    var VIDEO_WIDTH = { ideal: 1280 };
+    var VIDEO_HEIGHT = { ideal: 720 };
     var photoScanner = null;
     var torchOn = false;
 
