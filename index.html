@@ -720,16 +720,48 @@
       throw new Error('Could not fetch price database from mirrors.');
     }
 
+    // The fast way to look up one scanned card: prices.json is also published split into small
+    // files (cards/<n>.json, written by update_prices.py; shardOf must match its shard_of), so a
+    // scan downloads one small file instead of every card. prices_version.json (a few bytes) says when
+    // they last changed, so the browser reuses its saved copy until then. The shop app and staff web
+    // app set KMS_FULL_CATALOG: they need every card anyway (search, sales) and keep it offline.
+    var CARD_FILES = 'https://raw.githubusercontent.com/nymsworld/Card.api/main/';
+    var SHARD_COUNT = 128;
+
+    function shardOf(id) {
+      var s = normalizeId(id);
+      var h = 0;
+      for (var i = 0; i < s.length; i++) h = (Math.imul(h, 31) + s.charCodeAt(i)) >>> 0;
+      return h % SHARD_COUNT;
+    }
+
+    // The scanned card from its small file, with staff condition prices; null if it isn't there.
+    // Throws if the small files can't be read, so the caller falls back to the full download.
+    async function fetchCardFast(targetId) {
+      var version = '';
+      try {
+        var v = await fetch(CARD_FILES + 'prices_version.json?v=' + Date.now(), { cache: 'no-store' });
+        if (v.ok) version = (await v.json()).updatedAt || '';
+      } catch (e) {}
+      var res = await fetch(CARD_FILES + 'cards/' + shardOf(targetId) + '.json?v=' + encodeURIComponent(version || Date.now()));
+      if (!res.ok) throw new Error('Card file not available');
+      var shard = await res.json();
+      var card = findCard(shard, targetId);
+      if (card) await addConditionPrices(shard, true); // TCGplayer condition prices are already in the file
+      return card;
+    }
+
     // Condition prices for expensive cards, each { prices: { cardId: { LP: 210, DMG: 37, ... } } }:
     //   condition_prices.json: set by staff in the shop app -> card.conditionPrices (store prices)
     //   condition_market.json: TCGplayer market by condition, fetched weekly -> card.conditionMarket,
     //     and when it was fetched -> card.conditionMarketAt
     // Without them, cards over CONDITION_GUESS_MAX just show "Ask staff" below Near Mint.
-    async function addConditionPrices(catalog) {
+    // staffOnly: just condition_prices.json (the small card files already include the market ones).
+    async function addConditionPrices(catalog, staffOnly) {
       await Promise.all([
         ['condition_prices.json', 'conditionPrices'],
         ['condition_market.json', 'conditionMarket', 'conditionMarketAt']
-      ].map(async function (file) {
+      ].filter(function (file, i) { return !staffOnly || i === 0; }).map(async function (file) {
         var endpoints = [
           'https://raw.githubusercontent.com/nymsworld/Card.api/main/' + file[0] + '?v=' + Date.now(),
           'https://cdn.jsdelivr.net/gh/nymsworld/Card.api@main/' + file[0]
@@ -899,8 +931,15 @@
       container.innerHTML = '<div class="loading">Loading live price...</div>';
 
       try {
-        var catalog = await fetchCatalog();
-        var card = findCard(catalog, targetId);
+        var card;
+        var fast = false;
+        if (!window.KMS_FULL_CATALOG && !priceCatalog) {
+          try {
+            card = await fetchCardFast(targetId);
+            fast = !!card; // not in its file (e.g. added minutes ago): make sure with the full list
+          } catch (e) { /* small files not published yet, or unreachable: the full download below */ }
+        }
+        if (!fast) card = findCard(await fetchCatalog(), targetId);
 
         if (!card) {
           currentCardData = null;

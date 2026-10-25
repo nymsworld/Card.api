@@ -129,6 +129,9 @@ BULK_TAGS = [
 # can be compared with exactly 7 days ago).
 HISTORY_FILE = "price_history.json"
 VERSION_FILE = "prices_version.json"  # when prices.json last changed: { updatedAt, part, cards }
+# prices.json split into small files for the customer price page (see write_card_shards)
+SHARD_DIR = "cards"
+SHARD_COUNT = 128
 HISTORY_DAYS = 8
 
 # TCGplayer market prices by condition (LP / MP / HP / DMG) from JustTCG's free API, for
@@ -1071,6 +1074,42 @@ def update_condition_market(catalog):
     }, catalog)
 
 
+def normalize_id(card_id):
+    """Same as the price page's normalizeId: case and leading zeros don't matter (MEP-023 = mep-23)."""
+    return re.sub(r"-0+(?=\d)", "-", str(card_id).strip().lower())
+
+
+def shard_of(card_id):
+    """Which cards/<n>.json a card is in. Must match shardOf in index.html."""
+    h = 0
+    for ch in normalize_id(card_id):
+        h = (h * 31 + ord(ch)) & 0xFFFFFFFF
+    return h % SHARD_COUNT
+
+
+def write_card_shards(catalog):
+    """The price page's fast path: prices.json split into SHARD_COUNT small files (cards/<n>.json), so a
+    customer's scan downloads one ~30 KB file instead of every card. TCGplayer condition prices
+    (condition_market.json) are included; staff condition prices change any time, so the page still
+    reads condition_prices.json (small) live."""
+    try:
+        with open(CONDITION_MARKET_FILE, encoding="utf-8") as f:
+            market = json.load(f)
+    except (OSError, ValueError):
+        market = {}
+    market_prices = market.get("prices") or {}
+    shards = [{} for _ in range(SHARD_COUNT)]
+    for card_id, entry in catalog.items():
+        if card_id in market_prices:
+            entry = dict(entry, conditionMarket=market_prices[card_id], conditionMarketAt=market.get("fetchedAt"))
+        shards[shard_of(card_id)][card_id] = entry
+    os.makedirs(SHARD_DIR, exist_ok=True)
+    for n, cards in enumerate(shards):
+        with open(os.path.join(SHARD_DIR, f"{n}.json"), "w", encoding="utf-8") as f:
+            json.dump(cards, f, separators=(",", ":"))
+    print(f"Wrote {SHARD_COUNT} card files to {SHARD_DIR}/ (largest {max(len(s) for s in shards)} cards)")
+
+
 def build_price_catalog(part):
     updates = {}
 
@@ -1139,17 +1178,20 @@ def build_price_catalog(part):
     mark_stocked(catalog, stock)
     add_bulk_tags(catalog)
 
-    # Save to prices.json
+    # Save to prices.json (no indenting: about half the size to download)
     with open("prices.json", "w", encoding="utf-8") as f:
-        json.dump(catalog, f, indent=2)
-    # A tiny file the shop app checks often, so it only downloads the big prices.json when it changed
-    # (also after a run started by hand during the day)
-    with open(VERSION_FILE, "w", encoding="utf-8") as f:
-        json.dump({"updatedAt": datetime.now(timezone.utc).isoformat(), "part": part, "cards": len(catalog)}, f)
+        json.dump(catalog, f, separators=(",", ":"))
 
     update_history(catalog)
     if part in ("all", "5"):
         update_condition_market(catalog)
+
+    write_card_shards(catalog)
+    # Last, so nobody sees a new version before its files are written. The shop app checks this tiny
+    # file often and only downloads the big prices.json when it changed (also after a run started by
+    # hand during the day); the price page uses it to know when its saved shards are out of date.
+    with open(VERSION_FILE, "w", encoding="utf-8") as f:
+        json.dump({"updatedAt": datetime.now(timezone.utc).isoformat(), "part": part, "cards": len(catalog)}, f)
 
     print(f"Successfully updated {len(updates)} cards (part {part}); prices.json has {len(catalog)} cards.")
 
