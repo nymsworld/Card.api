@@ -15,7 +15,7 @@ on:
     - cron: '45 7 * * *'   # part 5: Japanese Pokémon cards + stocked cards (Pokémon, Magic, Yu-Gi-Oh)
     - cron: '10 8 * * *'   # part 6: stamped cards + pattern variants from every set
     - cron: '35 8 * * *'   # part 7: sealed products, Sword & Shield on
-    - cron: '0 9 * * *'    # part 8: every card in Miscellaneous Cards & Products, McDonald's, Burger King, Trick or Trade (5:00 AM EDT / 4:00 AM EST)
+    - cron: '0 9 * * *'    # part 8: every card in Misc. Cards & Products + whole promo sets (McDonald's, BK, Trick or Trade, POP, Rumble, WoTC)
   # Allows you to click a button and run it manually whenever you want
   workflow_dispatch:
     inputs:
@@ -73,11 +73,22 @@ jobs:
         run: |
           python update_prices.py ${{ steps.part.outputs.part }}
 
+      # If another price run pushed while this one ran, its price files clash with these (every run rewrites
+      # them): start again from its files and run this part again, up to 3 times.
       - name: Commit and Push Updated prices.json (and the other games' price files)
+        env:
+          JUSTTCG_API_KEY: ${{ secrets.JUSTTCG_API_KEY }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add prices.json prices_*.json prices_version.json cards price_history.json condition_market.json
-          git commit -m "Auto-update prices.json (part ${{ steps.part.outputs.part }}) [skip ci]" || exit 0
-          git pull --rebase
-          git push
+          for attempt in 1 2 3; do
+            git add prices.json prices_*.json prices_version.json cards price_history.json condition_market.json
+            git commit -m "Auto-update prices.json (part ${{ steps.part.outputs.part }}) [skip ci]" || exit 0
+            if git pull --rebase && git push; then exit 0; fi
+            echo "Another price run pushed first: running part ${{ steps.part.outputs.part }} again on its files"
+            git rebase --abort || true
+            git fetch origin main
+            git reset --hard origin/main
+            python update_prices.py ${{ steps.part.outputs.part }}
+          done
+          exit 1

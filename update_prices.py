@@ -106,9 +106,11 @@ SEALED_RARITY = "Sealed Product"
 # to it.
 MISC_SKIP_RARITIES = {"Code Card"}
 # Whole sets added the same way in part 8, cards and sealed products alike (owner's request): every McDonald's
-# promo set, the Burger King promos and the Trick or Trade BOOster Bundles. A card TCGplayer prices both holo
-# and non-holo (McDonald's 25th Anniversary) gets two entries: holo on the plain ID, non-holo -non-holo.
-WHOLE_GROUPS = re.compile(r"^(McDonald's (Promos \d{4}|25th Anniversary Promos)|Burger King Promos|Trick or Trade BOOster Bundle( \d{4})?)$")
+# promo set, the Burger King promos, the Trick or Trade BOOster Bundles, POP Series 1-9, Rumble and the WoTC
+# promos. A card TCGplayer prices both holo and non-holo (McDonald's 25th Anniversary, POP) gets two entries:
+# holo on the plain ID, non-holo -non-holo.
+WHOLE_GROUPS = re.compile(r"^(McDonald's (Promos \d{4}|25th Anniversary Promos)|Burger King Promos|Trick or Trade BOOster Bundle( \d{4})?"
+                          r"|POP Series \d+|Rumble|WoTC Promo)$")
 
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
@@ -210,7 +212,7 @@ PARTS = {
     "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
     "6": "Stamped cards, Battle Academy cards and ball / Energy pattern variants from every TCGplayer Pokémon set",
     "7": "Sealed products from Sword & Shield, Scarlet & Violet, Mega Evolution and Prize Packs",
-    "8": "Every card in TCGplayer's Miscellaneous Cards & Products group (not Code Cards), and every card and sealed product in the McDonald's, Burger King and Trick or Trade sets",
+    "8": "Every card in TCGplayer's Miscellaneous Cards & Products group (not Code Cards), and every card and sealed product in the McDonald's, Burger King, Trick or Trade, POP Series, Rumble and WoTC promo sets",
 }
 
 _tcgcsv_groups = None
@@ -784,7 +786,7 @@ def fetch_whole_groups(catalog, groups, existing):
         if key:
             covered[key] = "stock" if is_stock_entry(card_id, entry) else entry.get("group")
     wanted = [g for g in groups if g["name"] == SEALED_MISC_GROUP or WHOLE_GROUPS.match(g["name"])]
-    print(f"Fetching every card in {len(wanted)} sets (Miscellaneous Cards & Products, McDonald's, Burger King, Trick or Trade)...")
+    print(f"Fetching every card in {len(wanted)} whole sets (Miscellaneous Cards & Products, see WHOLE_GROUPS)...")
     total = unpriced = 0
     for g in wanted:
         misc = g["name"] == SEALED_MISC_GROUP
@@ -1433,7 +1435,7 @@ def build_price_catalog(part):
         fetch_sealed(updates, groups, previous)
 
     if part in ("all", "8"):
-        # Every card in Miscellaneous Cards & Products, and whole sets (McDonald's, Burger King, Trick or Trade)
+        # Every card in Miscellaneous Cards & Products, and the whole sets in WHOLE_GROUPS
         groups = get_json(f"{TCGCSV_BASE}/groups", headers=TCGCSV_HEADERS).get("results", [])
         time.sleep(REQUEST_DELAY)
         merged = dict(existing)
