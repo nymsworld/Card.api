@@ -87,17 +87,21 @@ STAMPED = re.compile(r"Stamp", re.IGNORECASE)
 BALL_PATTERN = re.compile(r"\((Poke Ball|Poké Ball|Master Ball|Dusk Ball|Love Ball|Friend Ball|Quick Ball|Great Ball|Ultra Ball|Energy Symbol)( Pattern)?\)", re.IGNORECASE)
 BATTLE_ACADEMY = re.compile(r"^Battle Academy")
 
-# Sealed products (part 7): every booster box, ETB, blister, tin, collection, case... that TCGplayer lists in
-# the Sword & Shield, Scarlet & Violet and Mega Evolution sets and the Prize Pack group (sealed = a product
-# with no card number and no rarity). TCGplayer files era-wide tins and collections under
-# "Miscellaneous Cards & Products", which has no era: those listed since Sword & Shield came out (product
-# IDs from the first Sword & Shield card on) are added too. IDs are tcg-<product ID>, like stocked cards.
-# No condition picker; with no TCGplayer market price the price is null, so the page shows "Ask staff"
-# (a staff price from the app is used then, see "marketAt").
-SEALED_GROUPS = re.compile(r"^(SWSH\d*:|SV\d*:|SVE:|ME\d*:|MEE:|Pokemon GO$|Champion's Path$|Shining Fates|Celebrations|Prize Pack Series|Trading Card Game Classic$)")
+# Sealed products (part 7): every booster box, ETB, blister, tin, collection, case... that TCGplayer lists for
+# Pokémon, any era, English and Japanese (sealed = a product with no card number and no rarity), except in the
+# WHOLE_GROUPS sets (part 8 adds those with their cards). Magic's are part 9 (SEALED_GAMES). IDs are
+# tcg-<product ID>, like stocked cards (Japanese ones too: part 5 rebuilds every jp- entry). No condition
+# picker; with no TCGplayer market price the price is null, so the page shows "Ask staff" (a staff price from
+# the app is used then, see "marketAt").
 SEALED_MISC_GROUP = "Miscellaneous Cards & Products"
-SEALED_ERA_START = "SWSH01: Sword & Shield Base Set"
 SEALED_RARITY = "Sealed Product"
+# part -> [(TCGCSV category, game)] whose sealed products that part adds
+SEALED_GAMES = {"7": [(3, "Pokemon"), (85, "Pokemon Japan")], "9": [(1, "Magic")]}
+# Groups whose "sealed" products aren't: the Japanese Quick Starter Gift Sets list their single cards without
+# numbers, and Magic's apparel is clothing
+SEALED_SKIP_GROUPS = re.compile(r"^(Quick Starter Gift Set|Magic: The Gathering Apparel)")
+# Set codes in front of TCGplayer's English Pokémon set names, left off: "SV07: Stellar Crown", "SM - Team Up"
+SEALED_SET_PREFIX = re.compile(r"^(SWSH\d*|SV\d*|SVE|ME\d*|MEE|SM\d*|XY\d*):\s*|^(XY|SM|BW|DP|HGSS)\s+-\s+")
 
 # Every card in TCGplayer's "Miscellaneous Cards & Products" group (part 8), any era: box and event promos,
 # exclusives, metal cards... except Code Cards (codes for the online game). Each printing TCGplayer prices gets
@@ -211,8 +215,9 @@ PARTS = {
     "4": "Overnumbered cards from Mega Evolution, then the Sword & Shield era: V cards, secrets, galleries, promos and Prize Packs",
     "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
     "6": "Stamped cards, Battle Academy cards and ball / Energy pattern variants from every TCGplayer Pokémon set",
-    "7": "Sealed products from Sword & Shield, Scarlet & Violet, Mega Evolution and Prize Packs",
+    "7": "Every Pokémon sealed product on TCGplayer, English and Japanese",
     "8": "Every card in TCGplayer's Miscellaneous Cards & Products group (not Code Cards), and every card and sealed product in the McDonald's, Burger King, Trick or Trade, POP Series, Rumble and WoTC promo sets",
+    "9": "Every Magic: The Gathering sealed product on TCGplayer",
 }
 
 _tcgcsv_groups = None
@@ -721,39 +726,42 @@ def is_sealed(product):
     return not data & {"Number", "Rarity"}
 
 
-def fetch_sealed(catalog, groups, previous):
-    """Sealed products (see SEALED_GROUPS). previous: prices.json as it is now, for each product's "marketAt":
-    when TCGplayer's market price last changed. A staff price set after that wins over TCGplayer's (the
-    owner's rule for condition prices: a staff price holds until TCGplayer has newer data)."""
+def fetch_sealed(catalog, part, previous):
+    """Sealed products of the games in SEALED_GAMES[part]. previous: prices.json as it is now, for each product's
+    "marketAt": when TCGplayer's market price last changed. A staff price set after that wins over TCGplayer's
+    (the owner's rule for condition prices: a staff price holds until TCGplayer has newer data)."""
     now = datetime.now(timezone.utc).isoformat()
-    wanted = [g for g in groups if SEALED_GROUPS.match(g["name"])]
-    misc = next((g for g in groups if g["name"] == SEALED_MISC_GROUP), None)
-    print(f"Fetching sealed products from {len(wanted)} sets" + (" and Miscellaneous Cards & Products" if misc else "") + "...")
-    first_id = None  # the first Sword & Shield product ID, for the Miscellaneous group (which comes last)
-    added = priced = 0
-    for g in wanted + ([misc] if misc else []):
-        products, prices = tcgcsv_group(g["groupId"])
-        if g["name"] == SEALED_ERA_START:
-            first_id = min((p["productId"] for p in products), default=None)
-        if g is misc:
-            if first_id is None:
-                print("  No Sword & Shield start found: Miscellaneous Cards & Products skipped")
+    for category, game in SEALED_GAMES[part]:
+        base = f"https://tcgcsv.com/tcgplayer/{category}"
+        groups = get_json(f"{base}/groups", headers=TCGCSV_HEADERS).get("results", [])
+        time.sleep(REQUEST_DELAY)
+        # The WHOLE_GROUPS sets are part 8's
+        wanted = [g for g in groups if not SEALED_SKIP_GROUPS.match(g["name"]) and not (game == "Pokemon" and WHOLE_GROUPS.match(g["name"]))]
+        print(f"Looking for {GAME_NAMES[game]} sealed products in {len(wanted)} sets...")
+        added = priced = 0
+        for g in wanted:
+            products = get_json(f"{base}/{g['groupId']}/products", headers=TCGCSV_HEADERS).get("results", [])
+            time.sleep(0.5)
+            products = [p for p in products if is_sealed(p)]
+            if not products:
                 continue
-            products = [p for p in products if p["productId"] >= first_id]
-        set_name = re.sub(r"^(SWSH\d*|SV\d*|SVE|ME\d*|MEE):\s*", "", g["name"])
-        for product in products:
-            if not is_sealed(product):
-                continue
-            raw_market = pick_price(prices.get(product["productId"], {}), "Normal")
-            catalog[f"tcg-{product['productId']}"] = sealed_entry(product, set_name, raw_market, previous, now)
-            added += 1
-            priced += raw_market is not None
-    print(f"Synced {added} sealed products ({added - priced} without a TCGplayer market price: Ask staff)")
+            prices = {}
+            for p in get_json(f"{base}/{g['groupId']}/prices", headers=TCGCSV_HEADERS).get("results", []):
+                prices.setdefault(p["productId"], {})[p.get("subTypeName")] = p.get("marketPrice")
+            time.sleep(0.5)
+            # Without the set code, like the cards: "SV07: Stellar Crown" -> "Stellar Crown" (Japanese: like fetch_japanese)
+            set_name = {"Pokemon": SEALED_SET_PREFIX.sub("", g["name"]), "Pokemon Japan": g["name"].split(": ", 1)[-1]}.get(game, g["name"])
+            for product in products:
+                raw_market = pick_price(prices.get(product["productId"], {}), "Normal")
+                catalog[f"tcg-{product['productId']}"] = sealed_entry(product, set_name, raw_market, previous, now, game)
+                added += 1
+                priced += raw_market is not None
+        print(f"Synced {added} {GAME_NAMES[game]} sealed products ({added - priced} without a TCGplayer market price: Ask staff)")
 
 
-def sealed_entry(product, set_name, raw_market, previous, now):
+def sealed_entry(product, set_name, raw_market, previous, now, game="Pokemon"):
     """A prices.json entry for a sealed product. previous: prices.json as it is now (keeps "marketAt" while the
-    market price stays the same)."""
+    market price stays the same). game: a GAME_NAMES key."""
     card_id = f"tcg-{product['productId']}"
     before = previous.get(card_id) or {}
     same = before.get("group") == "sealed" and before.get("rawMarket") == raw_market
@@ -769,7 +777,7 @@ def sealed_entry(product, set_name, raw_market, previous, now):
         "marketAt": (before.get("marketAt") if same else None) or now,
         "image": product.get("imageUrl", ""),
         "tcgUrl": product.get("url") or f"https://www.tcgplayer.com/product/{product['productId']}",
-        "game": GAME_NAMES["Pokemon"],
+        "game": GAME_NAMES[game],
         "group": "sealed",
         "sealed": True,
     }
@@ -1428,11 +1436,10 @@ def build_price_catalog(part):
         merged.update(updates)
         fetch_variants(updates, groups, merged)
 
-    if part in ("all", "7"):
-        # Sealed products from Sword & Shield on
-        groups = get_json(f"{TCGCSV_BASE}/groups", headers=TCGCSV_HEADERS).get("results", [])
-        time.sleep(REQUEST_DELAY)
-        fetch_sealed(updates, groups, previous)
+    for sealed_part in SEALED_GAMES:
+        if part in ("all", sealed_part):
+            # Every sealed product: Pokémon (7), Magic (9)
+            fetch_sealed(updates, sealed_part, previous)
 
     if part in ("all", "8"):
         # Every card in Miscellaneous Cards & Products, and the whole sets in WHOLE_GROUPS
@@ -1479,7 +1486,7 @@ def build_price_catalog(part):
           ", ".join(f"{name} {info['cards']}" for name, info in files.items()) + ").")
 
 if __name__ == "__main__":
-    # Usage: python update_prices.py [all|1|2|3|4|5]   (defaults to all)
+    # Usage: python update_prices.py [all|1|2|...|9]   (defaults to all)
     part = sys.argv[1] if len(sys.argv) > 1 else "all"
     if part != "all" and part not in PARTS:
         print(f"Unknown part '{part}'. Use all, {', '.join(PARTS)}.")
