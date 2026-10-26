@@ -1033,11 +1033,15 @@
       return null;
     }
 
-    // Same rounding as update_prices.py: round up from 30 cents, $1.00 minimum. A shop that set its own
+    // Same rounding as update_prices.py: round up from 30 cents, $1.00 minimum, except that a card under
+    // 50 cents (MARKET_PRICE_UNDER, owner's request) shows its market price as is. A shop that set its own
     // price rules in the shop app (Settings → Price rules) gets those instead (shopRules below).
+    var MARKET_PRICE_UNDER = 0.50;
+
     function storePrice(rawMarket) {
       var rules = shopRules();
       if (rules) return rulesPrice(rawMarket, rules);
+      if (rawMarket < MARKET_PRICE_UNDER) return Math.round(rawMarket * 100) / 100;
       var dollars = Math.floor(rawMarket);
       var rounded = (rawMarket - dollars >= 0.30) ? dollars + 1 : dollars;
       return Math.max(1, rounded);
@@ -1045,7 +1049,9 @@
 
     // Each shop's own price floor and rounding, published by the shop app as price_rules.json:
     //   { updatedAt, shops: { kms | gg: { percent, mode: 'dollar' | 'step' | 'exact', upFrom, step,
-    //     direction: 'up' | 'nearest' | 'down', ending99, floor } } }
+    //     direction: 'up' | 'nearest' | 'down', ending99, floor, under50: 'market' | 'rules' | 'floor', under50Floor } } }
+    // under50 is for cards under 50 cents: their market price as is (also when missing), the rules like any card,
+    // or the market price but at least under50Floor.
     // A shop not in the file uses the rule above. Card prices are worked out again from the market price
     // (rawMarket) for the shop being shown (SHOP), the original kept as card.websitePrice; staff prices,
     // bulk tags and cards without a market price stay as they are. rulesPrice must match priceFor in the
@@ -1078,6 +1084,9 @@
 
     function rulesPrice(raw, r) {
       var cents = function (n) { return Math.round(n * 100) / 100; };
+      if (Number(raw) < MARKET_PRICE_UNDER && r.under50 !== 'rules') {
+        return Math.max(r.under50 === 'floor' ? Number(r.under50Floor) || 0 : 0, cents(Number(raw)));
+      }
       var p = cents(Number(raw) * (r.percent || 100) / 100);
       if (r.mode === 'dollar') {
         var dollars = Math.floor(p);
@@ -1184,8 +1193,10 @@
         floorNote = '<div class="floor-note">' + (currentCondition ? currentCondition.label + ' · priced by staff' : 'Priced by staff') + '</div>';
       } else if (source === 'market') {
         floorNote = '<div class="floor-note">' + currentCondition.label + ' · TCGplayer market for this condition</div>';
-      } else if (conditionRaw != null && conditionRaw < 1.00) {
-        floorNote = '<div class="floor-note">($1.00 store floor applied)</div>';
+      } else if (conditionRaw != null && conditionRaw < 1.00 && price > conditionRaw + 0.005) {
+        floorNote = '<div class="floor-note">(' + money(price) + ' store floor applied)</div>';
+      } else if (conditionRaw != null && conditionRaw < MARKET_PRICE_UNDER) {
+        floorNote = '<div class="floor-note">' + (currentCondition && currentCondition.percent !== 100 ? currentCondition.label + ' · ' : '') + 'Under 50¢ · market price</div>';
       } else if (currentCondition && currentCondition.percent !== 100) {
         floorNote = '<div class="floor-note">' + currentCondition.label + ' · ' + currentCondition.percent + '% of Near Mint</div>';
       }

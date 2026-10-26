@@ -224,6 +224,11 @@ _tcgcsv_groups = None
 _tcgcsv_prices = {}
 
 
+# Cards whose market price is under this show it as is, to the cent, with no rounding or $1.00 floor (owner's
+# request). Must match MARKET_PRICE_UNDER in index.html (and UNDER in the shop app's lib/price-rules.js).
+MARKET_PRICE_UNDER = 0.50
+
+
 def calculate_store_price(raw_market_price):
     if raw_market_price is None:
         return 1.00
@@ -231,6 +236,9 @@ def calculate_store_price(raw_market_price):
         val = float(raw_market_price)
     except (ValueError, TypeError):
         return 1.00
+
+    if val < MARKET_PRICE_UNDER:
+        return round(val, 2)
 
     dollar_part = math.floor(val)
     cents_part = val - dollar_part
