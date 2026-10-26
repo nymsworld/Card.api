@@ -1780,6 +1780,54 @@
       loadCard(params.get('id'), params.get('cond'));
     });
 
+    // ---- USB / Bluetooth barcode scanners ----
+    // A plug-in scanner (the shop's Netum M5S at the counter) types the sticker's text like a keyboard,
+    // a key every few ms, then presses Enter. People type far slower, so a fast run of keys ending in
+    // Enter is a scan: it opens that card, the same as the camera. Typed into a search box by mistake,
+    // the box is put back as it was. The shop's app can take the scan first (window.KMS_KEYBOARD_SCAN
+    // returns true when it used it, e.g. for its Sales scanner).
+    var KEY_SCAN_GAP_MS = 60; // longest pause between a scanner's keys
+    var KEY_SCAN_MIN = 4;     // shortest text a scan can be
+    function listenForKeyboardScanner() {
+      var typed = '', lastKeyAt = 0, field = null, fieldBefore = '';
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
+        var now = Date.now();
+        if (now - lastKeyAt > KEY_SCAN_GAP_MS) typed = '';
+        lastKeyAt = now;
+        if (e.key === 'Enter') {
+          var text = typed;
+          typed = '';
+          if (text.length < KEY_SCAN_MIN) return;
+          e.preventDefault();
+          e.stopPropagation();
+          if (field && document.activeElement === field && field.value !== fieldBefore) {
+            field.value = fieldBefore;
+            field.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+          keyboardScan(text);
+          return;
+        }
+        if (!e.key || e.key.length !== 1) return; // Shift and other keys on their own
+        if (!typed) {
+          var el = document.activeElement;
+          field = el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') ? el : null;
+          fieldBefore = field ? field.value : '';
+        }
+        typed += e.key;
+      }, true);
+    }
+    function keyboardScan(text) {
+      if (window.KMS_KEYBOARD_SCAN && window.KMS_KEYBOARD_SCAN(text)) return;
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+      document.getElementById('stockOverlay').classList.remove('active');
+      toggleCartDrawer(false);
+      scanHandled = false; // a scanner reads each sticker once, so every scan is a new one
+      handleScan(text);
+      window.scrollTo(0, 0);
+    }
+
+    listenForKeyboardScanner();
     updateThemeToggle();
     loadCard(cardId, cardCondition);
     renderCartUI();
