@@ -105,6 +105,10 @@ SEALED_RARITY = "Sealed Product"
 # page shows "Ask staff", like sealed products. Cards already listed another way (stamped cards, stock) are left
 # to it.
 MISC_SKIP_RARITIES = {"Code Card"}
+# Whole sets added the same way in part 8, cards and sealed products alike (owner's request): every McDonald's
+# promo set, the Burger King promos and the Trick or Trade BOOster Bundles. A card TCGplayer prices both holo
+# and non-holo (McDonald's 25th Anniversary) gets two entries: holo on the plain ID, non-holo -non-holo.
+WHOLE_GROUPS = re.compile(r"^(McDonald's (Promos \d{4}|25th Anniversary Promos)|Burger King Promos|Trick or Trade BOOster Bundle( \d{4})?)$")
 
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
@@ -206,7 +210,7 @@ PARTS = {
     "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
     "6": "Stamped cards, Battle Academy cards and ball / Energy pattern variants from every TCGplayer Pokémon set",
     "7": "Sealed products from Sword & Shield, Scarlet & Violet, Mega Evolution and Prize Packs",
-    "8": "Every card in TCGplayer's Miscellaneous Cards & Products group (not Code Cards)",
+    "8": "Every card in TCGplayer's Miscellaneous Cards & Products group (not Code Cards), and every card and sealed product in the McDonald's, Burger King and Trick or Trade sets",
 }
 
 _tcgcsv_groups = None
@@ -739,67 +743,88 @@ def fetch_sealed(catalog, groups, previous):
             if not is_sealed(product):
                 continue
             raw_market = pick_price(prices.get(product["productId"], {}), "Normal")
-            card_id = f"tcg-{product['productId']}"
-            before = previous.get(card_id) or {}
-            same = before.get("group") == "sealed" and before.get("rawMarket") == raw_market
-            catalog[card_id] = {
-                "id": card_id,
-                "name": re.sub(r"\s+", " ", product["name"]).strip(),
-                "setName": set_name,
-                "number": "",
-                "printedTotal": "",
-                "rarity": SEALED_RARITY,
-                "price": calculate_store_price(raw_market) if raw_market is not None else None,
-                "rawMarket": raw_market,
-                "marketAt": (before.get("marketAt") if same else None) or now,
-                "image": product.get("imageUrl", ""),
-                "tcgUrl": product.get("url") or f"https://www.tcgplayer.com/product/{product['productId']}",
-                "game": GAME_NAMES["Pokemon"],
-                "group": "sealed",
-                "sealed": True,
-            }
+            catalog[f"tcg-{product['productId']}"] = sealed_entry(product, set_name, raw_market, previous, now)
             added += 1
             priced += raw_market is not None
     print(f"Synced {added} sealed products ({added - priced} without a TCGplayer market price: Ask staff)")
 
 
-def fetch_misc_cards(catalog, groups, existing):
-    """Cards in Miscellaneous Cards & Products (see MISC_SKIP_RARITIES). existing: prices.json as it is now,
-    to leave printings listed another way to their own step."""
-    group = next((g for g in groups if g["name"] == SEALED_MISC_GROUP), None)
-    if not group:
-        print("  No Miscellaneous Cards & Products group on TCGplayer: skipped")
-        return
+def sealed_entry(product, set_name, raw_market, previous, now):
+    """A prices.json entry for a sealed product. previous: prices.json as it is now (keeps "marketAt" while the
+    market price stays the same)."""
+    card_id = f"tcg-{product['productId']}"
+    before = previous.get(card_id) or {}
+    same = before.get("group") == "sealed" and before.get("rawMarket") == raw_market
+    return {
+        "id": card_id,
+        "name": re.sub(r"\s+", " ", product["name"]).strip(),
+        "setName": set_name,
+        "number": "",
+        "printedTotal": "",
+        "rarity": SEALED_RARITY,
+        "price": calculate_store_price(raw_market) if raw_market is not None else None,
+        "rawMarket": raw_market,
+        "marketAt": (before.get("marketAt") if same else None) or now,
+        "image": product.get("imageUrl", ""),
+        "tcgUrl": product.get("url") or f"https://www.tcgplayer.com/product/{product['productId']}",
+        "game": GAME_NAMES["Pokemon"],
+        "group": "sealed",
+        "sealed": True,
+    }
+
+
+def fetch_whole_groups(catalog, groups, existing):
+    """Every card in Miscellaneous Cards & Products (see MISC_SKIP_RARITIES; its sealed products are part 7's),
+    and every card and sealed product in WHOLE_GROUPS. existing: prices.json as it is now, to leave printings
+    listed another way to their own step."""
+    now = datetime.now(timezone.utc).isoformat()
     covered = {}
     for card_id, entry in existing.items():
         key = entry_product_key(card_id, entry)
         if key:
             covered[key] = "stock" if is_stock_entry(card_id, entry) else entry.get("group")
-    products, prices = tcgcsv_group(group["groupId"])
-    added = unpriced = 0
-    for product in products:
-        data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
-        if is_sealed(product) or (data.get("Rarity") or "").strip() in MISC_SKIP_RARITIES or re.search(r"\bCode Card\b", product["name"]):
-            continue
-        variants = prices.get(product["productId"], {})
-        pid = str(product["productId"])
-        base = {k: v for k, v in variants.items() if "Reverse" not in (k or "")}
-        printings = [("base", f"tcg-{pid}", pick_price(base, "Holofoil") if base else None)]
-        if variants.get("Reverse Holofoil") is not None:
-            if base:
-                printings.append(("reverse", f"tcg-{pid}-reverse", variants["Reverse Holofoil"]))
-            else:
-                printings = [("base", f"tcg-{pid}", variants["Reverse Holofoil"])]  # only sold as a reverse holo
-        for kind, card_id, raw_market in printings:
-            if covered.get((pid, kind), "misc") != "misc":
-                continue  # already listed another way
-            entry = tcgcsv_entry(product, card_id, SEALED_MISC_GROUP, raw_market, "misc", reverse=kind == "reverse")
-            if raw_market is None:
-                entry["price"] = None  # Ask staff
-                unpriced += 1
-            catalog[card_id] = entry
-            added += 1
-    print(f"Synced {added} Miscellaneous Cards & Products cards ({unpriced} without a TCGplayer market price: Ask staff)")
+    wanted = [g for g in groups if g["name"] == SEALED_MISC_GROUP or WHOLE_GROUPS.match(g["name"])]
+    print(f"Fetching every card in {len(wanted)} sets (Miscellaneous Cards & Products, McDonald's, Burger King, Trick or Trade)...")
+    total = unpriced = 0
+    for g in wanted:
+        misc = g["name"] == SEALED_MISC_GROUP
+        products, prices = tcgcsv_group(g["groupId"])
+        added = 0
+        for product in products:
+            variants = prices.get(product["productId"], {})
+            if is_sealed(product):
+                if not misc:
+                    catalog[f"tcg-{product['productId']}"] = sealed_entry(product, g["name"], pick_price(variants, "Normal"), existing, now)
+                    added += 1
+                continue
+            data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
+            if (data.get("Rarity") or "").strip() in MISC_SKIP_RARITIES or re.search(r"\bCode Card\b", product["name"]):
+                continue
+            pid = str(product["productId"])
+            base = {k: v for k, v in variants.items() if "Reverse" not in (k or "")}
+            # (kind for matching other steps' entries, ID, market price, label added to the name)
+            printings = [("base", f"tcg-{pid}", pick_price(base, "Holofoil") if base else None, "")]
+            if variants.get("Holofoil") is not None and variants.get("Normal") is not None:
+                printings = [("base", f"tcg-{pid}", variants["Holofoil"], " (Holo)"),
+                             ("base", f"tcg-{pid}-non-holo", variants["Normal"], " (Non-Holo)")]
+            if variants.get("Reverse Holofoil") is not None:
+                if base:
+                    printings.append(("reverse", f"tcg-{pid}-reverse", variants["Reverse Holofoil"], ""))
+                else:
+                    printings = [("base", f"tcg-{pid}", variants["Reverse Holofoil"], "")]  # only sold as a reverse holo
+            for kind, card_id, raw_market, label in printings:
+                if covered.get((pid, kind), "misc") != "misc":
+                    continue  # already listed another way
+                entry = tcgcsv_entry(product, card_id, g["name"], raw_market, "misc", reverse=kind == "reverse")
+                entry["name"] += label
+                if raw_market is None:
+                    entry["price"] = None  # Ask staff
+                    unpriced += 1
+                catalog[card_id] = entry
+                added += 1
+        print(f"  {g['name']}: {added}")
+        total += added
+    print(f"Synced {total} cards and sealed products from whole sets ({unpriced} cards without a TCGplayer market price: Ask staff)")
 
 
 def fetch_artists(catalog, existing):
@@ -1403,12 +1428,12 @@ def build_price_catalog(part):
         fetch_sealed(updates, groups, previous)
 
     if part in ("all", "8"):
-        # Every card in Miscellaneous Cards & Products
+        # Every card in Miscellaneous Cards & Products, and whole sets (McDonald's, Burger King, Trick or Trade)
         groups = get_json(f"{TCGCSV_BASE}/groups", headers=TCGCSV_HEADERS).get("results", [])
         time.sleep(REQUEST_DELAY)
         merged = dict(existing)
         merged.update(updates)
-        fetch_misc_cards(updates, groups, merged)
+        fetch_whole_groups(updates, groups, merged)
 
     stock = load_stock()
     if part in ("all", "5"):

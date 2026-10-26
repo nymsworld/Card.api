@@ -15,7 +15,7 @@ on:
     - cron: '45 7 * * *'   # part 5: Japanese Pokémon cards + stocked cards (Pokémon, Magic, Yu-Gi-Oh)
     - cron: '10 8 * * *'   # part 6: stamped cards + pattern variants from every set
     - cron: '35 8 * * *'   # part 7: sealed products, Sword & Shield on
-    - cron: '0 9 * * *'    # part 8: every card in Miscellaneous Cards & Products (5:00 AM EDT / 4:00 AM EST)
+    - cron: '0 9 * * *'    # part 8: every card in Miscellaneous Cards & Products, McDonald's, Burger King, Trick or Trade (5:00 AM EDT / 4:00 AM EST)
   # Allows you to click a button and run it manually whenever you want
   workflow_dispatch:
     inputs:
