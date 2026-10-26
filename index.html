@@ -5,18 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#e31515">
   <title>Kanto Misplay Society - Price Check</title>
-  <link rel="icon" href="logo.jpg">
   <script>
     // The site's home address. Visits to the old GitHub Pages address (printed on older QR
     // stickers) are sent there with the same card and condition. Empty = stay on GitHub Pages.
     var SITE_HOME = '';
     if (SITE_HOME && location.hostname === 'nymsworld.github.io') location.replace(SITE_HOME + location.search + location.hash);
 
+    // Which shop's sticker brought the customer here: K = Kanto Misplay Society, G = GG Crafts &
+    // Collectibles. Short sticker links (kantomisplay.cc/G/SV3PT5-199/LP: shop, card, condition, in
+    // capitals for a smaller QR code) become the usual ?shop=gg&id=…&cond=… address before anything
+    // reads it. GG gets its own logo, name and colors; prices are the same.
+    var SHOP_LETTERS = { K: 'kms', G: 'gg' };
+    var SHOP = 'kms';
+    function stickerLink(text) {
+      try {
+        var url = new URL(String(text || '').trim());
+        var path = url.pathname.match(/^\/([A-Za-z])\/([^\/]+)(?:\/([^\/]+))?\/?$/);
+        if (path && SHOP_LETTERS[path[1].toUpperCase()]) {
+          return { shop: SHOP_LETTERS[path[1].toUpperCase()], id: decodeURIComponent(path[2]), cond: path[3] ? decodeURIComponent(path[3]).toUpperCase() : null };
+        }
+        if (url.searchParams.get('id')) {
+          return { shop: url.searchParams.get('shop') === 'gg' ? 'gg' : null, id: url.searchParams.get('id').trim(), cond: url.searchParams.get('cond') };
+        }
+      } catch (e) {}
+      return null;
+    }
+    // ?shop=gg&id=… (GG only, so KMS addresses look as they always have)
+    function shopQuery(id, cond) {
+      return '?' + (SHOP === 'gg' ? 'shop=gg&' : '') + 'id=' + encodeURIComponent(id) + (cond ? '&cond=' + encodeURIComponent(cond) : '');
+    }
+    (function () {
+      var short = stickerLink(location.href);
+      if (short && short.shop && !location.search) {
+        SHOP = short.shop;
+        history.replaceState(null, '', '/' + shopQuery(short.id, short.cond) + location.hash);
+      }
+      if (new URLSearchParams(location.search).get('shop') === 'gg') {
+        SHOP = 'gg';
+        document.documentElement.setAttribute('data-shop', 'gg');
+      }
+    })();
+    // The header's name and logo; runs right after they're drawn and when a GG sticker is scanned
+    function showShop(shop) {
+      if (window.KMSApp) return; // the staff app has its own shop profiles
+      SHOP = shop === 'gg' ? 'gg' : 'kms';
+      var gg = SHOP === 'gg';
+      if (gg) document.documentElement.setAttribute('data-shop', 'gg');
+      else document.documentElement.removeAttribute('data-shop');
+      var name = document.querySelector('.brand-name');
+      var logo = document.querySelector('.brand-logo');
+      if (name) name.textContent = gg ? 'GG Crafts & Collectibles' : 'Kanto Misplay Society';
+      if (logo) { logo.src = gg ? 'gg-logo.png' : 'logo.jpg'; logo.alt = gg ? 'GG logo' : 'KMS logo'; }
+      var icon = document.querySelector('link[rel="icon"]');
+      if (icon) icon.href = gg ? 'gg-logo.png' : 'logo.jpg';
+      document.title = (gg ? 'GG Crafts & Collectibles' : 'Kanto Misplay Society') + ' - Price Check';
+      document.querySelector('meta[name="theme-color"]').content = gg ? '#fbdcdc' : '#e31515';
+    }
+
     // Apply the saved theme before the page draws (dark is the default)
     try {
       if (localStorage.getItem('kms_theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
     } catch (e) {}
   </script>
+  <link rel="icon" href="logo.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
@@ -644,6 +695,56 @@
       .btn:hover, .cart-bar-btn:hover { filter: brightness(1.1); }
       .qty-btn:hover, .theme-toggle:hover { border-color: var(--kms-red); }
     }
+
+    /* GG Crafts & Collectibles stickers (?shop=gg): colors from the GG logo, blush pink, black
+       script, white. Same as the staff app's GG profile (app.css in the app repo). */
+    :root[data-shop="gg"] {
+      --kms-red: #c25a78;
+      --kms-red-dark: #9e4560;
+      --kms-black: #1d1d1f;
+      --gg-blush: #fde2e1;
+      --bg-page: #1b1d22;
+      --bg-card: #24272d;
+      --surface: #2c3037;
+      --border-color: #3d424b;
+      --line-soft: #32363e;
+      --card-shadow: #0f1013;
+      --text-main: #f8eeee;
+      --text-sub: #b9abad;
+      --band-bg: #121316;
+      --band-border: #3d424b;
+      --btn-alt-bg: #fde2e1;
+      --btn-alt-fg: #1d1d1f;
+      --error-color: #ff8a9e;
+      --logo-ring: #24272d;
+    }
+    :root[data-shop="gg"][data-theme="light"] {
+      --bg-page: #fdf4f3;
+      --bg-card: #ffffff;
+      --surface: #ffffff;
+      --border-color: #e6c9cb;
+      --line-soft: #f3e4e4;
+      --card-shadow: #f2d2d4;
+      --text-main: #1d1d1f;
+      --text-sub: #7a6669;
+      --band-bg: #1d1d1f;
+      --band-border: #1d1d1f;
+      --btn-alt-bg: #1d1d1f;
+      --btn-alt-fg: #ffffff;
+      --btn-outline-bg: #ffffff;
+      --error-color: #b3261e;
+      --logo-ring: #ffffff;
+    }
+    :root[data-shop="gg"] .brand {
+      background: var(--gg-blush);
+      color: var(--kms-black);
+      border-bottom: 4px solid var(--kms-black);
+    }
+    :root[data-shop="gg"] .brand-name { letter-spacing: 0.12em; font-weight: 800; }
+    :root[data-shop="gg"] .brand-tag { letter-spacing: 0.3em; }
+    :root[data-shop="gg"] .brand-logo { background: var(--gg-blush); border-width: 4px; }
+    /* The stock list is KMS's */
+    :root[data-shop="gg"] #browseStockBtn { display: none; }
   </style>
 </head>
 <body>
@@ -657,6 +758,7 @@
     </button>
   </header>
   <img class="brand-logo" src="logo.jpg" alt="KMS logo" onerror="this.style.display='none'">
+  <script>if (SHOP === 'gg') showShop('gg');</script>
 
   <div class="card" id="cardContainer">
     <div class="loading" id="status">Loading live price...</div>
@@ -1058,14 +1160,15 @@
       var text = (decodedText || '').trim();
       var id = text;
       var cond = null;
-      try {
-        var params = new URL(text).searchParams;
-        if (params.get('id')) id = params.get('id').trim();
-        cond = params.get('cond');
-      } catch (e) {}
+      var link = stickerLink(text);
+      if (link) {
+        id = link.id;
+        cond = link.cond;
+        if (link.shop && link.shop !== SHOP) showShop(link.shop);
+      }
 
       stopInAppScanner();
-      window.history.pushState({}, '', '?id=' + encodeURIComponent(id) + (cond ? '&cond=' + encodeURIComponent(cond) : ''));
+      window.history.pushState({}, '', shopQuery(id, cond));
       loadCard(id, cond);
     }
 
@@ -1662,7 +1765,7 @@
 
     function openStockCard(id, cond) {
       document.getElementById('stockOverlay').classList.remove('active');
-      window.history.pushState({}, '', '?id=' + encodeURIComponent(id) + (cond ? '&cond=' + cond : ''));
+      window.history.pushState({}, '', shopQuery(id, cond));
       loadCard(id, cond || null);
       window.scrollTo(0, 0);
     }
@@ -1670,7 +1773,9 @@
     // Browser back/forward buttons show the matching card (and the stock list)
     window.addEventListener('popstate', function() {
       var params = new URLSearchParams(window.location.search);
-      if (params.get('browse')) openStock(false);
+      var shop = params.get('shop') === 'gg' ? 'gg' : 'kms';
+      if (shop !== SHOP) showShop(shop);
+      if (params.get('browse') && SHOP !== 'gg') openStock(false);
       else document.getElementById('stockOverlay').classList.remove('active');
       loadCard(params.get('id'), params.get('cond'));
     });
@@ -1678,7 +1783,7 @@
     updateThemeToggle();
     loadCard(cardId, cardCondition);
     renderCartUI();
-    if (new URLSearchParams(window.location.search).get('browse')) openStock(false);
+    if (new URLSearchParams(window.location.search).get('browse') && SHOP !== 'gg') openStock(false);
   </script>
 </body>
 </html>
