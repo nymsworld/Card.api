@@ -931,25 +931,30 @@ def product_line(row):
 
 
 def printing_kind(printing):
-    """'reverse', '1st' or 'base' for a printing name, TCGplayer's ("1st Edition Holofoil") or the card
+    """'reverse', '1st', 'foil' or 'base' for a printing name, TCGplayer's ("1st Edition Holofoil") or the card
     API's ("1stEditionHolofoil"). 1st Edition and Unlimited share one TCGplayer product but are priced
-    (and sold) separately, so they're different entries; other printings count as the base card."""
-    p = (printing or "").lower()
+    (and sold) separately, so they're different entries, and so are Magic's Normal and Foil (tcg-<id> /
+    tcg-<id>-foil); other printings count as the base card. The shop app's KMSInventory.printingKind matches."""
+    p = (printing or "").strip().lower()
     if "reverse" in p:
         return "reverse"
-    return "1st" if "1st" in p else "base"
+    if "1st" in p:
+        return "1st"
+    return "foil" if p == "foil" else "base"
 
 
 def entry_product_key(card_id, entry):
-    """(TCGplayer product ID, 'base' / 'reverse' / '1st') for a prices.json entry, from its ID's suffix
-    (-reverse; -1st-edition... for 1st Edition entries added from the stock list or the artists' cards), or
-    firstEdition on an artist's card whose only priced printing is 1st Edition (it keeps its plain ID)."""
+    """(TCGplayer product ID, 'base' / 'reverse' / '1st' / 'foil') for a prices.json entry, from its ID's suffix
+    (-reverse; -1st-edition... for 1st Edition entries added from the stock list or the artists' cards; -foil for
+    Magic foils), or firstEdition on an artist's card whose only priced printing is 1st Edition (it keeps its plain ID)."""
     match = re.search(r"/product/(\d+)", entry.get("tcgUrl", ""))
     if not match:
         return None
     if card_id.endswith("-reverse"):
         return match.group(1), "reverse"
-    return match.group(1), "1st" if "-1st-edition" in card_id or entry.get("firstEdition") else "base"
+    if "-1st-edition" in card_id or entry.get("firstEdition"):
+        return match.group(1), "1st"
+    return match.group(1), "foil" if card_id.endswith("-foil") else "base"
 
 
 def pick_price(variants, printing):
