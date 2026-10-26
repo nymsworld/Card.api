@@ -1043,10 +1043,15 @@
     // 'market' (TCGplayer market for that condition), 'percent' (of Near Mint) or null (ask staff).
     // A staff price holds until it's changed, or until a TCGplayer fetch made after it has a solid
     // (conclusive) price for that condition; condition_market.json only keeps conclusive ones.
-    // Sealed products have no conditions: a staff price (conditionPrices.price) holds until TCGplayer's
-    // market price changes after it (card.marketAt); with neither, null = "Ask staff".
+    // Sealed products, and cards TCGplayer has no market price for yet (price null), have one price and no
+    // conditions: a staff price (conditionPrices.price) holds until TCGplayer's market price changes after it
+    // (card.marketAt); with neither, null = "Ask staff".
+    function onePrice(card) {
+      return !!card.sealed || (card.price == null && !card.bulk);
+    }
+
     function conditionSource(card, condition) {
-      if (card.sealed) {
+      if (onePrice(card)) {
         var set = card.conditionPrices && card.conditionPrices.price != null;
         if (set && !(card.rawMarket != null && card.marketAt && card.conditionPrices.updatedAt &&
             Date.parse(card.marketAt) > Date.parse(card.conditionPrices.updatedAt))) return 'staff';
@@ -1091,7 +1096,7 @@
       var container = document.getElementById('cardContainer');
       currentCardData = card;
       // Overnumbered cards and Classic Collection cards are priced by condition
-      var hasConditions = (card.conditionPricing || card.overnumbered) && !card.sealed;
+      var hasConditions = (card.conditionPricing || card.overnumbered) && !onePrice(card);
       currentCondition = hasConditions ? (findCondition(conditionCode) || CONDITIONS[0]) : null;
       var price = conditionPrice(card, currentCondition);
       var source = conditionSource(card, currentCondition);
@@ -1099,7 +1104,7 @@
       var floorNote = '';
       var conditionRaw = card.rawMarket != null && currentCondition ? card.rawMarket * currentCondition.percent / 100 : card.rawMarket;
       if (price == null) {
-        floorNote = '<div class="floor-note">' + (currentCondition ? currentCondition.label + ' copies are' : 'This item is') + ' priced by staff · ask at the counter</div>';
+        floorNote = '<div class="floor-note">' + (currentCondition ? currentCondition.label + ' copies are' : card.sealed ? 'This item is' : 'This card is') + ' priced by staff · ask at the counter</div>';
       } else if (source === 'staff') {
         floorNote = '<div class="floor-note">' + (currentCondition ? currentCondition.label + ' · priced by staff' : 'Priced by staff') + '</div>';
       } else if (source === 'market') {
@@ -1662,7 +1667,7 @@
         if (!card) return; // not priced yet
         var counts = stock.cards[id];
         if (typeof counts === 'number') counts = { '': counts };
-        var hasConditions = (card.conditionPricing || card.overnumbered) && !card.sealed;
+        var hasConditions = (card.conditionPricing || card.overnumbered) && !onePrice(card);
         var conds = [];
         CONDITIONS.concat([{ code: '', label: '' }]).forEach(function (c) {
           if (!(counts[c.code] > 0)) return;
