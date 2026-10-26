@@ -14,7 +14,7 @@
     // Which shop's sticker brought the customer here: K = Kanto Misplay Society, G = GG Crafts &
     // Collectibles. Short sticker links (kantomisplay.cc/G/SV3PT5-199/LP: shop, card, condition, in
     // capitals for a smaller QR code) become the usual ?shop=gg&id=…&cond=… address before anything
-    // reads it. GG gets its own logo, name and colors; prices are the same.
+    // reads it. GG gets its own logo, name and colors, and its own price rules if it set any (shopRules).
     var SHOP_LETTERS = { K: 'kms', G: 'gg' };
     var SHOP = 'kms';
     function stickerLink(text) {
@@ -60,6 +60,8 @@
       if (icon) icon.href = gg ? 'gg-logo.png' : 'logo.jpg';
       document.title = (gg ? 'GG Crafts & Collectibles' : 'Kanto Misplay Society') + ' - Price Check';
       document.querySelector('meta[name="theme-color"]').content = gg ? '#fbdcdc' : '#e31515';
+      // Each shop's own price rules (applyShopPrices, further down)
+      if (typeof applyShopPrices === 'function' && window.priceCatalog) applyShopPrices(window.priceCatalog);
     }
 
     // Apply the saved theme before the page draws (dark is the default)
@@ -979,6 +981,7 @@
     // Without them, cards over CONDITION_GUESS_MAX just show "Ask staff" below Near Mint.
     // staffOnly: just condition_prices.json (the small card files already include the market ones).
     async function addConditionPrices(catalog, staffOnly) {
+      var rules = window.KMSApp ? null : loadPriceRules();
       await Promise.all([
         ['condition_prices.json', 'conditionPrices'],
         ['condition_market.json', 'conditionMarket', 'conditionMarketAt']
@@ -1002,6 +1005,10 @@
           } catch (e) {}
         }
       }));
+      if (rules) {
+        await rules;
+        applyShopPrices(catalog);
+      }
     }
 
     // Finds a card by ID, ignoring case and leading zeros (MEP-023 = mep-23)
@@ -1026,11 +1033,79 @@
       return null;
     }
 
-    // Same rounding as update_prices.py: round up from 30 cents, $1.00 minimum
+    // Same rounding as update_prices.py: round up from 30 cents, $1.00 minimum. A shop that set its own
+    // price rules in the shop app (Settings → Price rules) gets those instead (shopRules below).
     function storePrice(rawMarket) {
+      var rules = shopRules();
+      if (rules) return rulesPrice(rawMarket, rules);
       var dollars = Math.floor(rawMarket);
       var rounded = (rawMarket - dollars >= 0.30) ? dollars + 1 : dollars;
       return Math.max(1, rounded);
+    }
+
+    // Each shop's own price floor and rounding, published by the shop app as price_rules.json:
+    //   { updatedAt, shops: { kms | gg: { percent, mode: 'dollar' | 'step' | 'exact', upFrom, step,
+    //     direction: 'up' | 'nearest' | 'down', ending99, floor } } }
+    // A shop not in the file uses the rule above. Card prices are worked out again from the market price
+    // (rawMarket) for the shop being shown (SHOP), the original kept as card.websitePrice; staff prices,
+    // bulk tags and cards without a market price stay as they are. rulesPrice must match priceFor in the
+    // shop app's lib/price-rules.js. The shop app prices with its own profile's rules instead.
+    var priceRules = null;
+    var priceRulesLoad = null;
+
+    function loadPriceRules() {
+      if (!priceRulesLoad) priceRulesLoad = (async function () {
+        var endpoints = [
+          'https://raw.githubusercontent.com/nymsworld/Card.api/main/price_rules.json?v=' + Date.now(),
+          'https://cdn.jsdelivr.net/gh/nymsworld/Card.api@main/price_rules.json'
+        ];
+        for (var i = 0; i < endpoints.length; i++) {
+          try {
+            var res = await fetch(endpoints[i]);
+            if (!res.ok) continue;
+            priceRules = (await res.json()).shops || {};
+            return;
+          } catch (e) {}
+        }
+      })();
+      return priceRulesLoad;
+    }
+
+    function shopRules() {
+      if (window.KMSApp || !priceRules) return null;
+      return priceRules[SHOP] || null;
+    }
+
+    function rulesPrice(raw, r) {
+      var cents = function (n) { return Math.round(n * 100) / 100; };
+      var p = cents(Number(raw) * (r.percent || 100) / 100);
+      if (r.mode === 'dollar') {
+        var dollars = Math.floor(p);
+        var over = cents(p - dollars);
+        p = over > 0 && over >= (r.upFrom || 0) / 100 ? dollars + 1 : dollars;
+      } else if (r.mode === 'step' && r.step > 0) {
+        var n = cents(p) / r.step;
+        n = r.direction === 'up' ? Math.ceil(n - 1e-9) : r.direction === 'down' ? Math.floor(n + 1e-9) : Math.round(n);
+        p = n * r.step;
+      }
+      p = cents(p);
+      if (r.ending99 && p >= 1) p = cents(p - 0.01);
+      return Math.max(Number(r.floor) || 0, p);
+    }
+
+    // Prices a catalog (or a small card file) for the shop being shown
+    function applyShopPrices(catalog) {
+      if (!catalog || window.KMSApp) return;
+      var rules = shopRules();
+      for (var id in catalog) {
+        var card = catalog[id];
+        if (!card || card.bulk) continue;
+        if (card.websitePrice === undefined) {
+          if (!rules || card.price == null || typeof card.rawMarket !== 'number') continue;
+          card.websitePrice = card.price;
+        }
+        card.price = rules ? rulesPrice(card.rawMarket, rules) : card.websitePrice;
+      }
     }
 
     // Below Near Mint, expensive cards lose far more than the CONDITIONS percents (a damaged
