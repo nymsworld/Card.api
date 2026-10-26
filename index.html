@@ -7,6 +7,11 @@
   <title>Kanto Misplay Society - Price Check</title>
   <link rel="icon" href="logo.jpg">
   <script>
+    // The site's home address. Visits to the old GitHub Pages address (printed on older QR
+    // stickers) are sent there with the same card and condition. Empty = stay on GitHub Pages.
+    var SITE_HOME = '';
+    if (SITE_HOME && location.hostname === 'nymsworld.github.io') location.replace(SITE_HOME + location.search + location.hash);
+
     // Apply the saved theme before the page draws (dark is the default)
     try {
       if (localStorage.getItem('kms_theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
@@ -508,8 +513,73 @@
       color: var(--kms-white);
     }
 
+    /* Browse our stock: every card the shop has, with pictures, counts and prices */
+    .stock-open-btn { max-width: 380px; margin-top: 1.25rem; }
+    .stock-drawer { max-width: 900px; height: 92vh; max-height: 92vh; }
+    .stock-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0.85rem 1.25rem 0.5rem 1.25rem;
+    }
+    .stock-tools input, .stock-tools select {
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      background: var(--surface);
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.55rem 0.7rem;
+      min-width: 0;
+    }
+    .stock-tools input { flex: 1 1 100%; font-size: 1rem; }
+    .stock-tools select { flex: 1 1 40%; }
+    .stock-status { font-size: 0.75rem; font-weight: 600; color: var(--text-sub); padding: 0 1.25rem 0.5rem 1.25rem; }
+    .stock-list { overflow-y: auto; flex: 1; padding: 0.25rem 1.25rem 1.25rem 1.25rem; }
+    .stock-set-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--kms-red);
+      margin: 1rem 0 0.5rem 0;
+    }
+    .stock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; }
+    .stock-tile {
+      font-family: inherit;
+      text-align: left;
+      color: var(--text-main);
+      background: var(--surface);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .stock-tile img {
+      width: 100%;
+      aspect-ratio: 5 / 7;
+      object-fit: contain;
+      border-radius: 6px;
+      background: var(--line-soft);
+    }
+    .stock-tile-name { font-size: 0.85rem; font-weight: 800; line-height: 1.2; }
+    .stock-tile-set { font-size: 0.7rem; font-weight: 600; color: var(--text-sub); }
+    .stock-tile-conds { display: flex; flex-direction: column; gap: 2px; margin-top: 0.15rem; }
+    .stock-cond { display: flex; justify-content: space-between; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; }
+    .stock-cond-price { color: var(--kms-red); font-weight: 800; white-space: nowrap; }
+
     /* Tablets and computers */
     @media (min-width: 760px) {
+      .stock-open-btn { max-width: 820px; }
+      .stock-drawer { height: 88vh; max-height: 88vh; }
+      .stock-tools input { flex: 2 1 260px; }
+      .stock-tools select { flex: 1 1 160px; }
+      .stock-grid { grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); }
+
       body { padding-bottom: 6.5rem; }
 
       .brand {
@@ -592,6 +662,8 @@
     <div class="loading" id="status">Loading live price...</div>
   </div>
 
+  <button class="btn btn-link stock-open-btn" id="browseStockBtn" onclick="openStock(true)">Browse Our Stock</button>
+
   <div class="cart-bar" id="cartBar">
     <div class="cart-bar-inner">
       <div onclick="toggleCartDrawer(true)" style="cursor:pointer; flex: 1;">
@@ -637,6 +709,27 @@
       <p class="scanner-hint" id="scannerHint">Camera will automatically detect the card sticker.</p>
       <input type="file" id="photoInput" accept="image/*" capture="environment" hidden onchange="handlePhoto(this)">
       <div id="photo-reader" hidden></div>
+    </div>
+  </div>
+
+  <div class="drawer-overlay" id="stockOverlay" onclick="handleOverlayClick(event, 'stockOverlay')">
+    <div class="drawer stock-drawer">
+      <div class="drawer-header">
+        <h2>Our Stock</h2>
+        <button class="close-btn" onclick="closeStock()" aria-label="Close">&times;</button>
+      </div>
+      <div class="stock-tools">
+        <input type="search" id="stockSearch" placeholder="Search cards…" aria-label="Search cards" oninput="renderStock()">
+        <select id="stockSet" aria-label="Set" onchange="renderStock()"><option value="">All sets</option></select>
+        <select id="stockSort" aria-label="Sort" onchange="renderStock()">
+          <option value="set">Sort: Set</option>
+          <option value="name">Sort: Name</option>
+          <option value="high">Price: High to low</option>
+          <option value="low">Price: Low to high</option>
+        </select>
+      </div>
+      <div class="stock-status" id="stockStatus"></div>
+      <div class="stock-list" id="stockList"><div class="loading">Loading our stock...</div></div>
     </div>
   </div>
 
@@ -1376,18 +1469,215 @@
       if (e.target.id === overlayId) {
         if (overlayId === 'scannerOverlay') stopInAppScanner();
         if (overlayId === 'drawerOverlay') toggleCartDrawer(false);
+        if (overlayId === 'stockOverlay') closeStock();
       }
     }
 
-    // Browser back/forward buttons show the matching card
+    // ---- Browse our stock ----
+    // shop_stock.json lists the cards the shop has in stock and how many of each condition
+    // ({ updatedAt, cards: { cardId: count | { NM: 2, LP: 1 } } }). The shop app writes it when
+    // stock changes; names, pictures and prices come from prices.json, so prices are always live.
+    // The view is ?browse=1, so the phone's back button closes it and a link can open it.
+    var stockData = null;
+    var stockRows = null;
+
+    async function fetchStock() {
+      var endpoints = [
+        CARD_FILES + 'shop_stock.json?v=' + Date.now(),
+        'https://cdn.jsdelivr.net/gh/nymsworld/Card.api@main/shop_stock.json'
+      ];
+      for (var i = 0; i < endpoints.length; i++) {
+        try {
+          var res = await fetch(endpoints[i], { cache: 'no-store' });
+          if (res.ok) return await res.json();
+        } catch (e) {}
+      }
+      throw new Error('Could not load our stock list.');
+    }
+
+    function esc(text) {
+      return String(text == null ? '' : text).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    // The set name shown and grouped by (other games and languages say which)
+    function stockSetName(card) {
+      return (card.game && card.game !== 'Pokémon' ? card.game + ' · ' : '') + (card.setName || 'Other');
+    }
+
+    // TCGplayer's picture of a card's product, for cards whose own picture is missing or doesn't load
+    function tcgImage(tcgUrl) {
+      var m = String(tcgUrl || '').match(/product\/(\d+)/);
+      return m ? 'https://tcgplayer-cdn.tcgplayer.com/product/' + m[1] + '_in_400x400.jpg' : '';
+    }
+
+    function stockImageFallback(img) {
+      var other = tcgImage(img.getAttribute('data-tcg'));
+      img.onerror = null;
+      if (other && img.src !== other) img.src = other;
+    }
+
+    // One row per card: { id, card, set, conds: [{ code, label, qty, price }], qty, top }
+    function buildStockRows(stock, catalog) {
+      var rows = [];
+      Object.keys(stock.cards || {}).forEach(function (id) {
+        var card = findCard(catalog, id);
+        if (!card) return; // not priced yet
+        var counts = stock.cards[id];
+        if (typeof counts === 'number') counts = { '': counts };
+        var hasConditions = card.conditionPricing || card.overnumbered;
+        var conds = [];
+        CONDITIONS.concat([{ code: '', label: '' }]).forEach(function (c) {
+          if (!(counts[c.code] > 0)) return;
+          var price = hasConditions && c.code ? conditionPrice(card, c) : (Number(card.price) || 0);
+          conds.push({ code: c.code, label: c.label, qty: counts[c.code], price: price });
+        });
+        if (!conds.length) return;
+        var prices = conds.map(function (c) { return c.price; }).filter(function (p) { return p != null; });
+        rows.push({
+          id: card.id || id,
+          card: card,
+          set: stockSetName(card),
+          conds: conds,
+          qty: conds.reduce(function (n, c) { return n + c.qty; }, 0),
+          top: prices.length ? Math.max.apply(null, prices) : 0
+        });
+      });
+      return rows;
+    }
+
+    function compareNumbers(a, b) {
+      var na = parseInt(a, 10), nb = parseInt(b, 10);
+      if (!isNaN(na) && !isNaN(nb) && na !== nb) return na - nb;
+      return String(a || '').localeCompare(String(b || ''));
+    }
+
+    function stockTileHtml(row) {
+      var card = row.card;
+      var condHtml = row.conds.map(function (c) {
+        return '<div class="stock-cond"><span>' + (c.code ? c.code + ' ' : '') + '× ' + c.qty + '</span>' +
+          '<span class="stock-cond-price">' + (c.price == null ? 'Ask staff' : money(c.price)) + '</span></div>';
+      }).join('');
+      var numTotal = card.printedTotal ? '/' + card.printedTotal : '';
+      var src = card.image || tcgImage(card.tcgUrl);
+      return '<button class="stock-tile" data-id="' + esc(row.id) + '" data-cond="' + row.conds[0].code + '" onclick="openStockCard(this.dataset.id, this.dataset.cond)">' +
+        (src ? '<img loading="lazy" alt="" src="' + esc(src) + '" data-tcg="' + esc(card.tcgUrl || '') + '" onerror="stockImageFallback(this)">' : '') +
+        '<div class="stock-tile-name">' + esc(card.name) + '</div>' +
+        '<div class="stock-tile-set">' + esc(row.set) + (card.number ? ' · #' + esc(card.number) + numTotal : '') + '</div>' +
+        '<div class="stock-tile-conds">' + condHtml + '</div>' +
+      '</button>';
+    }
+
+    function renderStock() {
+      var list = document.getElementById('stockList');
+      if (!stockRows) return;
+      var words = document.getElementById('stockSearch').value.toLowerCase().split(/\s+/).filter(Boolean);
+      var setPick = document.getElementById('stockSet').value;
+      var sort = document.getElementById('stockSort').value;
+
+      var rows = stockRows.filter(function (row) {
+        if (setPick && row.set !== setPick) return false;
+        var text = (row.card.name + ' ' + row.set + ' ' + (row.card.number || '') + ' ' + (row.card.rarity || '')).toLowerCase();
+        return words.every(function (w) { return text.indexOf(w) !== -1; });
+      });
+      rows.sort(function (a, b) {
+        if (sort === 'high') return b.top - a.top;
+        if (sort === 'low') return a.top - b.top;
+        if (sort === 'name') return a.card.name.localeCompare(b.card.name);
+        return a.set.localeCompare(b.set) || compareNumbers(a.card.number, b.card.number);
+      });
+
+      var count = rows.reduce(function (n, r) { return n + r.qty; }, 0);
+      var updated = stockData && stockData.updatedAt ? new Date(stockData.updatedAt) : null;
+      document.getElementById('stockStatus').textContent =
+        rows.length + (rows.length === 1 ? ' card' : ' cards') + ' · ' + count + ' in stock' +
+        (updated ? ' · updated ' + updated.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '');
+
+      if (!rows.length) {
+        list.innerHTML = '<div class="cart-empty">' + (stockRows.length ? 'No cards match your search.' : 'Nothing listed right now. Ask staff what we have!') + '</div>';
+        return;
+      }
+      if (sort !== 'set') {
+        list.innerHTML = '<div class="stock-grid">' + rows.map(stockTileHtml).join('') + '</div>';
+        return;
+      }
+      var html = '';
+      var group = null;
+      rows.forEach(function (row) {
+        if (row.set !== group) {
+          if (group !== null) html += '</div>';
+          group = row.set;
+          html += '<div class="stock-set-title">' + esc(group) + '</div><div class="stock-grid">';
+        }
+        html += stockTileHtml(row);
+      });
+      list.innerHTML = html + '</div>';
+    }
+
+    async function loadStock() {
+      var list = document.getElementById('stockList');
+      list.innerHTML = '<div class="loading">Loading our stock...</div>';
+      try {
+        var results = await Promise.all([fetchStock(), fetchCatalog()]);
+        stockData = results[0];
+        stockRows = buildStockRows(stockData, results[1]);
+        var sets = {};
+        stockRows.forEach(function (row) { sets[row.set] = (sets[row.set] || 0) + 1; });
+        var select = document.getElementById('stockSet');
+        var picked = select.value;
+        select.innerHTML = '<option value="">All sets</option>' + Object.keys(sets).sort().map(function (s) {
+          return '<option value="' + esc(s) + '"' + (s === picked ? ' selected' : '') + '>' + esc(s) + ' (' + sets[s] + ')</option>';
+        }).join('');
+        renderStock();
+      } catch (err) {
+        stockRows = null;
+        list.innerHTML = '<div class="error">' + esc(err.message) + '<br><br><button class="btn btn-link" onclick="loadStock()">Tap to Retry</button></div>';
+      }
+    }
+
+    // push: add ?browse=1 to the address (not when it's already there, e.g. opened from a link)
+    function openStock(push) {
+      if (push) {
+        var params = new URLSearchParams(window.location.search);
+        params.set('browse', '1');
+        window.history.pushState({}, '', '?' + params.toString());
+      }
+      document.getElementById('stockOverlay').classList.add('active');
+      if (!stockRows || (stockData && Date.now() - stockLoadedAt > 5 * 60 * 1000)) {
+        stockLoadedAt = Date.now();
+        loadStock();
+      }
+    }
+    var stockLoadedAt = 0;
+
+    function closeStock() {
+      if (new URLSearchParams(window.location.search).get('browse')) {
+        window.history.back(); // popstate hides it
+      } else {
+        document.getElementById('stockOverlay').classList.remove('active');
+      }
+    }
+
+    function openStockCard(id, cond) {
+      document.getElementById('stockOverlay').classList.remove('active');
+      window.history.pushState({}, '', '?id=' + encodeURIComponent(id) + (cond ? '&cond=' + cond : ''));
+      loadCard(id, cond || null);
+      window.scrollTo(0, 0);
+    }
+
+    // Browser back/forward buttons show the matching card (and the stock list)
     window.addEventListener('popstate', function() {
       var params = new URLSearchParams(window.location.search);
+      if (params.get('browse')) openStock(false);
+      else document.getElementById('stockOverlay').classList.remove('active');
       loadCard(params.get('id'), params.get('cond'));
     });
 
     updateThemeToggle();
     loadCard(cardId, cardCondition);
     renderCartUI();
+    if (new URLSearchParams(window.location.search).get('browse')) openStock(false);
   </script>
 </body>
 </html>
