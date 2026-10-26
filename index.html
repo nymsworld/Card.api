@@ -1490,6 +1490,7 @@
         try {
           var res = await fetch(endpoints[i], { cache: 'no-store' });
           if (res.ok) return await res.json();
+          if (res.status === 404 && i === 0) return { cards: {} }; // the shop app hasn't published a list yet
         } catch (e) {}
       }
       throw new Error('Could not load our stock list.');
