@@ -138,7 +138,13 @@ BULK_TAGS = [
 # today's price for every card; only the last week is kept (8 daily prices, so today
 # can be compared with exactly 7 days ago).
 HISTORY_FILE = "price_history.json"
-VERSION_FILE = "prices_version.json"  # when prices.json last changed: { updatedAt, part, cards }
+VERSION_FILE = "prices_version.json"  # when the price files last changed: { updatedAt, part, cards, total, files }
+# The card database is one file per card game: Pokémon (English and Japanese, and the bulk tags) stays in
+# prices.json, other games go in their own file by the entry's "game" (empty, {}, until a game is stocked).
+# The price page (GAME_FILES in index.html) and the shop app (GAME_FILES in price-cache.js) load and merge
+# them, so a new file here needs adding there too. Shards and price history cover every game.
+CATALOG_FILE = "prices.json"
+GAME_FILES = {"Magic: The Gathering": "prices_magic.json", "Yu-Gi-Oh!": "prices_yugioh.json"}
 # prices.json split into small files for the customer price page (see write_card_shards)
 SHARD_DIR = "cards"
 SHARD_COUNT = 128
@@ -1185,6 +1191,46 @@ def write_card_shards(catalog):
     print(f"Wrote {SHARD_COUNT} card files to {SHARD_DIR}/ (largest {max(len(s) for s in shards)} cards)")
 
 
+def read_catalog():
+    """Every game's cards, prices.json and the GAME_FILES merged into one catalog."""
+    catalog = {}
+    for name in [CATALOG_FILE] + list(GAME_FILES.values()):
+        try:
+            with open(name, encoding="utf-8") as f:
+                catalog.update(json.load(f))
+        except (OSError, ValueError):
+            pass
+    return catalog
+
+
+def write_catalog(catalog):
+    """Splits the catalog into its game files and writes them. Returns { file: { cards, changedAt } }:
+    changedAt only moves when a file's contents changed, so the shop app downloads only the files that did."""
+    try:
+        with open(VERSION_FILE, encoding="utf-8") as f:
+            before = json.load(f).get("files") or {}
+    except (OSError, ValueError):
+        before = {}
+    now = datetime.now(timezone.utc).isoformat()
+    split = {name: {} for name in [CATALOG_FILE] + list(GAME_FILES.values())}
+    for card_id, entry in catalog.items():
+        split[GAME_FILES.get(entry.get("game"), CATALOG_FILE)][card_id] = entry
+    files = {}
+    for name, cards in split.items():
+        text = json.dumps(cards, separators=(",", ":"))  # no indenting: about half the size to download
+        try:
+            with open(name, encoding="utf-8") as f:
+                same = f.read() == text
+        except OSError:
+            same = False
+        if not same:
+            with open(name, "w", encoding="utf-8") as f:
+                f.write(text)
+        changed_at = (before.get(name) or {}).get("changedAt") if same else None
+        files[name] = {"cards": len(cards), "changedAt": changed_at or now}
+    return files
+
+
 def build_price_catalog(part):
     updates = {}
 
@@ -1208,21 +1254,11 @@ def build_price_catalog(part):
         fetch_swsh_era(updates)
 
     # A single part only replaces its own cards and keeps everything else as it was
-    catalog = {}
-    if part != "all":
-        try:
-            with open("prices.json", encoding="utf-8") as f:
-                catalog = json.load(f)
-        except (OSError, ValueError):
-            catalog = {}
+    catalog = read_catalog() if part != "all" else {}
 
-    # The steps below look at prices.json as it is (cards added before stay; printings listed
+    # The steps below look at the database as it is (cards added before stay; printings listed
     # another way, or as stocked cards, are skipped)
-    try:
-        with open("prices.json", encoding="utf-8") as f:
-            previous = json.load(f)
-    except (OSError, ValueError):
-        previous = {}
+    previous = read_catalog()
     existing = dict(previous)
     existing.update(catalog)
     existing.update(updates)
@@ -1261,9 +1297,8 @@ def build_price_catalog(part):
     mark_stocked(catalog, stock)
     add_bulk_tags(catalog)
 
-    # Save to prices.json (no indenting: about half the size to download)
-    with open("prices.json", "w", encoding="utf-8") as f:
-        json.dump(catalog, f, separators=(",", ":"))
+    # Save to prices.json and the other games' files
+    files = write_catalog(catalog)
 
     update_history(catalog)
     if part in ("all", "5"):
@@ -1273,10 +1308,14 @@ def build_price_catalog(part):
     # Last, so nobody sees a new version before its files are written. The shop app checks this tiny
     # file often and only downloads the big prices.json when it changed (also after a run started by
     # hand during the day); the price page uses it to know when its saved shards are out of date.
+    # "cards" is prices.json's count (installed apps check a download against it), "total" every game's,
+    # "files" each game file's count and when it last changed.
     with open(VERSION_FILE, "w", encoding="utf-8") as f:
-        json.dump({"updatedAt": datetime.now(timezone.utc).isoformat(), "part": part, "cards": len(catalog)}, f)
+        json.dump({"updatedAt": datetime.now(timezone.utc).isoformat(), "part": part,
+                   "cards": files[CATALOG_FILE]["cards"], "total": len(catalog), "files": files}, f)
 
-    print(f"Successfully updated {len(updates)} cards (part {part}); prices.json has {len(catalog)} cards.")
+    print(f"Successfully updated {len(updates)} cards (part {part}); the database has {len(catalog)} cards (" +
+          ", ".join(f"{name} {info['cards']}" for name, info in files.items()) + ").")
 
 if __name__ == "__main__":
     # Usage: python update_prices.py [all|1|2|3|4|5]   (defaults to all)

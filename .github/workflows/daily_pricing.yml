@@ -69,11 +69,11 @@ jobs:
         run: |
           python update_prices.py ${{ steps.part.outputs.part }}
 
-      - name: Commit and Push Updated prices.json
+      - name: Commit and Push Updated prices.json (and the other games' price files)
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add prices.json prices_version.json cards price_history.json condition_market.json
+          git add prices.json prices_*.json prices_version.json cards price_history.json condition_market.json
           git commit -m "Auto-update prices.json (part ${{ steps.part.outputs.part }}) [skip ci]" || exit 0
           git pull --rebase
           git push

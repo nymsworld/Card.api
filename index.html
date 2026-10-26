@@ -908,6 +908,7 @@
           var res = await fetch(endpoints[i]);
           if (res.ok) {
             var catalog = await res.json();
+            await addGameFiles(catalog);
             await addConditionPrices(catalog);
             priceCatalog = catalog;
             return priceCatalog;
@@ -916,6 +917,28 @@
       }
 
       throw new Error('Could not fetch price database from mirrors.');
+    }
+
+    // Card games other than Pokémon have their own file (GAME_FILES in update_prices.py; {} until the shop
+    // stocks that game), merged into the catalog here. A file that's missing or won't load is skipped.
+    var GAME_FILES = ['prices_magic.json', 'prices_yugioh.json'];
+
+    async function addGameFiles(catalog) {
+      await Promise.all(GAME_FILES.map(async function (file) {
+        var endpoints = [
+          'https://raw.githubusercontent.com/nymsworld/Card.api/main/' + file + '?v=' + Date.now(),
+          'https://cdn.jsdelivr.net/gh/nymsworld/Card.api@main/' + file
+        ];
+        for (var i = 0; i < endpoints.length; i++) {
+          try {
+            var res = await fetch(endpoints[i]);
+            if (!res.ok) continue;
+            var cards = await res.json();
+            for (var id in cards) catalog[id] = cards[id];
+            return;
+          } catch (e) {}
+        }
+      }));
     }
 
     // The fast way to look up one scanned card: prices.json is also published split into small
