@@ -87,6 +87,18 @@ STAMPED = re.compile(r"Stamp", re.IGNORECASE)
 BALL_PATTERN = re.compile(r"\((Poke Ball|Poké Ball|Master Ball|Dusk Ball|Love Ball|Friend Ball|Quick Ball|Great Ball|Ultra Ball|Energy Symbol)( Pattern)?\)", re.IGNORECASE)
 BATTLE_ACADEMY = re.compile(r"^Battle Academy")
 
+# Sealed products (part 7): every booster box, ETB, blister, tin, collection, case... that TCGplayer lists in
+# the Sword & Shield, Scarlet & Violet and Mega Evolution sets and the Prize Pack group (sealed = a product
+# with no card number and no rarity). TCGplayer files era-wide tins and collections under
+# "Miscellaneous Cards & Products", which has no era: those listed since Sword & Shield came out (product
+# IDs from the first Sword & Shield card on) are added too. IDs are tcg-<product ID>, like stocked cards.
+# No condition picker; with no TCGplayer market price the price is null, so the page shows "Ask staff"
+# (a staff price from the app is used then, see "marketAt").
+SEALED_GROUPS = re.compile(r"^(SWSH\d*:|SV\d*:|SVE:|ME\d*:|MEE:|Pokemon GO$|Champion's Path$|Shining Fates|Celebrations|Prize Pack Series|Trading Card Game Classic$)")
+SEALED_MISC_GROUP = "Miscellaneous Cards & Products"
+SEALED_ERA_START = "SWSH01: Sword & Shield Base Set"
+SEALED_RARITY = "Sealed Product"
+
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
 # spelled as printed on the cards; each run logs how many cards each name found.
@@ -186,6 +198,7 @@ PARTS = {
     "4": "Overnumbered cards from Mega Evolution, then the Sword & Shield era: V cards, secrets, galleries, promos and Prize Packs",
     "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
     "6": "Stamped cards, Battle Academy cards and ball / Energy pattern variants from every TCGplayer Pokémon set",
+    "7": "Sealed products from Sword & Shield, Scarlet & Violet, Mega Evolution and Prize Packs",
 }
 
 _tcgcsv_groups = None
@@ -689,6 +702,59 @@ def fetch_variants(catalog, groups, existing):
     print(f"Synced {counts['stamped']} stamped cards, {counts['pattern']} pattern variants and {counts['battle academy']} Battle Academy cards")
 
 
+def is_sealed(product):
+    data = {e.get("name") for e in product.get("extendedData", [])}
+    return not data & {"Number", "Rarity"}
+
+
+def fetch_sealed(catalog, groups, previous):
+    """Sealed products (see SEALED_GROUPS). previous: prices.json as it is now, for each product's "marketAt":
+    when TCGplayer's market price last changed. A staff price set after that wins over TCGplayer's (the
+    owner's rule for condition prices: a staff price holds until TCGplayer has newer data)."""
+    now = datetime.now(timezone.utc).isoformat()
+    wanted = [g for g in groups if SEALED_GROUPS.match(g["name"])]
+    misc = next((g for g in groups if g["name"] == SEALED_MISC_GROUP), None)
+    print(f"Fetching sealed products from {len(wanted)} sets" + (" and Miscellaneous Cards & Products" if misc else "") + "...")
+    first_id = None  # the first Sword & Shield product ID, for the Miscellaneous group (which comes last)
+    added = priced = 0
+    for g in wanted + ([misc] if misc else []):
+        products, prices = tcgcsv_group(g["groupId"])
+        if g["name"] == SEALED_ERA_START:
+            first_id = min((p["productId"] for p in products), default=None)
+        if g is misc:
+            if first_id is None:
+                print("  No Sword & Shield start found: Miscellaneous Cards & Products skipped")
+                continue
+            products = [p for p in products if p["productId"] >= first_id]
+        set_name = re.sub(r"^(SWSH\d*|SV\d*|SVE|ME\d*|MEE):\s*", "", g["name"])
+        for product in products:
+            if not is_sealed(product):
+                continue
+            raw_market = pick_price(prices.get(product["productId"], {}), "Normal")
+            card_id = f"tcg-{product['productId']}"
+            before = previous.get(card_id) or {}
+            same = before.get("group") == "sealed" and before.get("rawMarket") == raw_market
+            catalog[card_id] = {
+                "id": card_id,
+                "name": re.sub(r"\s+", " ", product["name"]).strip(),
+                "setName": set_name,
+                "number": "",
+                "printedTotal": "",
+                "rarity": SEALED_RARITY,
+                "price": calculate_store_price(raw_market) if raw_market is not None else None,
+                "rawMarket": raw_market,
+                "marketAt": (before.get("marketAt") if same else None) or now,
+                "image": product.get("imageUrl", ""),
+                "tcgUrl": product.get("url") or f"https://www.tcgplayer.com/product/{product['productId']}",
+                "game": GAME_NAMES["Pokemon"],
+                "group": "sealed",
+                "sealed": True,
+            }
+            added += 1
+            priced += raw_market is not None
+    print(f"Synced {added} sealed products ({added - priced} without a TCGplayer market price: Ask staff)")
+
+
 def fetch_artists(catalog, existing):
     """Every card by the illustrators in ARTISTS, one entry per priced printing.
     existing: prices.json as it is now; printings already there as stocked cards are left to them,
@@ -926,6 +992,8 @@ def mark_stocked(catalog, stock):
     stocked = {loose((row["Product ID"], printing_kind(row["Printing"]))) for row in stock}
     marked = 0
     for card_id, entry in catalog.items():
+        if entry.get("sealed"):
+            continue  # sealed products have no conditions
         if loose(entry_product_key(card_id, entry)) in stocked and not entry.get("conditionPricing"):
             entry["conditionPricing"] = True
             marked += 1
@@ -1280,6 +1348,12 @@ def build_price_catalog(part):
         merged = dict(existing)
         merged.update(updates)
         fetch_variants(updates, groups, merged)
+
+    if part in ("all", "7"):
+        # Sealed products from Sword & Shield on
+        groups = get_json(f"{TCGCSV_BASE}/groups", headers=TCGCSV_HEADERS).get("results", [])
+        time.sleep(REQUEST_DELAY)
+        fetch_sealed(updates, groups, previous)
 
     stock = load_stock()
     if part in ("all", "5"):

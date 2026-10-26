@@ -1043,7 +1043,15 @@
     // 'market' (TCGplayer market for that condition), 'percent' (of Near Mint) or null (ask staff).
     // A staff price holds until it's changed, or until a TCGplayer fetch made after it has a solid
     // (conclusive) price for that condition; condition_market.json only keeps conclusive ones.
+    // Sealed products have no conditions: a staff price (conditionPrices.price) holds until TCGplayer's
+    // market price changes after it (card.marketAt); with neither, null = "Ask staff".
     function conditionSource(card, condition) {
+      if (card.sealed) {
+        var set = card.conditionPrices && card.conditionPrices.price != null;
+        if (set && !(card.rawMarket != null && card.marketAt && card.conditionPrices.updatedAt &&
+            Date.parse(card.marketAt) > Date.parse(card.conditionPrices.updatedAt))) return 'staff';
+        return card.rawMarket == null ? null : 'nm';
+      }
       if (!condition || condition.percent === 100 || card.rawMarket == null) return 'nm';
       var staff = card.conditionPrices && card.conditionPrices[condition.code] != null;
       var market = card.conditionMarket && card.conditionMarket[condition.code] != null;
@@ -1058,7 +1066,7 @@
     function conditionPrice(card, condition) {
       var source = conditionSource(card, condition);
       if (source === 'nm') return Number(card.price) || 0;
-      if (source === 'staff') return Number(card.conditionPrices[condition.code]);
+      if (source === 'staff') return Number(card.conditionPrices[condition ? condition.code : 'price']);
       if (source === 'market') return storePrice(card.conditionMarket[condition.code]);
       if (source === 'percent') return storePrice(card.rawMarket * condition.percent / 100);
       return null;
@@ -1067,7 +1075,8 @@
     // Always a number: the staff price, or the percent-of-Near-Mint estimate when there isn't one
     function priceForCondition(card, condition) {
       var price = conditionPrice(card, condition);
-      return price != null ? price : storePrice(card.rawMarket * condition.percent / 100);
+      if (price != null) return price;
+      return condition && card.rawMarket != null ? storePrice(card.rawMarket * condition.percent / 100) : 0;
     }
 
     function setCondition(code) {
@@ -1082,7 +1091,7 @@
       var container = document.getElementById('cardContainer');
       currentCardData = card;
       // Overnumbered cards and Classic Collection cards are priced by condition
-      var hasConditions = card.conditionPricing || card.overnumbered;
+      var hasConditions = (card.conditionPricing || card.overnumbered) && !card.sealed;
       currentCondition = hasConditions ? (findCondition(conditionCode) || CONDITIONS[0]) : null;
       var price = conditionPrice(card, currentCondition);
       var source = conditionSource(card, currentCondition);
@@ -1090,9 +1099,9 @@
       var floorNote = '';
       var conditionRaw = card.rawMarket != null && currentCondition ? card.rawMarket * currentCondition.percent / 100 : card.rawMarket;
       if (price == null) {
-        floorNote = '<div class="floor-note">' + currentCondition.label + ' copies are priced by staff · ask at the counter</div>';
+        floorNote = '<div class="floor-note">' + (currentCondition ? currentCondition.label + ' copies are' : 'This item is') + ' priced by staff · ask at the counter</div>';
       } else if (source === 'staff') {
-        floorNote = '<div class="floor-note">' + currentCondition.label + ' · priced by staff</div>';
+        floorNote = '<div class="floor-note">' + (currentCondition ? currentCondition.label + ' · priced by staff' : 'Priced by staff') + '</div>';
       } else if (source === 'market') {
         floorNote = '<div class="floor-note">' + currentCondition.label + ' · TCGplayer market for this condition</div>';
       } else if (conditionRaw != null && conditionRaw < 1.00) {
@@ -1653,11 +1662,11 @@
         if (!card) return; // not priced yet
         var counts = stock.cards[id];
         if (typeof counts === 'number') counts = { '': counts };
-        var hasConditions = card.conditionPricing || card.overnumbered;
+        var hasConditions = (card.conditionPricing || card.overnumbered) && !card.sealed;
         var conds = [];
         CONDITIONS.concat([{ code: '', label: '' }]).forEach(function (c) {
           if (!(counts[c.code] > 0)) return;
-          var price = hasConditions && c.code ? conditionPrice(card, c) : (Number(card.price) || 0);
+          var price = conditionPrice(card, hasConditions && c.code ? c : null);
           conds.push({ code: c.code, label: c.label, qty: counts[c.code], price: price });
         });
         if (!conds.length) return;
