@@ -116,6 +116,17 @@ MISC_SKIP_RARITIES = {"Code Card"}
 WHOLE_GROUPS = re.compile(r"^(McDonald's (Promos \d{4}|25th Anniversary Promos)|Burger King Promos|Trick or Trade BOOster Bundle( \d{4})?"
                           r"|POP Series \d+|Rumble|WoTC Promo)$")
 
+# Every card in every Pokémon set that already has a card in the database (part 10, owner's request), English and
+# Japanese: each printing TCGplayer prices (regular / holo, reverse holo, 1st Edition) as tcg-<product ID>
+# entries, group "set-all". A set qualifies when one of its products is in prices.json as anything but a sealed
+# product or a set-all entry (so a new set joins once another step adds a card from it). Printings listed another
+# way (stocked, Double Rares, artists' cards...) are left to that step; a set-all entry that another step has since
+# listed is dropped. Every entry has a price and the card's details; pictures stay links (saving them on a phone is
+# Settings → Offline data → "Save card pictures", optional). The sets part 3 (Jumbo) and part 8 (Miscellaneous,
+# WHOLE_GROUPS) already list whole are skipped. A product TCGplayer has no market price for at all is "Ask staff".
+WHOLE_SET_CATEGORIES = [(3, "Pokemon"), (85, "Pokemon Japan")]
+WHOLE_SET_GROUP = "set-all"
+
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
 # spelled as printed on the cards; each run logs how many cards each name found.
@@ -218,6 +229,7 @@ PARTS = {
     "7": "Every Pokémon sealed product on TCGplayer, English and Japanese",
     "8": "Every card in TCGplayer's Miscellaneous Cards & Products group (not Code Cards), and every card and sealed product in the McDonald's, Burger King, Trick or Trade, POP Series, Rumble and WoTC promo sets",
     "9": "Every Magic: The Gathering sealed product on TCGplayer",
+    "10": "Every card in each Pokémon set (English and Japanese) that already has a card in the database",
 }
 
 _tcgcsv_groups = None
@@ -610,7 +622,7 @@ def tcgcsv_group(group_id):
     return products, prices
 
 
-def tcgcsv_entry(product, card_id, set_name, raw_market, group, reverse=False):
+def tcgcsv_entry(product, card_id, set_name, raw_market, group, reverse=False, game="Pokemon"):
     """A prices.json entry for a TCGplayer product (tcg- IDs, like stocked cards)."""
     data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
     number, _, printed_total = (data.get("Number") or "").partition("/")
@@ -627,7 +639,7 @@ def tcgcsv_entry(product, card_id, set_name, raw_market, group, reverse=False):
         "rawMarket": raw_market,
         "image": product.get("imageUrl", ""),
         "tcgUrl": product.get("url") or f"https://www.tcgplayer.com/product/{product['productId']}",
-        "game": GAME_NAMES["Pokemon"],
+        "game": GAME_NAMES[game],
         "group": group,
     }
 
@@ -843,6 +855,79 @@ def fetch_whole_groups(catalog, groups, existing):
         print(f"  {g['name']}: {added}")
         total += added
     print(f"Synced {total} cards and sealed products from whole sets ({unpriced} cards without a TCGplayer market price: Ask staff)")
+
+
+def fetch_whole_sets(catalog, existing):
+    """Every card in each Pokémon set that already has one in the database (see WHOLE_SET_CATEGORIES).
+    existing: prices.json as it is now, without the old set-all entries (rebuilt here)."""
+    covered = set()
+    have = set()
+    for card_id, entry in existing.items():
+        key = entry_product_key(card_id, entry)
+        if not key:
+            continue
+        covered.add(key)
+        if not entry.get("sealed"):
+            have.add(key[0])
+    total = unpriced = 0
+    for category, game in WHOLE_SET_CATEGORIES:
+        base = f"https://tcgcsv.com/tcgplayer/{category}"
+        groups = get_json(f"{base}/groups", headers=TCGCSV_HEADERS).get("results", [])
+        time.sleep(REQUEST_DELAY)
+        groups = [g for g in groups if g["name"] not in (SEALED_MISC_GROUP, JUMBO_GROUP) and not WHOLE_GROUPS.match(g["name"])]
+        print(f"Looking for {GAME_NAMES[game]} sets with cards in the database ({len(groups)} sets)...")
+        sets = 0
+        for g in groups:
+            products = get_json(f"{base}/{g['groupId']}/products", headers=TCGCSV_HEADERS).get("results", [])
+            time.sleep(0.5)
+            cards = [p for p in products if not is_sealed(p) and not re.search(r"Code Card", p["name"])]
+            if not any(str(p["productId"]) in have for p in cards):
+                continue
+            sets += 1
+            prices = {}
+            for p in get_json(f"{base}/{g['groupId']}/prices", headers=TCGCSV_HEADERS).get("results", []):
+                prices.setdefault(p["productId"], {})[p.get("subTypeName")] = p.get("marketPrice")
+            time.sleep(0.5)
+            set_name = SEALED_SET_PREFIX.sub("", g["name"]) if game == "Pokemon" else g["name"].split(": ", 1)[-1]
+            added = 0
+            for product in cards:
+                data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
+                if (data.get("Rarity") or "").strip() == "Code Card":
+                    continue
+                pid = str(product["productId"])
+                variants = {k: v for k, v in prices.get(product["productId"], {}).items() if v is not None}
+                # (kind for matching other steps' entries, ID, market price, label added to the name)
+                printings = []
+                regular = {k: v for k, v in variants.items() if printing_kind(k) == "base"}
+                if regular.get("Holofoil") is not None and regular.get("Normal") is not None:
+                    printings += [("base", f"tcg-{pid}", regular["Holofoil"], " (Holo)"),
+                                  ("base", f"tcg-{pid}-non-holo", regular["Normal"], " (Non-Holo)")]
+                elif regular:
+                    printings.append(("base", f"tcg-{pid}", pick_price(regular, "Holofoil"), ""))
+                for name, value in variants.items():
+                    if printing_kind(name) == "1st":
+                        printings.append(("1st", f"tcg-{pid}-{slugify(name)}", value, " (1st Edition)"))
+                if variants.get("Reverse Holofoil") is not None:
+                    if printings:
+                        printings.append(("reverse", f"tcg-{pid}-reverse", variants["Reverse Holofoil"], ""))
+                    else:
+                        printings.append(("base", f"tcg-{pid}", variants["Reverse Holofoil"], ""))  # only sold as a reverse holo
+                if not printings:
+                    printings = [("base", f"tcg-{pid}", None, "")]  # no TCGplayer market price: Ask staff
+                for kind, card_id, raw_market, label in printings:
+                    if (pid, kind) in covered:
+                        continue  # already listed another way
+                    entry = tcgcsv_entry(product, card_id, set_name, raw_market, WHOLE_SET_GROUP,
+                                         reverse=kind == "reverse", game=game)
+                    entry["name"] += label
+                    if raw_market is None:
+                        entry["price"] = None
+                        unpriced += 1
+                    catalog[card_id] = entry
+                    added += 1
+            total += added
+        print(f"  {sets} {GAME_NAMES[game]} sets")
+    print(f"Synced {total} cards from whole sets ({unpriced} without a TCGplayer market price: Ask staff)")
 
 
 def fetch_artists(catalog, existing):
@@ -1457,6 +1542,14 @@ def build_price_catalog(part):
         merged.update(updates)
         fetch_whole_groups(updates, groups, merged)
 
+    if part in ("all", "10"):
+        # Every card in the sets already in the database: the old set-all entries are rebuilt (one another step
+        # now lists is dropped). Last, so it sees every other step's cards.
+        catalog = {k: v for k, v in catalog.items() if v.get("group") != WHOLE_SET_GROUP}
+        merged = {k: v for k, v in existing.items() if v.get("group") != WHOLE_SET_GROUP}
+        merged.update(updates)
+        fetch_whole_sets(updates, merged)
+
     stock = load_stock()
     if part in ("all", "5"):
         # Japanese cards and stocked cards are rebuilt every run (cards that left the
@@ -1494,7 +1587,7 @@ def build_price_catalog(part):
           ", ".join(f"{name} {info['cards']}" for name, info in files.items()) + ").")
 
 if __name__ == "__main__":
-    # Usage: python update_prices.py [all|1|2|...|9]   (defaults to all)
+    # Usage: python update_prices.py [all|1|2|...|10]   (defaults to all)
     part = sys.argv[1] if len(sys.argv) > 1 else "all"
     if part != "all" and part not in PARTS:
         print(f"Unknown part '{part}'. Use all, {', '.join(PARTS)}.")
