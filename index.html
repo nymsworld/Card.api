@@ -1060,9 +1060,9 @@
     // price rules in the shop app (Settings → Price rules) gets those instead (shopRules below).
     var MARKET_PRICE_UNDER = 0.50;
 
-    function storePrice(rawMarket) {
+    function storePrice(rawMarket, card) {
       var rules = shopRules();
-      if (rules) return rulesPrice(rawMarket, rules);
+      if (rules) return rulesPrice(rawMarket, rules, card);
       if (rawMarket < MARKET_PRICE_UNDER) return Math.round(rawMarket * 100) / 100;
       var dollars = Math.floor(rawMarket);
       var rounded = (rawMarket - dollars >= 0.30) ? dollars + 1 : dollars;
@@ -1073,7 +1073,8 @@
     //   { updatedAt, shops: { kms | gg: { percent, mode: 'dollar' | 'step' | 'exact', upFrom, step,
     //     direction: 'up' | 'nearest' | 'down', ending99, floor, under50: 'market' | 'rules' | 'floor', under50Floor } } }
     // under50 is for cards under 50 cents: their market price as is (also when missing), the rules like any card,
-    // or the market price but at least under50Floor.
+    // or the market price but at least under50Floor. exFloor (null = none) replaces the floor for regular modern
+    // ex cards (doubleRareEx), also under 50 cents and in every condition.
     // A shop not in the file uses the rule above. Card prices are worked out again from the market price
     // (rawMarket) for the shop being shown (SHOP), the original kept as card.websitePrice; staff prices,
     // bulk tags and cards without a market price stay as they are. rulesPrice must match priceFor in the
@@ -1104,10 +1105,19 @@
       return priceRules[SHOP] || null;
     }
 
-    function rulesPrice(raw, r) {
+    // A regular modern ex card: Double Rare "… ex" (lowercase ex), not overnumbered, promo, Prize Pack or stamped.
+    // Must match skipAlert in the shop app's lib/price-history.js.
+    function doubleRareEx(card) {
+      if (!card || !/\bex\b/.test(card.name || '') || card.overnumbered) return false;
+      if (/promo|prize pack|miscellaneous/i.test(card.setName || '') || /stamp/i.test(card.name)) return false;
+      return /^double rare( reverse holo)?$/i.test(String(card.rarity || '').trim());
+    }
+
+    function rulesPrice(raw, r, card) {
       var cents = function (n) { return Math.round(n * 100) / 100; };
+      var ex = r.exFloor != null && doubleRareEx(card) ? Number(r.exFloor) || 0 : null;
       if (Number(raw) < MARKET_PRICE_UNDER && r.under50 !== 'rules') {
-        return Math.max(r.under50 === 'floor' ? Number(r.under50Floor) || 0 : 0, cents(Number(raw)));
+        return Math.max(ex != null ? ex : r.under50 === 'floor' ? Number(r.under50Floor) || 0 : 0, cents(Number(raw)));
       }
       var p = cents(Number(raw) * (r.percent || 100) / 100);
       if (r.mode === 'dollar') {
@@ -1121,7 +1131,7 @@
       }
       p = cents(p);
       if (r.ending99 && p >= 1) p = cents(p - 0.01);
-      return Math.max(Number(r.floor) || 0, p);
+      return Math.max(ex != null ? ex : Number(r.floor) || 0, p);
     }
 
     // Prices a catalog (or a small card file) for the shop being shown
@@ -1135,7 +1145,7 @@
           if (!rules || card.price == null || typeof card.rawMarket !== 'number') continue;
           card.websitePrice = card.price;
         }
-        card.price = rules ? rulesPrice(card.rawMarket, rules) : card.websitePrice;
+        card.price = rules ? rulesPrice(card.rawMarket, rules, card) : card.websitePrice;
       }
     }
 
@@ -1178,8 +1188,8 @@
       var source = conditionSource(card, condition);
       if (source === 'nm') return Number(card.price) || 0;
       if (source === 'staff') return Number(card.conditionPrices[condition ? condition.code : 'price']);
-      if (source === 'market') return storePrice(card.conditionMarket[condition.code]);
-      if (source === 'percent') return storePrice(card.rawMarket * condition.percent / 100);
+      if (source === 'market') return storePrice(card.conditionMarket[condition.code], card);
+      if (source === 'percent') return storePrice(card.rawMarket * condition.percent / 100, card);
       return null;
     }
 
@@ -1187,7 +1197,7 @@
     function priceForCondition(card, condition) {
       var price = conditionPrice(card, condition);
       if (price != null) return price;
-      return condition && card.rawMarket != null ? storePrice(card.rawMarket * condition.percent / 100) : 0;
+      return condition && card.rawMarket != null ? storePrice(card.rawMarket * condition.percent / 100, card) : 0;
     }
 
     function setCondition(code) {
