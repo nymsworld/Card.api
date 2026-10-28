@@ -1,4 +1,18 @@
 {
-  "updatedAt": null,
-  "shops": {}
+  "updatedAt": "2026-10-28T14:53:34.226Z",
+  "shops": {
+    "kms": {
+      "percent": 100,
+      "mode": "dollar",
+      "upFrom": 30,
+      "step": 1,
+      "direction": "up",
+      "ending99": false,
+      "floor": 1,
+      "under50": "market",
+      "under50Floor": 0.25,
+      "exFloor": 1,
+      "aceFloor": 1
+    }
+  }
 }
