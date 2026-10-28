@@ -203,6 +203,11 @@ CONDITION_MARKET_FILE = "condition_market.json"
 CONDITION_MARKET_MIN = 50
 CONDITION_MARKET_MAX_CARDS = 400
 CONDITION_MARKET_EVERY_HOURS = 6.5 * 24
+
+# Every single card over this market price gets the condition picker (owner's request), any game, except
+# regular Double Rare ex cards (their stickers carry no condition; double_rare_ex). Once on it stays on, also
+# if the price drops (mark_priced keeps the last run's flag), so printed condition stickers keep working.
+CONDITION_PICKER_MIN = 2
 JUSTTCG_URL = "https://api.justtcg.com/v1/cards"
 JUSTTCG_BATCH = 20
 JUSTTCG_DELAY = 6.5  # seconds between requests (10 per minute)
@@ -1181,6 +1186,33 @@ def mark_stocked(catalog, stock):
         print(f"Turned on condition pricing for {marked} stocked cards")
 
 
+def double_rare_ex(entry):
+    """A regular modern ex card: Double Rare "... ex" (lowercase ex), not overnumbered, promo, Prize Pack or
+    stamped. Must match skipAlert in the shop app's lib/price-history.js (doubleRareEx in index.html)."""
+    name = entry.get("name") or ""
+    if not re.search(r"\bex\b", name) or entry.get("overnumbered"):
+        return False
+    if re.search(r"promo|prize pack|miscellaneous", entry.get("setName") or "", re.I) or re.search(r"stamp", name, re.I):
+        return False
+    return bool(re.match(r"^double rare( reverse holo)?$", str(entry.get("rarity") or "").strip(), re.I))
+
+
+def mark_priced(catalog, previous):
+    """Every single card over CONDITION_PICKER_MIN gets the condition picker (not regular Double Rare ex), and a
+    card that had it in the last run keeps it (entries are rebuilt each run, so the flag is carried over)."""
+    marked = kept = 0
+    for card_id, entry in catalog.items():
+        if entry.get("conditionPricing") or entry.get("sealed") or entry.get("bulk") or entry.get("price") is None:
+            continue
+        if (previous.get(card_id) or {}).get("conditionPricing"):
+            entry["conditionPricing"] = True
+            kept += 1
+        elif (entry.get("rawMarket") or 0) > CONDITION_PICKER_MIN and not double_rare_ex(entry):
+            entry["conditionPricing"] = True
+            marked += 1
+    print(f"Condition pricing: turned on for {marked} cards over ${CONDITION_PICKER_MIN}, kept on {kept} from the last run")
+
+
 def add_bulk_tags(catalog):
     for tag in BULK_TAGS:
         label = f"${tag['price']:.2f}"
@@ -1306,9 +1338,14 @@ def write_condition_prices(data, catalog):
           f"{counts['outOfOrder']} out of order and {counts['stale']} stale left for staff)")
 
 
-def update_condition_market(catalog):
+def update_condition_market(catalog, stock=()):
     """Refreshes condition_market.json from JustTCG. Never stops the price update: on any
-    problem the old file is kept."""
+    problem the old file is kept. Stocked cards come first (matched loosely, as in mark_stocked), then the
+    most expensive: since every card over CONDITION_PICKER_MIN has conditions, far more than
+    CONDITION_MARKET_MAX_CARDS are over CONDITION_MARKET_MIN."""
+    def loose(key):
+        return key and (key[0], "reverse" if key[1] == "reverse" else "base")
+    stocked = {loose((row["Product ID"], printing_kind(row["Printing"]))) for row in stock}
     key = os.environ.get("JUSTTCG_API_KEY")
     if not key:
         print("Condition prices: no JUSTTCG_API_KEY, skipped")
@@ -1336,7 +1373,7 @@ def update_condition_market(catalog):
             if (entry.get("conditionPricing") or entry.get("overnumbered"))
             and (entry.get("rawMarket") or 0) > CONDITION_MARKET_MIN
         ),
-        key=lambda item: -item[1]["rawMarket"],
+        key=lambda item: (loose(entry_product_key(item[0], item[1])) not in stocked, -item[1]["rawMarket"]),
     )[:CONDITION_MARKET_MAX_CARDS]
     for card_id, entry in cards:
         product = entry_product_key(card_id, entry)
@@ -1564,6 +1601,7 @@ def build_price_catalog(part):
 
     catalog.update(updates)
     mark_stocked(catalog, stock)
+    mark_priced(catalog, previous)
     add_bulk_tags(catalog)
 
     # Save to prices.json and the other games' files
@@ -1571,7 +1609,7 @@ def build_price_catalog(part):
 
     update_history(catalog)
     if part in ("all", "5"):
-        update_condition_market(catalog)
+        update_condition_market(catalog, stock)
 
     write_card_shards(catalog)
     # Last, so nobody sees a new version before its files are written. The shop app checks this tiny
