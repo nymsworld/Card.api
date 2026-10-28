@@ -1074,7 +1074,8 @@
     //     direction: 'up' | 'nearest' | 'down', ending99, floor, under50: 'market' | 'rules' | 'floor', under50Floor } } }
     // under50 is for cards under 50 cents: their market price as is (also when missing), the rules like any card,
     // or the market price but at least under50Floor. exFloor (null = none) replaces the floor for regular modern
-    // ex cards (doubleRareEx), also under 50 cents and in every condition.
+    // ex cards (doubleRareEx), also under 50 cents and in every condition; aceFloor the same for English ACE SPEC
+    // cards (aceSpec).
     // A shop not in the file uses the rule above. Card prices are worked out again from the market price
     // (rawMarket) for the shop being shown (SHOP), the original kept as card.websitePrice; staff prices,
     // bulk tags and cards without a market price stay as they are. rulesPrice must match priceFor in the
@@ -1113,9 +1114,22 @@
       return /^double rare( reverse holo)?$/i.test(String(card.rarity || '').trim());
     }
 
+    // An English ACE SPEC card. Must match aceSpec in the shop app's lib/price-rules.js.
+    function aceSpec(card) {
+      return String(card.rarity || '').trim().toLowerCase() === 'ace spec rare';
+    }
+
+    // The ex or ACE SPEC floor for this card, or null. Must match cardFloor in the shop app's lib/price-rules.js.
+    function cardFloor(r, card) {
+      if (!card) return null;
+      if (r.exFloor != null && doubleRareEx(card)) return Number(r.exFloor) || 0;
+      if (r.aceFloor != null && aceSpec(card)) return Number(r.aceFloor) || 0;
+      return null;
+    }
+
     function rulesPrice(raw, r, card) {
       var cents = function (n) { return Math.round(n * 100) / 100; };
-      var ex = r.exFloor != null && doubleRareEx(card) ? Number(r.exFloor) || 0 : null;
+      var ex = cardFloor(r, card);
       if (Number(raw) < MARKET_PRICE_UNDER && r.under50 !== 'rules') {
         return Math.max(ex != null ? ex : r.under50 === 'floor' ? Number(r.under50Floor) || 0 : 0, cents(Number(raw)));
       }
