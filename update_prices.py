@@ -1095,17 +1095,22 @@ def fetch_stock(catalog, stock, existing):
 
     # Only look up the games that are actually stocked
     groups = {}
+    group_ids = {}
     needed = {product_line(row) for row in todo}
     for line, category in TCGCSV_CATEGORIES.items():
         if line not in needed:
             continue
         for g in get_json(f"https://tcgcsv.com/tcgplayer/{category}/groups", headers=TCGCSV_HEADERS).get("results", []):
             groups[(line, g["name"])] = (category, g["groupId"], g["name"])
+            group_ids[(line, str(g["groupId"]))] = (category, g["groupId"], g["name"])
         time.sleep(REQUEST_DELAY)
     for line in needed - set(TCGCSV_CATEGORIES):
         print(f"  Skipping {line} cards: not a supported card game")
 
-    def find_group(line, set_name):
+    def find_group(line, set_name, group_id=""):
+        # Rows from a TCGCSV file (the shop app's Add Cards) carry the set's group ID instead of its name
+        if group_id:
+            return group_ids.get((line, group_id))
         if (line, set_name) in groups:
             return groups[(line, set_name)]
         # e.g. "Power Keepers" is listed as "EX Power Keepers"
@@ -1117,9 +1122,9 @@ def fetch_stock(catalog, stock, existing):
         line = product_line(row)
         if line not in TCGCSV_CATEGORIES:
             continue
-        group = find_group(line, row["Set Name"])
+        group = find_group(line, row["Set Name"], (row.get("Group ID") or "").strip())
         if not group:
-            print(f"  Skipped {row['Product Name']}: no TCGplayer {line} set named {row['Set Name']}")
+            print(f"  Skipped {row['Product Name']}: no TCGplayer {line} set named {row['Set Name'] or row.get('Group ID')}")
             continue
         by_group.setdefault((group, line), []).append(row)
 
