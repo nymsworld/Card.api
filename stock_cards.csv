@@ -1,4 +1,4 @@
-Product ID,Product Line,Set Name,Product Name,Number,Rarity,Printing,Photo URL
+Product ID,Product Line,Set Name,Product Name,Number,Rarity,Printing,Photo URL,Group ID
 84055,Pokemon,Arceus,Burmy Sandy Cloak,57/99,Common,Normal,https://tcgplayer-cdn.tcgplayer.com/product/84055_in_400x400.jpg
 42389,Pokemon,Base Set,Charmander,046/102,Common,Normal,https://tcgplayer-cdn.tcgplayer.com/product/42389_in_400x400.jpg
 42555,Pokemon,Base Set 2,Pokemon Breeder,105/130,Rare,Normal,https://tcgplayer-cdn.tcgplayer.com/product/42555_in_400x400.jpg
@@ -3451,3 +3451,54 @@ Product ID,Product Line,Set Name,Product Name,Number,Rarity,Printing,Photo URL
 575783,Pokemon Japan,"Gold, Silver, to a New World...",Double Gust,,Common,Normal,https://tcgplayer-cdn.tcgplayer.com/product/575783_in_400x400.jpg
 607833,Pokemon Japan,Neo Premium File 1,Cyndaquil,,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/607833_in_400x400.jpg
 571732,Pokemon Japan,S12a: VSTAR Universe,Altaria - 194/172,194/172,Art Rare,Holofoil,https://tcgplayer-cdn.tcgplayer.com/product/571732_in_400x400.jpg
+613209,Pokemon Japan,,Alakazam E4 - 012/DPt-P,012/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613209_200w.jpg,24136
+613210,Pokemon Japan,,Arceus - 040/DPt-P,040/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613210_200w.jpg,24136
+613211,Pokemon Japan,,Arceus - 041/DPt-P,041/DPt-P,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/613211_200w.jpg,24136
+613212,Pokemon Japan,,Battle Tower - 019/DPt-P,019/DPt-P,None,Holofoil,https://tcgplayer-cdn.tcgplayer.com/product/613212_200w.jpg,24136
+613213,Pokemon Japan,,Beginning Door - 037/DPt-P,037/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613213_200w.jpg,24136
+613214,Pokemon Japan,,Bronzong G - 006/DPt-P,006/DPt-P,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/613214_200w.jpg,24136
+613215,Pokemon Japan,,Bulbasaur - 030/DPt-P,030/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613215_200w.jpg,24136
+613216,Pokemon Japan,,Carnivine G - 001/DPt-P,001/DPt-P,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/613216_200w.jpg,24136
+613217,Pokemon Japan,,Chatot - 032/DPt-P,032/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613217_200w.jpg,24136
+613218,Pokemon Japan,,Cresselia - 045/DPt-P,045/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613218_200w.jpg,24136
+613219,Pokemon Japan,,Cyrus's Conspiracy - 007/DPt-P,007/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613219_200w.jpg,24136
+613220,Pokemon Japan,,Darkrai - 046/DPt-P,046/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613220_200w.jpg,24136
+613221,Pokemon Japan,,Darkrai G - 005/DPt-P,005/DPt-P,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/613221_200w.jpg,24136
+613222,Pokemon Japan,,Dragonite FB - 018/DPt-P,018/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613222_200w.jpg,24136
+613223,Pokemon Japan,,Drifblim FB - 017/DPt-P,017/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613223_200w.jpg,24136
+613224,Pokemon Japan,,Electrode G - 010/DPt-P,010/DPt-P,None,Holofoil,https://tcgplayer-cdn.tcgplayer.com/product/613224_200w.jpg,24136
+613225,Pokemon Japan,,Heatran - 050/DPt-P,050/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613225_200w.jpg,24136
+613226,Pokemon Japan,,Jigglypuff - 047/DPt-P,047/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613226_200w.jpg,24136
+613227,Pokemon Japan,,Lucario - 015/DPt-P,015/DPt-P,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/613227_200w.jpg,24136
+613228,Pokemon Japan,,Luxray GL - 014/DPt-P,014/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613228_200w.jpg,24136
+613229,Pokemon Japan,,Manaphy - 002/DPt-P,002/DPt-P,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/613229_200w.jpg,24136
+613230,Pokemon Japan,,Mewtwo - 049/DPt-P,049/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613230_200w.jpg,24136
+613231,Pokemon Japan,,Michina Temple - 044/DPt-P,044/DPt-P,None,Holofoil,https://tcgplayer-cdn.tcgplayer.com/product/613231_200w.jpg,24136
+613232,Pokemon Japan,,Mismagius GL LV.X - 011/DPt-P,011/DPt-P,None,Holofoil,https://tcgplayer-cdn.tcgplayer.com/product/613232_200w.jpg,24136
+613233,Pokemon Japan,,Mothim - 039/DPt-P,039/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613233_200w.jpg,24136
+613234,Pokemon Japan,,Pichu - 038/DPt-P,038/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613234_200w.jpg,24136
+613235,Pokemon Japan,,Pikachu - 016/DPt-P,016/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613235_200w.jpg,24136
+613236,Pokemon Japan,,Pikachu M - 043/DPt-P,043/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613236_200w.jpg,24136
+613237,Pokemon Japan,,Ponyta - 034/DPt-P,034/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613237_200w.jpg,24136
+613238,Pokemon Japan,,Porygon-Z G - 035/DPt-P,035/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613238_200w.jpg,24136
+613239,Pokemon Japan,,Probopass G - 004/DPt-P,004/DPt-P,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/613239_200w.jpg,24136
+613240,Pokemon Japan,,Rainbow Energy - 021/DPt-P,021/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613240_200w.jpg,24136
+613241,Pokemon Japan,,Rotom - 003/DPt-P,003/DPt-P,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/613241_200w.jpg,24136
+613242,Pokemon Japan,,SP Energy - 020/DPt-P,020/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613242_200w.jpg,24136
+613243,Pokemon Japan,,Spiky-eared Pichu M - 042/DPt-P,042/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613243_200w.jpg,24136
+613244,Pokemon Japan,,Squirtle - 009/DPt-P,009/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613244_200w.jpg,24136
+613245,Pokemon Japan,,Team Galactic's Invention G-109 SP Radar - 013/DPt-P,013/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613245_200w.jpg,24136
+613246,Pokemon Japan,,Toxicroak G - 008/DPt-P,008/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613246_200w.jpg,24136
+613247,Pokemon Japan,,Ultimate Zone - 048/DPt-P,048/DPt-P,None,Normal,https://tcgplayer-cdn.tcgplayer.com/product/613247_200w.jpg,24136
+613248,Pokemon Japan,,Victory Medal - 031/DPt-P,031/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613248_200w.jpg,24136
+613249,Pokemon Japan,,Victory Medal - 036/DPt-P,036/DPt-P,None,Holofoil,https://tcgplayer-cdn.tcgplayer.com/product/613249_200w.jpg,24136
+613250,Pokemon Japan,,Victory Medal - 051/DPt-P,051/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613250_200w.jpg,24136
+613251,Pokemon Japan,,Wonder Platinum - 033/DPt-P,033/DPt-P,None,,https://tcgplayer-cdn.tcgplayer.com/product/613251_200w.jpg,24136
+636728,Pokemon Japan,,Basic Grass Energy - 022/DPt-P,022/DPt-P,Common,,https://tcgplayer-cdn.tcgplayer.com/product/636728_200w.jpg,24136
+636729,Pokemon Japan,,Basic Fire Energy - 023/DPt-P,023/DPt-P,Common,,https://tcgplayer-cdn.tcgplayer.com/product/636729_200w.jpg,24136
+636730,Pokemon Japan,,Basic Water Energy - 024/DPt-P,024/DPt-P,Common,Holofoil,https://tcgplayer-cdn.tcgplayer.com/product/636730_200w.jpg,24136
+636731,Pokemon Japan,,Basic Lightning Energy - 025/DPt-P,025/DPt-P,Common,,https://tcgplayer-cdn.tcgplayer.com/product/636731_200w.jpg,24136
+636732,Pokemon Japan,,Basic Psychic Energy - 026/DPt-P,026/DPt-P,Common,,https://tcgplayer-cdn.tcgplayer.com/product/636732_200w.jpg,24136
+636733,Pokemon Japan,,Basic Fighting Energy - 027/DPt-P,027/DPt-P,Common,,https://tcgplayer-cdn.tcgplayer.com/product/636733_200w.jpg,24136
+636734,Pokemon Japan,,Basic Darkness Energy - 028/DPt-P,028/DPt-P,Common,,https://tcgplayer-cdn.tcgplayer.com/product/636734_200w.jpg,24136
+636735,Pokemon Japan,,Basic Metal Energy - 029/DPt-P,029/DPt-P,Common,,https://tcgplayer-cdn.tcgplayer.com/product/636735_200w.jpg,24136
