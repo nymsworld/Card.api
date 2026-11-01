@@ -129,7 +129,11 @@ WHOLE_SET_GROUP = "set-all"
 # Sets part 10 adds whole even with no card in the database yet (owner's request): subsets TCGplayer lists as a set
 # of their own, which no other step ever adds a card from.
 WHOLE_SET_ALWAYS = re.compile(r"^(Hidden Fates: Shiny Vault|Base Set \(Shadowless\)|EX Battle Stadium|Kids WB Promos"
-                              r"|e-Reader Sample Cards)$")
+                              r"|e-Reader Sample Cards|Trading Card Game Classic|My First Battle"
+                              r"|SVE: Scarlet & Violet Energies|MEE: Mega Evolution Energies|Alternate Art Promos"
+                              r"|Pikachu World Collection Promos|Countdown Calendar Promos|Professor Program Promos"
+                              r"|First Partner Pack|Player Placement Trainer Promos|(XY|SM) Trainer Kit: .+"
+                              r"|World Championship Decks)$")
 
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
