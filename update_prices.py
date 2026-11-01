@@ -126,6 +126,9 @@ WHOLE_GROUPS = re.compile(r"^(McDonald's (Promos \d{4}|25th Anniversary Promos)|
 # WHOLE_GROUPS) already list whole are skipped. A product TCGplayer has no market price for at all is "Ask staff".
 WHOLE_SET_CATEGORIES = [(3, "Pokemon"), (85, "Pokemon Japan")]
 WHOLE_SET_GROUP = "set-all"
+# Sets part 10 adds whole even with no card in the database yet (owner's request): subsets TCGplayer lists as a set
+# of their own, which no other step ever adds a card from.
+WHOLE_SET_ALWAYS = re.compile(r"^(Hidden Fates: Shiny Vault)$")
 
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
@@ -863,7 +866,8 @@ def fetch_whole_groups(catalog, groups, existing):
 
 
 def fetch_whole_sets(catalog, existing):
-    """Every card in each Pokémon set that already has one in the database (see WHOLE_SET_CATEGORIES).
+    """Every card in each Pokémon set that already has one in the database, and the WHOLE_SET_ALWAYS sets
+    (see WHOLE_SET_CATEGORIES).
     existing: prices.json as it is now, without the old set-all entries (rebuilt here)."""
     covered = set()
     have = set()
@@ -886,7 +890,7 @@ def fetch_whole_sets(catalog, existing):
             products = get_json(f"{base}/{g['groupId']}/products", headers=TCGCSV_HEADERS).get("results", [])
             time.sleep(0.5)
             cards = [p for p in products if not is_sealed(p) and not re.search(r"Code Card", p["name"])]
-            if not any(str(p["productId"]) in have for p in cards):
+            if not WHOLE_SET_ALWAYS.match(g["name"]) and not any(str(p["productId"]) in have for p in cards):
                 continue
             sets += 1
             prices = {}
