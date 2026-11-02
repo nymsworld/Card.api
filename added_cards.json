@@ -18,7 +18,9 @@
    "name": "Floragato",
    "setName": "Gem Pack Vol. 1",
    "addedAt": "2026-11-02T03:50:35.539Z",
-   "by": "Noah"
+   "by": "Noah",
+   "removed": true,
+   "removedAt": "2026-11-02T05:05:28.471255+00:00"
   },
   {
    "lang": "zh-cn",
