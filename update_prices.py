@@ -1518,7 +1518,8 @@ def mark_standard(catalog, previous):
 # stage / ex-type, HP, type, Abilities, attacks (cost, damage, text), rules, weakness, resistance and retreat;
 # for Trainers and Energy their rules text. So Sword & Shield's Boss's Orders ("Switch 1 of your opponent's
 # Benched Pokémon with their Active Pokémon.") doesn't count: its wording differs from the legal one's.
-# The list is worked out at most once a day (standard_reprints.json) or when the legal cards change.
+# The list is worked out only when the Standard-legal sets change (a new set comes out, or a rotation; owner's
+# rule), and kept in standard_reprints.json in between. New promos in a promo set already listed don't count.
 REPRINTS_FILE = "standard_reprints.json"
 TEXT_FIELDS = "id,name,number,set,tcgplayer,supertype,subtypes,regulationMark,hp,types,rules,abilities,attacks," \
               "weaknesses,resistances,retreatCost"
@@ -1547,12 +1548,11 @@ def card_text_key(card):
 
 def standard_reprints(legal):
     """The older, not-legal printings that are functionally the same as a Standard-legal card."""
-    legal_ids = sorted(c["id"] for c in legal)
+    legal_sets = sorted({c.get("set", {}).get("id", "") for c in legal})
     try:
         with open(REPRINTS_FILE, encoding="utf-8") as f:
             saved = json.load(f)
-        age = datetime.now(timezone.utc) - datetime.fromisoformat(saved["updatedAt"])
-        if saved.get("legal") == legal_ids and age.total_seconds() < 20 * 3600:
+        if saved.get("legalSets") == legal_sets:
             print(f"Standard reprints: {len(saved['cards'])} from {REPRINTS_FILE}")
             return saved["cards"]
     except (OSError, ValueError, KeyError):
@@ -1579,7 +1579,7 @@ def standard_reprints(legal):
         print(f"Standard reprints: couldn't check ({e}); kept {len(cards)} from the last run")
         return cards
     with open(REPRINTS_FILE, "w", encoding="utf-8") as f:
-        json.dump({"updatedAt": datetime.now(timezone.utc).isoformat(), "legal": legal_ids, "cards": found},
+        json.dump({"updatedAt": datetime.now(timezone.utc).isoformat(), "legalSets": legal_sets, "cards": found},
                   f, separators=(",", ":"))
     print(f"Standard reprints: {len(found)} of {checked} older printings with a legal card's name are the same card")
     return found
