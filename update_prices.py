@@ -1105,7 +1105,8 @@ def japanese_twins(codes):
             name = re.sub(r"\s+-\s+\S*\d\S*$", "", product["name"]).strip()
             # Several products with one number (a stamped copy...): the plainest name
             if key not in twins or len(name) < len(twins[key][0]):
-                twins[key] = (name, (data.get("Rarity") or "").strip(), product.get("imageUrl", ""), set_name)
+                rarity = (data.get("Rarity") or "").strip()
+                twins[key] = (name, "" if rarity == "None" else rarity, product.get("imageUrl", ""), set_name)
     return twins
 
 
