@@ -164,6 +164,19 @@ JAPAN_CATEGORY = 85
 JAPAN_SET_CODE = re.compile(r"^(SV\d+[A-Za-z]?|[Mm]\d+[A-Za-z]?):\s")
 JAPAN_PROMO_SETS = {"SV-P Promotional Cards", "M-P Promotional Cards"}
 JAPAN_SKIP_RARITIES = {"", "Common", "Uncommon", "Rare", "None", "Code Card"}
+# Chinese and Korean cards (owner's request; part 5): TCGplayer sells neither, so they have no price ("Ask staff",
+# priced by staff in the shop app). TCGdex's card lists (api.tcgdex.net) for the languages in ASIAN_IMPORT, plus
+# the cards staff add by hand in the app (ADDED_CARDS_FILE: { cards: [{ lang, set, number, name, setName, total,
+# addedAt, by, removed }] }). Their sets use the Japanese set codes and numbers, so a card with a Japanese twin on
+# TCGplayer takes its English name, rarity and picture (the local name is kept as localName). IDs look like
+# zhtw-SV8-132, ko-SV4K-001, zhcn-CSV8C-001. If TCGdex can't be reached, last run's imported cards are kept.
+ASIAN_LANGUAGES = {"zh-tw": ("zhtw", "Pokémon (Traditional Chinese)", "Traditional Chinese"),
+                   "zh-cn": ("zhcn", "Pokémon (Simplified Chinese)", "Simplified Chinese"),
+                   "ko": ("ko", "Pokémon (Korean)", "Korean")}
+ASIAN_IMPORT = ["zh-tw", "ko"]  # TCGdex's Simplified Chinese sets are empty or copies of the Traditional ones
+ASIAN_GROUP = "asia"
+TCGDEX_BASE = "https://api.tcgdex.net/v2"
+ADDED_CARDS_FILE = "added_cards.json"
 # Other spellings of those product lines seen in TCGplayer exports
 PRODUCT_LINE_ALIASES = {
     "Pokémon": "Pokemon",
@@ -1058,6 +1071,117 @@ def fetch_japanese(catalog):
     print(f"Synced {added} Japanese cards")
 
 
+def twin_code(lang, set_code):
+    """The Japanese set code a Chinese / Korean set matches (Simplified Chinese codes end in C: CSV8C -> CSV8)."""
+    return (re.sub(r"C$", "", set_code) if lang == "zh-cn" else set_code).upper()
+
+
+def japanese_twins(codes):
+    """{ (SET CODE, number without leading zeros): (English name, rarity, picture, set name) } for the Japanese
+    cards on TCGplayer in the sets with these codes (upper case), by the code in the group's name
+    ("SV8: Super Electric Breaker" -> SV8), for ASIAN_LANGUAGES. Codes shared by several groups (the starter
+    sets' "sA: ...") are left out: their numbers clash."""
+    base = f"https://tcgcsv.com/tcgplayer/{JAPAN_CATEGORY}"
+    groups = get_json(f"{base}/groups", headers=TCGCSV_HEADERS).get("results", [])
+    time.sleep(REQUEST_DELAY)
+    by_code = {}
+    for g in groups:
+        code, sep, name = g["name"].partition(": ")
+        if sep and " " not in code:
+            by_code.setdefault(code.upper(), []).append((g, name))
+    twins = {}
+    for code, found in by_code.items():
+        if len(found) != 1 or code not in codes:
+            continue
+        g, set_name = found[0]
+        products = get_json(f"{base}/{g['groupId']}/products", headers=TCGCSV_HEADERS).get("results", [])
+        time.sleep(0.5)
+        for product in products:
+            data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
+            number = (data.get("Number") or "").partition("/")[0].strip().lstrip("0")
+            if not number:
+                continue
+            key = (code, number)
+            name = re.sub(r"\s+-\s+\S*\d\S*$", "", product["name"]).strip()
+            # Several products with one number (a stamped copy...): the plainest name
+            if key not in twins or len(name) < len(twins[key][0]):
+                twins[key] = (name, (data.get("Rarity") or "").strip(), product.get("imageUrl", ""), set_name)
+    return twins
+
+
+def asian_entry(lang, set_code, number, local_name, set_name, total, image, twins):
+    """A prices.json entry for a Chinese or Korean card (see ASIAN_LANGUAGES); no price: "Ask staff"."""
+    prefix, game, _ = ASIAN_LANGUAGES[lang]
+    number = str(number).strip()
+    card_id = re.sub(r"[^A-Za-z0-9.-]+", "-", f"{prefix}-{set_code}-{number}")
+    twin = twins.get((twin_code(lang, set_code), number.lstrip("0")))
+    entry = {
+        "id": card_id,
+        "name": twin[0] if twin else local_name,
+        "setName": twin[3] if twin else set_name,
+        "number": number,
+        "printedTotal": str(total or ""),
+        "rarity": twin[1] if twin else "",
+        "price": None,
+        "rawMarket": None,
+        "image": (twin[2] if twin else "") or image,
+        "game": game,
+        "group": ASIAN_GROUP,
+        "setCode": set_code,
+        "localName": local_name,
+        "localSetName": set_name,
+    }
+    return card_id, entry
+
+
+def fetch_asian(catalog, previous):
+    """Chinese and Korean cards (see ASIAN_LANGUAGES): TCGdex's lists, then the cards added in the app.
+    previous: prices.json as it was, to keep last run's imported cards if TCGdex fails."""
+    # (lang, set code, number, local name, set name, total, picture, added by) for each card
+    cards = []
+    kept = {}
+    for lang in ASIAN_IMPORT:
+        try:
+            found = []
+            for s in get_json(f"{TCGDEX_BASE}/{lang}/sets"):
+                detail = get_json(f"{TCGDEX_BASE}/{lang}/sets/{requests.utils.quote(s['id'], safe='')}")
+                time.sleep(0.3)
+                total = (detail.get("cardCount") or {}).get("official") or ""
+                for c in detail.get("cards") or []:
+                    found.append((lang, detail["id"], c["localId"], c.get("name", ""), detail.get("name", ""), total,
+                                  f"{c['image']}/low.webp" if c.get("image") else "", None))
+            cards += found
+        except Exception as e:  # TCGdex down: keep what the last run had
+            prefix = ASIAN_LANGUAGES[lang][0] + "-"
+            old = {k: v for k, v in previous.items() if v.get("group") == ASIAN_GROUP and k.startswith(prefix)
+                   and not v.get("addedBy")}
+            kept.update(old)
+            print(f"  TCGdex {lang} failed ({e}); kept {len(old)} cards from the last run")
+    if os.path.exists(ADDED_CARDS_FILE):
+        with open(ADDED_CARDS_FILE, encoding="utf-8") as f:
+            for c in json.load(f).get("cards", []):
+                if c.get("removed") or c.get("lang") not in ASIAN_LANGUAGES or not c.get("set") or not c.get("number"):
+                    continue
+                cards.append((c["lang"], c["set"].strip(), c["number"], (c.get("name") or "").strip(),
+                              (c.get("setName") or "").strip(), c.get("total", ""), "", c.get("by") or "staff"))
+    twins = japanese_twins({twin_code(c[0], c[1]) for c in cards})
+    catalog.update(kept)
+    imported = added = 0
+    for lang, set_code, number, local_name, set_name, total, image, added_by in cards:
+        card_id, entry = asian_entry(lang, set_code, number, local_name, set_name, total, image, twins)
+        if added_by:
+            if card_id in catalog:
+                continue  # TCGdex has it now
+            if local_name:
+                entry["name"] = local_name  # what staff typed wins over the twin's
+            entry["addedBy"] = added_by
+            added += 1
+        else:
+            imported += 1
+        catalog[card_id] = entry
+    print(f"Synced {imported} Chinese / Korean cards from TCGdex and {added} added in the app (no price: Ask staff)")
+
+
 def product_line(row):
     """The row's card game as a TCGCSV_CATEGORIES key, e.g. 'Magic: The Gathering' -> 'Magic'."""
     line = (row.get("Product Line") or "Pokemon").strip()
@@ -1658,8 +1782,10 @@ def build_price_catalog(part):
         # Japanese cards and stocked cards are rebuilt every run (cards that left the
         # list drop out, and stocked cards now covered elsewhere aren't listed twice).
         # Sword & Shield era cards also have tcg- IDs but belong to part 4 ("group"): kept.
-        catalog = {k: v for k, v in catalog.items() if not (k.startswith("jp-") or is_stock_entry(k, v))}
+        catalog = {k: v for k, v in catalog.items() if not (k.startswith("jp-") or is_stock_entry(k, v)
+                                                           or v.get("group") == ASIAN_GROUP)}
         fetch_japanese(updates)
+        fetch_asian(updates, previous)
         existing = dict(catalog)
         existing.update(updates)
         existing = {k: v for k, v in existing.items() if not is_stock_entry(k, v)}
