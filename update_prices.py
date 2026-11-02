@@ -826,7 +826,8 @@ def fetch_whole_groups(catalog, groups, existing):
         key = entry_product_key(card_id, entry)
         if key:
             covered[key] = "stock" if is_stock_entry(card_id, entry) else entry.get("group")
-    wanted = [g for g in groups if g["name"] == SEALED_MISC_GROUP or WHOLE_GROUPS.match(g["name"])]
+    others = regular_entries(existing, "misc")
+    wanted =[g for g in groups if g["name"] == SEALED_MISC_GROUP or WHOLE_GROUPS.match(g["name"])]
     print(f"Fetching every card in {len(wanted)} whole sets (Miscellaneous Cards & Products, see WHOLE_GROUPS)...")
     total = unpriced = 0
     for g in wanted:
@@ -855,11 +856,17 @@ def fetch_whole_groups(catalog, groups, existing):
                     printings.append(("reverse", f"tcg-{pid}-reverse", variants["Reverse Holofoil"], ""))
                 else:
                     printings = [("base", f"tcg-{pid}", variants["Reverse Holofoil"], "")]  # only sold as a reverse holo
+            if covered.get((pid, "base"), "misc") != "misc":
+                partner = holo_partner(pid, variants, others.get(pid, []))
+                if partner:
+                    printings.append(partner)
             for kind, card_id, raw_market, label in printings:
                 if covered.get((pid, kind), "misc") != "misc":
                     continue  # already listed another way
                 entry = tcgcsv_entry(product, card_id, g["name"], raw_market, "misc", reverse=kind == "reverse")
                 entry["name"] += label
+                if kind == "partner":
+                    entry["holoPartner"] = True
                 if raw_market is None:
                     entry["price"] = None  # Ask staff
                     unpriced += 1
@@ -883,6 +890,7 @@ def fetch_whole_sets(catalog, existing):
         covered.add(key)
         if not entry.get("sealed"):
             have.add(key[0])
+    others = regular_entries(existing, WHOLE_SET_GROUP)
     total = unpriced = 0
     for category, game in WHOLE_SET_CATEGORIES:
         base = f"https://tcgcsv.com/tcgplayer/{category}"
@@ -928,12 +936,18 @@ def fetch_whole_sets(catalog, existing):
                         printings.append(("base", f"tcg-{pid}", variants["Reverse Holofoil"], ""))  # only sold as a reverse holo
                 if not printings:
                     printings = [("base", f"tcg-{pid}", None, "")]  # no TCGplayer market price: Ask staff
+                if (pid, "base") in covered:
+                    partner = holo_partner(pid, regular, others.get(pid, []))
+                    if partner:
+                        printings.append(partner)
                 for kind, card_id, raw_market, label in printings:
                     if (pid, kind) in covered:
                         continue  # already listed another way
                     entry = tcgcsv_entry(product, card_id, set_name, raw_market, WHOLE_SET_GROUP,
                                          reverse=kind == "reverse", game=game)
                     entry["name"] += label
+                    if kind == "partner":
+                        entry["holoPartner"] = True
                     if raw_market is None:
                         entry["price"] = None
                         unpriced += 1
@@ -1071,7 +1085,42 @@ def entry_product_key(card_id, entry):
         return match.group(1), "reverse"
     if "-1st-edition" in card_id or entry.get("firstEdition"):
         return match.group(1), "1st"
+    if entry.get("holoPartner"):
+        return match.group(1), "partner"  # holo_partner's: never stands in for another step's card
     return match.group(1), "foil" if card_id.endswith("-foil") else "base"
+
+
+def holo_partner(pid, variants, others):
+    """A card TCGplayer prices both holo and non-holo that another step lists once (owner's request: both versions,
+    e.g. Prize Pack cards, McDonald's 25th Anniversary): the version that step left out, as (kind, ID, market price,
+    label), else None. others: that step's regular entries for the product. Which version it has is told by its name
+    ("(Holo)" / "(Non-Holo)") or else by its price (the closer of the two). The entry made from it is marked
+    holoPartner (kind "partner" in entry_product_key), so other steps don't take it for their own card."""
+    if variants.get("Holofoil") is None or variants.get("Normal") is None or len(others) != 1:
+        return None
+    name, raw = others[0].get("name") or "", others[0].get("rawMarket")
+    if "(Non-Holo)" in name:
+        has_holo = False
+    elif "(Holo)" in name:
+        has_holo = True
+    elif raw is not None:
+        has_holo = abs(raw - variants["Holofoil"]) <= abs(raw - variants["Normal"])
+    else:
+        return None
+    if has_holo:
+        return ("partner", f"tcg-{pid}-non-holo", variants["Normal"], " (Non-Holo)")
+    return ("partner", f"tcg-{pid}-holo", variants["Holofoil"], " (Holo)")
+
+
+def regular_entries(existing, skip_group):
+    """Other steps' regular (not reverse / 1st Edition / sealed) entries by TCGplayer product ID, for holo_partner.
+    Entries of skip_group (the calling step's own) and holo_partner's own are left out."""
+    by_pid = {}
+    for card_id, entry in existing.items():
+        key = entry_product_key(card_id, entry)
+        if key and key[1] == "base" and not entry.get("sealed") and entry.get("group") != skip_group:
+            by_pid.setdefault(key[0], []).append(entry)
+    return by_pid
 
 
 def pick_price(variants, printing):
