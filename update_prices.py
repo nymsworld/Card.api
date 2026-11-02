@@ -311,13 +311,13 @@ def get_json(url, headers=None):
     raise RuntimeError(f"Could not fetch {url}: {error}")
 
 
-def fetch_cards(query):
+def fetch_cards(query, fields=CARD_FIELDS):
     """Returns every card matching a Pokemon TCG API search, across all pages."""
     cards = []
     page = 1
 
     while True:
-        url = f"{API_BASE}/cards?q={query}&page={page}&pageSize={PAGE_SIZE}&select={CARD_FIELDS}"
+        url = f"{API_BASE}/cards?q={query}&page={page}&pageSize={PAGE_SIZE}&select={fields}"
         data = get_json(url)
         page_cards = data.get("data", [])
         if not page_cards:
@@ -1477,8 +1477,9 @@ def mark_standard(catalog, previous):
                 kept += 1
         print(f"Standard legality: couldn't load the legal cards ({e}); kept {kept} from the last run")
         return
+    reprints = standard_reprints(legal)
     by_product, by_id, by_number, marks = {}, {}, {}, set()
-    for card in legal:
+    for card in legal + reprints:
         if card.get("regulationMark") and api_kind(card) != "Basic Energy":  # Basic Energy of any mark is legal
             marks.add(card["regulationMark"])
         match = re.search(r"/product/(\d+)", card.get("tcgplayer", {}).get("url", ""))
@@ -1506,8 +1507,82 @@ def mark_standard(catalog, previous):
         if card or entry.get("mark") in marks or entry.get("kind") == "Basic Energy":
             entry["std"] = True
             count += 1
-    print(f"Standard legality: {len(legal)} legal printings on the card API (marks {', '.join(sorted(marks))}); "
-          f"{count} entries marked Standard legal")
+    print(f"Standard legality: {len(legal)} legal printings on the card API and {len(reprints)} older printings "
+          f"of reprinted cards (marks {', '.join(sorted(marks))}); {count} entries marked Standard legal")
+
+
+# Older printings of reprinted cards (owner's request): Boss's Orders from Paldea Evolved is legal while the
+# Mega Evolution reprint is. A printing counts only when the card is functionally the same as a legal one:
+# same name, and the same text everywhere it matters (owner's rule: same attack names aren't enough), compared
+# after evening out wording-free differences (case, spacing, accents, curly quotes). For Pokémon that's
+# stage / ex-type, HP, type, Abilities, attacks (cost, damage, text), rules, weakness, resistance and retreat;
+# for Trainers and Energy their rules text. So Sword & Shield's Boss's Orders ("Switch 1 of your opponent's
+# Benched Pokémon with their Active Pokémon.") doesn't count: its wording differs from the legal one's.
+# The list is worked out at most once a day (standard_reprints.json) or when the legal cards change.
+REPRINTS_FILE = "standard_reprints.json"
+TEXT_FIELDS = "id,name,number,set,tcgplayer,supertype,subtypes,regulationMark,hp,types,rules,abilities,attacks," \
+              "weaknesses,resistances,retreatCost"
+REPRINT_NAMES_PER_QUERY = 15  # the card API allows at most 20 terms per search, the "not legal" one included
+
+
+def card_text_key(card):
+    def norm(value):
+        text = str(value or "").lower().replace("é", "e").replace("’", "'").replace("‘", "'")
+        text = text.replace("“", '"').replace("”", '"').replace("—", "-").replace("–", "-")
+        return re.sub(r"\s+", " ", text).strip().rstrip(".")
+    key = [norm(card.get("name")), norm(card.get("supertype"))]
+    key.append(sorted(norm(s) for s in card.get("subtypes") or []))
+    key.append([norm(r) for r in card.get("rules") or []])
+    if (card.get("supertype") or "").lower().startswith("pok"):
+        key.append(norm(card.get("hp")))
+        key.append(sorted(norm(t) for t in card.get("types") or []))
+        key.append([[norm(a.get("type")), norm(a.get("name")), norm(a.get("text"))] for a in card.get("abilities") or []])
+        key.append([[[norm(c) for c in a.get("cost") or []], norm(a.get("name")), norm(a.get("damage")),
+                     norm(a.get("text"))] for a in card.get("attacks") or []])
+        key.append(sorted([norm(w.get("type")), norm(w.get("value"))] for w in card.get("weaknesses") or []))
+        key.append(sorted([norm(w.get("type")), norm(w.get("value"))] for w in card.get("resistances") or []))
+        key.append(len(card.get("retreatCost") or []))
+    return json.dumps(key, ensure_ascii=False)
+
+
+def standard_reprints(legal):
+    """The older, not-legal printings that are functionally the same as a Standard-legal card."""
+    legal_ids = sorted(c["id"] for c in legal)
+    try:
+        with open(REPRINTS_FILE, encoding="utf-8") as f:
+            saved = json.load(f)
+        age = datetime.now(timezone.utc) - datetime.fromisoformat(saved["updatedAt"])
+        if saved.get("legal") == legal_ids and age.total_seconds() < 20 * 3600:
+            print(f"Standard reprints: {len(saved['cards'])} from {REPRINTS_FILE}")
+            return saved["cards"]
+    except (OSError, ValueError, KeyError):
+        saved = None
+    try:
+        legal_text = fetch_cards("legalities.standard:legal", TEXT_FIELDS)
+        keys = {card_text_key(c) for c in legal_text}
+        names = sorted({c["name"] for c in legal_text if api_kind(c) != "Basic Energy"})
+        found, checked = [], 0
+        for i in range(0, len(names), REPRINT_NAMES_PER_QUERY):
+            batch = names[i:i + REPRINT_NAMES_PER_QUERY]
+            ors = " OR ".join('name:"' + n.replace('"', '\\"') + '"' for n in batch)
+            query = requests.utils.quote(f"({ors}) -legalities.standard:legal", safe="")
+            wanted = set(batch)
+            for card in fetch_cards(query, TEXT_FIELDS):
+                if card.get("name") not in wanted:  # name: matches parts of names ("Boss's Orders (Giovanni)")
+                    continue
+                checked += 1
+                if card_text_key(card) in keys:
+                    found.append({k: card[k] for k in ("id", "name", "number", "set", "tcgplayer", "supertype",
+                                                      "subtypes") if k in card})
+    except RuntimeError as e:
+        cards = (saved or {}).get("cards", [])
+        print(f"Standard reprints: couldn't check ({e}); kept {len(cards)} from the last run")
+        return cards
+    with open(REPRINTS_FILE, "w", encoding="utf-8") as f:
+        json.dump({"updatedAt": datetime.now(timezone.utc).isoformat(), "legal": legal_ids, "cards": found},
+                  f, separators=(",", ":"))
+    print(f"Standard reprints: {len(found)} of {checked} older printings with a legal card's name are the same card")
+    return found
 
 
 def add_bulk_tags(catalog):

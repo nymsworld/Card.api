@@ -652,6 +652,20 @@
     .stock-item { cursor: default; }
     .stock-item img { aspect-ratio: 1; object-fit: cover; }
     .stock-tile-desc { font-size: 0.7rem; font-weight: 600; color: var(--text-sub); line-height: 1.25; }
+    /* Tile size (owner's request, the Size picker, remembered per device): Small fits about twice as many */
+    .stock-list.size-s .stock-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 0.5rem; }
+    .stock-list.size-s .stock-tile { padding: 0.35rem; border-radius: 9px; }
+    .stock-list.size-s .stock-tile-name { font-size: 0.72rem; }
+    .stock-list.size-s .stock-tile-set, .stock-list.size-s .stock-tile-desc { font-size: 0.62rem; }
+    .stock-list.size-s .stock-cond { font-size: 0.66rem; }
+    .stock-list.size-l .stock-grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; }
+    .stock-list.size-l .stock-tile-name { font-size: 1rem; }
+    .stock-list.size-l .stock-tile-set, .stock-list.size-l .stock-tile-desc { font-size: 0.8rem; }
+    .stock-list.size-l .stock-cond { font-size: 0.9rem; }
+    @media (min-width: 760px) {
+      .stock-list.size-s .stock-grid { grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); }
+      .stock-list.size-l .stock-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+    }
     .stock-add { margin-top: auto; padding: 0.4rem; font-size: 0.75rem; }
 
     /* Tablets and computers */
@@ -878,6 +892,11 @@
           <option value="name">Sort: Name</option>
           <option value="high">Price: High to low</option>
           <option value="low">Price: Low to high</option>
+        </select>
+        <select id="stockSize" aria-label="Picture size" onchange="setStockSize(this.value)">
+          <option value="s">Size: Small</option>
+          <option value="m" selected>Size: Medium</option>
+          <option value="l">Size: Large</option>
         </select>
       </div>
       <div class="stock-status" id="stockStatus"></div>
@@ -2008,6 +2027,17 @@
       if (sort === 'std') return row.std || 'Sealed';
       return row.set;
     }
+    // The stock list's tile size: s / m / l, remembered on this device
+    function setStockSize(size) {
+      if (['s', 'm', 'l'].indexOf(size) === -1) size = 'm';
+      var list = document.getElementById('stockList');
+      list.classList.remove('size-s', 'size-m', 'size-l');
+      list.classList.add('size-' + size);
+      document.getElementById('stockSize').value = size;
+      try { localStorage.setItem('kms_stock_size', size); } catch (e) {}
+    }
+    try { setStockSize(localStorage.getItem('kms_stock_size') || 'm'); } catch (e) { setStockSize('m'); }
+
     function stockGroupRank(row, sort) {
       if (row.item) return 1000;
       if (sort === 'kind') return row.kind ? (STOCK_KINDS.indexOf(row.kind) + 1 || 99) : 500;
@@ -2158,6 +2188,9 @@
     // Enter is a scan: it opens that card, the same as the camera. Typed into a search box by mistake,
     // the box is put back as it was. The shop's app can take the scan first (window.KMS_KEYBOARD_SCAN
     // returns true when it used it, e.g. for its Sales scanner).
+    // An iPad sometimes hands over a scanner's keys in bursts with a pause in between (more so while
+    // the page is busy), so the gap allowed is generous: it was 60 ms, and one longer pause in a
+    // 40-letter sticker link threw away its start and the scan did nothing.
     var KEY_SCAN_GAP_MS = 150; // longest pause between a scanner's keys
     var KEY_SCAN_MIN = 4;      // shortest text a scan can be
     var KEY_SCAN_AVG_MS = 40;  // a split-up run counts as one scan if its keys came this fast on average

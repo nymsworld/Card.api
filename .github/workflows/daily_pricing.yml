@@ -86,7 +86,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           for attempt in 1 2 3; do
-            git add prices.json prices_*.json prices_version.json cards price_history.json condition_market.json
+            git add prices.json prices_*.json prices_version.json cards price_history.json condition_market.json $(ls standard_reprints.json 2>/dev/null)
             git commit -m "Auto-update prices.json (part ${{ steps.part.outputs.part }}) [skip ci]" || exit 0
             if git pull --rebase && git push; then exit 0; fi
             echo "Another price run pushed first: running part ${{ steps.part.outputs.part }} again on its files"
