@@ -1214,8 +1214,10 @@
             Date.parse(card.marketAt) > Date.parse(card.conditionPrices.updatedAt))) return 'staff';
         return card.rawMarket == null ? null : 'nm';
       }
-      if (!condition || condition.percent === 100 || card.rawMarket == null) return 'nm';
-      var staff = card.conditionPrices && card.conditionPrices[condition.code] != null;
+      // A Near Mint staff price (conditionPrices.NM, also used by cards without conditions) holds until changed by hand
+      if (!condition || condition.percent === 100) return card.conditionPrices && card.conditionPrices.NM != null ? 'staff' : 'nm';
+      if (card.rawMarket == null) return 'nm';
+      var staff =card.conditionPrices && card.conditionPrices[condition.code] != null;
       var market = card.conditionMarket && card.conditionMarket[condition.code] != null;
       if (staff && market && card.conditionMarketAt && card.conditionPrices.updatedAt &&
           Date.parse(card.conditionMarketAt) > Date.parse(card.conditionPrices.updatedAt)) return 'market';
@@ -1228,7 +1230,7 @@
     function conditionPrice(card, condition) {
       var source = conditionSource(card, condition);
       if (source === 'nm') return Number(card.price) || 0;
-      if (source === 'staff') return Number(card.conditionPrices[condition ? condition.code : 'price']);
+      if (source === 'staff') return Number(card.conditionPrices[onePrice(card) ? 'price' : condition && condition.percent !== 100 ? condition.code : 'NM']);
       if (source === 'market') return storePrice(card.conditionMarket[condition.code], card);
       if (source === 'percent') return storePrice(card.rawMarket * condition.percent / 100, card);
       return null;
