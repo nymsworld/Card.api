@@ -133,7 +133,10 @@ WHOLE_SET_ALWAYS = re.compile(r"^(Hidden Fates: Shiny Vault|Base Set \(Shadowles
                               r"|SVE: Scarlet & Violet Energies|MEE: Mega Evolution Energies|Alternate Art Promos"
                               r"|Pikachu World Collection Promos|Countdown Calendar Promos|Professor Program Promos"
                               r"|First Partner Pack|Player Placement Trainer Promos|(XY|SM) Trainer Kit: .+"
-                              r"|World Championship Decks)$")
+                              r"|World Championship Decks"
+                              # Japanese: the Sword & Shield era main sets and the last Sun & Moon ones
+                              r"|(SM9[ab]|SM10[ab]|SM11[ab]?|SM12|S-P|S1[HWa]|S2a?|S3a?|S4a?|S5[IRa]|S6[HKa]|S7[DR]"
+                              r"|S8[ab]?|s8a-[PG]|S9a?|S10[DPab]|S11a?|S12): .+)$")
 
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
