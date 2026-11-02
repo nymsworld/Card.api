@@ -775,6 +775,21 @@
     :root[data-shop="gg"] .brand-tag { letter-spacing: 0.3em; }
     :root[data-shop="gg"] .brand-logo { background: var(--gg-blush); border-width: 4px; }
   </style>
+  <!-- Installable website: customers (and the counter iPad) can add it to the home screen as an app.
+       The shop's app build (kms-app's build-web.mjs) removes everything between these two comments. -->
+  <!-- website-app:start -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="KMS Prices">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <script>
+    if ('serviceWorker' in navigator && location.protocol === 'https:') {
+      window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+    }
+  </script>
+  <!-- website-app:end -->
 </head>
 <body>
 
@@ -2061,18 +2076,28 @@
     // Enter is a scan: it opens that card, the same as the camera. Typed into a search box by mistake,
     // the box is put back as it was. The shop's app can take the scan first (window.KMS_KEYBOARD_SCAN
     // returns true when it used it, e.g. for its Sales scanner).
-    var KEY_SCAN_GAP_MS = 60; // longest pause between a scanner's keys
-    var KEY_SCAN_MIN = 4;     // shortest text a scan can be
+    var KEY_SCAN_GAP_MS = 150; // longest pause between a scanner's keys
+    var KEY_SCAN_MIN = 4;      // shortest text a scan can be
+    var KEY_SCAN_AVG_MS = 40;  // a split-up run counts as one scan if its keys came this fast on average
     function listenForKeyboardScanner() {
       var typed = '', lastKeyAt = 0, field = null, fieldBefore = '';
+      var run = '', runStart = 0, longestGap = 0; // every key since the last Enter (within a second), for split-up scans
       document.addEventListener('keydown', function(e) {
         if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
         var now = Date.now();
-        if (now - lastKeyAt > KEY_SCAN_GAP_MS) typed = '';
+        var gap = now - lastKeyAt;
+        if (gap > KEY_SCAN_GAP_MS) typed = '';
+        if (gap > 1000) { run = ''; longestGap = 0; }
+        if (run && gap > longestGap) longestGap = gap;
         lastKeyAt = now;
         if (e.key === 'Enter') {
           var text = typed;
-          typed = '';
+          // A sticker link split by a pause: use the whole run when it was scanner-fast overall
+          var start = run.search(/HTTPS?:\/\/|KMSITEM:|KMSGV:/i);
+          if (text && start > -1 && text.length < run.length - start &&
+              (now - runStart) / run.length < KEY_SCAN_AVG_MS) text = run.slice(start);
+          logKeyboardScan(text || typed, longestGap);
+          typed = ''; run = ''; longestGap = 0;
           if (text.length < KEY_SCAN_MIN) return;
           e.preventDefault();
           e.stopPropagation();
@@ -2086,17 +2111,55 @@
         if (!e.key || e.key.length !== 1) return; // Shift and other keys on their own
         if (!typed) {
           var el = document.activeElement;
-          field = el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') ? el : null;
-          fieldBefore = field ? field.value : '';
+          if (!run) {
+            field = el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') ? el : null;
+            fieldBefore = field ? field.value : '';
+          }
         }
+        if (!run) runStart = now;
         typed += e.key;
+        run += e.key;
       }, true);
+    }
+    // The last 10 scans (text and the longest pause between its keys), kept on the device to see what a
+    // scanner really sent when a scan didn't work: open the page with ?scanlog to show them.
+    function logKeyboardScan(text, longestGap) {
+      if (!text) return;
+      try {
+        var log = JSON.parse(localStorage.getItem('kms_scan_log') || '[]');
+        log.unshift({ at: new Date().toISOString(), text: text, longestGapMs: longestGap });
+        localStorage.setItem('kms_scan_log', JSON.stringify(log.slice(0, 10)));
+      } catch (e) {}
+    }
+    if (new URLSearchParams(location.search).has('scanlog')) {
+      window.addEventListener('load', function() {
+        var log = [];
+        try { log = JSON.parse(localStorage.getItem('kms_scan_log') || '[]'); } catch (e) {}
+        var pre = document.createElement('pre');
+        pre.style.cssText = 'white-space:pre-wrap;font-size:12px;padding:1rem;margin:0;background:var(--bg-card);color:var(--text-main)';
+        pre.textContent = 'Last scans (newest first):\n\n' + (log.map(function(s) {
+          return s.at + '  longest pause ' + s.longestGapMs + ' ms\n' + s.text;
+        }).join('\n\n') || 'none yet');
+        document.body.insertBefore(pre, document.body.firstChild);
+      });
+    }
+    // iPadOS can stop sending a scanner's keys to the page after the focused box or dialog goes away
+    // (or the app comes back from the background), until someone taps the screen. In scanner mode,
+    // focus is put back on the page whenever nothing has it.
+    function keepScannerFocus() {
+      var el = document.activeElement;
+      if (el && el !== document.body && el !== document.documentElement) return;
+      if (!document.body.hasAttribute('tabindex')) document.body.setAttribute('tabindex', '-1');
+      document.body.style.outline = 'none';
+      try { document.body.focus({ preventScroll: true }); } catch (e) {}
+      try { window.focus(); } catch (e) {}
     }
     function keyboardScan(text) {
       rememberKeyboardScanner();
       hideScannerReady();
       if (window.KMS_KEYBOARD_SCAN && window.KMS_KEYBOARD_SCAN(text)) return;
       if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+      if (!window.KMSApp) keepScannerFocus();
       document.getElementById('stockOverlay').classList.remove('active');
       toggleCartDrawer(false);
       scanHandled = false; // a scanner reads each sticker once, so every scan is a new one
@@ -2180,11 +2243,14 @@
       ['pointerdown', 'keydown', 'scroll', 'input'].forEach(function(type) {
         document.addEventListener(type, noteActivity, { capture: true, passive: true });
       });
-      setInterval(checkIdle, 5000);
+      setInterval(function() { checkIdle(); keepScannerFocus(); }, 5000);
       keepScreenOn();
+      keepScannerFocus();
       document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) keepScreenOn();
+        if (!document.hidden) { keepScreenOn(); keepScannerFocus(); }
       });
+      document.addEventListener('focusout', function() { setTimeout(keepScannerFocus, 0); });
+      window.addEventListener('pageshow', keepScannerFocus);
     }
     function noteActivity() {
       lastActivity = Date.now();
