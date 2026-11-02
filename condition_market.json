@@ -8032,7 +8032,6 @@
       "DMG": 94.96
     },
     "tcg-85991-non-holo": {
-      "LP": 98.69,
       "HP": 59.99
     },
     "tcg-84759-reverse": {
@@ -8261,7 +8260,7 @@
   },
   "cleaned": {
     "capped": 37,
-    "stale": 32,
+    "stale": 33,
     "outOfOrder": 66
   }
 }
