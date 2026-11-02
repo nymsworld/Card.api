@@ -867,8 +867,14 @@
       <div class="stock-tools">
         <input type="search" id="stockSearch" placeholder="Search our stock…" aria-label="Search our stock" oninput="renderStock()">
         <select id="stockSet" aria-label="Set" onchange="renderStock()"><option value="">All sets</option></select>
+        <select id="stockLang" aria-label="Language" onchange="renderStock()" hidden></select>
+        <select id="stockType" aria-label="Product type" onchange="renderStock()" hidden></select>
+        <select id="stockKind" aria-label="Card type" onchange="renderStock()" hidden></select>
+        <select id="stockFormat" aria-label="Format" onchange="renderStock()" hidden></select>
         <select id="stockSort" aria-label="Sort" onchange="renderStock()">
           <option value="set">Sort: Set</option>
+          <option value="kind">Sort: Card type</option>
+          <option value="std">Sort: Standard</option>
           <option value="name">Sort: Name</option>
           <option value="high">Price: High to low</option>
           <option value="low">Price: Low to high</option>
@@ -1857,6 +1863,33 @@
       return (card.game && card.game !== 'Pokémon' ? card.game + ' · ' : '') + (card.setName || 'Other');
     }
 
+    // The stock list's filters (owner's request). Language: English Pokémon have no game or "Pokémon";
+    // "Pokémon (Japanese)" -> Japanese; other games by name
+    function stockLanguage(card) {
+      if (!card.game || card.game === 'Pokémon') return 'English';
+      var m = card.game.match(/^Pokémon \((.+)\)$/);
+      return m ? m[1] : card.game;
+    }
+    // Card type: prices.json's "kind" (Pokémon cards; Card.api's update_prices.py)
+    var STOCK_KINDS = ['Pokémon', 'Item', 'Supporter', 'Stadium', 'Pokémon Tool', 'Trainer', 'Basic Energy', 'Special Energy'];
+    var STOCK_KIND_OTHER = 'Other cards';
+    function stockKind(card) {
+      return card.kind || STOCK_KIND_OTHER;
+    }
+    // One <select>'s options from the rows' values (with counts), hidden when there's only one value
+    function fillStockFilter(id, allLabel, counts, order) {
+      var select = document.getElementById(id);
+      var picked = select.value;
+      var values = Object.keys(counts).sort(function (a, b) {
+        var ia = order ? order.indexOf(a) : -1, ib = order ? order.indexOf(b) : -1;
+        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib) || a.localeCompare(b);
+      });
+      select.innerHTML = '<option value="">' + esc(allLabel) + '</option>' + values.map(function (v) {
+        return '<option value="' + esc(v) + '"' + (v === picked ? ' selected' : '') + '>' + esc(v) + ' (' + counts[v] + ')</option>';
+      }).join('');
+      select.hidden = values.length < 2 && !picked;
+    }
+
     // TCGplayer's picture of a card's product, for cards whose own picture is missing or doesn't load
     function tcgImage(tcgUrl) {
       var m = String(tcgUrl || '').match(/product\/(\d+)/);
@@ -1890,6 +1923,10 @@
           id: card.id || id,
           card: card,
           set: stockSetName(card),
+          lang: stockLanguage(card),
+          type: card.sealed ? 'Sealed' : 'Cards',
+          kind: card.sealed ? null : stockKind(card),
+          std: card.sealed ? null : (card.std ? 'Standard legal' : 'Not Standard legal'),
           conds: conds,
           qty: conds.reduce(function (n, c) { return n + c.qty; }, 0),
           top: prices.length ? Math.max.apply(null, prices) : 0
@@ -1902,6 +1939,10 @@
           item: item,
           card: { name: item.name, setName: STOCK_ITEMS, number: '', rarity: item.description || '' },
           set: STOCK_ITEMS,
+          lang: null,
+          type: STOCK_ITEMS,
+          kind: null,
+          std: null,
           conds: [{ code: '', label: '', qty: item.qty, price: item.price }],
           qty: item.qty,
           top: item.price || 0
@@ -1958,25 +1999,49 @@
       '</button>';
     }
 
+    var STOCK_FILTERS = { lang: 'stockLang', type: 'stockType', kind: 'stockKind', std: 'stockFormat' };
+    var STOCK_GROUPED = { set: true, kind: true, std: true };
+    // The heading a row goes under for a grouped sort, and the headings' order
+    function stockGroup(row, sort) {
+      if (row.item) return STOCK_ITEMS;
+      if (sort === 'kind') return row.kind || 'Sealed';
+      if (sort === 'std') return row.std || 'Sealed';
+      return row.set;
+    }
+    function stockGroupRank(row, sort) {
+      if (row.item) return 1000;
+      if (sort === 'kind') return row.kind ? (STOCK_KINDS.indexOf(row.kind) + 1 || 99) : 500;
+      if (sort === 'std') return row.std ? (row.card.std ? 0 : 1) : 500;
+      return 0;
+    }
+
     function renderStock() {
       var list = document.getElementById('stockList');
       if (!stockRows) return;
       var words = document.getElementById('stockSearch').value.toLowerCase().split(/\s+/).filter(Boolean);
       var setPick = document.getElementById('stockSet').value;
       var sort = document.getElementById('stockSort').value;
+      var picks = {};
+      ['lang', 'type', 'kind', 'std'].forEach(function (f) {
+        picks[f] = document.getElementById(STOCK_FILTERS[f]).value;
+      });
 
       var rows = stockRows.filter(function (row) {
         if (setPick && row.set !== setPick) return false;
-        var text = (row.card.name + ' ' + row.set + ' ' + (row.card.number || '') + ' ' + (row.card.rarity || '')).toLowerCase();
+        for (var f in picks) {
+          if (picks[f] && row[f] !== picks[f]) return false;
+        }
+        var text = (row.card.name + ' ' + row.set + ' ' + (row.card.number || '') + ' ' + (row.card.rarity || '') + ' ' +
+          (row.card.kind || '')).toLowerCase();
         return words.every(function (w) { return text.indexOf(w) !== -1; });
       });
       rows.sort(function (a, b) {
         if (sort === 'high') return b.top - a.top;
         if (sort === 'low') return a.top - b.top;
         if (sort === 'name') return a.card.name.localeCompare(b.card.name);
-        // The shop's own items after the card sets
-        return (a.item ? 1 : 0) - (b.item ? 1 : 0) || a.set.localeCompare(b.set) || compareNumbers(a.card.number, b.card.number) ||
-          a.card.name.localeCompare(b.card.name);
+        // Grouped: by set, card type or Standard legality, then set and number; the shop's own items last
+        return stockGroupRank(a, sort) - stockGroupRank(b, sort) || stockGroup(a, sort).localeCompare(stockGroup(b, sort)) ||
+          a.set.localeCompare(b.set) || compareNumbers(a.card.number, b.card.number) || a.card.name.localeCompare(b.card.name);
       });
 
       var count = rows.reduce(function (n, r) { return n + r.qty; }, 0);
@@ -1992,16 +2057,16 @@
         list.innerHTML = '<div class="cart-empty">' + (stockRows.length ? 'No cards match your search.' : 'Nothing listed right now. Ask staff what we have!') + '</div>';
         return;
       }
-      if (sort !== 'set') {
+      if (!STOCK_GROUPED[sort]) {
         list.innerHTML = '<div class="stock-grid">' + rows.map(stockTileHtml).join('') + '</div>';
         return;
       }
       var html = '';
       var group = null;
       rows.forEach(function (row) {
-        if (row.set !== group) {
+        if (stockGroup(row, sort) !== group) {
           if (group !== null) html += '</div>';
-          group = row.set;
+          group = stockGroup(row, sort);
           html += '<div class="stock-set-title">' + esc(group) + '</div><div class="stock-grid">';
         }
         html += stockTileHtml(row);
@@ -2017,7 +2082,24 @@
         stockData = results[0];
         stockRows = buildStockRows(stockData, results[1]);
         var sets = {};
-        stockRows.forEach(function (row) { sets[row.set] = (sets[row.set] || 0) + 1; });
+        var counts = { lang: {}, type: {}, kind: {}, std: {} };
+        stockRows.forEach(function (row) {
+          sets[row.set] = (sets[row.set] || 0) + 1;
+          for (var f in counts) {
+            if (row[f]) counts[f][row[f]] = (counts[f][row[f]] || 0) + 1;
+          }
+        });
+        fillStockFilter('stockLang', 'All languages', counts.lang);
+        fillStockFilter('stockType', 'All products', counts.type, ['Cards', 'Sealed', STOCK_ITEMS]);
+        fillStockFilter('stockKind', 'All card types', counts.kind, STOCK_KINDS);
+        fillStockFilter('stockFormat', 'Any format', counts.std, ['Standard legal']);
+        // The card type / Standard sorts only once the database has that for these cards
+        var sortSelect = document.getElementById('stockSort');
+        [['kind', 'stockKind'], ['std', 'stockFormat']].forEach(function (s) {
+          var option = sortSelect.querySelector('option[value="' + s[0] + '"]');
+          option.hidden = option.disabled = document.getElementById(s[1]).hidden;
+          if (option.disabled && sortSelect.value === s[0]) sortSelect.value = 'set';
+        });
         var select = document.getElementById('stockSet');
         var picked = select.value;
         select.innerHTML = '<option value="">All sets</option>' + Object.keys(sets).sort().map(function (s) {

@@ -14,7 +14,7 @@ MAX_RETRIES = 6
 RETRY_STATUSES = (429, 500, 502, 503, 504)
 
 API_BASE = "https://api.carddex.dev/compat/pokemontcg/v2"
-CARD_FIELDS = "id,name,number,set,tcgplayer,images,rarity"
+CARD_FIELDS = "id,name,number,set,tcgplayer,images,rarity,supertype,subtypes,regulationMark"
 
 # Rarities pulled from the Pokemon TCG API (Scarlet & Violet + Mega Evolution only)
 RARITY_QUERIES = ["Double Rare", "ACE SPEC Rare"]
@@ -346,6 +346,35 @@ def has_variant(card, variant):
     return variant in card.get("tcgplayer", {}).get("prices", {})
 
 
+# Card kinds (an entry's "kind", Pokémon cards only; the stock lists' "Card type" filter): from the card API's
+# supertype / subtypes or TCGplayer's "Card Type" ("Trainer - Supporter", "Fire", "Special Multi Energy")
+TRAINER_KINDS = {"item": "Item", "supporter": "Supporter", "stadium": "Stadium", "pokemon tool": "Pokémon Tool",
+                 "pokémon tool": "Pokémon Tool", "technical machine": "Pokémon Tool"}
+
+
+def api_kind(card):
+    supertype = (card.get("supertype") or "").lower()
+    subtypes = [s.lower() for s in card.get("subtypes") or []]
+    if supertype.startswith("pok"):
+        return "Pokémon"
+    if supertype == "energy":
+        return "Special Energy" if "special" in subtypes else "Basic Energy"
+    if supertype == "trainer":
+        return next((TRAINER_KINDS[s] for s in subtypes if s in TRAINER_KINDS), "Trainer")
+    return None
+
+
+def tcgplayer_kind(card_type):
+    t = (card_type or "").strip().lower()
+    if not t or t == "none":
+        return None
+    if t.startswith("trainer"):
+        return TRAINER_KINDS.get(t.partition("-")[2].strip(), "Trainer")
+    if "energy" in t:
+        return "Basic Energy" if t == "energy" or t.startswith("basic") else "Special Energy"
+    return "Pokémon"  # the Pokémon's type: Fire, Water, Colorless...
+
+
 def add_card(catalog, card, raw_market, card_id=None, reverse=False):
     card_id = card_id or card.get("id")
     name = card.get("name")
@@ -366,6 +395,11 @@ def add_card(catalog, card, raw_market, card_id=None, reverse=False):
         "image": card.get("images", {}).get("small", ""),
         "tcgUrl": card.get("tcgplayer", {}).get("url", "https://www.tcgplayer.com")
     }
+    kind = api_kind(card)
+    if kind:
+        entry["kind"] = kind
+    if card.get("regulationMark"):
+        entry["mark"] = card["regulationMark"]
     # The price page shows a condition picker for these cards
     if is_overnumbered(card):
         entry["overnumbered"] = True
@@ -574,6 +608,8 @@ def fetch_promo_group(catalog, group):
                 "image": product.get("imageUrl", ""),
                 "tcgUrl": product.get("url", "https://www.tcgplayer.com")
             }
+            if tcgplayer_kind(get_extended(product, "Card Type")):
+                catalog[card_id]["kind"] = tcgplayer_kind(get_extended(product, "Card Type"))
             added += 1
 
     print(f"Synced {added} cards from {group['setName']}")
@@ -628,6 +664,8 @@ def fetch_swsh_era(catalog):
                 "game": GAME_NAMES["Pokemon"],
                 "group": "swsh",
             }
+            if tcgplayer_kind(data.get("Card Type")):
+                entry["kind"] = tcgplayer_kind(data.get("Card Type"))
             # Like the Scarlet & Violet secrets: overnumbered and gallery cards get the condition picker
             if overnumbered and "Prize Pack" not in g["name"] and "Promo" not in g["name"]:
                 entry["overnumbered"] = True
@@ -657,7 +695,7 @@ def tcgcsv_entry(product, card_id, set_name, raw_market, group, reverse=False, g
     number, _, printed_total = (data.get("Number") or "").partition("/")
     # "Charizard EX - XY17 (XY Black Star Promos)" -> "Charizard EX (XY Black Star Promos)"
     name = re.sub(r"\s+-\s+\S*\d\S*", "", product["name"]).strip()
-    return {
+    entry = {
         "id": card_id,
         "name": name + (" (Reverse Holo)" if reverse else ""),
         "setName": set_name,
@@ -671,6 +709,10 @@ def tcgcsv_entry(product, card_id, set_name, raw_market, group, reverse=False, g
         "game": GAME_NAMES[game],
         "group": group,
     }
+    kind = tcgplayer_kind(data.get("Card Type")) if game.startswith("Pokemon") else None
+    if kind:
+        entry["kind"] = kind
+    return entry
 
 
 def fetch_jumbo(catalog, groups):
@@ -1067,6 +1109,8 @@ def fetch_japanese(catalog):
                 "conditionPricing": True,
                 "game": GAME_NAMES["Pokemon Japan"],
             }
+            if tcgplayer_kind(data.get("Card Type")):
+                catalog[card_id]["kind"] = tcgplayer_kind(data.get("Card Type"))
             added += 1
     print(f"Synced {added} Japanese cards")
 
@@ -1320,6 +1364,11 @@ def fetch_stock(catalog, stock, existing):
         for p in get_json(f"https://tcgcsv.com/tcgplayer/{category}/{group_id}/prices", headers=TCGCSV_HEADERS).get("results", []):
             prices.setdefault(str(p["productId"]), {})[p.get("subTypeName")] = p.get("marketPrice")
         time.sleep(REQUEST_DELAY)
+        kinds = {}  # Pokémon cards' kind (Supporter, Item...) from TCGplayer's product details
+        if line.startswith("Pokemon"):
+            for product in get_json(f"https://tcgcsv.com/tcgplayer/{category}/{group_id}/products", headers=TCGCSV_HEADERS).get("results", []):
+                kinds[str(product["productId"])] = tcgplayer_kind(get_extended(product, "Card Type"))
+            time.sleep(REQUEST_DELAY)
 
         for row in rows:
             pid = row["Product ID"]
@@ -1355,6 +1404,8 @@ def fetch_stock(catalog, stock, existing):
                 "conditionPricing": True,
                 "game": GAME_NAMES.get(line, line),
             }
+            if kinds.get(pid):
+                catalog[card_id]["kind"] = kinds[pid]
             added += 1
     print(f"Synced {added} stocked cards from {len(by_group)} sets")
 
@@ -1402,6 +1453,61 @@ def mark_priced(catalog, previous):
             entry["conditionPricing"] = True
             marked += 1
     print(f"Condition pricing: turned on for {marked} cards over ${CONDITION_PICKER_MIN}, kept on {kept} from the last run")
+
+
+def mark_standard(catalog, previous):
+    """Card kind, regulation mark and Standard format legality (the stock lists' filters, owner's request).
+    Every run asks the card API for the cards legal in Standard now, so a rotation needs no change here. An
+    English Pokémon entry is "std" when it's one of those printings (by TCGplayer product, the API's ID or set +
+    number), when its regulation mark is one those cards have, or when it's a Basic Energy (always legal).
+    Japanese and other languages' cards are never marked (Standard is played with English cards here).
+    kind / mark are carried over from the last run for entries rebuilt without them."""
+    for card_id, entry in catalog.items():
+        old = previous.get(card_id) or {}
+        for field in ("kind", "mark"):
+            if field not in entry and old.get(field):
+                entry[field] = old[field]
+    try:
+        legal = fetch_cards("legalities.standard:legal")
+    except RuntimeError as e:
+        kept = 0
+        for card_id, entry in catalog.items():
+            if (previous.get(card_id) or {}).get("std"):
+                entry["std"] = True
+                kept += 1
+        print(f"Standard legality: couldn't load the legal cards ({e}); kept {kept} from the last run")
+        return
+    by_product, by_id, by_number, marks = {}, {}, {}, set()
+    for card in legal:
+        if card.get("regulationMark") and api_kind(card) != "Basic Energy":  # Basic Energy of any mark is legal
+            marks.add(card["regulationMark"])
+        match = re.search(r"/product/(\d+)", card.get("tcgplayer", {}).get("url", ""))
+        if match:
+            by_product[match.group(1)] = card
+        by_id[card["id"].lower()] = card
+        by_number[(card.get("set", {}).get("name", "").lower(), str(card.get("number", "")).lstrip("0").lower())] = card
+    count = 0
+    for card_id, entry in catalog.items():
+        entry.pop("std", None)
+        if entry.get("game") not in (None, GAME_NAMES["Pokemon"]) or entry.get("sealed") or entry.get("bulk"):
+            continue
+        match = re.search(r"/product/(\d+)", entry.get("tcgUrl", ""))
+        card = by_product.get(match.group(1)) if match else None
+        base = card_id.lower()
+        while not card and base:  # svp-161-staff -> svp-161, sv8-12-reverse -> sv8-12
+            card = by_id.get(base)
+            base = base.rpartition("-")[0]
+        card = card or by_number.get(((entry.get("setName") or "").lower(), str(entry.get("number") or "").lstrip("0").lower()))
+        if card:
+            if not entry.get("mark") and card.get("regulationMark"):
+                entry["mark"] = card["regulationMark"]
+            if not entry.get("kind") and api_kind(card):
+                entry["kind"] = api_kind(card)
+        if card or entry.get("mark") in marks or entry.get("kind") == "Basic Energy":
+            entry["std"] = True
+            count += 1
+    print(f"Standard legality: {len(legal)} legal printings on the card API (marks {', '.join(sorted(marks))}); "
+          f"{count} entries marked Standard legal")
 
 
 def add_bulk_tags(catalog):
@@ -1795,6 +1901,7 @@ def build_price_catalog(part):
     catalog.update(updates)
     mark_stocked(catalog, stock)
     mark_priced(catalog, previous)
+    mark_standard(catalog, previous)
     add_bulk_tags(catalog)
 
     # Save to prices.json and the other games' files
