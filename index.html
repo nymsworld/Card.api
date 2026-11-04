@@ -12,56 +12,165 @@
     if (SITE_HOME && location.hostname === 'nymsworld.github.io') location.replace(SITE_HOME + location.search + location.hash);
 
     // Which shop's sticker brought the customer here: K = Kanto Misplay Society, G = GG Crafts &
-    // Collectibles. Short sticker links (kantomisplay.cc/G/SV3PT5-199/LP: shop, card, condition, in
-    // capitals for a smaller QR code) become the usual ?shop=gg&id=…&cond=… address before anything
-    // reads it. GG gets its own logo, name and colors, and its own price rules if it set any (shopRules).
+    // Collectibles, or a vendor shop's own 2-3 letters (vendor shops are other businesses using the shop
+    // app, added by the owner: shops.json, written by the staff site, { shops: { id: { name, shortName, code,
+    // slug, color, logo } } }). Short sticker links (kantomisplay.cc/G/SV3PT5-199/LP: shop, card, condition,
+    // in capitals for a smaller QR code) become the usual ?shop=gg&id=…&cond=… address before anything reads
+    // it; a vendor shop's page is kantomisplay.cc/<slug> (?shop=<slug>). GG and vendor shops get their own
+    // logo, name and colors (a vendor's made from its color), their own price rules if they set any
+    // (shopRules), stock list and cart, and a vendor its own staff prices (condition_prices_<id>.json).
     var SHOP_LETTERS = { K: 'kms', G: 'gg' };
     var SHOP = 'kms';
+    var SHOP_PENDING = null; // a vendor shop's code or slug not in this device's copy of shops.json yet
+    var SHOPS_URL = 'https://raw.githubusercontent.com/nymsworld/Card.api/main/shops.json';
+    function knownShops() {
+      try { return (JSON.parse(localStorage.getItem('kms_shops') || '{}') || {}).shops || {}; } catch (e) { return {}; }
+    }
+    function isVendorShop(id) { return /^v-/.test(id || ''); }
+    // 'kms', 'gg', a vendor shop's id, or null, from a sticker's letters, a ?shop= value or a page's slug
+    function shopFor(token) {
+      if (!token) return null;
+      var t = String(token).trim();
+      if (t.length === 1 && SHOP_LETTERS[t.toUpperCase()]) return SHOP_LETTERS[t.toUpperCase()];
+      if (t === 'kms' || t === 'gg') return t;
+      var list = knownShops();
+      if (isVendorShop(t) && list[t]) return t;
+      for (var id in list) {
+        if (!isVendorShop(id)) continue;
+        if (String(list[id].code || '').toUpperCase() === t.toUpperCase() || String(list[id].slug || '') === t.toLowerCase()) return id;
+      }
+      return null;
+    }
     function stickerLink(text) {
       try {
         var url = new URL(String(text || '').trim());
-        var path = url.pathname.match(/^\/([A-Za-z])\/([^\/]+)(?:\/([^\/]+))?\/?$/);
-        if (path && SHOP_LETTERS[path[1].toUpperCase()]) {
-          return { shop: SHOP_LETTERS[path[1].toUpperCase()], id: decodeURIComponent(path[2]), cond: path[3] ? decodeURIComponent(path[3]).toUpperCase() : null };
+        var path = url.pathname.match(/^\/([A-Za-z]{1,3})\/([^\/]+)(?:\/([^\/]+))?\/?$/);
+        if (path && (SHOP_LETTERS[path[1].toUpperCase()] || path[1].length > 1)) {
+          var shop = shopFor(path[1]);
+          return { shop: shop, code: shop ? null : path[1].toUpperCase(), id: decodeURIComponent(path[2]), cond: path[3] ? decodeURIComponent(path[3]).toUpperCase() : null };
         }
         if (url.searchParams.get('id')) {
-          return { shop: url.searchParams.get('shop') === 'gg' ? 'gg' : null, id: url.searchParams.get('id').trim(), cond: url.searchParams.get('cond') };
+          var param = url.searchParams.get('shop');
+          return { shop: shopFor(param), code: param && !shopFor(param) ? param : null, id: url.searchParams.get('id').trim(), cond: url.searchParams.get('cond') };
         }
       } catch (e) {}
       return null;
     }
-    // ?shop=gg&id=… (GG only, so KMS addresses look as they always have)
+    // ?shop= for the shop shown: gg, a vendor's slug (or its code until shops.json is read); none for KMS, so KMS
+    // addresses look as they always have
+    function shopParam() {
+      if (SHOP === 'kms') return SHOP_PENDING;
+      if (SHOP === 'gg') return 'gg';
+      var s = knownShops()[SHOP];
+      return s && s.slug ? s.slug : SHOP;
+    }
     function shopQuery(id, cond) {
-      return '?' + (SHOP === 'gg' ? 'shop=gg&' : '') + 'id=' + encodeURIComponent(id) + (cond ? '&cond=' + encodeURIComponent(cond) : '');
+      var p = shopParam();
+      return '?' + (p ? 'shop=' + encodeURIComponent(p) + '&' : '') + 'id=' + encodeURIComponent(id) + (cond ? '&cond=' + encodeURIComponent(cond) : '');
+    }
+    // A vendor shop's page colors from its one color (the same as the shop app's KMS_THEME in profile-boot.js):
+    // buttons and the header in the color (darkened until white text on it is easy to read), backgrounds tinted with it
+    function shopThemeCss(id, hex) {
+      var rgb = (function (h) { var n = parseInt(/^#[0-9a-f]{6}$/i.test(h || '') ? h.slice(1) : '2f6db5', 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; })(hex);
+      var lum = function (c) { c = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+      var mix = function (c, to, a) { return c.map(function (v, i) { return v + (to[i] - v) * a; }); };
+      var toHex = function (c) { return '#' + c.map(function (v) { return ('0' + Math.round(Math.max(0, Math.min(255, v))).toString(16)).slice(-2); }).join(''); };
+      for (var i = 0; i < 20 && 1.05 / (lum(rgb) + 0.05) < 4.5; i++) rgb = mix(rgb, [0, 0, 0], 0.08);
+      var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255, max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+      var hue = !d ? 0 : Math.round(((max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4) * 60 + 360) % 360);
+      var hsl = function (sat, l) { return 'hsl(' + hue + ', ' + sat + '%, ' + l + '%)'; };
+      var sel = ':root[data-shop="' + String(id).replace(/[^a-z0-9-]/g, '') + '"]';
+      return sel + ' { --kms-red: ' + toHex(rgb) + '; --kms-red-dark: ' + toHex(mix(rgb, [0, 0, 0], 0.22)) + ';' +
+          ' --bg-page: ' + hsl(10, 6) + '; --bg-card: ' + hsl(9, 10) + '; --surface: ' + hsl(9, 14) + '; --border-color: ' + hsl(9, 23) + ';' +
+          ' --line-soft: ' + hsl(9, 17) + '; --text-main: ' + hsl(20, 96) + '; --text-sub: ' + hsl(8, 68) + '; --band-bg: ' + hsl(10, 4) + '; --band-border: ' + hsl(9, 23) + '; }' +
+        sel + '[data-theme="light"] { --bg-page: ' + hsl(30, 96) + '; --bg-card: #ffffff; --surface: #ffffff; --line-soft: ' + hsl(25, 90) + ';' +
+          ' --text-main: #111111; --text-sub: ' + hsl(6, 38) + '; --band-bg: #111111; --band-border: #111111; }';
+    }
+    function markShop() {
+      var root = document.documentElement;
+      if (SHOP === 'kms') root.removeAttribute('data-shop'); else root.setAttribute('data-shop', SHOP);
+      var style = document.getElementById('shopTheme');
+      var s = isVendorShop(SHOP) && knownShops()[SHOP];
+      if (!s) { if (style) style.remove(); return; }
+      if (!style) { style = document.createElement('style'); style.id = 'shopTheme'; document.head.appendChild(style); }
+      style.textContent = shopThemeCss(SHOP, s.color);
     }
     (function () {
+      var params = new URLSearchParams(location.search);
       var short = stickerLink(location.href);
-      if (short && short.shop && !location.search) {
-        SHOP = short.shop;
+      var page = location.pathname.match(/^\/([a-z0-9][a-z0-9-]{1,29})\/?$/i); // a vendor shop's page: /<slug>
+      if (short && !location.search) {
+        SHOP = short.shop || 'kms';
+        SHOP_PENDING = short.code;
         history.replaceState(null, '', '/' + shopQuery(short.id, short.cond) + location.hash);
+      } else if (page && !location.search) {
+        SHOP = shopFor(page[1]) || 'kms';
+        if (SHOP === 'kms') SHOP_PENDING = page[1].toLowerCase();
+        var p = shopParam();
+        history.replaceState(null, '', '/' + (p ? '?shop=' + encodeURIComponent(p) : '') + location.hash);
+      } else if (params.get('shop')) {
+        SHOP = shopFor(params.get('shop')) || 'kms';
+        if (SHOP === 'kms' && params.get('shop') !== 'kms') SHOP_PENDING = params.get('shop');
       }
-      if (new URLSearchParams(location.search).get('shop') === 'gg') {
-        SHOP = 'gg';
-        document.documentElement.setAttribute('data-shop', 'gg');
-      }
+      markShop();
+      // Until shops.json says which shop it is, the KMS name and logo stay hidden
+      if (SHOP_PENDING) document.documentElement.setAttribute('data-shop-pending', '');
+      // The shop list, kept on the device (a new vendor's sticker is found at once next time)
+      fetch(SHOPS_URL + '?v=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (data) {
+        if (!data || !data.shops) { // no list (yet): KMS's page, as before
+          SHOP_PENDING = null;
+          document.documentElement.removeAttribute('data-shop-pending');
+          return;
+        }
+        var before = JSON.stringify(knownShops()[SHOP] || null);
+        try { localStorage.setItem('kms_shops', JSON.stringify({ shops: data.shops })); } catch (e) {}
+        var go = SHOP_PENDING ? shopFor(SHOP_PENDING) : null;
+        SHOP_PENDING = null;
+        document.documentElement.removeAttribute('data-shop-pending');
+        if (go) {
+          var url = new URL(location.href);
+          SHOP = go;
+          url.searchParams.set('shop', shopParam());
+          history.replaceState(history.state, '', url.pathname + url.search + url.hash);
+          whenReady(function () { showShop(go); });
+        } else if (isVendorShop(SHOP) && !data.shops[SHOP]) {
+          whenReady(function () { showShop('kms'); }); // turned off or removed: KMS's page
+        } else if (isVendorShop(SHOP) && before !== JSON.stringify(data.shops[SHOP])) {
+          whenReady(function () { showShop(SHOP); }); // its name or look changed
+        }
+      }).catch(function () {
+        SHOP_PENDING = null;
+        document.documentElement.removeAttribute('data-shop-pending');
+      });
     })();
-    // The header's name and logo; runs right after they're drawn and when a GG sticker is scanned
+    function whenReady(fn) {
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn();
+    }
+    // The header's name and logo; runs right after they're drawn and when another shop's sticker is scanned
     function showShop(shop) {
       if (window.KMSApp) return; // the staff app has its own shop profiles
-      SHOP = shop === 'gg' ? 'gg' : 'kms';
+      var info = isVendorShop(shop) && knownShops()[shop];
+      SHOP = shop === 'gg' ? 'gg' : info ? shop : 'kms';
+      markShop();
       var gg = SHOP === 'gg';
-      if (gg) document.documentElement.setAttribute('data-shop', 'gg');
-      else document.documentElement.removeAttribute('data-shop');
+      var shopName = info ? info.name : gg ? 'GG Crafts & Collectibles' : 'Kanto Misplay Society';
+      // A vendor's logo comes from GitHub (shop-logos/, written by the staff site); one without a logo shows none
+      var logoSrc = info ? (info.logo ? 'https://raw.githubusercontent.com/nymsworld/Card.api/main/' + info.logo : null) : gg ? 'gg-logo.png' : 'logo.jpg';
       var name = document.querySelector('.brand-name');
       var logo = document.querySelector('.brand-logo');
-      if (name) name.textContent = gg ? 'GG Crafts & Collectibles' : 'Kanto Misplay Society';
-      if (logo) { logo.src = gg ? 'gg-logo.png' : 'logo.jpg'; logo.alt = gg ? 'GG logo' : 'KMS logo'; }
+      if (name) name.textContent = shopName;
+      if (logo) {
+        logo.style.display = logoSrc ? '' : 'none';
+        if (logoSrc) { logo.src = logoSrc; logo.alt = (info ? info.shortName || info.name : gg ? 'GG' : 'KMS') + ' logo'; }
+      }
       var icon = document.querySelector('link[rel="icon"]');
-      if (icon) icon.href = gg ? 'gg-logo.png' : 'logo.jpg';
-      document.title = (gg ? 'GG Crafts & Collectibles' : 'Kanto Misplay Society') + ' - Price Check';
-      document.querySelector('meta[name="theme-color"]').content = gg ? '#fbdcdc' : '#e31515';
+      if (icon && logoSrc) icon.href = logoSrc;
+      document.title = shopName + ' - Price Check';
+      document.querySelector('meta[name="theme-color"]').content = info ? info.color : gg ? '#fbdcdc' : '#e31515';
       // Each shop's own price rules (applyShopPrices, further down)
       if (typeof applyShopPrices === 'function' && window.priceCatalog) applyShopPrices(window.priceCatalog);
+      // A vendor shop's own staff prices (applyShopStaff, further down)
+      if (typeof refreshShopStaff === 'function') refreshShopStaff();
       // Each shop's own cart and stock list (shopChanged, further down)
       if (typeof shopChanged === 'function') shopChanged();
     }
@@ -788,6 +897,8 @@
     :root[data-shop="gg"] .brand-name { letter-spacing: 0.12em; font-weight: 800; }
     :root[data-shop="gg"] .brand-tag { letter-spacing: 0.3em; }
     :root[data-shop="gg"] .brand-logo { background: var(--gg-blush); border-width: 4px; }
+    /* A vendor shop's sticker on a device that hasn't read shops.json yet: no KMS name or logo meanwhile */
+    :root[data-shop-pending] .brand-name, :root[data-shop-pending] .brand-logo { visibility: hidden; }
   </style>
   <!-- Installable website: customers (and the counter iPad) can add it to the home screen as an app.
        The shop's app build (kms-app's build-web.mjs) removes everything between these two comments. -->
@@ -816,7 +927,7 @@
     </button>
   </header>
   <img class="brand-logo" src="logo.jpg" alt="KMS logo" onerror="this.style.display='none'">
-  <script>if (SHOP === 'gg') showShop('gg');</script>
+  <script>if (SHOP !== 'kms') showShop(SHOP);</script>
 
   <div class="card" id="cardContainer">
     <div class="loading" id="status">Loading live price...</div>
@@ -928,12 +1039,12 @@
     // Which shop's stock and cart this page shows: the open profile in the staff app, else the sticker's shop
     function stockShop() {
       var profile = document.documentElement.getAttribute('data-profile');
-      return profile ? (profile === 'gg' ? 'gg' : 'kms') : SHOP;
+      return profile ? (profile === 'gg' || isVendorShop(profile) ? profile : 'kms') : SHOP;
     }
 
     // Each shop has its own cart on this device (a customer at both shops, or a tablet showing both)
     function cartStorageKey() {
-      return stockShop() === 'gg' ? 'gg_cart' : 'kms_cart';
+      return stockShop() + '_cart';
     }
 
     function loadCart() {
@@ -1085,6 +1196,7 @@
             if (!res.ok) continue;
             var data = await res.json();
             var set = data.prices || {};
+            if (file[1] === 'conditionPrices') Object.assign(sharedStaff, set);
             for (var id in set) {
               if (!catalog[id]) continue;
               catalog[id][file[1]] = set[id];
@@ -1094,10 +1206,49 @@
           } catch (e) {}
         }
       }));
+      if (!window.KMSApp && isVendorShop(SHOP)) { await loadShopStaff(SHOP); applyShopStaff(catalog); }
       if (rules) {
         await rules;
         applyShopPrices(catalog);
       }
+    }
+
+    // A vendor shop's own staff prices (condition_prices_<id>.json, set in its shop app): they win over the shared
+    // ones on its page; KMS and GG pages show the shared ones. sharedStaff keeps the shared file's entries, so
+    // switching shops (another shop's sticker) can put them back.
+    var sharedStaff = {};
+    var shopStaff = {}; // shop id -> { cardId: entry }
+    async function loadShopStaff(shop) {
+      if (shopStaff[shop]) return shopStaff[shop];
+      try {
+        var res = await fetch(CARD_FILES + 'condition_prices_' + shop + '.json?v=' + Date.now(), { cache: 'no-store' });
+        shopStaff[shop] = res.ok ? (await res.json()).prices || {} : {};
+      } catch (e) {
+        return {}; // tried again next time
+      }
+      return shopStaff[shop];
+    }
+    function applyShopStaff(catalog) {
+      if (!catalog || window.KMSApp) return;
+      var own = isVendorShop(SHOP) ? shopStaff[SHOP] || {} : {};
+      for (var id in catalog) {
+        var next = own[id] || sharedStaff[id];
+        if (next) catalog[id].conditionPrices = next;
+        else if (catalog[id].conditionPrices) delete catalog[id].conditionPrices;
+      }
+    }
+    // After switching shops: its staff prices on the cards loaded, and the card on screen shown again
+    function refreshShopStaff() {
+      if (window.KMSApp) return;
+      (isVendorShop(SHOP) ? loadShopStaff(SHOP) : Promise.resolve()).then(function () {
+        if (window.priceCatalog) applyShopStaff(window.priceCatalog);
+        if (window.currentCardData) {
+          var one = {};
+          one[currentCardData.id] = currentCardData;
+          applyShopStaff(one);
+          displayCard(currentCardData, currentCondition ? currentCondition.code : null);
+        }
+      });
     }
 
     // Finds a card by ID, ignoring case and leading zeros (MEP-023 = mep-23)
@@ -2175,7 +2326,7 @@
     // Browser back/forward buttons show the matching card (and the stock list)
     window.addEventListener('popstate', function() {
       var params = new URLSearchParams(window.location.search);
-      var shop = params.get('shop') === 'gg' ? 'gg' : 'kms';
+      var shop = shopFor(params.get('shop')) || 'kms';
       if (shop !== SHOP) showShop(shop);
       if (params.get('browse')) openStock(false);
       else document.getElementById('stockOverlay').classList.remove('active');
@@ -2343,7 +2494,7 @@
       stopInAppScanner();
       toggleCartDrawer(false);
       document.getElementById('stockOverlay').classList.remove('active');
-      window.history.pushState({}, '', SHOP === 'gg' ? '?shop=gg' : window.location.pathname);
+      window.history.pushState({}, '', shopParam() ? '?shop=' + encodeURIComponent(shopParam()) : window.location.pathname);
       loadCard(null);
       window.scrollTo(0, 0);
     }
