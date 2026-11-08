@@ -1477,16 +1477,20 @@
         conditionHtml += '</div></div>';
       }
 
-      var imgHtml = card.image ? '<img src="' + card.image + '" alt="' + card.name + '" class="card-art">' : '';
+      // Everything from the catalog or the address bar is escaped: a scanned QR's text, staff-typed names
+      // (added_cards.json) or other sources' names must never become page code (security review, Nov 2026)
+      var imgSrc = safeUrl(card.image);
+      var imgHtml = imgSrc ? '<img src="' + esc(imgSrc) + '" alt="' + esc(card.name) + '" class="card-art">' : '';
+      var tcgLink = safeUrl(card.tcgUrl);
       var numTotal = card.printedTotal ? '/' + card.printedTotal : '';
 
       container.innerHTML =
         '<div class="card-view">' +
           imgHtml +
           '<div class="card-details">' +
-            '<div class="badge">' + (card.rarity || 'Double Rare') + '</div>' +
-            '<h1>' + card.name + '</h1>' +
-            '<div class="set-info">' + (card.game && card.game !== 'Pokémon' ? card.game + ' · ' : '') + card.setName + (card.number ? ' · #' + card.number + numTotal : '') + '</div>' +
+            '<div class="badge">' + esc(card.rarity || 'Double Rare') + '</div>' +
+            '<h1>' + esc(card.name) + '</h1>' +
+            '<div class="set-info">' + esc((card.game && card.game !== 'Pokémon' ? card.game + ' · ' : '') + (card.setName || '') + (card.number ? ' · #' + card.number + numTotal : '')) + '</div>' +
             conditionHtml +
             '<div class="price-container">' +
               '<div class="label">Store Price' + (currentCondition ? ' · ' + currentCondition.code : '') + '</div>' +
@@ -1496,7 +1500,7 @@
             '<div class="action-stack">' +
               '<button class="btn btn-cart" onclick="addToCartCurrent()"' + (price == null ? ' disabled' : '') + '>+ Add to List</button>' +
               '<button class="btn btn-scan" onclick="startInAppScanner()">Scan Another Card</button>' +
-              (card.tcgUrl ? '<a class="btn btn-link" href="' + card.tcgUrl + '" target="_blank" rel="noopener">View on TCGplayer</a>' : '') +
+              (tcgLink ? '<a class="btn btn-link" href="' + esc(tcgLink) + '" target="_blank" rel="noopener">View on TCGplayer</a>' : '') +
             '</div>' +
           '</div>' +
         '</div>';
@@ -1548,14 +1552,14 @@
             }, NOT_FOUND_MS);
             return;
           }
-          container.innerHTML = '<div class="error">Card ID "<strong>' + targetId + '</strong>" not found in catalog.<br><br><button class="btn btn-scan" onclick="startInAppScanner()">Scan Different Card</button></div>';
+          container.innerHTML = '<div class="error">Card ID "<strong>' + esc(targetId) + '</strong>" not found in catalog.<br><br><button class="btn btn-scan" onclick="startInAppScanner()">Scan Different Card</button></div>';
           return;
         }
 
         if (!card.id) card.id = targetId;
         displayCard(card, conditionCode);
       } catch (err) {
-        container.innerHTML = '<div class="error">' + err.message + '<br><br><button class="btn btn-link" onclick="location.reload()">Tap to Retry</button></div>';
+        container.innerHTML = '<div class="error">' + esc(err.message) + '<br><br><button class="btn btn-link" onclick="location.reload()">Tap to Retry</button></div>';
       }
     }
 
@@ -1957,19 +1961,20 @@
       for (var i = 0; i < cart.length; i++) {
         var it = cart[i];
         var key = cartKey(it);
+        var keyArg = esc(JSON.stringify(String(key))); // a JS string inside the onclick attribute, whatever the ID holds
         var cond = findCondition(it.condition);
         rows +=
           '<div class="cart-item">' +
             '<div class="cart-item-info">' +
-              '<div class="cart-item-title">' + it.name + '</div>' +
-              '<div class="cart-item-meta">' + it.setName + (it.number ? ' #' + it.number : '') + (cond ? ' · ' + cond.label : '') + '</div>' +
+              '<div class="cart-item-title">' + esc(it.name) + '</div>' +
+              '<div class="cart-item-meta">' + esc((it.setName || '') + (it.number ? ' #' + it.number : '')) + (cond ? ' · ' + cond.label : '') + '</div>' +
               '<div class="cart-item-price">' + money(it.price * it.qty) + ' (' + money(it.price) + ' ea)</div>' +
             '</div>' +
             '<div class="qty-controls">' +
-              '<button class="qty-btn" onclick="updateQty(\'' + key + '\', -1)">−</button>' +
-              '<span class="qty-count">' + it.qty + '</span>' +
-              '<button class="qty-btn" onclick="updateQty(\'' + key + '\', 1)">+</button>' +
-              '<button class="del-btn" onclick="removeItem(\'' + key + '\')" title="Remove">&times;</button>' +
+              '<button class="qty-btn" onclick="updateQty(' + keyArg + ', -1)">−</button>' +
+              '<span class="qty-count">' + esc(it.qty) + '</span>' +
+              '<button class="qty-btn" onclick="updateQty(' + keyArg + ', 1)">+</button>' +
+              '<button class="del-btn" onclick="removeItem(' + keyArg + ')" title="Remove">&times;</button>' +
             '</div>' +
           '</div>';
       }
@@ -2026,6 +2031,11 @@
       return String(text == null ? '' : text).replace(/[&<>"']/g, function (c) {
         return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
       });
+    }
+    // A picture or link address from the catalog, only if it's https (never javascript: or data:); else ''
+    function safeUrl(url) {
+      url = String(url || '').trim();
+      return /^https:\/\//i.test(url) ? url : '';
     }
 
     // The set name shown and grouped by (other games and languages say which)
