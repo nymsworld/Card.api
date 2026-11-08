@@ -2,6 +2,7 @@ import os
 import re
 import sys
 import csv
+import glob
 from datetime import datetime, timezone
 import time
 import json
@@ -215,18 +216,23 @@ SHARD_COUNT = 128
 HISTORY_DAYS = 8
 
 # TCGplayer market prices by condition (LP / MP / HP / DMG) from JustTCG's free API, for
-# condition-priced cards over CONDITION_MARKET_MIN (the price page's CONDITION_GUESS_MAX):
-# below that the page uses a percent of Near Mint, and worn expensive cards sell for far less
-# than a fixed percent. Written to condition_market.json (only this script writes it; staff
-# prices from the app are in condition_prices.json and win over these). Free plan: 100
-# requests/day, 1,000/month, 10/minute, 20 cards per request, so this runs once a week
+# condition-priced cards: every one on a shop's shelf (shop_stock_<shop>.json) at any price first
+# (owner's request: a fixed percent of Near Mint was often wrong), then by price the stock list's
+# (stock_cards.csv) and every one over CONDITION_MARKET_MIN
+# (the price page's CONDITION_GUESS_MAX, above which a card with no data shows "Ask staff"; at or
+# below it the page falls back to a percent). Written to condition_market.json (only this script
+# writes it; staff prices from the app are in condition_prices.json and win over these). Free plan:
+# 100 requests/day, 1,000/month, 10/minute, 20 cards per request, so this runs once a week
 # (part 5 or all; 6.5 days so the nightly run on day 7 always catches it) for at most
-# CONDITION_MARKET_MAX_CARDS cards: about 11 requests a week. Needs the JUSTTCG_API_KEY repo
-# secret; without it this step is skipped.
+# CONDITION_MARKET_MAX_PRODUCTS TCGplayer products: at most 80 requests a week (~350 a month).
+# Needs the JUSTTCG_API_KEY repo secret; without it this step is skipped.
 CONDITION_MARKET_FILE = "condition_market.json"
 CONDITION_MARKET_MIN = 50
-CONDITION_MARKET_MAX_CARDS = 400
+CONDITION_MARKET_MAX_PRODUCTS = 1600
 CONDITION_MARKET_EVERY_HOURS = 6.5 * 24
+# Bumped when the card choice or matching changes, so the next part 5 / all run fetches again at once
+# instead of keeping a week of prices picked the old way (2: stocked cards at any price, 1st Edition matched).
+CONDITION_MARKET_VERSION = 2
 
 # Every single card over this market price gets the condition picker (owner's request), any game, except
 # regular Double Rare ex cards (their stickers carry no condition; double_rare_ex). Once on it stays on, also
@@ -1639,9 +1645,14 @@ def update_history(catalog):
 
 def pick_condition_prices(card, entry, card_id):
     """{ 'LP': 41.5, ... } from a JustTCG card for a prices.json entry: the printing that
-    matches (reverse holo or not) with the Near Mint price closest to ours, in the card's
-    language (Japanese for jp- cards, else English; JustTCG labels English listings "English")."""
+    matches (reverse holo or not, 1st Edition or not) with the Near Mint price closest to ours, in the
+    card's language (Japanese for jp- cards, else English; JustTCG labels English listings "English").
+    1st Edition and Unlimited are one TCGplayer product with very different prices: a 1st Edition card
+    with no Near Mint listing used to get the Unlimited printing's prices (Shining Celebi 1st Edition,
+    $1,801, priced LP $359), so a 1st Edition card only takes 1st Edition printings, and other cards
+    skip them (unless the product has nothing else)."""
     want_reverse = card_id.endswith("-reverse")
+    want_first = "-1st-edition" in card_id or bool(entry.get("firstEdition"))
     want_language = "japanese" if card_id.startswith("jp-") else "english"
     printings = {}
     for v in card.get("variants", []):
@@ -1650,6 +1661,11 @@ def pick_condition_prices(card, entry, card_id):
         if ("reverse" in (v.get("printing") or "").lower()) != want_reverse:
             continue
         printings.setdefault(v.get("printing"), []).append(v)
+    first = {p: vs for p, vs in printings.items() if "1st edition" in (p or "").lower()}
+    if want_first:
+        printings = first
+    elif len(first) < len(printings):
+        printings = {p: vs for p, vs in printings.items() if p not in first}
     best, best_gap = None, None
     for variants in printings.values():
         nm = next((v.get("price") for v in variants if v.get("condition") == "Near Mint" and v.get("price") is not None), None)
@@ -1712,9 +1728,10 @@ def write_condition_prices(data, catalog):
 
 def update_condition_market(catalog, stock=()):
     """Refreshes condition_market.json from JustTCG. Never stops the price update: on any
-    problem the old file is kept. Stocked cards come first (matched loosely, as in mark_stocked), then the
-    most expensive: since every card over CONDITION_PICKER_MIN has conditions, far more than
-    CONDITION_MARKET_MAX_CARDS are over CONDITION_MARKET_MIN."""
+    problem the old file is kept. Cards in a shop's stock come first at any price, then the most expensive
+    of the stock list's cards (matched loosely, as in mark_stocked) and those over CONDITION_MARKET_MIN:
+    since every card over CONDITION_PICKER_MIN has conditions, far more than CONDITION_MARKET_MAX_PRODUCTS
+    are over it."""
     def loose(key):
         return key and (key[0], "reverse" if key[1] == "reverse" else "base")
     stocked = {loose((row["Product ID"], printing_kind(row["Printing"]))) for row in stock}
@@ -1731,29 +1748,47 @@ def update_condition_market(catalog, stock=()):
         # Files from before "raw" was kept: their prices were the raw ones (no report dates)
         old["raw"] = {card_id: {code: {"price": p} for code, p in found.items()}
                       for card_id, found in old.get("prices", {}).items()}
-    if old.get("fetchedAt") and old.get("raw"):  # an empty result doesn't count
+    # an empty result doesn't count; nor does a file picked the old way (CONDITION_MARKET_VERSION)
+    if old.get("fetchedAt") and old.get("raw") and old.get("version", 1) >= CONDITION_MARKET_VERSION:
         age = datetime.now(timezone.utc) - datetime.fromisoformat(old["fetchedAt"])
         if age.total_seconds() < CONDITION_MARKET_EVERY_HOURS * 3600:
             print(f"Condition prices: fetched {age.total_seconds() / 3600:.1f} hours ago, not fetching; re-checking saved prices")
             write_condition_prices(old, catalog)
             return
 
+    # Cards on a shop's shelf now (the app's shop_stock_<shop>.json files) come first at any price, then
+    # stock-list and expensive cards by price, so the most expensive keep their data
+    on_shelf = set()
+    for path in glob.glob("shop_stock*.json"):
+        try:
+            with open(path, encoding="utf-8") as f:
+                on_shelf.update((json.load(f).get("cards") or {}).keys())
+        except (OSError, ValueError, AttributeError):
+            pass
     wanted = {}  # TCGplayer product ID -> [(card ID, entry)]
-    cards = sorted(
-        (
-            (card_id, entry) for card_id, entry in catalog.items()
-            if (entry.get("conditionPricing") or entry.get("overnumbered"))
-            and (entry.get("rawMarket") or 0) > CONDITION_MARKET_MIN
-        ),
-        key=lambda item: (loose(entry_product_key(item[0], item[1])) not in stocked, -item[1]["rawMarket"]),
-    )[:CONDITION_MARKET_MAX_CARDS]
-    for card_id, entry in cards:
+    candidates = []
+    for card_id, entry in catalog.items():
+        if not (entry.get("conditionPricing") or entry.get("overnumbered")) or entry.get("sealed"):
+            continue
+        market = entry.get("rawMarket") or 0
         product = entry_product_key(card_id, entry)
-        if product:
-            wanted.setdefault(product[0], []).append((card_id, entry))
+        if not product or market <= 0:
+            continue
+        shelf = card_id in on_shelf
+        if shelf or market > CONDITION_MARKET_MIN or loose(product) in stocked:
+            candidates.append((not shelf, -market, card_id, entry, product[0]))
+    candidates.sort(key=lambda c: c[:3])
+    cards = []
+    for _, _, card_id, entry, pid in candidates:
+        if pid not in wanted and len(wanted) >= CONDITION_MARKET_MAX_PRODUCTS:
+            continue
+        wanted.setdefault(pid, []).append((card_id, entry))
+        cards.append(card_id)
+    shelf_cards = sum(1 for card_id in cards if card_id in on_shelf)
 
     ids = list(wanted)
-    print(f"Condition prices: looking up {len(cards)} cards over ${CONDITION_MARKET_MIN} ({len(ids)} TCGplayer products)...")
+    print(f"Condition prices: looking up {len(cards)} cards ({shelf_cards} in a shop's stock, the rest by price; "
+          f"{len(ids)} TCGplayer products)...")
     prices = {}
     # What came back, saved in the file so problems can be seen without the Actions log
     stats = {"cards": len(cards), "products": len(ids), "requests": 0, "returned": 0, "matched": 0, "sample": None}
@@ -1806,6 +1841,7 @@ def update_condition_market(catalog, stock=()):
 
     write_condition_prices({
         "fetchedAt": now,
+        "version": CONDITION_MARKET_VERSION,
         "source": "JustTCG: TCGplayer market price by condition",
         "lastStats": stats,
         "raw": prices,

@@ -1174,7 +1174,7 @@
       return card;
     }
 
-    // Condition prices for expensive cards, each { prices: { cardId: { LP: 210, DMG: 37, ... } } }:
+    // Condition prices, each { prices: { cardId: { LP: 210, DMG: 37, ... } } }:
     //   condition_prices.json: set by staff in the shop app -> card.conditionPrices (store prices)
     //   condition_market.json: TCGplayer market by condition, fetched weekly -> card.conditionMarket,
     //     and when it was fetched -> card.conditionMarketAt
@@ -1381,9 +1381,10 @@
       }
     }
 
-    // Below Near Mint, expensive cards lose far more than the CONDITIONS percents (a damaged
-    // $300 card can sell for 12% of Near Mint), so above this Near Mint price a condition uses
-    // its own TCGplayer market price (condition_market.json), or shows "Ask staff" without one.
+    // Below Near Mint a condition uses its own TCGplayer market price (condition_market.json:
+    // every stocked card, plus the most expensive) when there is one. Without one, expensive cards
+    // (over this Near Mint price) show "Ask staff", since they lose far more than the CONDITIONS
+    // percents (a damaged $300 card can sell for 12% of Near Mint); cheaper ones use the percent.
     // Must match CONDITION_MARKET_MIN in update_prices.py.
     var CONDITION_GUESS_MAX = 50;
 
@@ -1413,8 +1414,10 @@
       if (staff && market && card.conditionMarketAt && card.conditionPrices.updatedAt &&
           Date.parse(card.conditionMarketAt) > Date.parse(card.conditionPrices.updatedAt)) return 'market';
       if (staff) return 'staff';
-      if (card.rawMarket > CONDITION_GUESS_MAX) return market ? 'market' : null;
-      return 'percent';
+      // TCGplayer's price for the condition whenever there is one, at any price (owner's request: a fixed
+      // percent was often wrong); without one, a percent on cheaper cards and "Ask staff" on expensive ones
+      if (market) return 'market';
+      return card.rawMarket > CONDITION_GUESS_MAX ? null : 'percent';
     }
 
     // Store price for a card in a condition, or null when staff need to price it
