@@ -168,8 +168,11 @@
       "by": "Noah"
     },
     "tcg-86860": {
-      "MP": 5,
-      "updatedAt": "2026-11-09T02:16:57.861Z",
+      "MP": 4.44,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T20:25:14.360Z",
       "by": "Noah"
     },
     "tcg-45153-1st-edition": {
