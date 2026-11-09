@@ -332,6 +332,14 @@
       },
       "updatedAt": "2026-11-09T20:30:57.643Z",
       "by": "Noah"
+    },
+    "tcg-45138-1st-edition": {
+      "HP": 1.26,
+      "basis": {
+        "HP": "market"
+      },
+      "updatedAt": "2026-11-09T20:31:31.445Z",
+      "by": "Noah"
     }
   }
 }
