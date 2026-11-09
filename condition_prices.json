@@ -9,8 +9,11 @@
       "by": "Noah"
     },
     "tcg-44419-unlimited-holofoil": {
-      "HP": 8,
-      "updatedAt": "2026-11-08T03:25:59.356Z",
+      "HP": 8.24,
+      "basis": {
+        "HP": "market"
+      },
+      "updatedAt": "2026-11-09T20:10:16.914Z",
       "by": "Noah"
     },
     "tcg-125253": {
