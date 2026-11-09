@@ -137,8 +137,11 @@
       "by": "Noah"
     },
     "sm12-165": {
-      "LP": 27,
-      "updatedAt": "2026-11-09T02:13:09.486Z",
+      "LP": 26.93,
+      "basis": {
+        "LP": "market"
+      },
+      "updatedAt": "2026-11-09T20:13:58.176Z",
       "by": "Noah"
     },
     "tcg-601109-1st-edition-holofoil": {
