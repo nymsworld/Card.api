@@ -262,7 +262,10 @@
     },
     "tcg-603733-1st-edition": {
       "DMG": 3,
-      "updatedAt": "2026-11-09T02:57:40.255Z",
+      "basis": {
+        "DMG": "market"
+      },
+      "updatedAt": "2026-11-09T20:21:01.279Z",
       "by": "Noah"
     },
     "tcg-45159-1st-edition": {
