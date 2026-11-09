@@ -161,7 +161,10 @@
     },
     "tcg-601109-1st-edition-holofoil": {
       "LP": 11,
-      "updatedAt": "2026-11-09T02:16:23.478Z",
+      "basis": {
+        "LP": "market"
+      },
+      "updatedAt": "2026-11-09T20:23:48.269Z",
       "by": "Noah"
     },
     "tcg-86860": {
