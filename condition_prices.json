@@ -380,6 +380,14 @@
       },
       "updatedAt": "2026-11-09T21:03:53.469Z",
       "by": "Noah"
+    },
+    "tcg-84204-unlimited": {
+      "LP": 2.2,
+      "basis": {
+        "LP": "market"
+      },
+      "updatedAt": "2026-11-09T21:04:15.983Z",
+      "by": "Noah"
     }
   }
 }
