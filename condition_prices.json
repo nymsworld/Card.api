@@ -232,8 +232,11 @@
       "by": "Noah"
     },
     "tcg-88530-unlimited": {
-      "DMG": 6,
-      "updatedAt": "2026-11-09T02:56:07.249Z",
+      "DMG": 6.17,
+      "basis": {
+        "DMG": "market"
+      },
+      "updatedAt": "2026-11-09T20:18:33.562Z",
       "by": "Noah"
     },
     "tcg-619077": {
