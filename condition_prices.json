@@ -142,8 +142,11 @@
       "by": "Noah"
     },
     "sv3pt5-172": {
-      "LP": 14,
-      "updatedAt": "2026-11-09T01:10:40.197Z",
+      "LP": 13.04,
+      "basis": {
+        "LP": "market"
+      },
+      "updatedAt": "2026-11-09T20:28:59.365Z",
       "by": "Noah"
     },
     "tcg-45154-1st-edition": {
