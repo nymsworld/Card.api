@@ -372,6 +372,14 @@
       },
       "updatedAt": "2026-11-09T21:03:38.366Z",
       "by": "Noah"
+    },
+    "tcg-84645-unlimited": {
+      "LP": 3.39,
+      "basis": {
+        "LP": "market"
+      },
+      "updatedAt": "2026-11-09T21:03:53.469Z",
+      "by": "Noah"
     }
   }
 }
