@@ -358,11 +358,11 @@
       "by": "Noah"
     },
     "tcg-44457-1st-edition": {
-      "MP": 1.66,
+      "HP": 1.66,
       "basis": {
-        "MP": "market"
+        "HP": "market"
       },
-      "updatedAt": "2026-11-09T21:01:33.019Z",
+      "updatedAt": "2026-11-09T21:03:19.929Z",
       "by": "Noah"
     }
   }
