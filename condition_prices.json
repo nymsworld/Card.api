@@ -356,6 +356,14 @@
       },
       "updatedAt": "2026-11-09T21:00:57.638Z",
       "by": "Noah"
+    },
+    "tcg-44457-1st-edition": {
+      "MP": 1.66,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T21:01:33.019Z",
+      "by": "Noah"
     }
   }
 }
