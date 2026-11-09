@@ -258,8 +258,11 @@
       "by": "Noah"
     },
     "tcg-619077": {
-      "LP": 10,
-      "updatedAt": "2026-11-09T02:56:22.253Z",
+      "LP": 9.66,
+      "basis": {
+        "LP": "market"
+      },
+      "updatedAt": "2026-11-09T20:26:27.295Z",
       "by": "Noah"
     },
     "tcg-44445-1st-edition": {
