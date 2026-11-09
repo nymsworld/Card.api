@@ -75,8 +75,11 @@
       "by": "Noah"
     },
     "tcg-124121": {
-      "MP": 20,
-      "updatedAt": "2026-11-07T21:40:44.811Z",
+      "MP": 20.13,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T20:14:24.980Z",
       "by": "Noah"
     },
     "tcg-95928-reverse": {
