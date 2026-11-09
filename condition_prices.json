@@ -144,8 +144,11 @@
       "by": "Noah"
     },
     "tcg-45154-1st-edition": {
-      "MP": 4,
-      "updatedAt": "2026-11-09T02:12:49.378Z",
+      "MP": 3.88,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T20:19:08.724Z",
       "by": "Noah"
     },
     "sm12-165": {
