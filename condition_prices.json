@@ -1,8 +1,11 @@
 {
   "prices": {
     "tcg-117812": {
-      "HP": 16,
-      "updatedAt": "2026-11-08T03:26:16.314Z",
+      "HP": 16.56,
+      "basis": {
+        "HP": "market"
+      },
+      "updatedAt": "2026-11-09T20:09:21.871Z",
       "by": "Noah"
     },
     "tcg-44419-unlimited-holofoil": {
