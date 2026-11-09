@@ -266,8 +266,11 @@
       "by": "Noah"
     },
     "tcg-45159-1st-edition": {
-      "MP": 2,
-      "updatedAt": "2026-11-09T02:58:03.034Z",
+      "MP": 1.81,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T20:20:34.614Z",
       "by": "Noah"
     }
   }
