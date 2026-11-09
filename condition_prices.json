@@ -396,6 +396,14 @@
       },
       "updatedAt": "2026-11-09T21:04:45.125Z",
       "by": "Noah"
+    },
+    "tcg-89180-reverse": {
+      "MP": 3.19,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T21:05:11.549Z",
+      "by": "Noah"
     }
   }
 }
