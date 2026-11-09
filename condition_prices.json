@@ -460,6 +460,14 @@
       },
       "updatedAt": "2026-11-09T21:07:45.835Z",
       "by": "Noah"
+    },
+    "tcg-83987-unlimited": {
+      "MP": 1.11,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T21:08:03.617Z",
+      "by": "Noah"
     }
   }
 }
