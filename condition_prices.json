@@ -256,8 +256,11 @@
       "by": "Noah"
     },
     "tcg-88890-unlimited": {
-      "MP": 5,
-      "updatedAt": "2026-11-09T02:56:57.315Z",
+      "MP": 4.47,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T20:21:46.208Z",
       "by": "Noah"
     },
     "tcg-603733-1st-edition": {
