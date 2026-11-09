@@ -444,6 +444,14 @@
       },
       "updatedAt": "2026-11-09T21:07:00.915Z",
       "by": "Noah"
+    },
+    "tcg-45164-1st-edition": {
+      "MP": 0.98,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T21:07:21.598Z",
+      "by": "Noah"
     }
   }
 }
