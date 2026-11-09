@@ -183,8 +183,11 @@
       "by": "Noah"
     },
     "tcg-44422-unlimited-holofoil": {
-      "MP": 5,
-      "updatedAt": "2026-11-09T02:28:27.669Z",
+      "MP": 4.19,
+      "basis": {
+        "MP": "market"
+      },
+      "updatedAt": "2026-11-09T20:24:14.487Z",
       "by": "Noah"
     },
     "tcg-89484-1st-edition": {
