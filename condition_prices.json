@@ -251,8 +251,11 @@
       "by": "Noah"
     },
     "tcg-44445-1st-edition": {
-      "HP": 5,
-      "updatedAt": "2026-11-09T02:56:43.272Z",
+      "HP": 5.08,
+      "basis": {
+        "HP": "market"
+      },
+      "updatedAt": "2026-11-09T20:22:37.810Z",
       "by": "Noah"
     },
     "tcg-88890-unlimited": {
