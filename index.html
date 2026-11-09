@@ -1175,7 +1175,8 @@
     }
 
     // Condition prices, each { prices: { cardId: { LP: 210, DMG: 37, ... } } }:
-    //   condition_prices.json: set by staff in the shop app -> card.conditionPrices (store prices)
+    //   condition_prices.json: set by staff in the shop app -> card.conditionPrices (store prices; a code marked
+    //     basis[code] = 'market' is a market price staff typed, priced with the shop's rules where it's shown)
     //   condition_market.json: TCGplayer market by condition, fetched weekly -> card.conditionMarket,
     //     and when it was fetched -> card.conditionMarketAt
     // Without them, cards over CONDITION_GUESS_MAX just show "Ask staff" below Near Mint.
@@ -1424,7 +1425,13 @@
     function conditionPrice(card, condition) {
       var source = conditionSource(card, condition);
       if (source === 'nm') return Number(card.price) || 0;
-      if (source === 'staff') return Number(card.conditionPrices[onePrice(card) ? 'price' : condition && condition.percent !== 100 ? condition.code : 'NM']);
+      if (source === 'staff') {
+        // A staff price typed as a market price (basis 'market', owner's request) goes through the store's price
+        // rules each time, so it follows rule changes; older ones and exact store prices are used as they are
+        var code = onePrice(card) ? 'price' : condition && condition.percent !== 100 ? condition.code : 'NM';
+        var staff = Number(card.conditionPrices[code]);
+        return card.conditionPrices.basis && card.conditionPrices.basis[code] === 'market' ? storePrice(staff, card) : staff;
+      }
       if (source === 'market') return storePrice(card.conditionMarket[condition.code], card);
       if (source === 'percent') return storePrice(card.rawMarket * condition.percent / 100, card);
       return null;
