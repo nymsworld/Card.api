@@ -17,7 +17,7 @@ on:
     - cron: '35 8 * * *'   # part 7: every Pokémon sealed product (English and Japanese)
     - cron: '0 9 * * *'    # part 8: every card in Misc. Cards & Products + whole promo sets (McDonald's, BK, Trick or Trade, POP, Rumble, WoTC)
     - cron: '25 9 * * *'   # part 9: every Magic sealed product
-    - cron: '50 9 * * *'   # part 10: every card in each Pokémon set already in the database (last: sees the others' cards)
+    - cron: '50 9 * * *'   # part 10: every card in every Pokémon set, English and Japanese (last: sees the others' cards)
   # Allows you to click a button and run it manually whenever you want
   workflow_dispatch:
     inputs:
