@@ -225,7 +225,10 @@
     },
     "tcg-607954": {
       "DMG": 8,
-      "updatedAt": "2026-11-09T02:55:50.347Z",
+      "basis": {
+        "DMG": "market"
+      },
+      "updatedAt": "2026-11-09T20:18:05.256Z",
       "by": "Noah"
     },
     "tcg-88530-unlimited": {
