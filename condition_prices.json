@@ -556,6 +556,14 @@
       },
       "updatedAt": "2026-11-11T06:31:33.787Z",
       "by": "Noah"
+    },
+    "tcg-175383-reverse": {
+      "LP": 5.03,
+      "basis": {
+        "LP": "market"
+      },
+      "updatedAt": "2026-11-11T06:32:18.301Z",
+      "by": "Noah"
     }
   }
 }
