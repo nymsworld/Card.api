@@ -564,6 +564,20 @@
       },
       "updatedAt": "2026-11-11T06:32:18.301Z",
       "by": "Noah"
+    },
+    "pl1-14": {
+      "LP": 17.33,
+      "MP": 11.4,
+      "HP": 7.62,
+      "DMG": 5.55,
+      "basis": {
+        "LP": "market",
+        "MP": "market",
+        "HP": "market",
+        "DMG": "market"
+      },
+      "updatedAt": "2026-11-11T06:58:43.325Z",
+      "by": "Noah"
     }
   }
 }
