@@ -1420,6 +1420,14 @@
       },
       "updatedAt": "2026-11-14T18:30:15.024Z",
       "by": "Noah"
+    },
+    "tcg-85839-unlimited": {
+      "DMG": 1.51,
+      "basis": {
+        "DMG": "market"
+      },
+      "updatedAt": "2026-11-14T18:31:16.293Z",
+      "by": "Noah"
     }
   }
 }
