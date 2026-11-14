@@ -1338,10 +1338,21 @@
       return String(card.rarity || '').trim().toLowerCase() === 'ace spec rare';
     }
 
+    // A card the ex floor covers: a regular modern ex card or a promo version of one (lowercase "ex": promo set or
+    // rarity, Prize Pack, Miscellaneous, stamped), not overnumbered, Jumbo or sealed. Must match exCard in the shop
+    // app's lib/price-rules.js.
+    function exCard(card) {
+      if (doubleRareEx(card)) return true;
+      if (!/\bex\b/.test(card.name || '') || card.overnumbered || card.sealed) return false;
+      if (card.group === 'jumbo' || /jumbo/i.test((card.setName || '') + ' ' + card.name)) return false;
+      return /promo|prize pack|miscellaneous/i.test(card.setName || '') || /stamp/i.test(card.name) ||
+        /^(promo|single)$/i.test(String(card.rarity || '').replace(/\s+reverse holo$/i, '').trim());
+    }
+
     // The ex or ACE SPEC floor for this card, or null. Must match cardFloor in the shop app's lib/price-rules.js.
     function cardFloor(r, card) {
       if (!card) return null;
-      if (r.exFloor != null && doubleRareEx(card)) return Number(r.exFloor) || 0;
+      if (r.exFloor != null && exCard(card)) return Number(r.exFloor) || 0;
       if (r.aceFloor != null && aceSpec(card)) return Number(r.aceFloor) || 0;
       return null;
     }
