@@ -1428,6 +1428,14 @@
       },
       "updatedAt": "2026-11-14T18:31:16.293Z",
       "by": "Noah"
+    },
+    "tcg-89233-1st-edition": {
+      "DMG": 3.86,
+      "basis": {
+        "DMG": "market"
+      },
+      "updatedAt": "2026-11-14T18:34:06.025Z",
+      "by": "Noah"
     }
   }
 }
