@@ -1386,6 +1386,14 @@
       },
       "updatedAt": "2026-11-14T18:24:12.318Z",
       "by": "Noah"
+    },
+    "base3-23": {
+      "DMG": 1.1,
+      "basis": {
+        "DMG": "market"
+      },
+      "updatedAt": "2026-11-14T18:25:39.084Z",
+      "by": "Noah"
     }
   }
 }
