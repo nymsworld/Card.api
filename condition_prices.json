@@ -551,10 +551,12 @@
     },
     "tcg-84671": {
       "HP": 5.93,
+      "DMG": 2.46,
       "basis": {
-        "HP": "market"
+        "HP": "market",
+        "DMG": "market"
       },
-      "updatedAt": "2026-11-11T06:31:33.787Z",
+      "updatedAt": "2026-11-14T18:27:20.051Z",
       "by": "Noah"
     },
     "tcg-175383-reverse": {
