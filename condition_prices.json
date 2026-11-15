@@ -1520,9 +1520,9 @@
     "base2-2": {
       "HP": 10.58,
       "basis": {
-        "HP": "store"
+        "HP": "market"
       },
-      "updatedAt": "2026-11-15T03:44:43.558Z",
+      "updatedAt": "2026-11-15T03:51:44.848Z",
       "by": "Noah"
     },
     "tcg-201355": {
