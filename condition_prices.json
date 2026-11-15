@@ -1536,9 +1536,9 @@
     "tcg-87785": {
       "MP": 10.14,
       "basis": {
-        "MP": "store"
+        "MP": "market"
       },
-      "updatedAt": "2026-11-15T03:46:54.833Z",
+      "updatedAt": "2026-11-15T03:51:26.117Z",
       "by": "Noah"
     },
     "base4-5": {
