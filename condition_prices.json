@@ -1552,9 +1552,9 @@
     "tcg-113684": {
       "LP": 2.3,
       "basis": {
-        "LP": "store"
+        "LP": "market"
       },
-      "updatedAt": "2026-11-15T03:47:38.375Z",
+      "updatedAt": "2026-11-15T03:51:54.488Z",
       "by": "Noah"
     }
   }
