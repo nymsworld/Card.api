@@ -1564,6 +1564,16 @@
       },
       "updatedAt": "2026-11-15T04:17:47.455Z",
       "by": "Noah"
+    },
+    "base1-10": {
+      "MP": 24.32,
+      "HP": 21.3,
+      "basis": {
+        "MP": "market",
+        "HP": "market"
+      },
+      "updatedAt": "2026-11-15T04:18:59.084Z",
+      "by": "Noah"
     }
   }
 }
