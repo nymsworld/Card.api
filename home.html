@@ -186,13 +186,13 @@
     }
     .flip:active { cursor: grabbing; }
     .flip:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; border-radius: 14px; }
-    .flip-inner { position: relative; display: block; aspect-ratio: 576 / 728; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .flip-inner { position: relative; display: block; aspect-ratio: var(--ar, 540 / 711); transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
     .flip.dragging .flip-inner { transition: none; }
     .flip-face {
-      position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 14px; overflow: hidden; background: #000;
-      backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 14px 30px rgba(20, 10, 10, 0.22);
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
     }
-    .flip-face img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+    .flip-face img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; filter: drop-shadow(0 10px 14px rgba(20, 10, 10, 0.25)); }
     .flip-back { transform: rotateY(180deg); }
     .flip-wrap figcaption { margin-top: 12px; }
     .flip-wrap figcaption strong { display: block; font-size: 1.02rem; }
@@ -469,27 +469,27 @@
       <div class="flip-grid">
         <figure class="flip-wrap">
           <button type="button" class="flip" aria-pressed="false" aria-label="Near Mint · Lightly Played: show the back">
-            <span class="flip-inner">
-              <span class="flip-face flip-front"><img src="/cond-img/nm-lp-front.webp" width="576" height="728" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, front" decoding="async"></span>
-              <span class="flip-face flip-back"><img src="/cond-img/nm-lp-back.webp" width="576" height="728" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, back" decoding="async"></span>
+            <span class="flip-inner" style="--ar: 524 / 716">
+              <span class="flip-face flip-front"><img src="/cond-img/nm-lp-front.webp" width="524" height="716" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, front" decoding="async"></span>
+              <span class="flip-face flip-back"><img src="/cond-img/nm-lp-back.webp" width="524" height="716" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, back" decoding="async"></span>
             </span>
           </button>
           <figcaption><strong>Near Mint · Lightly Played</strong><span>Top half Near Mint, bottom half Lightly Played</span></figcaption>
         </figure>
         <figure class="flip-wrap">
           <button type="button" class="flip" aria-pressed="false" aria-label="Moderately Played · Heavily Played: show the back">
-            <span class="flip-inner">
-              <span class="flip-face flip-front"><img src="/cond-img/mp-hp-front.webp" width="576" height="728" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, front" decoding="async"></span>
-              <span class="flip-face flip-back"><img src="/cond-img/mp-hp-back.webp" width="576" height="728" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, back" decoding="async"></span>
+            <span class="flip-inner" style="--ar: 540 / 711">
+              <span class="flip-face flip-front"><img src="/cond-img/mp-hp-front.webp" width="540" height="711" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, front" decoding="async"></span>
+              <span class="flip-face flip-back"><img src="/cond-img/mp-hp-back.webp" width="540" height="711" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, back" decoding="async"></span>
             </span>
           </button>
           <figcaption><strong>Moderately Played · Heavily Played</strong><span>Top half Moderately Played, bottom half Heavily Played</span></figcaption>
         </figure>
         <figure class="flip-wrap">
           <button type="button" class="flip" aria-pressed="false" aria-label="Damaged: show the back">
-            <span class="flip-inner">
-              <span class="flip-face flip-front"><img src="/cond-img/dmg-front.webp" width="576" height="728" alt="Example Damaged card, with close-ups of the worn corners and crease, front" decoding="async"></span>
-              <span class="flip-face flip-back"><img src="/cond-img/dmg-back.webp" width="576" height="728" alt="Example Damaged card, with close-ups of the worn corners and crease, back" decoding="async"></span>
+            <span class="flip-inner" style="--ar: 541 / 705">
+              <span class="flip-face flip-front"><img src="/cond-img/dmg-front.webp" width="541" height="705" alt="Example Damaged card, with close-ups of the worn corners and crease, front" decoding="async"></span>
+              <span class="flip-face flip-back"><img src="/cond-img/dmg-back.webp" width="541" height="705" alt="Example Damaged card, with close-ups of the worn corners and crease, back" decoding="async"></span>
             </span>
           </button>
           <figcaption><strong>Damaged</strong><span>The whole card</span></figcaption>
