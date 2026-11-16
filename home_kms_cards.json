@@ -1,6 +1,12 @@
 {
- "updatedAt": "2026-11-16T18:37:06.613Z",
- "featured": null,
+ "updatedAt": "2026-11-16T18:38:08.218Z",
+ "featured": {
+  "kind": "item",
+  "id": "item-mvomekeld1e",
+  "name": "Eeveelution B Side Sticker",
+  "price": 8,
+  "picture": "item-pictures/kms/mvsh1frfwyy7f7.webp"
+ },
  "priceJump": [
   {
    "kind": "card",
