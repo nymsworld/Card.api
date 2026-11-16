@@ -1,3 +1,6 @@
 # Python's compiled files (made when update_prices.py is run or checked locally)
 __pycache__/
 *.pyc
+
+# Cloudflare's local Pages runner (wrangler pages dev) keeps its files here
+.wrangler/

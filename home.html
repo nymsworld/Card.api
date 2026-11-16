@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kanto Misplay Society</title>
+  <meta name="description" content="Kanto Misplay Society: Pokémon singles, packs and supplies. Check a price, browse our stock, find our next show.">
+  <link rel="icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* Landing page (preview). Colors from the KMS logo (#e71516) and the price page. */
+    :root {
+      --red: #e71516;
+      --red-dark: #8a1219;
+      --ink: #121214;
+      --text: #1d1d22;
+      --muted: #5d5f68;
+      --bg: #ffffff;
+      --bg-soft: #f3f4f6;
+      --tile: #e9ecf0;
+      --border: #dfe2e7;
+      --nav-top: #4a4f58;
+      --nav-bottom: #15171c;
+      --shadow: 0 10px 24px rgba(20, 10, 10, 0.18);
+      --panel-top: #2a2c33;
+      --panel-bottom: #121317;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.4;
+    }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* Header: the logo's red over white, the wordmark sitting on the line between them */
+    /* home-header.png is the logo's wordmark cut out (736 x 270); its red / white line was 51.85% down,
+       so the bands split there: padding + width x 270/736 x 0.5185 */
+    .masthead {
+      --w: min(300px, 62vw);
+      --pad: 14px;
+      position: relative;
+      padding: var(--pad) 0;
+      background: linear-gradient(to bottom, var(--red) calc(var(--pad) + var(--w) * 0.1902), #fff calc(var(--pad) + var(--w) * 0.1902));
+      border-bottom: 1px solid #ece6dc;
+    }
+    .masthead::before {
+      content: ""; position: absolute; inset: 0 0 auto 0; height: 18px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0));
+      pointer-events: none; z-index: 2;
+    }
+    .masthead::after {
+      content: ""; position: absolute; inset: auto 0 0 0; height: 16px;
+      background: linear-gradient(to top, rgba(214, 200, 170, 0.35), rgba(255, 255, 255, 0));
+      pointer-events: none; z-index: 2;
+    }
+    .masthead a { display: block; width: var(--w); margin: 0 auto; position: relative; z-index: 1; }
+    .masthead img { width: 100%; height: auto; }
+
+    /* Menu bar */
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      background: linear-gradient(to bottom, var(--nav-top), var(--nav-bottom));
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 16px;
+      display: flex; align-items: center; gap: 4px; min-height: 48px;
+    }
+    .nav-links { display: flex; flex: 1; justify-content: space-between; gap: 2px; list-style: none; margin: 0; padding: 0; }
+    .nav-links a {
+      display: block; padding: 12px 10px; text-decoration: none;
+      font-weight: 600; font-size: 0.98rem; white-space: nowrap; border-radius: 8px;
+    }
+    .nav-links a:hover, .nav-links a:focus-visible { background: rgba(255, 255, 255, 0.12); outline: none; }
+    .nav-search { position: relative; margin-left: 12px; flex: 0 0 220px; }
+    .nav-search input {
+      width: 100%; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1); color: #fff; font: inherit; font-size: 0.92rem;
+      padding: 8px 14px 8px 36px;
+    }
+    .nav-search input::placeholder { color: rgba(255, 255, 255, 0.75); font-style: italic; }
+    .nav-search input:focus { outline: none; background: rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.55); }
+    .nav-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; opacity: 0.8; }
+    .menu-btn {
+      display: none; background: none; border: 0; color: #fff; padding: 10px; margin-left: -8px; cursor: pointer;
+      border-radius: 8px; font: inherit; font-weight: 700; align-items: center; gap: 8px;
+    }
+    .menu-btn svg { width: 22px; height: 22px; }
+
+    /* Dropdowns: a button opens a white panel under it (hover or click on computers, tap on phones) */
+    .nav-links > li { position: relative; }
+    .nav-top {
+      display: flex; align-items: center; gap: 5px; padding: 12px 10px; border: 0; border-radius: 8px;
+      background: none; color: #fff; font: inherit; font-weight: 600; font-size: 0.98rem; white-space: nowrap; cursor: pointer;
+    }
+    .nav-top:hover, .nav-top:focus-visible, .open > .nav-top { background: rgba(255, 255, 255, 0.12); outline: none; }
+    .nav-top svg { width: 12px; height: 12px; opacity: 0.8; transition: transform 0.15s ease; }
+    .open > .nav-top svg { transform: rotate(180deg); }
+    .nav-menu { display: none; position: absolute; top: 100%; left: 0; padding-top: 6px; z-index: 30; }
+    .nav-links > li:nth-last-child(-n+3) .nav-menu { left: auto; right: 0; }
+    .nav-menu-box {
+      min-width: 250px; max-width: 320px; padding: 8px; border-radius: 14px; background: #fff; color: var(--text);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25); border-top: 3px solid var(--red);
+    }
+    .open > .nav-menu { display: block; }
+    @media (hover: hover) and (min-width: 981px) {
+      .has-menu:hover > .nav-menu { display: block; }
+    }
+    .nav-menu a, .nav-menu button.menu-link {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left;
+      padding: 10px 12px; border: 0; border-radius: 8px; background: none; color: var(--text);
+      font: inherit; font-size: 0.93rem; font-weight: 600; text-decoration: none; white-space: normal; cursor: pointer;
+    }
+    .nav-menu a:hover, .nav-menu a:focus-visible, .nav-menu button.menu-link:hover, .nav-menu button.menu-link:focus-visible { background: var(--bg-soft); outline: none; }
+    .menu-count { flex: 0 0 auto; font-size: 0.75rem; font-weight: 800; color: var(--muted); background: var(--tile); border-radius: 999px; padding: 2px 8px; }
+    .menu-sub { display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); }
+    .menu-head { padding: 8px 12px 4px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .menu-sep { height: 1px; margin: 6px 4px; background: var(--border); }
+    .menu-note { padding: 10px 12px; color: var(--muted); font-size: 0.88rem; }
+    .menu-date { flex: 0 0 auto; width: 44px; text-align: center; border-radius: 8px; overflow: hidden; background: var(--bg-soft); font-weight: 900; line-height: 1.1; }
+    .menu-date small { display: block; background: var(--red); color: #fff; font-size: 0.6rem; letter-spacing: 0.06em; padding: 2px 0; }
+    .menu-date span { display: block; padding: 3px 0; font-size: 1rem; }
+    .menu-show { flex: 1; min-width: 0; }
+    .nav-menu a.menu-show-row { justify-content: flex-start; }
+
+    /* Resources' guides */
+    dialog.guide {
+      width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0; border: 0; border-radius: 18px;
+      color: var(--text); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    }
+    dialog.guide::backdrop { background: rgba(10, 10, 12, 0.55); }
+    .guide-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; color: #fff;
+      background: linear-gradient(to bottom, var(--nav-top), var(--nav-bottom)); border-bottom: 3px solid var(--red);
+    }
+    .guide-head h2 { margin: 0; font-size: 1.15rem; font-weight: 800; }
+    .guide-close { width: 36px; height: 36px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 1.4rem; cursor: pointer; }
+    .guide-body { padding: 8px 20px 20px; }
+    .guide-body p { color: var(--muted); }
+    .cond-row { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .cond-row:last-child { border-bottom: 0; }
+    .cond-code { align-self: start; text-align: center; font-weight: 900; color: #fff; background: var(--ink); border-radius: 8px; padding: 6px 0; }
+    .cond-row strong { display: block; }
+    .cond-row span { color: var(--muted); font-size: 0.92rem; }
+
+    main { max-width: 1280px; margin: 0 auto; padding: 0 16px; }
+
+    /* Check a price */
+    .scan {
+      margin: 22px 0 6px; padding: 18px 22px;
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+      background: var(--bg-soft); border: 1px solid var(--border); border-radius: 18px;
+    }
+    .scan-icon {
+      flex: 0 0 auto; width: 54px; height: 54px; border-radius: 14px; background: var(--red); color: #fff;
+      box-shadow: 0 4px 12px rgba(231, 21, 22, 0.3);
+      display: grid; place-items: center;
+    }
+    .scan-icon svg { width: 30px; height: 30px; }
+    .scan-text { flex: 1 1 260px; }
+    .scan-text h2 { margin: 0; font-size: 1.2rem; font-weight: 800; }
+    .scan-text p { margin: 2px 0 0; color: var(--muted); font-size: 0.95rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; border-radius: 999px; border: 0; cursor: pointer;
+      font: inherit; font-weight: 800; text-decoration: none; white-space: nowrap;
+    }
+    .btn-red { background: var(--red); color: #fff; box-shadow: 0 4px 12px rgba(231, 21, 22, 0.3); }
+    .btn-red:hover { background: #cc1012; }
+    .btn-ghost { background: #fff; color: var(--ink); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: #b9bdc6; }
+    .scan-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* The three boxes: dark, so card art and prices stand out; the shop red as the accent */
+    .boxes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin: 30px 0 8px; }
+    .box h2 {
+      margin: 0 0 10px; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.01em;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .box h2::before { content: ""; width: 4px; height: 1.1em; border-radius: 2px; background: var(--red); }
+    .panel, .show {
+      position: relative; overflow: hidden; height: 250px; border-radius: 20px; color: #fff; text-decoration: none;
+      background:
+        radial-gradient(120% 90% at 0% 100%, rgba(231, 21, 22, 0.45), rgba(231, 21, 22, 0) 60%),
+        linear-gradient(160deg, var(--panel-top), var(--panel-bottom));
+      box-shadow: var(--shadow);
+    }
+    .panel {
+      display: grid; grid-template-columns: 42% 1fr; gap: 16px; padding: 16px 18px 16px 14px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    a.panel:hover, a.panel:focus-visible { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(20, 10, 10, 0.28); outline: none; }
+    .panel-pic { display: flex; align-items: center; justify-content: center; min-height: 0; }
+    .panel-pic img {
+      max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4.5%/3.2%;
+      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.5));
+      transition: transform 0.2s ease;
+    }
+    a.panel:hover .panel-pic img { transform: rotate(-2deg) scale(1.03); }
+    .panel-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding-top: 2px; }
+    .panel-name { font-weight: 800; font-size: 1.12rem; line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .panel-sub { color: rgba(255, 255, 255, 0.68); font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .panel-price { margin-top: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .panel-price strong { font-size: 1.7rem; font-weight: 900; line-height: 1; }
+    .chip { font-size: clamp(0.62rem, 2.6vw, 0.74rem); white-space: nowrap; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: rgba(255, 255, 255, 0.14); }
+    .chip-up { background: rgba(46, 204, 113, 0.18); color: #7af0a8; }
+    .panel-link {
+      margin-top: 10px; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #fff; font-weight: 700; font-size: 0.8rem; text-decoration: none; white-space: nowrap;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .panel-link:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.7); }
+    .show { padding: 22px; display: flex; flex-direction: column; gap: 6px; }
+    .show-date { display: flex; align-items: center; gap: 14px; }
+    .show-cal {
+      flex: 0 0 auto; width: 64px; border-radius: 12px; overflow: hidden; background: #fff; color: var(--ink); text-align: center;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+    }
+    .show-cal span { display: block; background: var(--red); color: #fff; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; padding: 3px 0; }
+    .show-cal strong { display: block; font-size: 1.7rem; font-weight: 900; padding: 2px 0 4px; }
+    .show-name { font-size: 1.22rem; font-weight: 800; line-height: 1.2; }
+    .show-when { color: rgba(255, 255, 255, 0.75); font-size: 0.88rem; margin-top: 2px; }
+    .show-where { margin-top: auto; font-size: 0.92rem; color: rgba(255, 255, 255, 0.75); }
+    .show-where strong { display: block; color: #fff; font-size: 1rem; }
+    .empty { margin: auto; text-align: center; color: rgba(255, 255, 255, 0.85); font-weight: 600; }
+    .preview-tag {
+      display: inline-block; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.04em; vertical-align: middle;
+      background: #ffd95a; color: #4a3900; border-radius: 999px; padding: 2px 8px; margin-left: 6px;
+    }
+
+    /* Newest IR / SIR row */
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 34px 0 12px; flex-wrap: wrap; }
+    .section-head h2 { margin: 0; font-size: 1.35rem; font-weight: 800; }
+    .section-head a { font-weight: 700; color: var(--red); text-decoration: none; }
+    .rail {
+      display: grid; grid-auto-flow: column; grid-auto-columns: 172px; gap: 16px;
+      overflow-x: auto; padding: 4px 2px 14px; scroll-snap-type: x mandatory; scrollbar-width: thin;
+    }
+    .tile { scroll-snap-align: start; text-decoration: none; color: var(--text); }
+    .tile-pic {
+      aspect-ratio: 63 / 88; border-radius: 10px; background: var(--tile); overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); transition: transform 0.15s ease;
+    }
+    .tile:hover .tile-pic { transform: translateY(-3px); }
+    .tile-pic img { width: 100%; height: 100%; object-fit: cover; }
+    .tile-name { margin-top: 8px; font-weight: 700; font-size: 0.92rem; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tile-sub { color: var(--muted); font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tile-price { font-weight: 900; margin-top: 2px; }
+    .rarity { display: inline-block; font-size: 0.68rem; font-weight: 800; border-radius: 999px; padding: 2px 7px; margin-top: 4px; background: #f2e9ff; color: #5a2a9c; }
+    .rarity.sir { background: linear-gradient(90deg, #ffe7a3, #ffc9e0, #c9e4ff); color: #3b2a00; }
+
+    /* Contact */
+    footer { margin-top: 40px; background: linear-gradient(to bottom, var(--nav-top), var(--nav-bottom)); color: #fff; }
+    .foot { max-width: 1280px; margin: 0 auto; padding: 28px 16px 22px; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 28px; }
+    .foot h3 { margin: 0 0 10px; font-size: 1rem; font-weight: 800; }
+    .foot p { margin: 0 0 6px; color: rgba(255, 255, 255, 0.8); font-size: 0.92rem; }
+    .foot a { text-decoration: none; }
+    .foot a:hover { text-decoration: underline; }
+    .socials { display: flex; gap: 10px; flex-wrap: wrap; }
+    .socials a {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1); font-weight: 600; font-size: 0.9rem;
+    }
+    .socials a:hover { background: rgba(255, 255, 255, 0.2); text-decoration: none; }
+    .socials svg { width: 16px; height: 16px; }
+    .foot-bottom {
+      max-width: 1280px; margin: 0 auto; padding: 14px 16px 22px; border-top: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 0.82rem; color: rgba(255, 255, 255, 0.65);
+    }
+    .foot-bottom a { color: rgba(255, 255, 255, 0.85); }
+
+    /* Tablets: boxes two across, the show box under them */
+    @media (max-width: 1100px) {
+      .nav-links a, .nav-top { padding: 12px 7px; font-size: 0.9rem; }
+      .nav-search { flex-basis: 170px; }
+    }
+    @media (max-width: 980px) {
+      .boxes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+      .boxes .box:last-child { grid-column: 1 / -1; }
+      .menu-btn { display: inline-flex; }
+      .nav-inner { flex-wrap: wrap; }
+      .nav-search { flex: 1 1 auto; margin-left: auto; max-width: 340px; }
+      .nav-links {
+        display: none; order: 3; flex-basis: 100%; flex-direction: column; padding: 4px 0 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .nav.open .nav-links { display: flex; }
+      .nav-links a, .nav-top { padding: 12px 8px; font-size: 1rem; width: 100%; justify-content: space-between; }
+      .nav-menu { position: static; padding: 0 0 6px 10px; }
+      .nav-menu-box { min-width: 0; max-width: none; background: rgba(255, 255, 255, 0.06); color: #fff; box-shadow: none; border-top: 0; }
+      .nav-menu a, .nav-menu button.menu-link { color: #fff; }
+      .nav-menu a:hover, .nav-menu button.menu-link:hover { background: rgba(255, 255, 255, 0.1); }
+      .menu-count, .menu-date { background: rgba(255, 255, 255, 0.12); color: #fff; }
+      .menu-sub, .menu-head, .menu-note { color: rgba(255, 255, 255, 0.7); }
+      .menu-sep { background: rgba(255, 255, 255, 0.15); }
+    }
+    /* Phones: one column */
+    @media (max-width: 640px) {
+      .boxes { grid-template-columns: minmax(0, 1fr); }
+      .panel, .show { height: 236px; }
+      .scan { padding: 16px; }
+      .scan-actions { width: 100%; }
+      .scan-actions .btn { flex: 1 1 auto; }
+      .foot { grid-template-columns: 1fr; gap: 20px; }
+      .rail { grid-auto-columns: 140px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <a href="/" aria-label="Kanto Misplay Society home"><img src="home-header.png" alt="KMS" width="736" height="270"></a>
+  </header>
+
+  <nav class="nav" id="nav" aria-label="Main">
+    <div class="nav-inner">
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        Menu
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-singles">TCG Singles <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
+          <div class="nav-menu" id="menu-singles"><div class="nav-menu-box" id="menuBox-singles"></div></div></li>
+        <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-supplies">Supplies <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
+          <div class="nav-menu" id="menu-supplies"><div class="nav-menu-box" id="menuBox-supplies"></div></div></li>
+        <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-packs">Packs <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
+          <div class="nav-menu" id="menu-packs"><div class="nav-menu-box" id="menuBox-packs"></div></div></li>
+        <li><a href="https://pricing.kantomisplay.cc/" data-scan>App</a></li>
+        <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-contact">Contact <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
+          <div class="nav-menu" id="menu-contact"><div class="nav-menu-box" id="menuBox-contact"></div></div></li>
+        <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-schedule">Schedule <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
+          <div class="nav-menu" id="menu-schedule"><div class="nav-menu-box" id="menuBox-schedule"></div></div></li>
+        <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-resources">Resources <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
+          <div class="nav-menu" id="menu-resources"><div class="nav-menu-box" id="menuBox-resources"></div></div></li>
+        <li><a href="#" data-tcgplayer>TCGplayer</a></li>
+      </ul>
+      <form class="nav-search" role="search" action="/stock" method="get">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" name="q" placeholder="Search" aria-label="Search our cards">
+      </form>
+    </div>
+  </nav>
+
+  <main>
+    <section class="scan" aria-label="Check a price">
+      <div class="scan-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><rect x="8" y="8" width="3" height="3"/><rect x="13" y="8" width="3" height="3"/><rect x="8" y="13" width="3" height="3"/><path d="M13 13h3v3"/></svg>
+      </div>
+      <div class="scan-text">
+        <h2>Check a price</h2>
+        <p>Scan the QR sticker on any of our cards for today's price, in every condition.</p>
+      </div>
+      <div class="scan-actions">
+        <a class="btn btn-red" href="https://pricing.kantomisplay.cc/" data-scan>Scan a sticker</a>
+        <a class="btn btn-ghost" href="/stock">Browse our stock</a>
+      </div>
+    </section>
+
+    <div class="boxes">
+      <section class="box" aria-labelledby="featuredHead">
+        <h2 id="featuredHead">Featured Item</h2>
+        <div id="featured"></div>
+      </section>
+      <section class="box" aria-labelledby="jumpHead">
+        <h2 id="jumpHead">Biggest Price Jump</h2>
+        <div id="jump"></div>
+      </section>
+      <section class="box" id="next-show" aria-labelledby="showHead">
+        <h2 id="showHead">Next Show</h2>
+        <div id="show"></div>
+      </section>
+    </div>
+
+    <div class="section-head">
+      <h2 id="newest-head">Newest Illustration Rares in stock</h2>
+      <a href="/stock?type=cards">See all our singles →</a>
+    </div>
+    <div class="rail" id="newest" aria-label="Newest Illustration Rares and Special Illustration Rares in stock"></div>
+  </main>
+
+  <footer id="contact">
+    <div class="foot">
+      <div>
+        <h3>Kanto Misplay Society</h3>
+        <p>Pokémon singles, packs and supplies at card shows around the area.</p>
+        <p>Find us at our <a href="#next-show">next show</a>, or get in touch.</p>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <p id="contactEmail"></p>
+        <p id="contactPhone"></p>
+        <p id="contactNone">Find us at our next show.</p>
+      </div>
+      <div id="followBox">
+        <h3>Follow us</h3>
+        <div class="socials" id="socials"></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> Kanto Misplay Society. Prices update every night.</span>
+      <a href="https://kms-staff.pages.dev/">Staff login</a>
+    </div>
+  </footer>
+
+  <dialog class="guide" id="guideConditions" aria-labelledby="guideConditionsTitle">
+    <div class="guide-head"><h2 id="guideConditionsTitle">Card condition guide</h2><button class="guide-close" data-close aria-label="Close">&times;</button></div>
+    <div class="guide-body">
+      <p>Every card we price is graded by hand. Here's what each condition means.</p>
+      <div class="cond-row"><div class="cond-code">NM</div><div><strong>Near Mint</strong><span>Looks fresh from the pack. At most a tiny speck or edge nick you'd have to look for.</span></div></div>
+      <div class="cond-row"><div class="cond-code">LP</div><div><strong>Lightly Played</strong><span>Light wear: a few small edge or corner marks or light scratches. No creases.</span></div></div>
+      <div class="cond-row"><div class="cond-code">MP</div><div><strong>Moderately Played</strong><span>Wear you can see right away: worn edges and corners, scratches, maybe a small crease.</span></div></div>
+      <div class="cond-row"><div class="cond-code">HP</div><div><strong>Heavily Played</strong><span>Heavy wear all over, with creases or bends, but still in one piece.</span></div></div>
+      <div class="cond-row"><div class="cond-code">DMG</div><div><strong>Damaged</strong><span>Tears, big creases, water damage, writing or missing pieces.</span></div></div>
+    </div>
+  </dialog>
+  <dialog class="guide" id="guidePrices" aria-labelledby="guidePricesTitle">
+    <div class="guide-head"><h2 id="guidePricesTitle">How our prices work</h2><button class="guide-close" data-close aria-label="Close">&times;</button></div>
+    <div class="guide-body">
+      <p>Our prices start from each card's TCGplayer market price, updated every night, and are rounded by our own price rules.</p>
+      <p>Played cards use TCGplayer's market price for that condition when there is one. When there isn't, our staff price the card by hand, and some show "Ask staff" until they do.</p>
+      <p>The QR sticker on every card opens its price for today, in every condition. Scan it with your phone's camera or at our table.</p>
+    </div>
+  </dialog>
+
+  <script>
+    (function () {
+      // Two files the shop app publishes (kms-app's app/lib/website-home.js): home_kms.json (the shop admin's
+      // choices: featured item, shows, contact, socials, TCGplayer store) and home_kms_cards.json (worked out from
+      // KMS stock: the featured item in full, the biggest price jump, the newest Illustration Rares). Read from raw
+      // GitHub like the price page's files (the app's commits skip a site rebuild); from this folder when testing locally.
+      var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+      var FILES = LOCAL ? '' : 'https://raw.githubusercontent.com/nymsworld/Card.api/main/';
+
+      var $ = function (id) { return document.getElementById(id); };
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      // Only plain https links from the files
+      function safeUrl(u) {
+        try { var x = new URL(String(u || '')); return x.protocol === 'https:' ? x.href : ''; } catch (e) { return ''; }
+      }
+      function money(n) { return n == null ? 'Ask staff' : '$' + Number(n).toFixed(2); }
+      function cardLink(c) {
+        if (c.kind === 'item') return '/stock?type=items';
+        return '/?id=' + encodeURIComponent(c.id) + (c.cond ? '&cond=' + encodeURIComponent(c.cond) : '');
+      }
+      function picture(c) {
+        if (c.kind === 'item') {
+          return /^item-pictures\/kms\/[a-z0-9]+\.(webp|jpg)$/.test(c.picture || '')
+            ? '<img loading="lazy" alt="' + esc(c.name) + '" src="' + FILES + esc(c.picture) + '">' : '';
+        }
+        var product = (String(c.tcgUrl || '').match(/product\/(\d+)/) || [])[1];
+        var tcg = product ? 'https://tcgplayer-cdn.tcgplayer.com/product/' + product + '_in_400x400.jpg' : '';
+        var src = safeUrl(c.image) || tcg;
+        if (!src) return '';
+        return '<img loading="lazy" alt="' + esc(c.name) + '" src="' + esc(src) + '"' +
+          (tcg && src !== tcg ? ' data-fallback="' + esc(tcg) + '"' : '') + '>';
+      }
+      function number(c) { return c.number ? '#' + c.number + (c.printedTotal ? '/' + c.printedTotal : '') : ''; }
+      var COND = { NM: 'Near Mint', LP: 'Lightly Played', MP: 'Moderately Played', HP: 'Heavily Played', DMG: 'Damaged' };
+
+      // The card's own TCGplayer page, like the price page's link (only https TCGplayer links)
+      function tcgLink(c) {
+        return /^https:\/\/(www\.)?tcgplayer\.com\//.test(c.tcgUrl || '') ? c.tcgUrl : '';
+      }
+      function cardPanel(c, chip) {
+        var tcg = tcgLink(c);
+        var subs = c.kind === 'item' ? [c.description || ''] :
+          [(c.setName || '') + ' ' + number(c), [COND[c.cond] || c.cond, c.rarity].filter(Boolean).join(' · ')];
+        return '<a class="panel" href="' + cardLink(c) + '">' +
+          '<div class="panel-pic">' + picture(c) + '</div>' +
+          '<div class="panel-info">' +
+            '<div class="panel-name">' + esc(c.name) + '</div>' +
+            subs.filter(Boolean).map(function (t) { return '<div class="panel-sub">' + esc(t) + '</div>'; }).join('') +
+            '<div class="panel-price"><strong>' + money(c.price) + '</strong>' + (chip || '') + '</div>' +
+            (tcg ? '<span class="panel-link" role="link" tabindex="0" data-href="' + esc(tcg) + '">TCGplayer ↗</span>' : '') +
+          '</div>' +
+        '</a>';
+      }
+      function empty(text) { return '<div class="show"><div class="empty">' + text + '</div></div>'; }
+
+      var data = { settings: null, cards: null };
+      function today() {
+        var d = new Date();
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      }
+
+      function render() {
+        var set = data.settings || {};
+        var cards = data.cards || {};
+        var loading = !data.cards;
+
+        // Featured: picked by the shop admin
+        $('featured').innerHTML = cards.featured ? cardPanel(cards.featured) : empty(loading ? 'Loading…' : 'Check back soon!');
+
+        // Biggest price jump in our stock this week
+        var j = (cards.priceJump || [])[0];
+        $('jump').innerHTML = j ? cardPanel(j, '<span class="chip chip-up">▲ $' + Number(j.change).toFixed(2) + ' (' + j.percent + '%) this week</span>')
+          : empty(loading ? 'Loading…' : 'No big moves this week');
+
+        // Next show
+        var shows = (set.shows || []).filter(function (s) { return s && s.date >= today(); })
+          .sort(function (a, b) { return (a.date + (a.start || '')).localeCompare(b.date + (b.start || '')); });
+        var s = shows[0];
+        if (s) {
+          var d = new Date(s.date + 'T12:00:00');
+          var link = safeUrl(s.link);
+          $('show').innerHTML = '<div class="show">' +
+            '<div class="show-date"><div class="show-cal"><span>' + d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase() +
+              '</span><strong>' + d.getDate() + '</strong></div>' +
+              '<div><div class="show-name">' + esc(s.name) + '</div>' +
+              '<div class="show-when">' + d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) +
+                (s.start ? ' · ' + time(s.start) + (s.end ? '–' + time(s.end) : '') : '') + '</div></div></div>' +
+            '<div class="show-where"><strong>' + esc(s.place || '') + '</strong>' + esc(s.address || '') + '</div>' +
+            (link ? '<a class="panel-link" href="' + esc(link) + '" target="_blank" rel="noopener">Show details ↗</a>' : '') +
+          '</div>';
+        } else {
+          $('show').innerHTML = empty(data.settings ? 'No shows on the calendar yet.<br>Check back soon!' : 'Loading…');
+        }
+
+        // Newest IR / SIR in stock
+        $('newest').innerHTML = (cards.newestArt || []).map(function (c) {
+          var sir = /Special/.test(c.rarity);
+          return '<a class="tile" href="' + cardLink(c) + '">' +
+            '<div class="tile-pic">' + picture(c) + '</div>' +
+            '<div class="tile-name">' + esc(c.name) + '</div>' +
+            '<div class="tile-sub">' + esc(c.setName) + ' ' + esc(number(c)) + '</div>' +
+            '<span class="rarity' + (sir ? ' sir' : '') + '">' + (sir ? 'SIR' : 'IR') + (/Art/.test(c.rarity) ? ' · JP' : '') + '</span>' +
+            '<div class="tile-price">' + money(c.price) + '</div>' +
+          '</a>';
+        }).join('') || '<p>' + (loading ? 'Loading…' : 'Check back soon!') + '</p>';
+
+        // Contact and socials
+        var contact = set.contact || {};
+        $('contactEmail').innerHTML = contact.email ? '<a href="mailto:' + esc(contact.email) + '">' + esc(contact.email) + '</a>' : '';
+        $('contactPhone').innerHTML = contact.phone ? '<a href="tel:' + esc(String(contact.phone).replace(/[^0-9+]/g, '')) + '">' + esc(contact.phone) + '</a>' : '';
+        $('contactNone').hidden = !!(contact.email || contact.phone);
+        var socials = (set.socials || []).filter(function (x) { return x && safeUrl(x.url) && NAMES[x.kind]; });
+        $('socials').innerHTML = socials.map(function (x) {
+          return '<a href="' + esc(safeUrl(x.url)) + '" target="_blank" rel="noopener">' + ICONS[x.kind] + esc(NAMES[x.kind]) + '</a>';
+        }).join('');
+        $('followBox').hidden = !socials.length;
+
+        // The menu's TCGplayer item: the shop's own TCGplayer store
+        var store = safeUrl(set.tcgplayerStore);
+        var storeLink = document.querySelector('[data-tcgplayer]');
+        storeLink.parentNode.hidden = !store;
+        if (store) { storeLink.href = store; storeLink.target = '_blank'; storeLink.rel = 'noopener'; }
+
+        drawMenus();
+
+        // Card pictures: TCGplayer's when the first one fails
+        Array.prototype.forEach.call(document.querySelectorAll('img[data-fallback]'), function (img) {
+          img.onerror = function () { img.onerror = null; img.src = img.getAttribute('data-fallback'); };
+        });
+      }
+      var ICONS = {
+        instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>',
+        facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8z"/></svg>',
+        tiktok: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.4 2.3 1.9 3.8 4 4v3.2a7.6 7.6 0 0 1-4-1.3V15a6 6 0 1 1-6-6v3.3A2.8 2.8 0 1 0 12.8 15V3H16z"/></svg>',
+        youtube: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1c.3-1.2.4-2.5.4-3.8s-.1-2.6-.4-3.8zM10 15V9l5.2 3L10 15z"/></svg>',
+        x: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg>',
+        discord: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 5.4A16.6 16.6 0 0 0 15.5 4l-.5 1a15.4 15.4 0 0 0-6 0l-.5-1a16.6 16.6 0 0 0-4.1 1.4C1.8 9.3 1.1 13.1 1.5 16.8a16.7 16.7 0 0 0 5 2.5l1.1-1.7a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.9 11.9 0 0 0 11.4 0l.4.3a10.8 10.8 0 0 1-1.7.8l1.1 1.7a16.7 16.7 0 0 0 5-2.5c.5-4.3-.8-8.1-2.9-11.4zM8.5 14.6c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg>'
+      };
+      var NAMES = { instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube', x: 'X', discord: 'Discord' };
+      function time(t) {
+        var p = String(t).split(':'), h = +p[0];
+        return (h % 12 || 12) + (p[1] && p[1] !== '00' ? ':' + p[1] : '') + (h < 12 ? ' AM' : ' PM');
+      }
+
+      // The TCGplayer button inside a card box opens TCGplayer, not the card page
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && e.target.closest && e.target.closest('.panel-link[data-href]')) e.target.click();
+      });
+      document.addEventListener('click', function (e) {
+        var link = e.target.closest('.panel-link[data-href]');
+        if (!link) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var href = link.getAttribute('data-href');
+        if (href) window.open(href, '_blank', 'noopener');
+      });
+
+      $('menuBtn').addEventListener('click', function () {
+        var open = $('nav').classList.toggle('open');
+        $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      $('year').textContent = new Date().getFullYear();
+      // The scanner lives at pricing.kantomisplay.cc (the price page from this folder when testing locally)
+      if (LOCAL) document.querySelectorAll('[data-scan]').forEach(function (a) { a.href = '/?scan'; });
+
+      // ---- Menu dropdowns ----
+      function link(href, text, extra) {
+        return '<a href="' + esc(href) + '"' + (extra || '') + '>' + text + '</a>';
+      }
+      function drawMenus() {
+        var set = data.settings || {};
+        var cards = data.cards || {};
+        // TCG Singles: the categories of the cards in stock (from the shop app), e.g. Pokémon, Japanese Pokémon
+        var singles = (cards.singles || []).map(function (c) {
+          return link('/stock?type=cards&cat=' + encodeURIComponent(c.name), '<span>' + esc(c.name) + '</span><span class="menu-count">' + Number(c.count) + '</span>');
+        }).join('');
+        $('menuBox-singles').innerHTML = link('/stock?type=cards', '<span>All singles</span>') +
+          (singles ? '<div class="menu-sep"></div><div class="menu-head">By game</div>' + singles : '') +
+          '<div class="menu-sep"></div>' + link('/stock?type=cards&sort=high', '<span>Highest value first</span>') +
+          link('#newest-head', '<span>Newest Illustration Rares</span>');
+
+        // Supplies and Packs: the shop's own items in stock by category (picked on each item in the app: deck boxes,
+        // damage counters, sleeves, playmats / official packs, unofficial packs, misc items); Packs also has the sealed
+        // products from the card database
+        var itemLinks = function (list) {
+          return (list || []).map(function (c) {
+            return link('/stock?type=items&set=' + encodeURIComponent(c.name), '<span>' + esc(c.name) + '</span><span class="menu-count">' + Number(c.count) + '</span>');
+          }).join('');
+        };
+        var supplyLinks = itemLinks(cards.supplies);
+        $('menuBox-supplies').innerHTML = (supplyLinks ? supplyLinks + '<div class="menu-sep"></div>' : '') +
+          link('/stock?type=items', '<span>All our items</span>');
+        var packLinks = itemLinks(cards.packs);
+        $('menuBox-packs').innerHTML = link('/stock?type=sealed', '<span>Sealed products</span>') +
+          (packLinks ? '<div class="menu-sep"></div>' + packLinks : '');
+
+        // Contact: email, phone, socials
+        var contact = set.contact || {};
+        var socials = (set.socials || []).filter(function (x) { return x && safeUrl(x.url) && NAMES[x.kind]; });
+        var rows = '';
+        if (contact.email) rows += link('mailto:' + contact.email, '<span>Email<span class="menu-sub">' + esc(contact.email) + '</span></span>');
+        if (contact.phone) rows += link('tel:' + String(contact.phone).replace(/[^0-9+]/g, ''), '<span>Call or text<span class="menu-sub">' + esc(contact.phone) + '</span></span>');
+        if (socials.length) {
+          rows += (rows ? '<div class="menu-sep"></div>' : '') + '<div class="menu-head">Follow us</div>' + socials.map(function (x) {
+            return link(safeUrl(x.url), '<span>' + esc(NAMES[x.kind]) + '</span>', ' target="_blank" rel="noopener"');
+          }).join('');
+        }
+        $('menuBox-contact').innerHTML = (rows || '<div class="menu-note">Find us at our next show.</div>') +
+          '<div class="menu-sep"></div>' + link('#contact', '<span>All contact details</span>');
+
+        // Schedule: the shows coming up
+        var shows = (set.shows || []).filter(function (x) { return x && x.date >= today(); })
+          .sort(function (a, b) { return (a.date + (a.start || '')).localeCompare(b.date + (b.start || '')); }).slice(0, 6);
+        $('menuBox-schedule').innerHTML = shows.length ? '<div class="menu-head">Upcoming shows</div>' + shows.map(function (x) {
+          var d = new Date(x.date + 'T12:00:00');
+          var href = safeUrl(x.link);
+          return '<a class="menu-show-row" href="' + esc(href || '#next-show') + '"' + (href ? ' target="_blank" rel="noopener"' : '') + '>' +
+            '<span class="menu-date"><small>' + d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase() + '</small><span>' + d.getDate() + '</span></span>' +
+            '<span class="menu-show">' + esc(x.name) + '<span class="menu-sub">' + esc([d.toLocaleDateString('en-US', { weekday: 'short' }) +
+              (x.start ? ' · ' + time(x.start) : ''), x.place].filter(Boolean).join(' · ')) + '</span></span></a>';
+        }).join('') : '<div class="menu-note">' + (data.settings ? 'No shows on the calendar yet. Check back soon!' : 'Loading…') + '</div>';
+
+        $('menuBox-resources').innerHTML =
+          '<button class="menu-link" data-guide="guideConditions"><span>Card condition guide<span class="menu-sub">What NM, LP, MP, HP and DMG mean</span></span></button>' +
+          '<button class="menu-link" data-guide="guidePrices"><span>How our prices work</span></button>' +
+          '<div class="menu-sep"></div>' + link(SCAN, '<span>Check a price</span>');
+      }
+      var SCAN = LOCAL ? '/?scan' : 'https://pricing.kantomisplay.cc/';
+
+      function closeMenus(except) {
+        document.querySelectorAll('.has-menu.open').forEach(function (li) {
+          if (li === except) return;
+          li.classList.remove('open');
+          li.querySelector('.nav-top').setAttribute('aria-expanded', 'false');
+        });
+      }
+      document.querySelectorAll('.nav-top').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var li = btn.parentNode;
+          closeMenus(li);
+          var open = li.classList.toggle('open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      });
+      // Pointing at a menu (computers open them on hover) closes one left open by a click
+      document.querySelectorAll('.has-menu').forEach(function (li) {
+        li.addEventListener('mouseenter', function () { closeMenus(li); });
+      });
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.has-menu')) closeMenus();
+        var guide = e.target.closest('[data-guide]');
+        if (guide) { closeMenus(); $(guide.getAttribute('data-guide')).showModal(); }
+        if (e.target.closest('[data-close]')) e.target.closest('dialog').close();
+        if (e.target.closest('.nav-menu a[href^="#"]')) { closeMenus(); $('nav').classList.remove('open'); }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          var open = document.querySelector('.has-menu.open .nav-top');
+          closeMenus();
+          if (open) open.focus();
+        }
+      });
+      document.querySelectorAll('dialog.guide').forEach(function (d) {
+        d.addEventListener('click', function (e) { if (e.target === d) d.close(); }); // a tap outside the box
+      });
+
+      function load(file, key) {
+        return fetch(FILES + file + '?v=' + Date.now()).then(function (r) { return r.ok ? r.json() : {}; })
+          .catch(function () { return {}; })
+          .then(function (d) { data[key] = d || {}; render(); });
+      }
+      render();
+      load('home_kms.json', 'settings');
+      load('home_kms_cards.json', 'cards');
+    })();
+  </script>
+</body>
+</html>

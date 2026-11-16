@@ -2,7 +2,7 @@
   "name": "Kanto Misplay Society - Price Check",
   "short_name": "KMS Prices",
   "description": "Card prices and stock at Kanto Misplay Society",
-  "start_url": "./",
+  "start_url": "./?scan",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0d0d0f",
