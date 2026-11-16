@@ -372,7 +372,7 @@
         <div id="featured"></div>
       </section>
       <section class="box" aria-labelledby="jumpHead">
-        <h2 id="jumpHead">Biggest Price Jump</h2>
+        <h2 id="jumpHead">Biggest Price Jump This Week</h2>
         <div id="jump"></div>
       </section>
       <section class="box" id="next-show" aria-labelledby="showHead">
@@ -507,7 +507,7 @@
 
         // Biggest price jump in our stock this week
         var j = (cards.priceJump || [])[0];
-        $('jump').innerHTML = j ? cardPanel(j, '<span class="chip chip-up">▲ $' + Number(j.change).toFixed(2) + ' (' + j.percent + '%) this week</span>')
+        $('jump').innerHTML = j ? cardPanel(j, '<span class="chip chip-up">▲ $' + Number(j.change).toFixed(2) + ' (' + j.percent + '%)</span>')
           : empty(loading ? 'Loading…' : 'No big moves this week');
 
         // Next show
