@@ -131,20 +131,53 @@
     .menu-show { flex: 1; min-width: 0; }
     .nav-menu a.menu-show-row { justify-content: flex-start; }
 
-    /* Resources' guides */
-    dialog.guide {
-      width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0; border: 0; border-radius: 18px;
-      color: var(--text); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+
+    /* The website's own pages (contact, schedule, guides, new arrivals) */
+    .page { max-width: 960px; margin: 0 auto; padding: 8px 16px 24px; }
+    .page-title { display: flex; align-items: center; gap: 12px; margin: 30px 0 6px; font-size: 1.9rem; font-weight: 900; line-height: 1.15; }
+    .page-title::before { content: ""; flex: 0 0 auto; width: 5px; height: 1em; border-radius: 3px; background: var(--red); }
+    .page-lead { margin: 0 0 22px; color: var(--muted); font-size: 1.02rem; }
+    .page-card { background: #fff; border: 1px solid var(--border); border-radius: 18px; padding: 6px 22px; box-shadow: 0 6px 18px rgba(20, 10, 10, 0.06); }
+    .page-text { padding: 18px 22px; }
+    .page-text p { margin: 0 0 12px; line-height: 1.6; }
+    .page-text p:last-child { margin-bottom: 0; }
+    .page-more { margin: 22px 0 0; display: flex; gap: 22px; flex-wrap: wrap; }
+    .page-more a { color: var(--red); font-weight: 700; text-decoration: none; }
+    .page-more a:hover { text-decoration: underline; }
+    .page-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .contact-tile {
+      display: flex; align-items: center; gap: 14px; padding: 18px; border-radius: 16px; text-decoration: none; color: var(--text);
+      background: #fff; border: 1px solid var(--border); box-shadow: 0 6px 18px rgba(20, 10, 10, 0.06); transition: transform 0.15s ease;
     }
-    dialog.guide::backdrop { background: rgba(10, 10, 12, 0.55); }
-    .guide-head {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; color: #fff;
-      background: linear-gradient(to bottom, var(--nav-top), var(--nav-bottom)); border-bottom: 3px solid var(--red);
+    a.contact-tile:hover { transform: translateY(-2px); }
+    .contact-icon { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: var(--red); color: #fff; }
+    .contact-icon svg { width: 22px; height: 22px; }
+    .contact-tile strong { display: block; font-size: 1.02rem; }
+    .contact-tile span span { color: var(--muted); font-size: 0.9rem; word-break: break-word; }
+    .contact-wide { grid-column: 1 / -1; }
+    .show-list { display: flex; flex-direction: column; gap: 16px; }
+    .show-row {
+      display: grid; grid-template-columns: 76px 1fr; gap: 18px; padding: 18px; border-radius: 18px; color: #fff; scroll-margin-top: 70px;
+      background: radial-gradient(120% 90% at 0% 100%, rgba(231, 21, 22, 0.45), rgba(231, 21, 22, 0) 60%), linear-gradient(160deg, var(--panel-top), var(--panel-bottom));
+      box-shadow: var(--shadow);
     }
-    .guide-head h2 { margin: 0; font-size: 1.15rem; font-weight: 800; }
-    .guide-close { width: 36px; height: 36px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 1.4rem; cursor: pointer; }
-    .guide-body { padding: 8px 20px 20px; }
-    .guide-body p { color: var(--muted); }
+    .show-row:target { outline: 3px solid var(--red); outline-offset: 3px; }
+    .show-row .show-cal { width: 76px; }
+    .show-row h2 { margin: 0 0 4px; font-size: 1.3rem; font-weight: 800; }
+    .show-row p { margin: 0 0 4px; color: rgba(255, 255, 255, 0.78); }
+    .show-row p strong { color: #fff; }
+    .show-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .show-links .panel-link { margin-top: 0; }
+    .page-empty { padding: 28px; text-align: center; color: var(--muted); background: var(--bg-soft); border-radius: 18px; }
+    .arrivals { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 24px 18px; }
+    @media (max-width: 640px) {
+      .page-title { font-size: 1.55rem; }
+      .show-row { grid-template-columns: 60px 1fr; gap: 14px; padding: 16px; }
+      .show-row .show-cal { width: 60px; }
+      .arrivals { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
+    }
+
+    /* The condition guide's rows */
     .cond-row { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
     .cond-row:last-child { border-bottom: 0; }
     .cond-code { align-self: start; text-align: center; font-weight: 900; color: #fff; background: var(--ink); border-radius: 8px; padding: 6px 0; }
@@ -353,7 +386,7 @@
     </div>
   </nav>
 
-  <main>
+  <main id="homeView">
     <section class="scan" aria-label="Check a price">
       <div class="scan-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><rect x="8" y="8" width="3" height="3"/><rect x="13" y="8" width="3" height="3"/><rect x="8" y="13" width="3" height="3"/><path d="M13 13h3v3"/></svg>
@@ -384,9 +417,51 @@
 
     <div class="section-head">
       <h2 id="newest-head">Newest Illustration Rares in stock</h2>
-      <a href="/stock?type=cards">See all our singles →</a>
+      <a href="/new-arrivals">See them all →</a>
     </div>
     <div class="rail" id="newest" aria-label="Newest Illustration Rares and Special Illustration Rares in stock"></div>
+  </main>
+
+  <!-- The website's own pages (owner's request, Nov 2026): kantomisplay.cc/contact, /schedule, /condition-guide,
+       /how-we-price and /new-arrivals are served from this file (functions/lib/home.js) and drawn by the address -->
+  <main id="pageView" class="page" hidden>
+    <section data-page="contact" data-title="Contact" hidden>
+      <h1 class="page-title">Contact us</h1>
+      <p class="page-lead">We sell at card shows around the area. Get in touch, or come say hi at our next show.</p>
+      <div class="page-grid" id="pageContact"></div>
+    </section>
+    <section data-page="schedule" data-title="Show schedule" hidden>
+      <h1 class="page-title">Show schedule</h1>
+      <p class="page-lead">Where to find us next.</p>
+      <div id="pageSchedule"></div>
+    </section>
+    <section data-page="condition-guide" data-title="Card condition guide" hidden>
+      <h1 class="page-title">Card condition guide</h1>
+      <p class="page-lead">Every card we price is graded by hand. Here's what each condition means.</p>
+      <div class="page-card">
+        <div class="cond-row"><div class="cond-code">NM</div><div><strong>Near Mint</strong><span>Looks fresh from the pack. At most a tiny speck or edge nick you'd have to look for.</span></div></div>
+        <div class="cond-row"><div class="cond-code">LP</div><div><strong>Lightly Played</strong><span>Light wear: a few small edge or corner marks or light scratches. No creases.</span></div></div>
+        <div class="cond-row"><div class="cond-code">MP</div><div><strong>Moderately Played</strong><span>Wear you can see right away: worn edges and corners, scratches, maybe a small crease.</span></div></div>
+        <div class="cond-row"><div class="cond-code">HP</div><div><strong>Heavily Played</strong><span>Heavy wear all over, with creases or bends, but still in one piece.</span></div></div>
+        <div class="cond-row"><div class="cond-code">DMG</div><div><strong>Damaged</strong><span>Tears, big creases, water damage, writing or missing pieces.</span></div></div>
+      </div>
+      <p class="page-more"><a href="/how-we-price">How our prices work →</a></p>
+    </section>
+    <section data-page="how-we-price" data-title="How our prices work" hidden>
+      <h1 class="page-title">How our prices work</h1>
+      <div class="page-card page-text">
+        <p>Our prices start from each card's TCGplayer market price, updated every night, and are rounded by our own price rules.</p>
+        <p>Played cards use TCGplayer's market price for that condition when there is one. When there isn't, our staff price the card by hand, and some show "Ask staff" until they do.</p>
+        <p>The QR sticker on every card opens its price for today, in every condition. Scan it with your phone's camera or at our table.</p>
+      </div>
+      <p class="page-more"><a href="/condition-guide">Card condition guide →</a> <a href="/?scan" data-scan>Check a price →</a></p>
+    </section>
+    <section data-page="new-arrivals" data-title="New arrivals" hidden>
+      <h1 class="page-title">Newest Illustration Rares in stock</h1>
+      <p class="page-lead">The latest Illustration Rares and Special Illustration Rares to join our stock. Tap a card for its price in every condition.</p>
+      <div class="arrivals" id="pageNew"></div>
+      <p class="page-more"><a href="/stock?type=cards">See all our singles →</a></p>
+    </section>
   </main>
 
   <footer id="contact">
@@ -394,7 +469,7 @@
       <div>
         <h3>Kanto Misplay Society</h3>
         <p>Pokémon singles, packs and supplies at card shows around the area.</p>
-        <p>Find us at our <a href="#next-show">next show</a>, or get in touch.</p>
+        <p>Find us at our <a href="/schedule">next show</a>, or <a href="/contact">get in touch</a>.</p>
       </div>
       <div>
         <h3>Contact</h3>
@@ -413,25 +488,6 @@
     </div>
   </footer>
 
-  <dialog class="guide" id="guideConditions" aria-labelledby="guideConditionsTitle">
-    <div class="guide-head"><h2 id="guideConditionsTitle">Card condition guide</h2><button class="guide-close" data-close aria-label="Close">&times;</button></div>
-    <div class="guide-body">
-      <p>Every card we price is graded by hand. Here's what each condition means.</p>
-      <div class="cond-row"><div class="cond-code">NM</div><div><strong>Near Mint</strong><span>Looks fresh from the pack. At most a tiny speck or edge nick you'd have to look for.</span></div></div>
-      <div class="cond-row"><div class="cond-code">LP</div><div><strong>Lightly Played</strong><span>Light wear: a few small edge or corner marks or light scratches. No creases.</span></div></div>
-      <div class="cond-row"><div class="cond-code">MP</div><div><strong>Moderately Played</strong><span>Wear you can see right away: worn edges and corners, scratches, maybe a small crease.</span></div></div>
-      <div class="cond-row"><div class="cond-code">HP</div><div><strong>Heavily Played</strong><span>Heavy wear all over, with creases or bends, but still in one piece.</span></div></div>
-      <div class="cond-row"><div class="cond-code">DMG</div><div><strong>Damaged</strong><span>Tears, big creases, water damage, writing or missing pieces.</span></div></div>
-    </div>
-  </dialog>
-  <dialog class="guide" id="guidePrices" aria-labelledby="guidePricesTitle">
-    <div class="guide-head"><h2 id="guidePricesTitle">How our prices work</h2><button class="guide-close" data-close aria-label="Close">&times;</button></div>
-    <div class="guide-body">
-      <p>Our prices start from each card's TCGplayer market price, updated every night, and are rounded by our own price rules.</p>
-      <p>Played cards use TCGplayer's market price for that condition when there is one. When there isn't, our staff price the card by hand, and some show "Ask staff" until they do.</p>
-      <p>The QR sticker on every card opens its price for today, in every condition. Scan it with your phone's camera or at our table.</p>
-    </div>
-  </dialog>
 
   <script>
     (function () {
@@ -532,16 +588,7 @@
         }
 
         // Newest IR / SIR in stock
-        $('newest').innerHTML = (cards.newestArt || []).map(function (c) {
-          var sir = /Special/.test(c.rarity);
-          return '<a class="tile" href="' + cardLink(c) + '">' +
-            '<div class="tile-pic">' + picture(c) + '</div>' +
-            '<div class="tile-name">' + esc(c.name) + '</div>' +
-            '<div class="tile-sub">' + esc(c.setName) + ' ' + esc(number(c)) + '</div>' +
-            '<span class="rarity' + (sir ? ' sir' : '') + '">' + (sir ? 'SIR' : 'IR') + (/Art/.test(c.rarity) ? ' · JP' : '') + '</span>' +
-            '<div class="tile-price">' + money(c.price) + '</div>' +
-          '</a>';
-        }).join('') || '<p>' + (loading ? 'Loading…' : 'Check back soon!') + '</p>';
+        $('newest').innerHTML = (cards.newestArt || []).map(artTile).join('') || '<p>' + (loading ? 'Loading…' : 'Check back soon!') + '</p>';
 
         // Contact and socials
         var contact = set.contact || {};
@@ -561,6 +608,7 @@
         if (store) { storeLink.href = store; storeLink.target = '_blank'; storeLink.rel = 'noopener'; }
 
         drawMenus();
+        renderPage();
 
         // Card pictures: TCGplayer's when the first one fails
         Array.prototype.forEach.call(document.querySelectorAll('img[data-fallback]'), function (img) {
@@ -576,6 +624,81 @@
         discord: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 5.4A16.6 16.6 0 0 0 15.5 4l-.5 1a15.4 15.4 0 0 0-6 0l-.5-1a16.6 16.6 0 0 0-4.1 1.4C1.8 9.3 1.1 13.1 1.5 16.8a16.7 16.7 0 0 0 5 2.5l1.1-1.7a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.9 11.9 0 0 0 11.4 0l.4.3a10.8 10.8 0 0 1-1.7.8l1.1 1.7a16.7 16.7 0 0 0 5-2.5c.5-4.3-.8-8.1-2.9-11.4zM8.5 14.6c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg>'
       };
       var NAMES = { instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube', x: 'X', discord: 'Discord' };
+      // One card of the newest Illustration Rares (the homepage's row and the New arrivals page)
+      function artTile(c) {
+        var sir = /Special/.test(c.rarity);
+        return '<a class="tile" href="' + cardLink(c) + '">' +
+          '<div class="tile-pic">' + picture(c) + '</div>' +
+          '<div class="tile-name">' + esc(c.name) + '</div>' +
+          '<div class="tile-sub">' + esc(c.setName) + ' ' + esc(number(c)) + '</div>' +
+          '<span class="rarity' + (sir ? ' sir' : '') + '">' + (sir ? 'SIR' : 'IR') + (/Art/.test(c.rarity) ? ' · JP' : '') + '</span>' +
+          '<div class="tile-price">' + money(c.price) + '</div>' +
+        '</a>';
+      }
+      function upcoming(set) {
+        return (set.shows || []).filter(function (x) { return x && x.date >= today(); })
+          .sort(function (a, b) { return (a.date + (a.start || '')).localeCompare(b.date + (b.start || '')); });
+      }
+
+      // ---- The website's own pages: kantomisplay.cc/<page> shows that section instead of the homepage ----
+      var PAGE = location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+      var pageSection = PAGE && document.querySelector('#pageView [data-page="' + PAGE.replace(/[^a-z-]/g, '') + '"]');
+      if (pageSection) {
+        $('homeView').hidden = true;
+        $('pageView').hidden = false;
+        pageSection.hidden = false;
+        document.title = pageSection.getAttribute('data-title') + ' · Kanto Misplay Society';
+      }
+      var ICON = {
+        mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+        phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>',
+        pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>'
+      };
+      function showDate(x, long) {
+        var d = new Date(x.date + 'T12:00:00');
+        return d.toLocaleDateString('en-US', { weekday: long ? 'long' : 'short', month: long ? 'long' : 'short', day: 'numeric' }) +
+          (x.start ? ' · ' + time(x.start) + (x.end ? '–' + time(x.end) : '') : '');
+      }
+      function renderPage() {
+        if (!pageSection) return;
+        var set = data.settings || {};
+        var cards = data.cards || {};
+        if (PAGE === 'contact') {
+          var contact = set.contact || {};
+          var socials = (set.socials || []).filter(function (x) { return x && safeUrl(x.url) && NAMES[x.kind]; });
+          var tiles = '';
+          if (contact.email) tiles += '<a class="contact-tile" href="mailto:' + esc(contact.email) + '"><span class="contact-icon">' + ICON.mail + '</span><span><strong>Email</strong><span>' + esc(contact.email) + '</span></span></a>';
+          if (contact.phone) tiles += '<a class="contact-tile" href="tel:' + esc(String(contact.phone).replace(/[^0-9+]/g, '')) + '"><span class="contact-icon">' + ICON.phone + '</span><span><strong>Call or text</strong><span>' + esc(contact.phone) + '</span></span></a>';
+          tiles += socials.map(function (x) {
+            return '<a class="contact-tile" href="' + esc(safeUrl(x.url)) + '" target="_blank" rel="noopener"><span class="contact-icon">' + ICONS[x.kind] + '</span><span><strong>' + esc(NAMES[x.kind]) + '</strong><span>Follow us</span></span></a>';
+          }).join('');
+          var next = upcoming(set)[0];
+          tiles += '<a class="contact-tile contact-wide" href="/schedule"><span class="contact-icon">' + ICON.pin + '</span><span><strong>' +
+            (next ? 'Next show: ' + esc(next.name) : 'Our shows') + '</strong><span>' +
+            (next ? esc(showDate(next, true) + (next.place ? ' · ' + next.place : '')) : 'See where we\'ll be next') + '</span></span></a>';
+          $('pageContact').innerHTML = data.settings ? tiles : '<div class="page-empty">Loading…</div>';
+        } else if (PAGE === 'schedule') {
+          var shows = upcoming(set);
+          $('pageSchedule').innerHTML = !data.settings ? '<div class="page-empty">Loading…</div>' : !shows.length
+            ? '<div class="page-empty">No shows on the calendar yet. Check back soon!</div>'
+            : '<div class="show-list">' + shows.map(function (x, i) {
+              var d = new Date(x.date + 'T12:00:00');
+              var link = safeUrl(x.link);
+              var map = x.address || x.place ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([x.place, x.address].filter(Boolean).join(', ')) : '';
+              return '<article class="show-row" id="show-' + (i + 1) + '">' +
+                '<div class="show-cal"><span>' + d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase() + '</span><strong>' + d.getDate() + '</strong></div>' +
+                '<div><h2>' + esc(x.name) + '</h2><p>' + esc(showDate(x, true)) + '</p>' +
+                (x.place || x.address ? '<p><strong>' + esc(x.place || '') + '</strong>' + (x.place && x.address ? ' · ' : '') + esc(x.address || '') + '</p>' : '') +
+                '<div class="show-links">' + (link ? '<a class="panel-link" href="' + esc(link) + '" target="_blank" rel="noopener">Show details ↗</a>' : '') +
+                  (map ? '<a class="panel-link" href="' + esc(map) + '" target="_blank" rel="noopener">Directions ↗</a>' : '') + '</div></div>' +
+              '</article>';
+            }).join('') + '</div>';
+        } else if (PAGE === 'new-arrivals') {
+          $('pageNew').innerHTML = (cards.newestArt || []).map(artTile).join('') ||
+            '<div class="page-empty">' + (data.cards ? 'Check back soon!' : 'Loading…') + '</div>';
+        }
+      }
+
       function time(t) {
         var p = String(t).split(':'), h = +p[0];
         return (h % 12 || 12) + (p[1] && p[1] !== '00' ? ':' + p[1] : '') + (h < 12 ? ' AM' : ' PM');
@@ -616,7 +739,7 @@
         $('menuBox-singles').innerHTML = link('/stock?type=cards', '<span>All singles</span>') +
           (singles ? '<div class="menu-sep"></div><div class="menu-head">By game</div>' + singles : '') +
           '<div class="menu-sep"></div>' + link('/stock?type=cards&sort=high', '<span>Highest value first</span>') +
-          link('#newest-head', '<span>Newest Illustration Rares</span>');
+          link('/new-arrivals', '<span>Newest Illustration Rares</span>');
 
         // Supplies and Packs: the shop's own items in stock by category (picked on each item in the app: deck boxes,
         // damage counters, sleeves, playmats / official packs, unofficial packs, misc items); Packs also has the sealed
@@ -645,23 +768,22 @@
           }).join('');
         }
         $('menuBox-contact').innerHTML = (rows || '<div class="menu-note">Find us at our next show.</div>') +
-          '<div class="menu-sep"></div>' + link('#contact', '<span>All contact details</span>');
+          '<div class="menu-sep"></div>' + link('/contact', '<span>All contact details</span>');
 
         // Schedule: the shows coming up
-        var shows = (set.shows || []).filter(function (x) { return x && x.date >= today(); })
-          .sort(function (a, b) { return (a.date + (a.start || '')).localeCompare(b.date + (b.start || '')); }).slice(0, 6);
-        $('menuBox-schedule').innerHTML = shows.length ? '<div class="menu-head">Upcoming shows</div>' + shows.map(function (x) {
+        var shows = upcoming(set).slice(0, 6);
+        $('menuBox-schedule').innerHTML = (shows.length ? '<div class="menu-head">Upcoming shows</div>' + shows.map(function (x, i) {
           var d = new Date(x.date + 'T12:00:00');
-          var href = safeUrl(x.link);
-          return '<a class="menu-show-row" href="' + esc(href || '#next-show') + '"' + (href ? ' target="_blank" rel="noopener"' : '') + '>' +
+          return '<a class="menu-show-row" href="/schedule#show-' + (i + 1) + '">' +
             '<span class="menu-date"><small>' + d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase() + '</small><span>' + d.getDate() + '</span></span>' +
             '<span class="menu-show">' + esc(x.name) + '<span class="menu-sub">' + esc([d.toLocaleDateString('en-US', { weekday: 'short' }) +
               (x.start ? ' · ' + time(x.start) : ''), x.place].filter(Boolean).join(' · ')) + '</span></span></a>';
-        }).join('') : '<div class="menu-note">' + (data.settings ? 'No shows on the calendar yet. Check back soon!' : 'Loading…') + '</div>';
+        }).join('') : '<div class="menu-note">' + (data.settings ? 'No shows on the calendar yet. Check back soon!' : 'Loading…') + '</div>') +
+          '<div class="menu-sep"></div>' + link('/schedule', '<span>Full schedule</span>');
 
         $('menuBox-resources').innerHTML =
-          '<button class="menu-link" data-guide="guideConditions"><span>Card condition guide<span class="menu-sub">What NM, LP, MP, HP and DMG mean</span></span></button>' +
-          '<button class="menu-link" data-guide="guidePrices"><span>How our prices work</span></button>' +
+          link('/condition-guide', '<span>Card condition guide<span class="menu-sub">What NM, LP, MP, HP and DMG mean</span></span>') +
+          link('/how-we-price', '<span>How our prices work</span>') +
           '<div class="menu-sep"></div>' + link(SCAN, '<span>Check a price</span>');
       }
       // The scanner: /?scan on this address. Once pricing.kantomisplay.cc is set up in Cloudflare it can point there
@@ -688,9 +810,6 @@
       });
       document.addEventListener('click', function (e) {
         if (!e.target.closest('.has-menu')) closeMenus();
-        var guide = e.target.closest('[data-guide]');
-        if (guide) { closeMenus(); $(guide.getAttribute('data-guide')).showModal(); }
-        if (e.target.closest('[data-close]')) e.target.closest('dialog').close();
         if (e.target.closest('.nav-menu a[href^="#"]')) { closeMenus(); $('nav').classList.remove('open'); }
       });
       document.addEventListener('keydown', function (e) {
@@ -699,9 +818,6 @@
           closeMenus();
           if (open) open.focus();
         }
-      });
-      document.querySelectorAll('dialog.guide').forEach(function (d) {
-        d.addEventListener('click', function (e) { if (e.target === d) d.close(); }); // a tap outside the box
       });
 
       function load(file, key) {
