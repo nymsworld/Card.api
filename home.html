@@ -177,12 +177,40 @@
       .arrivals { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
     }
 
-    /* The condition guide's rows */
-    .cond-row { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-    .cond-row:last-child { border-bottom: 0; }
-    .cond-code { align-self: start; text-align: center; font-weight: 900; color: #fff; background: var(--ink); border-radius: 8px; padding: 6px 0; }
-    .cond-row strong { display: block; }
-    .cond-row span { color: var(--muted); font-size: 0.92rem; }
+    /* The condition guide (owner's pictures, Nov 2026): example cards that turn over, then each condition's box */
+    .flip-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-bottom: 34px; }
+    .flip-wrap { margin: 0; text-align: center; }
+    .flip {
+      display: block; width: 100%; padding: 0; border: 0; background: none; cursor: grab; perspective: 1400px;
+      touch-action: pan-y; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none;
+    }
+    .flip:active { cursor: grabbing; }
+    .flip:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; border-radius: 14px; }
+    .flip-inner { position: relative; display: block; aspect-ratio: 576 / 728; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .flip.dragging .flip-inner { transition: none; }
+    .flip-face {
+      position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 14px; overflow: hidden; background: #000;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 14px 30px rgba(20, 10, 10, 0.22);
+    }
+    .flip-face img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+    .flip-back { transform: rotateY(180deg); }
+    .flip-wrap figcaption { margin-top: 12px; }
+    .flip-wrap figcaption strong { display: block; font-size: 1.02rem; }
+    .flip-wrap figcaption span { color: var(--muted); font-size: 0.88rem; }
+    .cond-boxes { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 18px; }
+    .cond-box { --c: var(--ink); background: #fff; border: 2px solid var(--c); border-radius: 16px; overflow: hidden; box-shadow: 0 6px 18px rgba(20, 10, 10, 0.06); }
+    .cond-box h2 { margin: 0; padding: 10px 14px; background: var(--c); color: #fff; text-align: center; font-size: 1.35rem; font-weight: 900; letter-spacing: 0.01em; }
+    .cond-box > div { padding: 14px 18px 16px; }
+    .cond-tag { display: table; margin: 0 auto 8px; padding: 2px 12px; border-radius: 5px; background: var(--c); color: #fff; font-size: 0.76rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+    .cond-box p { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 2px solid var(--c); text-align: center; font-weight: 600; line-height: 1.4; }
+    .cond-box ul { margin: 0; padding: 0; list-style: none; }
+    .cond-box li { position: relative; padding-left: 20px; margin: 0 0 6px; font-size: 0.93rem; line-height: 1.4; }
+    .cond-box li::before { content: ""; position: absolute; left: 2px; top: 0.45em; width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
+    .cond-nm { --c: #19692c; } .cond-lp { --c: #16409b; } .cond-mp { --c: #3d2391; } .cond-hp { --c: #1b2e86; } .cond-dmg { --c: #b5141a; }
+    @media (max-width: 760px) {
+      .flip-grid { grid-template-columns: minmax(0, 340px); justify-content: center; gap: 30px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .flip-inner { transition: none; } }
 
     main { max-width: 1280px; margin: 0 auto; padding: 0 16px; }
 
@@ -437,13 +465,57 @@
     </section>
     <section data-page="condition-guide" data-title="Card condition guide" hidden>
       <h1 class="page-title">Card condition guide</h1>
-      <p class="page-lead">Every card we price is graded by hand. Here's what each condition means.</p>
-      <div class="page-card">
-        <div class="cond-row"><div class="cond-code">NM</div><div><strong>Near Mint</strong><span>Looks fresh from the pack. At most a tiny speck or edge nick you'd have to look for.</span></div></div>
-        <div class="cond-row"><div class="cond-code">LP</div><div><strong>Lightly Played</strong><span>Light wear: a few small edge or corner marks or light scratches. No creases.</span></div></div>
-        <div class="cond-row"><div class="cond-code">MP</div><div><strong>Moderately Played</strong><span>Wear you can see right away: worn edges and corners, scratches, maybe a small crease.</span></div></div>
-        <div class="cond-row"><div class="cond-code">HP</div><div><strong>Heavily Played</strong><span>Heavy wear all over, with creases or bends, but still in one piece.</span></div></div>
-        <div class="cond-row"><div class="cond-code">DMG</div><div><strong>Damaged</strong><span>Tears, big creases, water damage, writing or missing pieces.</span></div></div>
+      <p class="page-lead">What each condition looks like, front and back. Tap a card or drag it sideways to turn it over.</p>
+      <div class="flip-grid">
+        <figure class="flip-wrap">
+          <button type="button" class="flip" aria-pressed="false" aria-label="Near Mint · Lightly Played: show the back">
+            <span class="flip-inner">
+              <span class="flip-face flip-front"><img src="/cond-img/nm-lp-front.webp" width="576" height="728" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, front" decoding="async"></span>
+              <span class="flip-face flip-back"><img src="/cond-img/nm-lp-back.webp" width="576" height="728" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, back" decoding="async"></span>
+            </span>
+          </button>
+          <figcaption><strong>Near Mint · Lightly Played</strong><span>Top half Near Mint, bottom half Lightly Played</span></figcaption>
+        </figure>
+        <figure class="flip-wrap">
+          <button type="button" class="flip" aria-pressed="false" aria-label="Moderately Played · Heavily Played: show the back">
+            <span class="flip-inner">
+              <span class="flip-face flip-front"><img src="/cond-img/mp-hp-front.webp" width="576" height="728" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, front" decoding="async"></span>
+              <span class="flip-face flip-back"><img src="/cond-img/mp-hp-back.webp" width="576" height="728" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, back" decoding="async"></span>
+            </span>
+          </button>
+          <figcaption><strong>Moderately Played · Heavily Played</strong><span>Top half Moderately Played, bottom half Heavily Played</span></figcaption>
+        </figure>
+        <figure class="flip-wrap">
+          <button type="button" class="flip" aria-pressed="false" aria-label="Damaged: show the back">
+            <span class="flip-inner">
+              <span class="flip-face flip-front"><img src="/cond-img/dmg-front.webp" width="576" height="728" alt="Example Damaged card, with close-ups of the worn corners and crease, front" decoding="async"></span>
+              <span class="flip-face flip-back"><img src="/cond-img/dmg-back.webp" width="576" height="728" alt="Example Damaged card, with close-ups of the worn corners and crease, back" decoding="async"></span>
+            </span>
+          </button>
+          <figcaption><strong>Damaged</strong><span>The whole card</span></figcaption>
+        </figure>
+      </div>
+      <div class="cond-boxes">
+        <section class="cond-box cond-nm"><h2>Near Mint (NM)</h2><div>
+          <span class="cond-tag">Simple definition</span><p>A Near Mint card shows minimal wear from shuffling, play, or handling.</p>
+          <span class="cond-tag">Key details</span><ul><li>Minimal wear; may have a nearly unmarked surface</li><li>Crisp corners and unblemished edges outside of a few slight flaws</li><li>May have slight edge wear or a couple minor scratches</li><li>Overall look nearly unplayed with no major defects</li><li>Manufacturing defects (e.g., miscuts/shifting) may result in the card being considered Damaged</li></ul>
+        </div></section>
+        <section class="cond-box cond-lp"><h2>Lightly Played (LP)</h2><div>
+          <span class="cond-tag">Simple definition</span><p>A Lightly Played card may have minor edge wear, scuffs, or scratches.</p>
+          <span class="cond-tag">Key details</span><ul><li>May have minor edge wear, scuffs, or scratches</li><li>No significant imperfections or issues with structural integrity</li><li>Noticeable imperfections are okay</li><li>None should be too severe or at too high a volume</li></ul>
+        </div></section>
+        <section class="cond-box cond-mp"><h2>Moderately Played (MP)</h2><div>
+          <span class="cond-tag">Simple definition</span><p>A Moderately Played card shows moderate signs of use but remains structurally sound.</p>
+          <span class="cond-tag">Key details</span><ul><li>Edge wear and surface wear may be present</li><li>Scratches or scuffing may be visible</li><li>Bends with creases may be present</li><li>A combination of moderate imperfections is acceptable</li><li>No damage that affects the card&rsquo;s structural integrity</li></ul>
+        </div></section>
+        <section class="cond-box cond-hp"><h2>Heavily Played (HP)</h2><div>
+          <span class="cond-tag">Simple definition</span><p>A Heavily Played card shows a major amount of wear.</p>
+          <span class="cond-tag">Key details</span><ul><li>Major amount of wear is visible</li><li>Many types of moderate imperfections may be present</li><li>Creasing, whitening, and other faults are common</li><li>Defects or severe imperfections may be present</li><li>Must still be able to be authenticated and cannot be structurally damaged</li></ul>
+        </div></section>
+        <section class="cond-box cond-dmg"><h2>Damaged (DMG)</h2><div>
+          <span class="cond-tag">Simple definition</span><p>A Damaged card shows wear or imperfections beyond the standards for other conditions.</p>
+          <span class="cond-tag">Key details</span><ul><li>May have major border wear, scratching or scuffing</li><li>May have bends, tears, splitting, or other damage that impacts the card&rsquo;s integrity</li><li>May have foreign substances such as food or liquid</li><li>Corners may be heavily worn, frayed, or rounded</li><li>Surface may have deep scratches, stains, or discoloration</li></ul>
+        </div></section>
       </div>
       <p class="page-more"><a href="/how-we-price">How our prices work →</a></p>
     </section>
@@ -828,6 +900,61 @@
       render();
       load('home_kms.json', 'settings');
       load('home_kms_cards.json', 'cards');
+    })();
+  </script>
+  <script>
+    // The condition guide's example cards (owner's request): a tap (or Enter / Space) turns one over; a sideways drag
+    // turns it with the finger and lets go on the nearer side. Up / down still scrolls the page (touch-action: pan-y).
+    (function () {
+      Array.prototype.forEach.call(document.querySelectorAll('.flip'), function (btn) {
+        var inner = btn.querySelector('.flip-inner');
+        var angle = 0, drag = null, dragged = false;
+        function show(a) { inner.style.transform = 'rotateY(' + a + 'deg)'; }
+        function turn(a) { return a * 180 / Math.max(160, btn.offsetWidth); }
+        function settle(a) {
+          angle = Math.round(a / 180) * 180;
+          btn.classList.remove('dragging');
+          show(angle);
+          var back = Math.abs(angle / 180) % 2 === 1;
+          btn.setAttribute('aria-pressed', back ? 'true' : 'false');
+          btn.setAttribute('aria-label', btn.getAttribute('aria-label').replace(/: show the (front|back)$/, ': show the ' + (back ? 'front' : 'back')));
+        }
+        btn.addEventListener('pointerdown', function (e) {
+          if (e.button) return;
+          drag = { x: e.clientX, y: e.clientY, id: e.pointerId, start: angle, on: false };
+          dragged = false;
+        });
+        btn.addEventListener('pointermove', function (e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          var dx = e.clientX - drag.x;
+          if (!drag.on) {
+            if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(e.clientY - drag.y)) return;
+            drag.on = true;
+            dragged = true;
+            btn.classList.add('dragging');
+            try { btn.setPointerCapture(e.pointerId); } catch (err) {}
+          }
+          show(drag.start + turn(dx));
+        });
+        btn.addEventListener('pointerup', function (e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          var d = drag;
+          drag = null;
+          if (!d.on) return;
+          var moved = turn(e.clientX - d.x);
+          // past a quarter turn it goes over; less springs back
+          settle(d.start + (Math.abs(moved) > 45 ? (moved > 0 ? 180 : -180) : 0));
+        });
+        btn.addEventListener('pointercancel', function () {
+          if (drag && drag.on) settle(drag.start);
+          drag = null;
+        });
+        btn.addEventListener('click', function () {
+          if (dragged) { dragged = false; return; }
+          settle(angle + 180);
+        });
+        btn.addEventListener('dragstart', function (e) { e.preventDefault(); });
+      });
     })();
   </script>
 </body>
