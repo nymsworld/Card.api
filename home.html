@@ -336,7 +336,7 @@
           <div class="nav-menu" id="menu-supplies"><div class="nav-menu-box" id="menuBox-supplies"></div></div></li>
         <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-packs">Packs <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
           <div class="nav-menu" id="menu-packs"><div class="nav-menu-box" id="menuBox-packs"></div></div></li>
-        <li><a href="https://pricing.kantomisplay.cc/" data-scan>App</a></li>
+        <li><a href="/?scan" data-scan>App</a></li>
         <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-contact">Contact <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
           <div class="nav-menu" id="menu-contact"><div class="nav-menu-box" id="menuBox-contact"></div></div></li>
         <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-schedule">Schedule <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
@@ -362,7 +362,7 @@
         <p>Scan the QR sticker on any of our cards for today's price, in every condition.</p>
       </div>
       <div class="scan-actions">
-        <a class="btn btn-red" href="https://pricing.kantomisplay.cc/" data-scan>Scan a sticker</a>
+        <a class="btn btn-red" href="/?scan" data-scan>Scan a sticker</a>
         <a class="btn btn-ghost" href="/stock">Browse our stock</a>
       </div>
     </section>
@@ -599,7 +599,7 @@
         $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
       });
       $('year').textContent = new Date().getFullYear();
-      // The scanner lives at pricing.kantomisplay.cc (the price page from this folder when testing locally)
+      // The scanner (/?scan; pricing.kantomisplay.cc once that address is set up)
       if (LOCAL) document.querySelectorAll('[data-scan]').forEach(function (a) { a.href = '/?scan'; });
 
       // ---- Menu dropdowns ----
@@ -664,7 +664,8 @@
           '<button class="menu-link" data-guide="guidePrices"><span>How our prices work</span></button>' +
           '<div class="menu-sep"></div>' + link(SCAN, '<span>Check a price</span>');
       }
-      var SCAN = LOCAL ? '/?scan' : 'https://pricing.kantomisplay.cc/';
+      // The scanner: /?scan on this address. Once pricing.kantomisplay.cc is set up in Cloudflare it can point there
+      var SCAN = '/?scan';
 
       function closeMenus(except) {
         document.querySelectorAll('.has-menu.open').forEach(function (li) {
