@@ -1,10 +1,18 @@
 {
- "updatedAt": "2026-11-16T18:38:06.567Z",
+ "updatedAt": "2026-11-16T18:39:20.625Z",
  "featured": {
   "kind": "item",
   "id": "item-mvomekeld1e"
  },
- "shows": [],
+ "shows": [
+  {
+   "name": "Great Lakes Gaming",
+   "date": "2026-11-18",
+   "start": "17:00",
+   "end": "22:00",
+   "place": "Innovation square"
+  }
+ ],
  "contact": {
   "email": null,
   "phone": null
