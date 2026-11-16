@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-16T18:30:31.789Z",
+ "updatedAt": "2026-11-16T18:37:06.613Z",
  "featured": null,
  "priceJump": [
   {
@@ -257,5 +257,10 @@
   }
  ],
  "supplies": [],
- "packs": []
+ "packs": [
+  {
+   "name": "Misc items",
+   "count": 1
+  }
+ ]
 }
