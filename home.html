@@ -1074,7 +1074,7 @@
     // (kms-app's functions/api/site), which saves each one for the owner's admin dashboard and emails it to the shop's
     // Gmail. TURNSTILE_SITE_KEY (Cloudflare Turnstile, the "not a robot" check) is shown when set; the staff site checks it.
     (function () {
-      var TURNSTILE_SITE_KEY = '';
+      var TURNSTILE_SITE_KEY = '0x4AAAAAAGEUdpqwVp4McAK9';  // public site key of the "kantomisplay.cc forms" widget
       var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
       var API = LOCAL ? 'http://127.0.0.1:8788/api/site/' : 'https://kms-staff.pages.dev/api/site/';
       var forms = document.querySelectorAll('[data-site-form]');
