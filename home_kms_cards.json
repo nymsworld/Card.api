@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-16T18:38:08.218Z",
+ "updatedAt": "2026-11-17T00:34:01.040Z",
  "featured": {
   "kind": "item",
   "id": "item-mvomekeld1e",
@@ -265,8 +265,12 @@
  "supplies": [],
  "packs": [
   {
-   "name": "Misc items",
+   "name": "Unofficial packs",
    "count": 1
+  },
+  {
+   "name": "Misc items",
+   "count": 2
   }
  ]
 }
