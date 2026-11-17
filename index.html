@@ -10,8 +10,8 @@
     // stickers) are sent there with the same card and condition. Empty = stay on GitHub Pages.
     var SITE_HOME = 'https://kantomisplay.cc/';
     if (SITE_HOME && location.hostname === 'nymsworld.github.io') location.replace(SITE_HOME + location.search + location.hash);
-    // Cloudflare's own address for this site (card-api.pages.dev) was never public: send it to the real one
-    if (/(^|\.)card-api\.pages\.dev$/i.test(location.hostname)) location.replace('https://kantomisplay.cc' + location.pathname + location.search + location.hash);
+    // Cloudflare's own address for this site (card-api.pages.dev, never public) and www.kantomisplay.cc: send them to the real one
+    if (/((^|\.)card-api\.pages\.dev|^www\.kantomisplay\.cc)$/i.test(location.hostname)) location.replace('https://kantomisplay.cc' + location.pathname + location.search + location.hash);
 
     // Which shop's sticker brought the customer here: K = Kanto Misplay Society, G = GG Crafts &
     // Collectibles, or a vendor shop's own 2-3 letters (vendor shops are other businesses using the shop
