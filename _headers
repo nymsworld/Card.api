@@ -1,0 +1,19 @@
+# Security headers on every file the site serves (Cloudflare Pages reads this file).
+# Pages served by functions/ (the homepage and its own pages, and / with a query) get the same headers from
+# functions/lib/security.js: keep the two the same. The page needs 'unsafe-inline' (its scripts and onclick
+# handlers are inline); the rest limits where scripts, frames and forms can come from or go to. When the page
+# starts loading something from a new site (a script, a fetch, a frame), add it here and in security.js.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data: blob:; media-src 'self' blob:; connect-src 'self' https://raw.githubusercontent.com https://cdn.jsdelivr.net https://kms-staff.pages.dev https://challenges.cloudflare.com http://127.0.0.1:8788; frame-src https://challenges.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), microphone=(), geolocation=(), payment=(), usb=()
+
+# Cloudflare's own addresses for this project were never public: keep them out of search engines
+# (the pages also send visitors on to kantomisplay.cc)
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex

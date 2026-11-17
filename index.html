@@ -10,6 +10,8 @@
     // stickers) are sent there with the same card and condition. Empty = stay on GitHub Pages.
     var SITE_HOME = 'https://kantomisplay.cc/';
     if (SITE_HOME && location.hostname === 'nymsworld.github.io') location.replace(SITE_HOME + location.search + location.hash);
+    // Cloudflare's own address for this site (card-api.pages.dev) was never public: send it to the real one
+    if (/(^|\.)card-api\.pages\.dev$/i.test(location.hostname)) location.replace('https://kantomisplay.cc' + location.pathname + location.search + location.hash);
 
     // Which shop's sticker brought the customer here: K = Kanto Misplay Society, G = GG Crafts &
     // Collectibles, or a vendor shop's own 2-3 letters (vendor shops are other businesses using the shop
@@ -189,10 +191,11 @@
     } catch (e) {}
   </script>
   <link rel="icon" href="logo.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    /* Montserrat (SIL Open Font License), kept on this site so visitors' browsers don't contact Google */
+    @font-face { font-family: "Montserrat"; font-style: normal; font-weight: 500 900; font-display: swap; src: url("/fonts/montserrat-latin.woff2") format("woff2"); }
+  </style>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" integrity="sha384-c9d8RFSL+u3exBOJ4Yp3HUJXS4znl9f+z66d1y54ig+ea249SpqR+w1wyvXz/lk+" crossorigin="anonymous"></script>
   <style>
     /* Colors taken from the KMS Pokeball logo. Dark theme is the default. */
     :root {
@@ -1406,9 +1409,12 @@
     }
 
     function findCard(catalog, targetId) {
-      if (catalog[targetId]) return catalog[targetId];
+      // Own entries only: ?id=__proto__ / constructor would otherwise return the object's built-ins
+      if (!catalog || !targetId) return null;
+      if (Object.prototype.hasOwnProperty.call(catalog, targetId)) return catalog[targetId];
       var want = normalizeId(targetId);
       for (var key in catalog) {
+        if (!Object.prototype.hasOwnProperty.call(catalog, key)) continue;
         if (normalizeId(key) === want) return catalog[key];
       }
       return null;
@@ -2309,7 +2315,7 @@
     function stockItemHtml(row) {
       var item = row.item;
       return '<div class="stock-tile stock-item">' +
-        (item.picture ? '<img loading="lazy" alt="" src="' + esc(CARD_FILES + item.picture) + '" onerror="this.remove()">' : '') +
+        (/^item-pictures\/[a-z0-9-]+\/[a-z0-9]+\.(webp|jpe?g|png)$/.test(item.picture || '') ? '<img loading="lazy" alt="" src="' + esc(CARD_FILES + item.picture) + '" onerror="this.remove()">' : '') +
         '<div class="stock-tile-name">' + esc(item.name) + '</div>' +
         (item.description ? '<div class="stock-tile-desc">' + esc(item.description) + '</div>' : '') +
         '<div class="stock-tile-conds"><div class="stock-cond"><span>× ' + item.qty + '</span>' +
@@ -2342,8 +2348,8 @@
         return '<div class="stock-cond"><span>' + (c.code ? c.code + ' ' : '') + '× ' + c.qty + '</span>' +
           '<span class="stock-cond-price">' + (c.price == null ? 'Ask staff' : money(c.price)) + '</span></div>';
       }).join('');
-      var numTotal = card.printedTotal ? '/' + card.printedTotal : '';
-      var src = card.image || tcgImage(card.tcgUrl);
+      var numTotal = card.printedTotal ? '/' + esc(card.printedTotal) : '';
+      var src = safeUrl(card.image) || tcgImage(card.tcgUrl);
       return '<button class="stock-tile" data-id="' + esc(row.id) + '" data-cond="' + row.conds[0].code + '" onclick="openStockCard(this.dataset.id, this.dataset.cond)">' +
         (src ? '<img loading="lazy" alt="" src="' + esc(src) + '" data-tcg="' + esc(card.tcgUrl || '') + '" onerror="stockImageFallback(this)">' : '') +
         '<div class="stock-tile-name">' + esc(card.name) + '</div>' +

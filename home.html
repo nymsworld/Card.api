@@ -4,11 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kanto Misplay Society</title>
+  <script>
+    // Cloudflare's own address for this site (card-api.pages.dev) was never public: send it to the real one
+    if (/(^|\.)card-api\.pages\.dev$/i.test(location.hostname)) location.replace('https://kantomisplay.cc' + location.pathname + location.search + location.hash);
+  </script>
   <meta name="description" content="Kanto Misplay Society: Pokémon singles, packs and supplies. Check a price, browse our stock, find our next show.">
   <link rel="icon" href="icon-192.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* Montserrat (SIL Open Font License), kept on this site so visitors' browsers don't contact Google */
+    @font-face { font-family: "Montserrat"; font-style: normal; font-weight: 500 900; font-display: swap; src: url("/fonts/montserrat-latin.woff2") format("woff2"); }
+  </style>
   <style>
     /* Landing page (preview). Colors from the KMS logo (#e71516) and the price page. */
     :root {
@@ -787,7 +792,7 @@
 
         // Biggest price jump in our stock this week
         var j = (cards.priceJump || [])[0];
-        $('jump').innerHTML = j ? cardPanel(j, '<span class="chip chip-up">▲ $' + Number(j.change).toFixed(2) + ' (' + j.percent + '%)</span>')
+        $('jump').innerHTML = j ? cardPanel(j, '<span class="chip chip-up">▲ $' + Number(j.change).toFixed(2) + ' (' + Math.round(Number(j.percent) || 0) + '%)</span>')
           : empty(loading ? 'Loading…' : 'No big moves this week');
 
         // Next show
@@ -938,8 +943,9 @@
       }
 
       function time(t) {
-        var p = String(t).split(':'), h = +p[0];
-        return (h % 12 || 12) + (p[1] && p[1] !== '00' ? ':' + p[1] : '') + (h < 12 ? ' AM' : ' PM');
+        // Digits only: the result goes into the page as HTML
+        var p = String(t).split(':'), h = parseInt(p[0], 10) || 0, m = String(p[1] || '').replace(/\D/g, '').slice(0, 2);
+        return (h % 12 || 12) + (m && m !== '00' ? ':' + m : '') + (h < 12 ? ' AM' : ' PM');
       }
 
       // The TCGplayer button inside a card box opens TCGplayer, not the card page
