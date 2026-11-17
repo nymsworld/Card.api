@@ -8,6 +8,10 @@
     // Cloudflare's own address for this site (card-api.pages.dev, never public) and www.kantomisplay.cc: send them to the real one
     if (/((^|\.)card-api\.pages\.dev|^www\.kantomisplay\.cc)$/i.test(location.hostname)) location.replace('https://kantomisplay.cc' + location.pathname + location.search + location.hash);
   </script>
+  <script>
+    // The website's own pages (not the homepage) show only Home, Scan a card and the search in the menu bar (owner's request)
+    if (location.pathname.replace(/\/+$/, '') !== '') document.documentElement.classList.add('subpage');
+  </script>
   <meta name="description" content="Kanto Misplay Society: Pokémon singles, packs and supplies. Check a price, browse our stock, find our next show.">
   <link rel="icon" href="icon-192.png">
   <style>
@@ -85,6 +89,11 @@
       font-weight: 600; font-size: 0.98rem; white-space: nowrap; border-radius: 8px;
     }
     .nav-links a:hover, .nav-links a:focus-visible { background: rgba(255, 255, 255, 0.12); outline: none; }
+    /* The website's own pages: only Home and Scan a card next to the search (the homepage has the full menu) */
+    .nav-links > li.nav-sub { display: none; }
+    .subpage .nav-links { justify-content: flex-start; gap: 6px; }
+    .subpage .nav-links > li { display: none; }
+    .subpage .nav-links > li.nav-sub { display: block; }
     .nav-search { position: relative; margin-left: 12px; flex: 0 0 220px; }
     .nav-search input {
       width: 100%; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 999px;
@@ -414,6 +423,11 @@
       .menu-count, .menu-date { background: rgba(255, 255, 255, 0.12); color: #fff; }
       .menu-sub, .menu-head, .menu-note { color: rgba(255, 255, 255, 0.7); }
       .menu-sep { background: rgba(255, 255, 255, 0.15); }
+      .subpage .menu-btn { display: none; }
+      .subpage .nav-inner { flex-wrap: nowrap; }
+      .subpage .nav-links { display: flex; order: 0; flex: 0 0 auto; flex-direction: row; padding: 0; border-top: 0; }
+      .subpage .nav-links a { width: auto; padding: 12px 8px; font-size: 0.95rem; }
+      .subpage .nav-search { min-width: 0; }
     }
     /* Phones: one column */
     @media (max-width: 640px) {
@@ -442,6 +456,8 @@
         Menu
       </button>
       <ul class="nav-links" id="navLinks">
+        <li class="nav-sub"><a href="/">Home</a></li>
+        <li class="nav-sub"><a href="/?scan" data-scan>Scan a card</a></li>
         <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-singles">TCG Singles <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
           <div class="nav-menu" id="menu-singles"><div class="nav-menu-box" id="menuBox-singles"></div></div></li>
         <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-supplies">Supplies <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
@@ -993,12 +1009,16 @@
             return link('/stock?type=items&set=' + encodeURIComponent(c.name), '<span>' + esc(c.name) + '</span><span class="menu-count">' + Number(c.count) + '</span>');
           }).join('');
         };
-        var supplyLinks = itemLinks(cards.supplies);
-        $('menuBox-supplies').innerHTML = (supplyLinks ? supplyLinks + '<div class="menu-sep"></div>' : '') +
-          link('/stock?type=items', '<span>All our items</span>');
-        var packLinks = itemLinks(cards.packs);
-        $('menuBox-packs').innerHTML = link('/stock?type=sealed', '<span>Sealed products</span>') +
-          (packLinks ? '<div class="menu-sep"></div>' + packLinks : '');
+        // Every category is listed (owner's request), with how many are in stock when there are any
+        var counts = {};
+        (cards.supplies || []).concat(cards.packs || []).forEach(function (c) { counts[c.name] = Number(c.count) || 0; });
+        var catLinks = function (names) {
+          return names.map(function (n) {
+            return link('/stock?type=items&set=' + encodeURIComponent(n), '<span>' + esc(n) + '</span>' + (counts[n] ? '<span class="menu-count">' + counts[n] + '</span>' : ''));
+          }).join('');
+        };
+        $('menuBox-supplies').innerHTML = catLinks(SUPPLY_CATEGORIES) + '<div class="menu-sep"></div>' + link('/stock?type=items', '<span>All our items</span>');
+        $('menuBox-packs').innerHTML = link('/stock?type=sealed', '<span>Sealed products</span>') + '<div class="menu-sep"></div>' + catLinks(PACK_CATEGORIES);
 
         // Contact: email, phone, socials
         var contact = set.contact || {};
@@ -1030,6 +1050,9 @@
           link('/how-we-price', '<span>How our prices work</span>') +
           '<div class="menu-sep"></div>' + link(SCAN, '<span>Check a price</span>');
       }
+      // The custom item categories (kms-app's KMSSales.ITEM_CATEGORIES): Packs = the two pack ones, Supplies = the rest
+      var SUPPLY_CATEGORIES = ['Deck boxes', 'Damage Counters', 'Sleeves', 'Playmats', 'Misc items'];
+      var PACK_CATEGORIES = ['Official Packs', 'Unofficial packs'];
       // The scanner: /?scan on this address. Once pricing.kantomisplay.cc is set up in Cloudflare it can point there
       var SCAN = '/?scan';
 
