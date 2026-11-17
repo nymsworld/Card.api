@@ -177,6 +177,51 @@
       .arrivals { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
     }
 
+    /* Developer's updates (posts written in the shop app; formatPost below) */
+    .posts { display: flex; flex-direction: column; gap: 18px; }
+    .post { background: #fff; border: 1px solid var(--border); border-radius: 18px; padding: 20px 24px; box-shadow: 0 6px 18px rgba(20, 10, 10, 0.06); scroll-margin-top: 70px; }
+    .post-date { display: inline-block; margin-bottom: 6px; color: var(--red); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+    .post h2 { margin: 0 0 10px; font-size: 1.35rem; font-weight: 900; line-height: 1.25; }
+    .post-body { line-height: 1.65; overflow-wrap: anywhere; }
+    .post-body > :last-child { margin-bottom: 0; }
+    .post-body p { margin: 0 0 12px; }
+    .post-body h3 { margin: 18px 0 8px; font-size: 1.08rem; font-weight: 800; }
+    .post-body ul, .post-body ol { margin: 0 0 12px; padding-left: 24px; }
+    .post-body li { margin: 0 0 5px; }
+    .post-body hr { border: 0; border-top: 1px solid var(--border); margin: 18px 0; }
+    .post-body a { color: var(--red); font-weight: 700; }
+    .post-body code { background: var(--bg-soft); padding: 1px 6px; border-radius: 6px; font-size: 0.92em; }
+    .post-tag { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 0.74em; font-weight: 800; color: #fff; background: #555; vertical-align: 1px; }
+    .post-tag-new { background: #19692c; } .post-tag-fixed { background: #16409b; } .post-tag-improved { background: #3d2391; } .post-tag-soon { background: #9a5b00; }
+
+    /* The App menu's forms (feature request, beta access) */
+    .site-form { display: flex; flex-direction: column; gap: 16px; padding: 22px 24px; }
+    .site-form label { display: flex; flex-direction: column; gap: 6px; font-weight: 800; }
+    .site-form label small { font-weight: 600; color: var(--muted); }
+    .site-form input, .site-form textarea, .site-form select {
+      width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px;
+      font: inherit; font-weight: 500; color: var(--text); background: #fff;
+    }
+    .site-form textarea { min-height: 150px; resize: vertical; line-height: 1.5; }
+    .site-form input:focus, .site-form textarea:focus, .site-form select:focus { outline: 2px solid var(--red); outline-offset: 1px; border-color: transparent; }
+    .site-form .bad { border-color: var(--red); background: #fff6f6; }
+    .form-row { display: grid; grid-template-columns: minmax(150px, 200px) 1fr; gap: 12px; align-items: end; }
+    .form-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .form-note { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+    .form-line { margin: 0; font-weight: 700; min-height: 1.4em; }
+    .form-line.err { color: var(--red); }
+    .form-done { padding: 30px 24px; text-align: center; }
+    .form-done h2 { margin: 0 0 6px; font-size: 1.4rem; }
+    .form-done p { margin: 0; color: var(--muted); }
+    .site-form .btn { align-self: flex-start; }
+    .site-form .btn[disabled] { opacity: 0.6; cursor: wait; }
+    @media (max-width: 640px) {
+      .post { padding: 16px 18px; }
+      .form-row { grid-template-columns: 1fr; }
+      .site-form { padding: 18px; }
+      .site-form .btn { align-self: stretch; }
+    }
+
     /* The condition guide (owner's pictures, Nov 2026): example cards that turn over, then each condition's box */
     .flip-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-bottom: 34px; }
     .flip-wrap { margin: 0; text-align: center; }
@@ -398,7 +443,15 @@
           <div class="nav-menu" id="menu-supplies"><div class="nav-menu-box" id="menuBox-supplies"></div></div></li>
         <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-packs">Packs <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
           <div class="nav-menu" id="menu-packs"><div class="nav-menu-box" id="menuBox-packs"></div></div></li>
-        <li><a href="/?scan" data-scan>App</a></li>
+        <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-app">App <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
+          <div class="nav-menu" id="menu-app"><div class="nav-menu-box">
+            <a href="/?scan" data-scan><span>Check a price<span class="menu-sub">Scan a sticker or search a card</span></span></a>
+            <a href="https://demo.kantomisplay.cc" target="_blank" rel="noopener"><span>Demo site<span class="menu-sub">Try our shop app yourself</span></span></a>
+            <div class="menu-sep"></div>
+            <a href="/updates"><span>Developer's updates<span class="menu-sub">What's new in the app</span></span></a>
+            <a href="/feature-request"><span>Feature request<span class="menu-sub">Tell us what the app should do</span></span></a>
+            <a href="/beta"><span>Request beta access<span class="menu-sub">Try new versions first</span></span></a>
+          </div></div></li>
         <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-contact">Contact <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
           <div class="nav-menu" id="menu-contact"><div class="nav-menu-box" id="menuBox-contact"></div></div></li>
         <li class="has-menu"><button class="nav-top" aria-expanded="false" aria-controls="menu-schedule">Schedule <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
@@ -528,6 +581,49 @@
       </div>
       <p class="page-more"><a href="/condition-guide">Card condition guide →</a> <a href="/?scan" data-scan>Check a price →</a></p>
     </section>
+    <section data-page="updates" data-title="Developer's updates" hidden>
+      <h1 class="page-title">Developer's updates</h1>
+      <p class="page-lead">What's new in our shop app.</p>
+      <div class="posts" id="pageUpdates"><div class="page-empty">Loading…</div></div>
+      <p class="page-more"><a href="/feature-request">Suggest a feature →</a> <a href="/beta">Request beta access →</a></p>
+    </section>
+    <section data-page="feature-request" data-title="Feature request" hidden>
+      <h1 class="page-title">Feature request</h1>
+      <p class="page-lead">Have an idea for our app? Tell us what it should do.</p>
+      <div class="page-card" id="featureBox">
+        <form class="site-form" data-site-form="feature" novalidate>
+          <label>Your idea<textarea name="message" maxlength="4000" required placeholder="What would you like the app to do, and how would it help you?"></textarea></label>
+          <div class="form-row">
+            <label>Contact by<select name="contactKind">
+              <option value="email">Email</option><option value="phone">Phone / text</option><option value="instagram">Instagram</option>
+              <option value="discord">Discord</option><option value="other">Other</option></select></label>
+            <label>How can we reach you? <small>Required, in case we have questions</small><input name="contact" type="email" maxlength="200" required autocomplete="email" placeholder="you@example.com"></label>
+          </div>
+          <div class="form-hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <div data-turnstile></div>
+          <p class="form-note">We only use your contact details to reply about this idea.</p>
+          <p class="form-line" data-form-line role="status"></p>
+          <button class="btn btn-red" type="submit">Send my idea</button>
+        </form>
+      </div>
+      <p class="page-more"><a href="/updates">Developer's updates →</a></p>
+    </section>
+    <section data-page="beta" data-title="Request beta access" hidden>
+      <h1 class="page-title">Request beta access</h1>
+      <p class="page-lead">Leave your email to be considered for early access to new versions of our app.</p>
+      <div class="page-card" id="betaBox">
+        <form class="site-form" data-site-form="beta" novalidate>
+          <label>Email<input name="email" type="email" maxlength="200" required autocomplete="email" placeholder="you@example.com"></label>
+          <label>Tell us about you <small>Optional: your shop, or how you'd use the app</small><textarea name="note" maxlength="1000" style="min-height:90px"></textarea></label>
+          <div class="form-hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <div data-turnstile></div>
+          <p class="form-note">We'll only use your email to contact you about beta access. Want it removed? Email us and we'll take it off the list.</p>
+          <p class="form-line" data-form-line role="status"></p>
+          <button class="btn btn-red" type="submit">Request access</button>
+        </form>
+      </div>
+      <p class="page-more"><a href="/updates">Developer's updates →</a></p>
+    </section>
     <section data-page="new-arrivals" data-title="New arrivals" hidden>
       <h1 class="page-title">Newest Illustration Rares in stock</h1>
       <p class="page-lead">The latest Illustration Rares and Special Illustration Rares to join our stock. Tap a card for its price in every condition.</p>
@@ -576,6 +672,61 @@
           return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
         });
       }
+      // A Developer's updates post → HTML. The same rules as formatPost in kms-app's app/lib/website-home.js (the
+      // app's preview): keep the two the same. Plain text: blank line = paragraph, "- " / "1. " lists, "## " heading,
+      // "---" line, **bold**, *italic*, `code`, links, and New: / Fixed: / Improved: / Coming soon: tags.
+      var POST_TAGS = { 'new': 'new', 'fixed': 'fixed', 'fix': 'fixed', 'improved': 'improved', 'coming soon': 'soon', 'soon': 'soon' };
+      function formatPost(text) {
+        function h(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+        function styles(t) {
+          return h(t).replace(/`([^`]+)`/g, '<code>$1</code>')
+            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+            .replace(/(^|[\s(])[*_]([^*_\s][^*_]*?)[*_](?=[\s).,!?:;]|$)/g, '$1<em>$2</em>');
+        }
+        function inline(t) {
+          var out = '', re = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s<]+[^\s<.,!?:;)'"])/g, m, at = 0;
+          while ((m = re.exec(t))) {
+            out += styles(t.slice(at, m.index));
+            var url = m[2] || m[3];
+            out += '<a href="' + h(url) + '" target="_blank" rel="noopener">' + (m[1] ? styles(m[1]) : h(url.replace(/^https?:\/\//, ''))) + '</a>';
+            at = re.lastIndex;
+          }
+          return out + styles(t.slice(at));
+        }
+        function tagged(t) {
+          var m = t.match(/^(new|fixed|fix|improved|coming soon|soon):\s*/i);
+          if (!m) return inline(t);
+          return '<span class="post-tag post-tag-' + POST_TAGS[m[1].toLowerCase()] + '">' +
+            h(m[1].charAt(0).toUpperCase() + m[1].slice(1).toLowerCase()) + '</span> ' + inline(t.slice(m[0].length));
+        }
+        var html = [], para = [], listKind = null, items = [];
+        function flush() {
+          if (para.length) html.push('<p>' + para.map(tagged).join('<br>') + '</p>');
+          if (listKind) html.push('<' + listKind + '>' + items.map(function (i) { return '<li>' + tagged(i) + '</li>'; }).join('') + '</' + listKind + '>');
+          para = []; listKind = null; items = [];
+        }
+        String(text || '').replace(/\r\n?/g, '\n').split('\n').forEach(function (raw) {
+          var line = raw.replace(/\s+$/, '');
+          var m;
+          if (!line.trim()) { flush(); return; }
+          if ((m = line.match(/^\s*#{1,3}\s+(.*)$/))) { flush(); html.push('<h3>' + inline(m[1]) + '</h3>'); return; }
+          if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(line)) { flush(); html.push('<hr>'); return; }
+          var bullet = line.match(/^\s*[-*•]\s+(.*)$/), number = line.match(/^\s*\d+[.)]\s+(.*)$/);
+          if (bullet || number) {
+            var kind = bullet ? 'ul' : 'ol';
+            if (para.length || (listKind && listKind !== kind)) flush();
+            listKind = kind;
+            items.push((bullet || number)[1]);
+            return;
+          }
+          if (listKind && /^\s{2,}/.test(raw)) { items[items.length - 1] += ' ' + line.trim(); return; }
+          if (listKind) flush();
+          para.push(line.trim());
+        });
+        flush();
+        return html.join('');
+      }
+
       // Only plain https links from the files
       function safeUrl(u) {
         try { var x = new URL(String(u || '')); return x.protocol === 'https:' ? x.href : ''; } catch (e) { return ''; }
@@ -765,6 +916,21 @@
                   (map ? '<a class="panel-link" href="' + esc(map) + '" target="_blank" rel="noopener">Directions ↗</a>' : '') + '</div></div>' +
               '</article>';
             }).join('') + '</div>';
+        } else if (PAGE === 'updates') {
+          var list = (data.updates && data.updates.posts) || [];
+          $('pageUpdates').innerHTML = !data.updates ? '<div class="page-empty">Loading…</div>' : !list.length
+            ? '<div class="page-empty">No updates yet. Check back soon!</div>'
+            : list.map(function (x) {
+              var d = x.date ? new Date(x.date + 'T12:00:00') : null;
+              return '<article class="post" id="' + esc(x.id) + '">' +
+                (d ? '<time class="post-date" datetime="' + esc(x.date) + '">' + d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + '</time>' : '') +
+                '<h2>' + esc(x.title) + '</h2><div class="post-body">' + formatPost(x.body) + '</div></article>';
+            }).join('');
+          if (data.updates && location.hash && !renderPage.jumped) {
+            renderPage.jumped = true;
+            var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+            if (target) target.scrollIntoView();
+          }
         } else if (PAGE === 'new-arrivals') {
           $('pageNew').innerHTML = (cards.newestArt || []).map(artTile).join('') ||
             '<div class="page-empty">' + (data.cards ? 'Check back soon!' : 'Loading…') + '</div>';
@@ -900,6 +1066,89 @@
       render();
       load('home_kms.json', 'settings');
       load('home_kms_cards.json', 'cards');
+      if (PAGE === 'updates') load('dev_updates.json', 'updates');
+    })();
+  </script>
+  <script>
+    // The App menu's forms (owner's request, Nov 2026): /feature-request and /beta post to the staff site
+    // (kms-app's functions/api/site), which saves each one for the owner's admin dashboard and emails it to the shop's
+    // Gmail. TURNSTILE_SITE_KEY (Cloudflare Turnstile, the "not a robot" check) is shown when set; the staff site checks it.
+    (function () {
+      var TURNSTILE_SITE_KEY = '';
+      var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+      var API = LOCAL ? 'http://127.0.0.1:8788/api/site/' : 'https://kms-staff.pages.dev/api/site/';
+      var forms = document.querySelectorAll('[data-site-form]');
+      var visible = Array.prototype.filter.call(forms, function (f) { return !f.closest('section').hidden; });
+      if (!visible.length) return;
+      var widgets = [];
+      if (TURNSTILE_SITE_KEY) {
+        window.kmsTurnstileReady = function () {
+          visible.forEach(function (f) {
+            var box = f.querySelector('[data-turnstile]');
+            widgets.push({ form: f, id: window.turnstile.render(box, { sitekey: TURNSTILE_SITE_KEY, theme: 'light' }) });
+          });
+        };
+        var sc = document.createElement('script');
+        sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=kmsTurnstileReady&render=explicit';
+        sc.async = true;
+        document.head.appendChild(sc);
+      }
+      function widgetOf(form) { var w = widgets.find(function (x) { return x.form === form; }); return w ? w.id : null; }
+
+      // Feature request: the contact box follows "Contact by"
+      var HINTS = { email: ['email', 'you@example.com', 'email'], phone: ['tel', '(555) 555-0123', 'tel'], instagram: ['text', '@yourname', 'off'],
+        discord: ['text', 'yourname', 'off'], other: ['text', 'How should we reach you?', 'off'] };
+      visible.forEach(function (form) {
+        var kind = form.querySelector('[name="contactKind"]');
+        if (kind) kind.addEventListener('change', function () {
+          var c = form.querySelector('[name="contact"]');
+          var hint = HINTS[kind.value] || HINTS.other;
+          c.type = hint[0]; c.placeholder = hint[1]; c.autocomplete = hint[2];
+        });
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var which = form.getAttribute('data-site-form');
+          var line = form.querySelector('[data-form-line]');
+          var btn = form.querySelector('button[type="submit"]');
+          var body = {};
+          Array.prototype.forEach.call(form.elements, function (el) { if (el.name) body[el.name] = el.value; });
+          form.querySelectorAll('.bad').forEach(function (el) { el.classList.remove('bad'); });
+          function problem(text, field) {
+            line.textContent = text;
+            line.className = 'form-line err';
+            var el = field && form.querySelector('[name="' + field + '"]');
+            if (el) { el.classList.add('bad'); el.focus(); }
+          }
+          var emailOk = function (t) { return /^[^\s@<>"(),;:]+@[^\s@<>"(),;:]+\.[a-z]{2,}$/i.test(String(t).trim()); };
+          if (which === 'feature') {
+            if (String(body.message).trim().length < 5) return problem('Tell us your idea first.', 'message');
+            if (!String(body.contact).trim()) return problem('Add a way for us to reach you.', 'contact');
+            if (body.contactKind === 'email' && !emailOk(body.contact)) return problem('That email address doesn\'t look right.', 'contact');
+          } else if (!emailOk(body.email)) return problem('That email address doesn\'t look right.', 'email');
+          var wid = widgetOf(form);
+          if (TURNSTILE_SITE_KEY) {
+            body.turnstile = wid != null && window.turnstile ? window.turnstile.getResponse(wid) : '';
+            if (!body.turnstile) return problem('Please finish the "I\'m not a robot" check first.');
+          }
+          btn.disabled = true;
+          line.className = 'form-line';
+          line.textContent = 'Sending…';
+          fetch(API + which, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+            .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
+            .then(function (res) {
+              if (!res.ok || !res.d.ok) throw Object.assign(new Error(res.d.message || 'That didn\'t go through. Please try again.'), { field: res.d.field });
+              var box = form.parentNode;
+              box.innerHTML = which === 'feature'
+                ? '<div class="form-done"><h2>Thanks for the idea!</h2><p>It\'s on its way to us.</p></div>'
+                : '<div class="form-done"><h2>' + (res.d.already ? 'You\'re already on the list' : 'You\'re on the list!') + '</h2><p>We\'ll email you if a spot opens up.</p></div>';
+            })
+            .catch(function (err) {
+              btn.disabled = false;
+              problem(err.message && !/fetch|network/i.test(err.message) ? err.message : 'We couldn\'t reach our server. Check your connection and try again.', err.field);
+              if (wid != null && window.turnstile) window.turnstile.reset(wid);
+            });
+        });
+      });
     })();
   </script>
   <script>

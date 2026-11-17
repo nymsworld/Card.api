@@ -1,6 +1,6 @@
 // Serves the shop's website pages from home.html (owner's request, Nov 2026): the homepage at kantomisplay.cc/
-// (functions/index.js) and its own pages (functions/contact.js, schedule.js, condition-guide.js, how-we-price.js,
-// new-arrivals.js), which home.html draws from the address. Not a route itself (no onRequest).
+// (functions/index.js) and its own pages (functions/contact.js, schedule.js, condition-guide.js, how-we-price.js, updates.js,
+// feature-request.js, beta.js, new-arrivals.js), which home.html draws from the address. Not a route itself (no onRequest).
 export async function serveHome(context) {
   const { request, env, next } = context;
   const method = request.method.toUpperCase();
