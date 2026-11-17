@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-17T03:14:43.038Z",
+ "updatedAt": "2026-11-17T18:54:07.367Z",
  "featured": {
   "kind": "item",
   "id": "item-mvomekeld1e",
@@ -44,6 +44,23 @@
   },
   {
    "kind": "card",
+   "id": "tcg-113756",
+   "cond": "NM",
+   "name": "Espurr",
+   "setName": "Generations: Radiant Collection",
+   "number": "RC14",
+   "rarity": "Common",
+   "price": 24,
+   "printedTotal": "RC32",
+   "image": "https://tcgplayer-cdn.tcgplayer.com/product/113756_200w.jpg",
+   "tcgUrl": "https://www.tcgplayer.com/product/113756/pokemon-generations-radiant-collection-espurr",
+   "from": 22.84,
+   "to": 24.27,
+   "change": 1.43,
+   "percent": 6
+  },
+  {
+   "kind": "card",
    "id": "sv6-25",
    "cond": null,
    "name": "Teal Mask Ogerpon ex",
@@ -75,23 +92,6 @@
    "to": 5.34,
    "change": 1.33,
    "percent": 33
-  },
-  {
-   "kind": "card",
-   "id": "tcg-113756",
-   "cond": "NM",
-   "name": "Espurr",
-   "setName": "Generations: Radiant Collection",
-   "number": "RC14",
-   "rarity": "Common",
-   "price": 24,
-   "printedTotal": "RC32",
-   "image": "https://tcgplayer-cdn.tcgplayer.com/product/113756_200w.jpg",
-   "tcgUrl": "https://www.tcgplayer.com/product/113756/pokemon-generations-radiant-collection-espurr",
-   "from": 22.84,
-   "to": 23.86,
-   "change": 1.02,
-   "percent": 4
   }
  ],
  "newestArt": [
@@ -168,7 +168,7 @@
    "setName": "30th Celebration",
    "number": "134",
    "rarity": "Illustration Rare",
-   "price": 1,
+   "price": 2,
    "printedTotal": 128,
    "image": "https://images.carddex.dev/cards/30c/30c-134--sm.webp",
    "tcgUrl": "https://www.tcgplayer.com/product/716222"
@@ -246,7 +246,7 @@
    "setName": "Pitch Black",
    "number": "90",
    "rarity": "Illustration Rare",
-   "price": 5,
+   "price": 6,
    "printedTotal": 84,
    "image": "https://images.carddex.dev/cards/me05/me05-090--sm.webp",
    "tcgUrl": "https://www.tcgplayer.com/product/704847"
