@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-17T01:06:22.288Z",
+ "updatedAt": "2026-11-17T01:25:07.936Z",
  "featured": {
   "kind": "item",
   "id": "item-mvomekeld1e",
@@ -278,6 +278,10 @@
   {
    "name": "Playmats",
    "count": 2
+  },
+  {
+   "name": "Misc items",
+   "count": 28
   }
  ],
  "packs": [
@@ -288,10 +292,6 @@
   {
    "name": "Unofficial packs",
    "count": 2
-  },
-  {
-   "name": "Misc items",
-   "count": 28
   }
  ]
 }
