@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-17T00:34:01.040Z",
+ "updatedAt": "2026-11-17T01:06:22.288Z",
  "featured": {
   "kind": "item",
   "id": "item-mvomekeld1e",
@@ -262,15 +262,36 @@
    "count": 75
   }
  ],
- "supplies": [],
+ "supplies": [
+  {
+   "name": "Deck boxes",
+   "count": 11
+  },
+  {
+   "name": "Damage Counters",
+   "count": 7
+  },
+  {
+   "name": "Sleeves",
+   "count": 17
+  },
+  {
+   "name": "Playmats",
+   "count": 2
+  }
+ ],
  "packs": [
   {
+   "name": "Official Packs",
+   "count": 3
+  },
+  {
    "name": "Unofficial packs",
-   "count": 1
+   "count": 2
   },
   {
    "name": "Misc items",
-   "count": 2
+   "count": 28
   }
  ]
 }
