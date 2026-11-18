@@ -7,9 +7,10 @@
   <meta name="description" content="Help pick the new look for the Kanto Misplay Society app's icon and opening screen.">
   <meta name="theme-color" content="#0b0b0d">
   <link rel="icon" href="/icon-192.png">
-  <!-- Branding votes (owner's request, Nov 2026). Voters rank every design; votes go to the staff site
-       (kms-app functions/api/site, route vote/<poll>), which keeps them in D1 and only shows the results to someone
-       who has voted. POLL and DESIGNS must match POLLS there. -->
+  <!-- Votes (owner's request, Nov 2026; kept for future votes on branding and more). Each vote is a file in
+       vote-polls/ (see its README): /vote shows the one named in vote-polls/current.json, /vote?poll=<id> any one.
+       Voters give a name and rank every option; votes go to the staff site (kms-app functions/api/site, route
+       vote/<id>), which reads the same file, keeps the votes in D1 and only shows the results to someone who has voted. -->
   <style>
     @font-face { font-family: "Montserrat"; font-style: normal; font-weight: 500 900; font-display: swap; src: url("/fonts/montserrat-latin.woff2") format("woff2"); }
     /* One dark world, like the app's own opening screen: a single column of steps, a full-screen phone preview on top */
@@ -78,6 +79,10 @@
     .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
     /* a phone screen showing one splash (sized from its own width with container units) */
+    .tile { position: relative; width: 100%; border-radius: 16px; overflow: hidden; background: var(--panel-2); display: grid; place-items: center; }
+    .tile img, .tile video { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .viewer .tile { width: min(92vw, 900px); height: calc(100% - 130px); background: transparent; border-radius: 0; }
+    .res .mini .tile { border-radius: 6px; aspect-ratio: 1 / 1 !important; }
     .phone { position: relative; width: 100%; aspect-ratio: 9 / 19.5; border-radius: 16px; overflow: hidden; container-type: inline-size; }
     .splash { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .splash.dark { background: #0d0d0f; color: #fff; }
@@ -151,14 +156,14 @@
     <div class="top"><a href="/">← kantomisplay.cc</a><span>Kanto Misplay Society</span></div>
 
     <header>
-      <h1>Vote on our <em>new look</em></h1>
-      <p class="lead">We're collecting votes on the <strong>new look for our app's icon and opening screen</strong> (the screen you see while the app starts), and maybe other branding in the future. Below are six designs. Watch each one play, then rank all six from your favorite to your least favorite.</p>
+      <h1 id="pollTitle">Vote</h1>
+      <p class="lead" id="pollIntro">Loading the vote…</p>
     </header>
 
-    <div id="closedBox" class="panel" hidden><h2>Voting has closed</h2><p class="hint">Thanks for your interest! The new look will show up in the app soon.</p></div>
+    <div id="closedBox" class="panel" hidden><h2>Voting has closed</h2><p class="hint">Thanks for your interest! If you voted on this phone, the results are below.</p></div>
     <div id="loadErr" class="panel" hidden><p class="err" id="loadErrText"></p></div>
 
-    <form id="voteForm" novalidate>
+    <form id="voteForm" novalidate hidden>
       <div class="wrap" style="gap:28px">
         <section>
           <div class="step-head"><span class="step-n">1</span><div><h2>Your name</h2><p class="hint">Just a first name is fine.</p></div></div>
@@ -168,14 +173,14 @@
         </section>
 
         <section>
-          <div class="step-head"><span class="step-n">2</span><div><h2>Watch the designs</h2><p class="hint">Tap <b>View</b> on a design to watch it full screen, the way it will look on a phone.</p></div></div>
+          <div class="step-head"><span class="step-n">2</span><div><h2 id="watchTitle">Look at the options</h2><p class="hint" id="watchHint">Tap <b>View</b> to see one full screen.</p></div></div>
           <div class="grid" id="grid"></div>
           <div class="row" style="margin-top:12px"><button type="button" class="btn" id="replayAll">▶ Replay all</button>
-            <span class="hint">A–C: the M without its small arch. D–F: the arch kept.</span></div>
+            <span class="hint" id="gridNote"></span></div>
         </section>
 
         <section>
-          <div class="step-head"><span class="step-n">3</span><div><h2>Rank all six</h2><p class="hint">Tap the designs in order: your favorite first. Tap a ranked design again to take it out. Fix the order with ↑ ↓.</p></div></div>
+          <div class="step-head"><span class="step-n">3</span><div><h2 id="rankTitle">Rank them all</h2><p class="hint">Tap them in order: your favorite first. Tap a ranked one again to take it out. Fix the order with ↑ ↓.</p></div></div>
           <ol class="ranking" id="ranking"></ol>
           <div class="row" style="margin-top:8px"><button type="button" class="btn link" id="clearRank">Start ranking over</button></div>
         </section>
@@ -189,7 +194,7 @@
 
         <div class="row">
           <button type="submit" class="btn main" id="sendBtn" disabled>Send my vote</button>
-          <span class="hint" id="sendHint">Add your name and rank all six first.</span>
+          <span class="hint" id="sendHint">Add your name and rank them all first.</span>
         </div>
         <p class="err" id="formErr" hidden></p>
         <p class="hint">The results show after you vote.</p>
@@ -198,9 +203,9 @@
 
     <section id="resultsBox" hidden>
       <div class="panel thanks" id="thanksBox" hidden><h2>Thanks, your vote is in!</h2><p class="hint" id="thanksText"></p></div>
-      <div class="step-head" style="margin-top:24px"><div><h2>Results so far</h2><p class="hint" id="resultsMeta"></p></div></div>
+      <div class="step-head" style="margin-top:24px"><div><h2 id="resultsHead">Results so far</h2><p class="hint" id="resultsMeta"></p></div></div>
       <div class="results" id="results"></div>
-      <p class="hint" style="margin-top:12px">Ranked by average place: 1 = everyone's favorite, 6 = everyone's least favorite.</p>
+      <p class="hint" style="margin-top:12px" id="resultsNote"></p>
       <div class="row" style="margin-top:12px" id="againRow"><button type="button" class="btn link" id="voteAgain">Someone else voting on this phone? Start a new vote</button></div>
     </section>
   </div>
@@ -221,57 +226,61 @@
 
   <script>
     (function () {
-      var POLL = 'splash-2026-11';
       var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-      var API = (LOCAL ? 'http://127.0.0.1:8788' : 'https://kms-staff.pages.dev') + '/api/site/vote/' + POLL;
-      var TOKEN_KEY = 'kms_vote_' + POLL;
-      var DESIGNS = [
-        { id: 'A', bg: 'dark', letters: 'white', arch: false, name: 'Dark, white letters', note: 'No arch' },
-        { id: 'B', bg: 'dark', letters: 'red', arch: false, name: 'Dark, red letters', note: 'No arch' },
-        { id: 'C', bg: 'light', letters: 'black', arch: false, name: 'White, black letters', note: 'No arch' },
-        { id: 'D', bg: 'dark', letters: 'white', arch: true, name: 'Dark, white letters', note: 'Arch kept' },
-        { id: 'E', bg: 'dark', letters: 'red', arch: true, name: 'Dark, red letters', note: 'Arch kept' },
-        { id: 'F', bg: 'light', letters: 'black', arch: true, name: 'White, black letters', note: 'Arch kept' }
-      ];
-      var byId = {};
-      DESIGNS.forEach(function (d) { byId[d.id] = d; });
-      var ranking = [];
-      var open = true;
+      var API = (LOCAL ? 'http://127.0.0.1:8788' : 'https://kms-staff.pages.dev') + '/api/site/vote/';
+      var POLL_ID = /^[a-z0-9-]{1,40}$/;
+      var poll = null, DESIGNS = [], byId = {}, ranking = [], open = true, TOKEN_KEY = '';
       var $ = function (id) { return document.getElementById(id); };
       function store(key, value) {
         try { if (value == null) localStorage.removeItem(key); else localStorage.setItem(key, value); } catch (e) {}
       }
       function read(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
-      function esc(t) { return String(t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+      function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+      function src(path) { return /^\/[a-zA-Z0-9/_.\- ]+$/.test(String(path || '')) ? esc(path) : ''; }   // our own files only
 
+      // ---- drawing one option: the KMS splash on a phone, a picture, or a video ----
       var RING = '<svg class="ring" viewBox="-120 -120 240 240" aria-hidden="true">' +
         '<g class="glow"><circle r="104" pathLength="100" stroke="#FF1F3D" stroke-width="12" opacity=".55" filter="url(#glowWide)"/>' +
         '<circle r="104" pathLength="100" stroke="#FF1F3D" stroke-width="6" opacity=".9" filter="url(#glowTight)"/></g>' +
         '<circle r="104" pathLength="100" stroke="#FF1F3D" stroke-width="4.2"/>' +
         '<circle r="104" pathLength="100" stroke="#FFE1E7" stroke-width="1.3"/></svg>';
-      function phone(d) {
-        return '<div class="phone"><div class="splash ' + d.bg + '"><div class="logo">' + RING +
-          (d.arch ? '<img src="/vote-img/arch.png" alt="">' : '') +
-          '<img src="/vote-img/letters-' + d.letters + '.png" alt="KMS"></div>' +
-          '<div class="sname">Kanto Misplay Society</div><div class="stag">Price Check</div></div></div>';
+      var LETTERS = { white: 1, red: 1, black: 1 };
+      function view(d, big) {
+        if (d.splash) {
+          var sp = d.splash, letters = LETTERS[sp.letters] ? sp.letters : 'white';
+          return '<div class="phone"><div class="splash ' + (sp.bg === 'light' ? 'light' : 'dark') + '"><div class="logo">' + RING +
+            (sp.arch ? '<img src="/vote-img/arch.png" alt="">' : '') +
+            '<img src="/vote-img/letters-' + letters + '.png" alt="KMS"></div>' +
+            '<div class="sname">Kanto Misplay Society</div><div class="stag">Price Check</div></div></div>';
+        }
+        var bg = /^#[0-9a-fA-F]{3,8}$/.test(d.bg || '') ? 'background:' + d.bg + ';' : '';
+        var shape = big ? '' : 'aspect-ratio:' + (poll.frame === 'phone' ? '9 / 19.5' : esc(poll.aspect || '1 / 1')) + ';';
+        var inner = d.video
+          ? '<video src="' + src(d.video) + '"' + (d.poster ? ' poster="' + src(d.poster) + '"' : '') + ' muted playsinline loop preload="metadata"' + (big ? ' controls autoplay' : '') + '></video>'
+          : '<img src="' + src(d.image) + '" alt="' + esc(d.name) + '" loading="lazy">';
+        return '<div class="tile" style="' + shape + bg + '">' + inner + '</div>';
       }
       function play(root) {
         var s = root.querySelectorAll('.splash');
         Array.prototype.forEach.call(s, function (el) { el.classList.remove('go', 'done'); void el.offsetWidth; el.classList.add('go'); });
         clearTimeout(root._done);
         root._done = setTimeout(function () { Array.prototype.forEach.call(s, function (el) { el.classList.add('done'); }); }, 1700);
+        Array.prototype.forEach.call(root.querySelectorAll('video'), function (v) { try { v.currentTime = 0; var p = v.play(); if (p) p.catch(function () {}); } catch (e) {} });
       }
+      function label(d) { return d.id + ' · ' + d.name + (d.note ? ' · ' + d.note : ''); }
 
-      // ---- the grid ----
+      // ---- the options ----
       var grid = $('grid');
-      grid.innerHTML = DESIGNS.map(function (d) {
-        return '<div class="card' + (d.bg === 'light' ? ' light-bg' : '') + '" data-id="' + d.id + '">' +
-          '<button type="button" class="look" data-view="' + d.id + '">View</button>' +
-          '<span class="badge" hidden></span>' +
-          '<button type="button" class="card-pick" data-pick="' + d.id + '" aria-label="Rank design ' + d.id + '" style="all:unset;cursor:pointer;display:block">' + phone(d) + '</button>' +
-          '<div class="cap"><b>' + d.id + '</b><span>' + d.name + ' · ' + d.note + '</span></div></div>';
-      }).join('');
-      play(grid);
+      function drawGrid() {
+        grid.innerHTML = DESIGNS.map(function (d) {
+          return '<div class="card' + (d.splash && d.splash.bg === 'light' ? ' light-bg' : '') + '" data-id="' + esc(d.id) + '">' +
+            '<button type="button" class="look" data-view="' + esc(d.id) + '">View</button>' +
+            '<span class="badge" hidden></span>' +
+            '<button type="button" class="card-pick" data-pick="' + esc(d.id) + '" aria-label="Rank ' + esc(d.id) + '" style="all:unset;cursor:pointer;display:block">' + view(d) + '</button>' +
+            '<div class="cap"><b>' + esc(d.id) + '</b><span>' + esc(d.name) + (d.note ? ' · ' + esc(d.note) : '') + '</span></div></div>';
+        }).join('');
+        play(grid);
+      }
       $('replayAll').onclick = function () { play(grid); };
       grid.addEventListener('click', function (e) {
         var v = e.target.closest('[data-view]');
@@ -298,7 +307,9 @@
         draw();
       }
       function swatch(d) {
-        return 'background-color:' + (d.bg === 'dark' ? '#0d0d0f' : '#fff') + ';background-image:url(/vote-img/letters-' + d.letters + '.png)';
+        if (d.splash) return 'background-color:' + (d.splash.bg === 'light' ? '#fff' : '#0d0d0f') + ';background-image:url(/vote-img/letters-' + (LETTERS[d.splash.letters] ? d.splash.letters : 'white') + '.png)';
+        var pic = d.image || d.poster;
+        return pic && src(pic) ? 'background-image:url(' + src(pic) + ');background-size:cover' : '';
       }
       function draw() {
         Array.prototype.forEach.call(grid.querySelectorAll('.card'), function (c) {
@@ -311,12 +322,12 @@
         var html = ranking.map(function (id, i) {
           var d = byId[id];
           return '<li><span class="pos">#' + (i + 1) + '</span><span class="sw" style="' + swatch(d) + '"></span>' +
-            '<span class="what"><b>' + d.id + ' · ' + d.name + '</b><span>' + d.note + '</span></span>' +
-            '<button type="button" class="mv" data-mv="' + i + ',-1" aria-label="Move ' + d.id + ' up"' + (i === 0 ? ' disabled' : '') + '>↑</button>' +
-            '<button type="button" class="mv" data-mv="' + i + ',1" aria-label="Move ' + d.id + ' down"' + (i === ranking.length - 1 ? ' disabled' : '') + '>↓</button></li>';
+            '<span class="what"><b>' + esc(d.id + ' · ' + d.name) + '</b><span>' + esc(d.note || '') + '</span></span>' +
+            '<button type="button" class="mv" data-mv="' + i + ',-1" aria-label="Move ' + esc(d.id) + ' up"' + (i === 0 ? ' disabled' : '') + '>↑</button>' +
+            '<button type="button" class="mv" data-mv="' + i + ',1" aria-label="Move ' + esc(d.id) + ' down"' + (i === ranking.length - 1 ? ' disabled' : '') + '>↓</button></li>';
         }).join('');
         if (ranking.length < DESIGNS.length) {
-          html += '<li class="empty">' + (ranking.length ? 'Next: tap your #' + (ranking.length + 1) + ' design' : 'Tap your favorite design above to start') + '</li>';
+          html += '<li class="empty">' + (ranking.length ? 'Next: tap your #' + (ranking.length + 1) : 'Tap your favorite above to start') + '</li>';
         }
         $('ranking').innerHTML = html;
         check();
@@ -330,24 +341,26 @@
       $('clearRank').onclick = function () { ranking = []; draw(); };
       function check() {
         var name = $('voterName').value.trim();
-        var ok = open && name && ranking.length === DESIGNS.length;
+        var n = DESIGNS.length;
+        var ok = open && name && ranking.length === n;
         $('sendBtn').disabled = !ok;
         $('sendHint').textContent = !open ? 'Voting has closed.' : ok ? 'Ready when you are.' :
-          !name && ranking.length < DESIGNS.length ? 'Add your name and rank all six first.' :
-          !name ? 'Add your name first.' : 'Rank all six first (' + ranking.length + ' of 6 so far).';
+          !name && ranking.length < n ? 'Add your name and rank all ' + n + ' first.' :
+          !name ? 'Add your name first.' : 'Rank all ' + n + ' first (' + ranking.length + ' of ' + n + ' so far).';
       }
       $('voterName').addEventListener('input', function () { this.classList.remove('bad'); check(); });
 
-      // ---- full-screen preview ----
+      // ---- full-screen view ----
       var viewing = null;
       function openViewer(id) {
         viewing = id;
         var d = byId[id];
-        $('vStage').innerHTML = phone(d);
-        $('vTitle').textContent = d.id + ' · ' + d.name + ' · ' + d.note;
+        $('vStage').innerHTML = view(d, true);
+        $('vTitle').textContent = label(d);
         var at = ranking.indexOf(id);
         $('vRank').textContent = at >= 0 ? 'Ranked #' + (at + 1) + ' · Take out' : 'Make this my #' + (ranking.length + 1);
         $('vRank').hidden = !open;
+        $('vReplay').hidden = !d.splash;
         $('viewer').hidden = false;
         document.body.style.overflow = 'hidden';
         play($('vStage'));
@@ -355,6 +368,7 @@
       }
       function closeViewer() {
         $('viewer').hidden = true;
+        $('vStage').innerHTML = '';
         document.body.style.overflow = '';
         var c = grid.querySelector('[data-view="' + viewing + '"]');
         viewing = null;
@@ -380,15 +394,18 @@
       function showResults(data, mine) {
         var box = $('results');
         var top = data.results && data.results[0];
+        var n = DESIGNS.length;
         $('resultsMeta').textContent = data.voters + (data.voters === 1 ? ' person has' : ' people have') + ' voted' + (open ? ' so far.' : '. Voting has closed.');
-        box.innerHTML = (data.results || []).map(function (r, i) {
+        $('resultsHead').textContent = open ? 'Results so far' : 'Final results';
+        $('resultsNote').textContent = 'Ranked by average place: 1 = everyone\'s favorite, ' + n + ' = everyone\'s least favorite.';
+        box.innerHTML = (data.results || []).filter(function (r) { return byId[r.id]; }).map(function (r, i) {
           var d = byId[r.id];
           var where = mine ? mine.indexOf(r.id) : -1;
-          var width = r.average == null ? 0 : Math.round((DESIGNS.length - r.average) / (DESIGNS.length - 1) * 100);
+          var width = r.average == null ? 0 : Math.round((n - r.average) / (n - 1) * 100);
           return '<div class="res' + (i === 0 && top && top.average != null ? ' lead-row' : '') + '">' +
-            '<span class="place">' + (i + 1) + '</span><span class="mini">' + phone(d) + '</span>' +
-            '<span class="info"><b>' + d.id + ' · ' + d.name + (where >= 0 ? '<span class="yours">you: #' + (where + 1) + '</span>' : '') + '</b>' +
-            '<span class="hint">' + d.note + '</span><span class="meter"><i style="width:' + width + '%"></i></span></span>' +
+            '<span class="place">' + (i + 1) + '</span><span class="mini">' + view(d) + '</span>' +
+            '<span class="info"><b>' + esc(d.id + ' · ' + d.name) + (where >= 0 ? '<span class="yours">you: #' + (where + 1) + '</span>' : '') + '</b>' +
+            '<span class="hint">' + esc(d.note || '') + '</span><span class="meter"><i style="width:' + width + '%"></i></span></span>' +
             '<span class="nums"><b>' + (r.average == null ? '–' : r.average.toFixed(2)) + '</b>avg place<br>' + r.first + ' × first</span></div>';
         }).join('');
         Array.prototype.forEach.call(box.querySelectorAll('.splash'), function (s) { s.classList.add('done'); });
@@ -422,19 +439,20 @@
         btn.disabled = true;
         btn.textContent = 'Sending…';
         var mine = ranking.slice();
-        fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        fetch(API + poll.id, { method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: name, ranking: mine, comment: $('voterComment').value, website: $('website').value }) })
           .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
           .then(function (res) {
             if (!res.ok) {
-              if (res.data && res.data.closed) { setClosed(); }
+              if (res.data && res.data.closed) setClosed();
               throw new Error(res.data && res.data.message || 'Your vote didn\'t go through. Please try again.');
             }
             store(TOKEN_KEY, res.data.token);
             store(TOKEN_KEY + '_mine', mine.join(','));
             $('voteForm').hidden = true;
             $('thanksBox').hidden = false;
-            $('thanksText').textContent = 'Thanks, ' + name + '. Your favorite was ' + mine[0] + ' (' + byId[mine[0]].name.toLowerCase() + ', ' + byId[mine[0]].note.toLowerCase() + ').';
+            var fav = byId[mine[0]];
+            $('thanksText').textContent = 'Thanks, ' + name + '. Your favorite was ' + fav.id + ' (' + fav.name + (fav.note ? ', ' + fav.note : '') + ').';
             showResults(res.data, mine);
             $('thanksBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
           })
@@ -450,21 +468,64 @@
         $('closedBox').hidden = false;
         $('voteForm').hidden = true;
       }
+      function fail(text) {
+        $('pollIntro').textContent = '';
+        $('loadErrText').textContent = text;
+        $('loadErr').hidden = false;
+      }
+      function getJson(url) {
+        return fetch(url, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+      }
 
-      // ---- on open: has this phone voted, is the vote still open? ----
-      draw();
-      var token = read(TOKEN_KEY);
-      fetch(API + (token ? '?token=' + encodeURIComponent(token) : ''))
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (!data.open) setClosed();
-          if (data.voted) {
-            var mine = (read(TOKEN_KEY + '_mine') || '').split(',').filter(Boolean);
-            $('voteForm').hidden = true;
-            showResults(data, mine);
-          }
+      // ---- start: which vote, its file, then has this phone voted? ----
+      var asked = new URLSearchParams(location.search).get('poll');
+      (asked ? Promise.resolve({ poll: asked }) : getJson('/vote-polls/current.json'))
+        .then(function (cur) {
+          if (!cur || !cur.poll) throw new Error('none');
+          if (!POLL_ID.test(cur.poll)) throw new Error('bad');
+          return getJson('/vote-polls/' + cur.poll + '.json');
         })
-        .catch(function () {});
+        .then(function (p) {
+          var seen = {};
+          poll = p;
+          DESIGNS = (p.options || []).filter(function (d) {
+            var ok = d && d.id && !seen[d.id] && (d.splash || d.image || d.video);
+            if (ok) seen[d.id] = 1;
+            return ok;
+          }).map(function (d) { d.id = String(d.id); return d; });
+          if (DESIGNS.length < 2) throw new Error('bad');
+          DESIGNS.forEach(function (d) { byId[d.id] = d; });
+          TOKEN_KEY = 'kms_vote_' + p.id;
+          open = p.open !== false;
+          // The titles and intro are simple HTML written by the shop in vote-polls/
+          $('pollTitle').innerHTML = p.title || 'Vote';
+          $('pollIntro').innerHTML = p.intro || '';
+          document.title = $('pollTitle').textContent + ' · Kanto Misplay Society';
+          if (p.watchTitle) $('watchTitle').textContent = p.watchTitle;
+          if (p.watchHint) $('watchHint').innerHTML = p.watchHint;
+          $('gridNote').textContent = p.gridNote || '';
+          $('rankTitle').textContent = 'Rank all ' + DESIGNS.length;
+          $('replayAll').hidden = !DESIGNS.some(function (d) { return d.splash || d.video; });
+          drawGrid();
+          draw();
+          if (!open) setClosed(); else $('voteForm').hidden = false;
+          var token = read(TOKEN_KEY);
+          return fetch(API + p.id + (token ? '?token=' + encodeURIComponent(token) : ''))
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              if (data.open === false) setClosed();
+              if (data.voted) {
+                var mine = (read(TOKEN_KEY + '_mine') || '').split(',').filter(Boolean);
+                $('voteForm').hidden = true;
+                showResults(data, mine);
+              }
+            })
+            .catch(function () {});
+        })
+        .catch(function (e) {
+          $('pollTitle').textContent = 'Vote';
+          fail(e && e.message === 'none' ? 'There\'s no vote right now. Check back soon!' : 'This vote couldn\'t be found.');
+        });
     })();
   </script>
 </body>

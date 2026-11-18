@@ -1,0 +1,18 @@
+{
+  "id": "splash-2026-11",
+  "open": true,
+  "title": "Vote on our <em>new look</em>",
+  "intro": "We're collecting votes on the <strong>new look for our app's icon and opening screen</strong> (the screen you see while the app starts), and maybe other branding in the future. Below are six designs. Watch each one play, then rank all six from your favorite to your least favorite.",
+  "watchTitle": "Watch the designs",
+  "watchHint": "Tap <b>View</b> on a design to watch it full screen, the way it will look on a phone.",
+  "gridNote": "A–C: the M without its small arch. D–F: the arch kept.",
+  "frame": "phone",
+  "options": [
+    { "id": "A", "name": "Dark, white letters", "note": "No arch", "splash": { "bg": "dark", "letters": "white", "arch": false } },
+    { "id": "B", "name": "Dark, red letters", "note": "No arch", "splash": { "bg": "dark", "letters": "red", "arch": false } },
+    { "id": "C", "name": "White, black letters", "note": "No arch", "splash": { "bg": "light", "letters": "black", "arch": false } },
+    { "id": "D", "name": "Dark, white letters", "note": "Arch kept", "splash": { "bg": "dark", "letters": "white", "arch": true } },
+    { "id": "E", "name": "Dark, red letters", "note": "Arch kept", "splash": { "bg": "dark", "letters": "red", "arch": true } },
+    { "id": "F", "name": "White, black letters", "note": "Arch kept", "splash": { "bg": "light", "letters": "black", "arch": true } }
+  ]
+}
