@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-19T00:31:41.205Z",
+ "updatedAt": "2026-11-19T01:24:20.296Z",
  "featured": {
   "kind": "item",
   "id": "item-mvomekeld1e",
@@ -24,40 +24,6 @@
    "to": 8.51,
    "change": 1.95,
    "percent": 30
-  },
-  {
-   "kind": "card",
-   "id": "sv8-76",
-   "cond": null,
-   "name": "Latias ex",
-   "setName": "Surging Sparks",
-   "number": "76",
-   "rarity": "Double Rare",
-   "price": 9,
-   "printedTotal": 191,
-   "image": "https://images.carddex.dev/cards/sv08/sv08-076--sm.webp",
-   "tcgUrl": "https://www.tcgplayer.com/product/589983",
-   "from": 6.31,
-   "to": 8.24,
-   "change": 1.93,
-   "percent": 31
-  },
-  {
-   "kind": "card",
-   "id": "sv8-230",
-   "cond": "NM",
-   "name": "Cyrano",
-   "setName": "Surging Sparks",
-   "number": "230",
-   "rarity": "Ultra Rare",
-   "price": 6,
-   "printedTotal": 191,
-   "image": "https://images.carddex.dev/cards/sv08/sv08-230--sm.webp",
-   "tcgUrl": "https://www.tcgplayer.com/product/589913",
-   "from": 3.83,
-   "to": 5.74,
-   "change": 1.91,
-   "percent": 50
   },
   {
    "kind": "card",
@@ -92,6 +58,39 @@
    "to": 23.93,
    "change": 1.09,
    "percent": 5
+  },
+  {
+   "kind": "card",
+   "id": "tcg-716992",
+   "cond": "NM",
+   "name": "Erika's Jigglypuff",
+   "setName": "MEGA Expansion 30th Celebration",
+   "number": "139",
+   "rarity": "None",
+   "price": 11,
+   "printedTotal": "103",
+   "image": "https://tcgplayer-cdn.tcgplayer.com/product/716992_200w.jpg",
+   "tcgUrl": "https://www.tcgplayer.com/product/716992/pokemon-japan-m6a-mega-expansion-30th-celebration-erikas-jigglypuff",
+   "from": 10.16,
+   "to": 11.22,
+   "change": 1.06,
+   "percent": 10
+  },
+  {
+   "kind": "card",
+   "id": "mep-30",
+   "cond": "NM",
+   "name": "Mega Charizard Y ex",
+   "setName": "ME Black Star Promos",
+   "number": "030",
+   "rarity": "Promo",
+   "price": 5,
+   "image": "https://tcgplayer-cdn.tcgplayer.com/product/680640_200w.jpg",
+   "tcgUrl": "https://www.tcgplayer.com/product/680640/pokemon-me-mega-evolution-promo-mega-charizard-y-ex-030",
+   "from": 4.52,
+   "to": 5.36,
+   "change": 0.84,
+   "percent": 19
   }
  ],
  "newestArt": [
@@ -255,7 +254,7 @@
  "singles": [
   {
    "name": "Pokémon",
-   "count": 827
+   "count": 817
   },
   {
    "name": "Japanese Pokémon",
