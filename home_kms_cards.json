@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-19T01:24:20.296Z",
+ "updatedAt": "2026-11-19T01:51:21.079Z",
  "featured": {
   "kind": "item",
   "id": "item-mvomekeld1e",
@@ -254,11 +254,11 @@
  "singles": [
   {
    "name": "Pokémon",
-   "count": 817
+   "count": 815
   },
   {
    "name": "Japanese Pokémon",
-   "count": 75
+   "count": 74
   }
  ],
  "supplies": [
