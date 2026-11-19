@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-18T12:20:27.341Z",
+ "updatedAt": "2026-11-19T00:31:41.205Z",
  "featured": {
   "kind": "item",
   "id": "item-mvomekeld1e",
@@ -33,7 +33,7 @@
    "setName": "Surging Sparks",
    "number": "76",
    "rarity": "Double Rare",
-   "price": 8,
+   "price": 9,
    "printedTotal": 191,
    "image": "https://images.carddex.dev/cards/sv08/sv08-076--sm.webp",
    "tcgUrl": "https://www.tcgplayer.com/product/589983",
@@ -84,7 +84,7 @@
    "setName": "Generations: Radiant Collection",
    "number": "RC14",
    "rarity": "Common",
-   "price": 24,
+   "price": 25,
    "printedTotal": "RC32",
    "image": "https://tcgplayer-cdn.tcgplayer.com/product/113756_200w.jpg",
    "tcgUrl": "https://www.tcgplayer.com/product/113756/pokemon-generations-radiant-collection-espurr",
@@ -168,7 +168,7 @@
    "setName": "30th Celebration",
    "number": "134",
    "rarity": "Illustration Rare",
-   "price": 2,
+   "price": 1,
    "printedTotal": 128,
    "image": "https://images.carddex.dev/cards/30c/30c-134--sm.webp",
    "tcgUrl": "https://www.tcgplayer.com/product/716222"
