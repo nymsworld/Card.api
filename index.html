@@ -190,12 +190,20 @@
       if (localStorage.getItem('kms_theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
     } catch (e) {}
   </script>
-  <link rel="icon" href="logo.jpg">
+  <!-- From the site's root ("/logo.jpg"): a sticker address (/K/<ID>/<COND>) would otherwise ask for /K/<ID>/logo.jpg -->
+  <link rel="icon" href="/logo.jpg">
+  <link rel="preload" href="/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Card pictures: connect early, so the picture of a scanned card starts sooner -->
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+  <link rel="preconnect" href="https://images.carddex.dev">
+  <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
   <style>
     /* Montserrat (SIL Open Font License), kept on this site so visitors' browsers don't contact Google */
     @font-face { font-family: "Montserrat"; font-style: normal; font-weight: 500 900; font-display: swap; src: url("/fonts/montserrat-latin.woff2") format("woff2"); }
   </style>
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" integrity="sha384-c9d8RFSL+u3exBOJ4Yp3HUJXS4znl9f+z66d1y54ig+ea249SpqR+w1wyvXz/lk+" crossorigin="anonymous"></script>
+  <!-- The scanner library is only needed once someone taps Scan, so the page draws without waiting for it
+       (defer); startInAppScanner waits for it if it's tapped first. The shop app swaps this whole tag for its own copy. -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" id="qrLib" defer integrity="sha384-c9d8RFSL+u3exBOJ4Yp3HUJXS4znl9f+z66d1y54ig+ea249SpqR+w1wyvXz/lk+" crossorigin="anonymous" onload="this.dataset.done = 1" onerror="this.dataset.done = 1"></script>
   <style>
     /* Colors taken from the KMS Pokeball logo. Dark theme is the default. */
     :root {
@@ -1066,7 +1074,7 @@
 
   <!-- kantomisplay.cc/stock only (STOCK_PAGE): the homepage's header -->
   <div class="stock-page-top">
-    <header class="sp-masthead"><a href="/" aria-label="Kanto Misplay Society home"><img src="home-header.png" alt="KMS" width="736" height="270" loading="lazy"></a></header>
+    <header class="sp-masthead"><a href="/" aria-label="Kanto Misplay Society home"><img src="/home-header.webp" alt="KMS" width="736" height="270" loading="lazy"></a></header>
     <nav class="sp-nav" aria-label="Main">
       <a href="/">Home</a>
       <a href="/?scan">Scan a card</a>
@@ -1085,7 +1093,7 @@
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
     </button>
   </header>
-  <img class="brand-logo" src="logo.jpg" alt="KMS logo" onerror="this.style.display='none'">
+  <img class="brand-logo" src="/logo.jpg" alt="KMS logo" onerror="this.style.display='none'">
   <script>if (SHOP !== 'kms') showShop(SHOP);</script>
 
   <div class="card" id="cardContainer">
@@ -1321,6 +1329,7 @@
     // The scanned card from its small file, with staff condition prices; null if it isn't there.
     // Throws if the small files can't be read, so the caller falls back to the full download.
     async function fetchCardFast(targetId) {
+      startStaffPrices();
       var version = '';
       try {
         var v = await fetch(CARD_FILES + 'prices_version.json?v=' + Date.now(), { cache: 'no-store' });
@@ -1341,6 +1350,14 @@
     //     and when it was fetched -> card.conditionMarketAt
     // Without them, cards over CONDITION_GUESS_MAX just show "Ask staff" below Near Mint.
     // staffOnly: just condition_prices.json (the small card files already include the market ones).
+    // startStaffPrices(): starts condition_prices.json and price_rules.json alongside a card's own file, so a
+    // scanned card's price waits for one round of downloads less; addConditionPrices takes the download started.
+    var earlyStaffPrices = null;
+    function startStaffPrices() {
+      if (window.KMSApp) return;
+      loadPriceRules();
+      if (!earlyStaffPrices) earlyStaffPrices = fetch(CARD_FILES + 'condition_prices.json?v=' + Date.now()).catch(function () { return null; });
+    }
     async function addConditionPrices(catalog, staffOnly) {
       var rules = window.KMSApp ? null : loadPriceRules();
       await Promise.all([
@@ -1353,8 +1370,10 @@
         ];
         for (var i = 0; i < endpoints.length; i++) {
           try {
-            var res = await fetch(endpoints[i]);
-            if (!res.ok) continue;
+            var early = i === 0 && file[1] === 'conditionPrices' ? earlyStaffPrices : null;
+            if (early) earlyStaffPrices = null; // used once: a later call asks again
+            var res = early ? await early : await fetch(endpoints[i]);
+            if (!res || !res.ok) continue;
             var data = await res.json();
             var set = data.prices || {};
             if (file[1] === 'conditionPrices') Object.assign(sharedStaff, set);
@@ -1868,6 +1887,12 @@
       setScannerHint(DEFAULT_SCAN_HINT);
 
       if (typeof Html5Qrcode === 'undefined') {
+        var lib = document.getElementById('qrLib');
+        if (lib && !lib.dataset.done) { // still downloading (deferred): start once it's here
+          lib.addEventListener('load', function() { startInAppScanner(useCamera); }, { once: true });
+          lib.addEventListener('error', function() { startInAppScanner(useCamera); }, { once: true });
+          return;
+        }
         alert('Scanner library failed to load. Check your internet connection.');
         overlay.classList.remove('active');
         return;
@@ -2491,11 +2516,52 @@
       pick('stockSort', p.get('sort'));
     }
 
+    // The stock list's card details without the whole database (35+ MB, seconds to download and read on a
+    // phone): stock_catalog.json (update_prices.py's write_stock_catalog, every card in any shop's stock at
+    // the last price run, ~50 KB) plus the small card files (cards/<n>.json) of cards stocked since. Staff
+    // condition prices and price rules are added like on a scanned card. The shop app keeps using the full
+    // catalog (KMS_FULL_CATALOG: it has it saved anyway), and so does this page once it has downloaded it.
+    async function fetchStockCards(stockPromise) {
+      if (window.KMS_FULL_CATALOG || priceCatalog) return fetchCatalog();
+      var cards = null, version = '';
+      try {
+        var res = await fetch(CARD_FILES + 'stock_catalog.json?v=' + Date.now());
+        if (res.ok) {
+          var data = await res.json();
+          cards = data.cards || null;
+          version = data.updatedAt || '';
+        }
+      } catch (e) {}
+      if (!cards) return fetchCatalog(); // not published yet, or unreachable
+      var stock = await stockPromise;
+      var shards = {};
+      Object.keys(stock.cards || {}).forEach(function (id) {
+        if (!findCard(cards, id)) shards[shardOf(id)] = true;
+      });
+      try {
+        await Promise.all(Object.keys(shards).map(async function (n) {
+          var r = await fetch(CARD_FILES + 'cards/' + n + '.json?v=' + encodeURIComponent(version || Date.now()));
+          if (!r.ok) throw new Error('Card file not available');
+          var shard = await r.json();
+          Object.keys(stock.cards).forEach(function (id) {
+            var card = findCard(cards, id) ? null : findCard(shard, id);
+            if (card) cards[id] = card;
+          });
+        }));
+      } catch (e) {
+        return fetchCatalog();
+      }
+      await addConditionPrices(cards, true); // TCGplayer condition prices are already in the entries
+      return cards;
+    }
+
     async function loadStock() {
       var list = document.getElementById('stockList');
       list.innerHTML = '<div class="loading">Loading our stock...</div>';
       try {
-        var results = await Promise.all([fetchStock(), fetchCatalog()]);
+        if (!window.KMS_FULL_CATALOG && !priceCatalog) startStaffPrices(); // alongside the stock files, not after
+        var stockPromise = fetchStock();
+        var results = await Promise.all([stockPromise, fetchStockCards(stockPromise.catch(function () { return {}; }))]);
         stockData = results[0];
         stockRows = buildStockRows(stockData, results[1]);
         var sets = {};

@@ -203,6 +203,8 @@ GAME_FILES = {"Magic: The Gathering": "prices_magic.json", "Yu-Gi-Oh!": "prices_
 # prices.json split into small files for the customer price page (see write_card_shards)
 SHARD_DIR = "cards"
 SHARD_COUNT = 128
+# Every card on any shop's shelf (shop_stock*.json), for the website's stock list (see write_stock_catalog)
+STOCK_CATALOG_FILE = "stock_catalog.json"
 HISTORY_DAYS = 8
 
 # TCGplayer market prices by condition (LP / MP / HP / DMG) from JustTCG's free API, for
@@ -1867,6 +1869,32 @@ def write_card_shards(catalog):
         with open(os.path.join(SHARD_DIR, f"{n}.json"), "w", encoding="utf-8") as f:
             json.dump(cards, f, separators=(",", ":"))
     print(f"Wrote {SHARD_COUNT} card files to {SHARD_DIR}/ (largest {max(len(s) for s in shards)} cards)")
+    write_stock_catalog(catalog, market)
+
+
+def write_stock_catalog(catalog, market):
+    """The website's stock list (index.html's fetchStockCards) needs only the cards the shops have in stock,
+    not all of prices.json (35+ MB, seconds to download and read on a phone). This writes the entries of every
+    card in any shop_stock*.json, the same as in the card files. Cards stocked after this run are read from
+    their card file by the page."""
+    wanted = set()
+    for path in glob.glob("shop_stock*.json"):
+        try:
+            with open(path, encoding="utf-8") as f:
+                wanted.update(normalize_id(card_id) for card_id in (json.load(f).get("cards") or {}))
+        except (OSError, ValueError, AttributeError):
+            continue
+    market_prices = market.get("prices") or {}
+    cards = {}
+    for card_id, entry in catalog.items():
+        if normalize_id(card_id) not in wanted:
+            continue
+        if card_id in market_prices:
+            entry = dict(entry, conditionMarket=market_prices[card_id], conditionMarketAt=market.get("fetchedAt"))
+        cards[card_id] = entry
+    with open(STOCK_CATALOG_FILE, "w", encoding="utf-8") as f:
+        json.dump({"updatedAt": datetime.now(timezone.utc).isoformat(), "cards": cards}, f, separators=(",", ":"))
+    print(f"Wrote {len(cards)} stocked cards to {STOCK_CATALOG_FILE}")
 
 
 def read_catalog():

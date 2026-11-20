@@ -13,7 +13,11 @@
     if (location.pathname.replace(/\/+$/, '') !== '') document.documentElement.classList.add('subpage');
   </script>
   <meta name="description" content="Kanto Misplay Society: Pokémon singles, packs and supplies. Check a price, browse our stock, find our next show.">
-  <link rel="icon" href="icon-192.png">
+  <link rel="icon" href="/icon-192.png">
+  <link rel="preload" href="/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+  <link rel="preconnect" href="https://images.carddex.dev">
+  <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
   <style>
     /* Montserrat (SIL Open Font License), kept on this site so visitors' browsers don't contact Google */
     @font-face { font-family: "Montserrat"; font-style: normal; font-weight: 500 900; font-display: swap; src: url("/fonts/montserrat-latin.woff2") format("woff2"); }
@@ -446,7 +450,7 @@
 </head>
 <body>
   <header class="masthead">
-    <a href="/" aria-label="Kanto Misplay Society home"><img src="home-header.png" alt="KMS" width="736" height="270"></a>
+    <a href="/" aria-label="Kanto Misplay Society home"><img src="/home-header.webp" alt="KMS" width="736" height="270" fetchpriority="high"></a>
   </header>
 
   <nav class="nav" id="nav" aria-label="Main">
@@ -544,8 +548,8 @@
         <figure class="flip-wrap">
           <button type="button" class="flip" aria-pressed="false" aria-label="Near Mint · Lightly Played: show the back">
             <span class="flip-inner" style="--ar: 524 / 716">
-              <span class="flip-face flip-front"><img src="/cond-img/nm-lp-front.webp" width="524" height="716" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, front" decoding="async"></span>
-              <span class="flip-face flip-back"><img src="/cond-img/nm-lp-back.webp" width="524" height="716" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, back" decoding="async"></span>
+              <span class="flip-face flip-front"><img src="/cond-img/nm-lp-front.webp" width="524" height="716" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, front" decoding="async" loading="lazy"></span>
+              <span class="flip-face flip-back"><img src="/cond-img/nm-lp-back.webp" width="524" height="716" alt="Example card, top half Near Mint and bottom half Lightly Played, with close-ups of the corners, back" decoding="async" loading="lazy"></span>
             </span>
           </button>
           <figcaption><strong>Near Mint · Lightly Played</strong><span>Top half Near Mint, bottom half Lightly Played</span></figcaption>
@@ -553,8 +557,8 @@
         <figure class="flip-wrap">
           <button type="button" class="flip" aria-pressed="false" aria-label="Moderately Played · Heavily Played: show the back">
             <span class="flip-inner" style="--ar: 540 / 711">
-              <span class="flip-face flip-front"><img src="/cond-img/mp-hp-front.webp" width="540" height="711" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, front" decoding="async"></span>
-              <span class="flip-face flip-back"><img src="/cond-img/mp-hp-back.webp" width="540" height="711" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, back" decoding="async"></span>
+              <span class="flip-face flip-front"><img src="/cond-img/mp-hp-front.webp" width="540" height="711" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, front" decoding="async" loading="lazy"></span>
+              <span class="flip-face flip-back"><img src="/cond-img/mp-hp-back.webp" width="540" height="711" alt="Example card, top half Moderately Played and bottom half Heavily Played, with close-ups of the corners, back" decoding="async" loading="lazy"></span>
             </span>
           </button>
           <figcaption><strong>Moderately Played · Heavily Played</strong><span>Top half Moderately Played, bottom half Heavily Played</span></figcaption>
@@ -562,8 +566,8 @@
         <figure class="flip-wrap">
           <button type="button" class="flip" aria-pressed="false" aria-label="Damaged: show the back">
             <span class="flip-inner" style="--ar: 541 / 705">
-              <span class="flip-face flip-front"><img src="/cond-img/dmg-front.webp" width="541" height="705" alt="Example Damaged card, with close-ups of the worn corners and crease, front" decoding="async"></span>
-              <span class="flip-face flip-back"><img src="/cond-img/dmg-back.webp" width="541" height="705" alt="Example Damaged card, with close-ups of the worn corners and crease, back" decoding="async"></span>
+              <span class="flip-face flip-front"><img src="/cond-img/dmg-front.webp" width="541" height="705" alt="Example Damaged card, with close-ups of the worn corners and crease, front" decoding="async" loading="lazy"></span>
+              <span class="flip-face flip-back"><img src="/cond-img/dmg-back.webp" width="541" height="705" alt="Example Damaged card, with close-ups of the worn corners and crease, back" decoding="async" loading="lazy"></span>
             </span>
           </button>
           <figcaption><strong>Damaged</strong><span>The whole card</span></figcaption>
