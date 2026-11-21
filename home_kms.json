@@ -1,18 +1,10 @@
 {
- "updatedAt": "2026-11-17T18:54:36.550Z",
+ "updatedAt": "2026-11-21T14:15:16.894Z",
  "featured": {
   "kind": "item",
   "id": "item-mvomekeld1e"
  },
- "shows": [
-  {
-   "name": "Great Lakes Gaming",
-   "date": "2026-11-18",
-   "start": "17:00",
-   "end": "22:00",
-   "place": "Innovation square"
-  }
- ],
+ "shows": [],
  "contact": {
   "email": "kantomisplaysociety@gmail.com",
   "phone": null
