@@ -348,15 +348,31 @@
       height: auto;
       border-radius: 8px;
       margin: 0 auto 0.85rem auto;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-      /* A card-shaped grey box until the picture arrives (it can take seconds), so the name, price and
+      /* A card-shaped placeholder until the picture arrives (it can take seconds), so the name, price and
          buttons don't jump down when it does; once loaded (or failed) the picture keeps its own shape.
-         342 x 470 is the card pictures' own size (images.carddex.dev; TCGplayer's are within a pixel or two) */
+         342 x 470 is the card pictures' own size (images.carddex.dev; TCGplayer's are within a pixel or two).
+         It looks like a blank card: a soft sheen, an inner frame where a card's border is (the inset shadows,
+         covered by the picture once it's in) and a slow shine across it. CSS only: nothing to download, and
+         the shine stops once the picture is in (or with reduce motion). */
+      --ph-shine: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35), inset 0 0 0 7px rgba(255, 255, 255, 0.035), inset 0 0 0 8px rgba(0, 0, 0, 0.14);
       aspect-ratio: 342 / 470;
       object-fit: contain;
-      background: var(--line-soft);
+      background-color: var(--line-soft);
+      background-image:
+        linear-gradient(105deg, transparent 38%, var(--ph-shine) 50%, transparent 62%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.06));
+      background-size: 300% 100%, 100% 100%;
+      background-repeat: no-repeat;
+      animation: card-art-shine 1.6s ease-in-out infinite;
     }
-    .card-art.loaded { aspect-ratio: auto; background: none; }
+    [data-theme="light"] .card-art { --ph-shine: rgba(255, 255, 255, 0.75); }
+    .card-art.loaded { aspect-ratio: auto; background: none; animation: none; }
+    @keyframes card-art-shine {
+      from { background-position: 100% 0, 0 0; }
+      to { background-position: 0 0, 0 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { .card-art { animation: none; } }
 
     .badge {
       display: inline-block;
