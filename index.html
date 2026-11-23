@@ -349,7 +349,14 @@
       border-radius: 8px;
       margin: 0 auto 0.85rem auto;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+      /* A card-shaped grey box until the picture arrives (it can take seconds), so the name, price and
+         buttons don't jump down when it does; once loaded (or failed) the picture keeps its own shape.
+         342 x 470 is the card pictures' own size (images.carddex.dev; TCGplayer's are within a pixel or two) */
+      aspect-ratio: 342 / 470;
+      object-fit: contain;
+      background: var(--line-soft);
     }
+    .card-art.loaded { aspect-ratio: auto; background: none; }
 
     .badge {
       display: inline-block;
@@ -1683,7 +1690,7 @@
       // Everything from the catalog or the address bar is escaped: a scanned QR's text, staff-typed names
       // (added_cards.json) or other sources' names must never become page code (security review, Nov 2026)
       var imgSrc = safeUrl(card.image);
-      var imgHtml = imgSrc ? '<img src="' + esc(imgSrc) + '" alt="' + esc(card.name) + '" class="card-art">' : '';
+      var imgHtml = imgSrc ? '<img src="' + esc(imgSrc) + '" alt="' + esc(card.name) + '" class="card-art" onload="this.classList.add(\'loaded\')" onerror="this.classList.add(\'loaded\')">' : '';
       var tcgLink = safeUrl(card.tcgUrl);
       var numTotal = card.printedTotal ? '/' + card.printedTotal : '';
 
