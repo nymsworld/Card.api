@@ -97,7 +97,8 @@ BATTLE_ACADEMY = re.compile(r"^Battle Academy")
 SEALED_MISC_GROUP = "Miscellaneous Cards & Products"
 SEALED_RARITY = "Sealed Product"
 # part -> [(TCGCSV category, game)] whose sealed products that part adds
-SEALED_GAMES = {"7": [(3, "Pokemon"), (85, "Pokemon Japan")], "9": [(1, "Magic")]}
+SEALED_GAMES = {"7": [(3, "Pokemon"), (85, "Pokemon Japan")], "9": [(1, "Magic")],
+                "11": [(68, "One Piece Card Game"), (71, "Lorcana TCG")]}
 # Groups whose "sealed" products aren't: the Japanese Quick Starter Gift Sets list their single cards without
 # numbers, and Magic's apparel is clothing
 SEALED_SKIP_GROUPS = re.compile(r"^(Quick Starter Gift Set|Magic: The Gathering Apparel)")
@@ -128,6 +129,12 @@ WHOLE_GROUPS = re.compile(r"^(McDonald's (Promos \d{4}|25th Anniversary Promos)|
 # that left ~320 Japanese sets out, Advent of Arceus among them.)
 WHOLE_SET_CATEGORIES = [(3, "Pokemon"), (85, "Pokemon Japan")]
 WHOLE_SET_GROUP = "set-all"
+# Every card and sealed product of the One Piece Card Game and Disney Lorcana (part 11, owner's request, Nov 2026),
+# the same way (fetch_whole_sets), in their own files (GAME_FILES), group "game-all". Their foils are separate
+# entries: One Piece's "Foil" tcg-<id>-foil, Lorcana's "Cold Foil" tcg-<id>-cold-foil (printing_kind "foil", like
+# Magic's); Lorcana's "Holofoil" (Enchanted cards, only made that way) is the plain card.
+OTHER_GAME_CATEGORIES = [(68, "One Piece Card Game"), (71, "Lorcana TCG")]
+OTHER_GAME_GROUP = "game-all"
 
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
@@ -147,7 +154,8 @@ PRINTING_LABELS = {
 # replace this file with a new export trimmed to the same columns.
 STOCK_FILE = "stock_cards.csv"
 # Card games the stock list can include: TCGplayer product line -> TCGCSV category ID
-TCGCSV_CATEGORIES = {"Pokemon": 3, "Pokemon Japan": 85, "Magic": 1, "YuGiOh": 2}
+TCGCSV_CATEGORIES = {"Pokemon": 3, "Pokemon Japan": 85, "Magic": 1, "YuGiOh": 2,
+                     "One Piece Card Game": 68, "Lorcana TCG": 71}
 # Japanese Pokémon (TCGCSV category 85): every main Scarlet & Violet and Mega Evolution
 # expansion (set codes like "SV7: ...", "SV2a: ...", "m1L: ...", "M6a: ..."), Double Rare and
 # above, plus every card in the SV-P / M-P promo sets. IDs look like jp-<TCGplayer product ID>.
@@ -176,9 +184,13 @@ PRODUCT_LINE_ALIASES = {
     "Yu-Gi-Oh!": "YuGiOh",
     "Yu-Gi-Oh": "YuGiOh",
     "YuGiOh!": "YuGiOh",
+    "One Piece": "One Piece Card Game",
+    "Disney Lorcana": "Lorcana TCG",
+    "Lorcana": "Lorcana TCG",
 }
 # Shown on the price page and in the app
-GAME_NAMES = {"Pokemon": "Pokémon", "Pokemon Japan": "Pokémon (Japanese)", "Magic": "Magic: The Gathering", "YuGiOh": "Yu-Gi-Oh!"}
+GAME_NAMES = {"Pokemon": "Pokémon", "Pokemon Japan": "Pokémon (Japanese)", "Magic": "Magic: The Gathering", "YuGiOh": "Yu-Gi-Oh!",
+              "One Piece Card Game": "One Piece Card Game", "Lorcana TCG": "Disney Lorcana"}
 
 # Bulk bin tags: fixed prices, no market lookup. Their QR stickers open the price page
 # like any card, and the app's Sales tab can add them in quantity.
@@ -199,7 +211,8 @@ VERSION_FILE = "prices_version.json"  # when the price files last changed: { upd
 # The price page (GAME_FILES in index.html) and the shop app (GAME_FILES in price-cache.js) load and merge
 # them, so a new file here needs adding there too. Shards and price history cover every game.
 CATALOG_FILE = "prices.json"
-GAME_FILES = {"Magic: The Gathering": "prices_magic.json", "Yu-Gi-Oh!": "prices_yugioh.json"}
+GAME_FILES = {"Magic: The Gathering": "prices_magic.json", "Yu-Gi-Oh!": "prices_yugioh.json",
+              "One Piece Card Game": "prices_onepiece.json", "Disney Lorcana": "prices_lorcana.json"}
 # prices.json split into small files for the customer price page (see write_card_shards)
 SHARD_DIR = "cards"
 SHARD_COUNT = 128
@@ -251,12 +264,13 @@ PARTS = {
     "2": "151 holos and reverse holos, overnumbered cards from the first half of Scarlet & Violet, and every card by the artists in ARTISTS",
     "3": "Overnumbered cards from the second half of Scarlet & Violet, jumbo cards, and SV / ME commons, uncommons and rares over $0.50",
     "4": "Overnumbered cards from Mega Evolution, then the Sword & Shield era: V cards, secrets, galleries, promos and Prize Packs",
-    "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh) that aren't in the database yet",
+    "5": "Japanese Pokémon cards, then stocked cards from stock_cards.csv (Pokémon, Magic, Yu-Gi-Oh, One Piece, Lorcana) that aren't in the database yet",
     "6": "Stamped cards, Battle Academy cards and ball / Energy pattern variants from every TCGplayer Pokémon set",
     "7": "Every Pokémon sealed product on TCGplayer, English and Japanese",
     "8": "Every card in TCGplayer's Miscellaneous Cards & Products group (not Code Cards), and every card and sealed product in the McDonald's, Burger King, Trick or Trade, POP Series, Rumble and WoTC promo sets",
     "9": "Every Magic: The Gathering sealed product on TCGplayer",
     "10": "Every card in every Pokémon set (English and Japanese)",
+    "11": "Every One Piece Card Game and Disney Lorcana card and sealed product",
 }
 
 _tcgcsv_groups = None
@@ -933,17 +947,18 @@ def fetch_whole_groups(catalog, groups, existing):
     print(f"Synced {total} cards and sealed products from whole sets ({unpriced} cards without a TCGplayer market price: Ask staff)")
 
 
-def fetch_whole_sets(catalog, existing):
-    """Every card in every Pokémon set (see WHOLE_SET_CATEGORIES).
-    existing: prices.json as it is now, without the old set-all entries (rebuilt here)."""
+def fetch_whole_sets(catalog, existing, categories=WHOLE_SET_CATEGORIES, group=WHOLE_SET_GROUP):
+    """Every card in every Pokémon set (see WHOLE_SET_CATEGORIES), or (part 11) every One Piece and Lorcana card
+    (OTHER_GAME_CATEGORIES, group OTHER_GAME_GROUP).
+    existing: prices.json as it is now, without the old entries of that group (rebuilt here)."""
     covered = set()
     for card_id, entry in existing.items():
         key = entry_product_key(card_id, entry)
         if key:
             covered.add(key)
-    others = regular_entries(existing, WHOLE_SET_GROUP)
+    others = regular_entries(existing, group)
     total = unpriced = 0
-    for category, game in WHOLE_SET_CATEGORIES:
+    for category, game in categories:
         base = f"https://tcgcsv.com/tcgplayer/{category}"
         groups = get_json(f"{base}/groups", headers=TCGCSV_HEADERS).get("results", [])
         time.sleep(REQUEST_DELAY)
@@ -961,7 +976,8 @@ def fetch_whole_sets(catalog, existing):
             for p in get_json(f"{base}/{g['groupId']}/prices", headers=TCGCSV_HEADERS).get("results", []):
                 prices.setdefault(p["productId"], {})[p.get("subTypeName")] = p.get("marketPrice")
             time.sleep(0.5)
-            set_name = SEALED_SET_PREFIX.sub("", g["name"]) if game == "Pokemon" else g["name"].split(": ", 1)[-1]
+            set_name = {"Pokemon": SEALED_SET_PREFIX.sub("", g["name"]),
+                        "Pokemon Japan": g["name"].split(": ", 1)[-1]}.get(game, g["name"])
             added = 0
             for product in cards:
                 data = {e.get("name"): e.get("value") for e in product.get("extendedData", [])}
@@ -980,6 +996,9 @@ def fetch_whole_sets(catalog, existing):
                 for name, value in variants.items():
                     if printing_kind(name) == "1st":
                         printings.append(("1st", f"tcg-{pid}-{slugify(name)}", value, " (1st Edition)"))
+                for name, value in variants.items():
+                    if printing_kind(name) == "foil":  # One Piece Foil, Lorcana Cold Foil (labelled when there's a non-foil)
+                        printings.append(("foil", f"tcg-{pid}-{slugify(name)}", value, f" ({name})" if regular else ""))
                 if variants.get("Reverse Holofoil") is not None:
                     if printings:
                         printings.append(("reverse", f"tcg-{pid}-reverse", variants["Reverse Holofoil"], ""))
@@ -994,7 +1013,7 @@ def fetch_whole_sets(catalog, existing):
                 for kind, card_id, raw_market, label in printings:
                     if (pid, kind) in covered:
                         continue  # already listed another way
-                    entry = tcgcsv_entry(product, card_id, set_name, raw_market, WHOLE_SET_GROUP,
+                    entry = tcgcsv_entry(product, card_id, set_name, raw_market, group,
                                          reverse=kind == "reverse", game=game)
                     entry["name"] += label
                     if kind == "partner":
@@ -1229,14 +1248,15 @@ def product_line(row):
 def printing_kind(printing):
     """'reverse', '1st', 'foil' or 'base' for a printing name, TCGplayer's ("1st Edition Holofoil") or the card
     API's ("1stEditionHolofoil"). 1st Edition and Unlimited share one TCGplayer product but are priced
-    (and sold) separately, so they're different entries, and so are Magic's Normal and Foil (tcg-<id> /
-    tcg-<id>-foil); other printings count as the base card. The shop app's KMSInventory.printingKind matches."""
+    (and sold) separately, so they're different entries, and so are Magic's and One Piece's Normal and Foil
+    (tcg-<id> / tcg-<id>-foil) and Lorcana's Normal and Cold Foil (tcg-<id>-cold-foil); other printings count as
+    the base card. The shop app's KMSInventory.printingKind matches."""
     p = (printing or "").strip().lower()
     if "reverse" in p:
         return "reverse"
     if "1st" in p:
         return "1st"
-    return "foil" if p == "foil" else "base"
+    return "foil" if p in ("foil", "cold foil") else "base"
 
 
 def entry_product_key(card_id, entry):
@@ -1640,12 +1660,15 @@ def pick_condition_prices(card, entry, card_id):
     skip them (unless the product has nothing else)."""
     want_reverse = card_id.endswith("-reverse")
     want_first = "-1st-edition" in card_id or bool(entry.get("firstEdition"))
+    want_foil = card_id.endswith("-foil")  # Magic / One Piece Foil, Lorcana Cold Foil: never the Normal's prices
     want_language = "japanese" if card_id.startswith("jp-") else "english"
     printings = {}
     for v in card.get("variants", []):
         if (v.get("language") or "english").lower() != want_language:
             continue
         if ("reverse" in (v.get("printing") or "").lower()) != want_reverse:
+            continue
+        if (printing_kind(v.get("printing")) == "foil") != want_foil:
             continue
         printings.setdefault(v.get("printing"), []).append(v)
     first = {p: vs for p, vs in printings.items() if "1st edition" in (p or "").lower()}
@@ -1989,7 +2012,7 @@ def build_price_catalog(part):
 
     for sealed_part in SEALED_GAMES:
         if part in ("all", sealed_part):
-            # Every sealed product: Pokémon (7), Magic (9)
+            # Every sealed product: Pokémon (7), Magic (9), One Piece and Lorcana (11)
             fetch_sealed(updates, sealed_part, previous)
 
     if part in ("all", "8"):
@@ -2007,6 +2030,13 @@ def build_price_catalog(part):
         merged = {k: v for k, v in existing.items() if v.get("group") != WHOLE_SET_GROUP}
         merged.update(updates)
         fetch_whole_sets(updates, merged)
+
+    if part in ("all", "11"):
+        # Every One Piece and Lorcana card, rebuilt the same way (their sealed products are SEALED_GAMES above)
+        catalog = {k: v for k, v in catalog.items() if v.get("group") != OTHER_GAME_GROUP}
+        merged = {k: v for k, v in existing.items() if v.get("group") != OTHER_GAME_GROUP}
+        merged.update(updates)
+        fetch_whole_sets(updates, merged, OTHER_GAME_CATEGORIES, OTHER_GAME_GROUP)
 
     stock = load_stock()
     if part in ("all", "5"):

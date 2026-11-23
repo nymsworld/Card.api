@@ -2,29 +2,30 @@ name: Update Pokemon Card Prices Daily
 
 on:
   schedule:
-    # The update is split into 10 parts, about 25 minutes apart, so no single run sends
+    # The update is split into 11 parts, about 25 minutes apart, so no single run sends
     # enough requests to the card APIs to get rate limited.
-    # GitHub schedules in UTC. 06:05-09:50 UTC is overnight Eastern all year:
-    #   winter (EST): 1:05, 1:30, 1:55, 2:20, 2:45, 3:10, 3:35, 4:00, 4:25, 4:50 AM
-    #   summer (EDT): 2:05, 2:30, 2:55, 3:20, 3:45, 4:10, 4:35, 5:00, 5:25, 5:50 AM
+    # GitHub schedules in UTC. 06:05-10:25 UTC is overnight Eastern all year:
+    #   winter (EST): 1:05, 1:30, 1:55, 2:20, 2:45, 3:10, 3:35, 4:00, 4:25, 4:50, 5:25 AM
+    #   summer (EDT): 2:05, 2:30, 2:55, 3:20, 3:45, 4:10, 4:35, 5:00, 5:25, 5:50, 6:25 AM
     # GitHub can start scheduled runs a few minutes late; the gaps leave room for that.
     - cron: '5 6 * * *'    # part 1: Double Rares, ACE SPECs, singles, Classic Collection, promos
     - cron: '30 6 * * *'   # part 2: 151 holos + first half of SV overnumbered + cards by the artists in ARTISTS
     - cron: '55 6 * * *'   # part 3: second half of SV overnumbered + jumbo cards + SV/ME commons-rares over $0.50
     - cron: '20 7 * * *'   # part 4: Mega Evolution overnumbered + Sword & Shield era (V cards, secrets, galleries, promos, Prize Packs)
-    - cron: '45 7 * * *'   # part 5: Japanese Pokémon cards + stocked cards (Pokémon, Magic, Yu-Gi-Oh)
+    - cron: '45 7 * * *'   # part 5: Japanese Pokémon cards + stocked cards (Pokémon, Magic, Yu-Gi-Oh, One Piece, Lorcana)
     - cron: '10 8 * * *'   # part 6: stamped cards + pattern variants from every set
     - cron: '35 8 * * *'   # part 7: every Pokémon sealed product (English and Japanese)
     - cron: '0 9 * * *'    # part 8: every card in Misc. Cards & Products + whole promo sets (McDonald's, BK, Trick or Trade, POP, Rumble, WoTC)
     - cron: '25 9 * * *'   # part 9: every Magic sealed product
     - cron: '50 9 * * *'   # part 10: every card in every Pokémon set, English and Japanese (last: sees the others' cards)
+    - cron: '25 10 * * *'  # part 11: every One Piece and Lorcana card and sealed product (after part 10's ~27 minutes)
   # Allows you to click a button and run it manually whenever you want
   workflow_dispatch:
     inputs:
       part:
         description: 'Which part to update (all = everything in one run)'
         type: choice
-        options: ['all', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+        options: ['all', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
         default: 'all'
 
 permissions:
@@ -66,6 +67,7 @@ jobs:
             "0 9 * * *")  PART=8 ;;
             "25 9 * * *") PART=9 ;;
             "50 9 * * *") PART=10 ;;
+            "25 10 * * *") PART=11 ;;
             *)            PART="${{ github.event.inputs.part || 'all' }}" ;;
           esac
           echo "part=$PART" >> "$GITHUB_OUTPUT"
