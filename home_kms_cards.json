@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-26T01:13:14.142Z",
+ "updatedAt": "2026-11-26T19:53:23.665Z",
  "featured": {
   "kind": "card",
   "id": "sm12-165",
@@ -25,10 +25,27 @@
    "price": 22,
    "image": "https://tcgplayer-cdn.tcgplayer.com/product/162042_200w.jpg",
    "tcgUrl": "https://www.tcgplayer.com/product/162042/pokemon-sm-promos-lucario-gx-sm100",
-   "from": 18.97,
+   "from": 19.13,
    "to": 22.28,
-   "change": 3.31,
-   "percent": 17
+   "change": 3.15,
+   "percent": 16
+  },
+  {
+   "kind": "card",
+   "id": "sv6-165",
+   "cond": "NM",
+   "name": "Unfair Stamp",
+   "setName": "Twilight Masquerade",
+   "number": "165",
+   "rarity": "ACE SPEC Rare",
+   "price": 19,
+   "printedTotal": 167,
+   "image": "https://images.carddex.dev/cards/sv06/sv06-165--sm.webp",
+   "tcgUrl": "https://www.tcgplayer.com/product/550209",
+   "from": 17.01,
+   "to": 18.81,
+   "change": 1.8,
+   "percent": 11
   },
   {
    "kind": "card",
@@ -38,65 +55,48 @@
    "setName": "Crown Zenith: Galarian Gallery",
    "number": "GG38",
    "rarity": "Ultra Rare",
-   "price": 59,
+   "price": 58,
    "printedTotal": "GG70",
    "image": "https://tcgplayer-cdn.tcgplayer.com/product/478067_200w.jpg",
    "tcgUrl": "https://www.tcgplayer.com/product/478067/pokemon-swsh-crown-zenith-galarian-gallery-suicune-v",
-   "from": 56.9,
-   "to": 58.43,
-   "change": 1.53,
+   "from": 56.27,
+   "to": 57.88,
+   "change": 1.61,
    "percent": 3
   },
   {
    "kind": "card",
-   "id": "jp-602664",
-   "cond": "NM",
-   "name": "Leafeon ex",
-   "setName": "Terastal Fest ex",
-   "number": "200",
-   "rarity": "Special Art Rare",
-   "price": 46,
-   "printedTotal": "187",
-   "image": "https://tcgplayer-cdn.tcgplayer.com/product/602664_200w.jpg",
-   "tcgUrl": "https://www.tcgplayer.com/product/602664/pokemon-japan-sv8a-terastal-fest-ex-leafeon-ex-200-187",
-   "from": 44.47,
-   "to": 45.66,
-   "change": 1.19,
-   "percent": 3
-  },
-  {
-   "kind": "card",
-   "id": "me2-13",
+   "id": "sv8pt5-75",
    "cond": null,
-   "name": "Mega Charizard X ex",
-   "setName": "Phantasmal Flames",
-   "number": "13",
+   "name": "Eevee ex",
+   "setName": "Prismatic Evolutions",
+   "number": "75",
+   "rarity": "Double Rare",
+   "price": 7,
+   "printedTotal": 131,
+   "image": "https://images.carddex.dev/cards/sv08.5/sv08.5-075--sm.webp",
+   "tcgUrl": "https://www.tcgplayer.com/product/610430",
+   "from": 5.17,
+   "to": 6.62,
+   "change": 1.45,
+   "percent": 28
+  },
+  {
+   "kind": "card",
+   "id": "sv8pt5-14",
+   "cond": null,
+   "name": "Flareon ex",
+   "setName": "Prismatic Evolutions",
+   "number": "14",
    "rarity": "Double Rare",
    "price": 5,
-   "printedTotal": 94,
-   "image": "https://images.carddex.dev/cards/me02/me02-013--sm.webp",
-   "tcgUrl": "https://www.tcgplayer.com/product/662182",
-   "from": 3.59,
-   "to": 4.69,
-   "change": 1.1,
-   "percent": 31
-  },
-  {
-   "kind": "card",
-   "id": "tcg-113756",
-   "cond": "NM",
-   "name": "Espurr",
-   "setName": "Generations: Radiant Collection",
-   "number": "RC14",
-   "rarity": "Common",
-   "price": 26,
-   "printedTotal": "RC32",
-   "image": "https://tcgplayer-cdn.tcgplayer.com/product/113756_200w.jpg",
-   "tcgUrl": "https://www.tcgplayer.com/product/113756/pokemon-generations-radiant-collection-espurr",
-   "from": 24.32,
-   "to": 25.42,
-   "change": 1.1,
-   "percent": 5
+   "printedTotal": 131,
+   "image": "https://images.carddex.dev/cards/sv08.5/sv08.5-014--sm.webp",
+   "tcgUrl": "https://www.tcgplayer.com/product/610369",
+   "from": 4.18,
+   "to": 5.13,
+   "change": 0.95,
+   "percent": 23
   }
  ],
  "newestArt": [
@@ -225,7 +225,7 @@
    "setName": "30th Celebration",
    "number": "133",
    "rarity": "Illustration Rare",
-   "price": 2,
+   "price": 3,
    "printedTotal": 128,
    "image": "https://images.carddex.dev/cards/30c/30c-133--sm.webp",
    "tcgUrl": "https://www.tcgplayer.com/product/716221"
@@ -260,7 +260,7 @@
  "singles": [
   {
    "name": "Pokémon",
-   "count": 816
+   "count": 812
   },
   {
    "name": "Japanese Pokémon",
