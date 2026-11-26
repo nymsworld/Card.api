@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-25T23:50:52.065Z",
+ "updatedAt": "2026-11-26T01:13:14.142Z",
  "featured": {
   "kind": "card",
   "id": "sm12-165",
@@ -102,6 +102,32 @@
  "newestArt": [
   {
    "kind": "card",
+   "id": "me6-114",
+   "cond": "NM",
+   "name": "Eevee",
+   "setName": "Delta Reign",
+   "number": "114",
+   "rarity": "Illustration Rare",
+   "price": 21,
+   "printedTotal": 103,
+   "image": "https://images.carddex.dev/cards/me06/me06-114--sm.webp",
+   "tcgUrl": "https://www.tcgplayer.com/product/726565"
+  },
+  {
+   "kind": "card",
+   "id": "me6-107",
+   "cond": "NM",
+   "name": "Magmortar",
+   "setName": "Delta Reign",
+   "number": "107",
+   "rarity": "Illustration Rare",
+   "price": 3,
+   "printedTotal": 103,
+   "image": "https://images.carddex.dev/cards/me06/me06-107--sm.webp",
+   "tcgUrl": "https://www.tcgplayer.com/product/726560"
+  },
+  {
+   "kind": "card",
    "id": "me55-143",
    "cond": "NM",
    "name": "Kommo-o",
@@ -125,6 +151,19 @@
    "printedTotal": "103",
    "image": "https://tcgplayer-cdn.tcgplayer.com/product/716913_200w.jpg",
    "tcgUrl": "https://www.tcgplayer.com/product/716913/pokemon-japan-m6a-mega-expansion-30th-celebration-drifloon-111-103"
+  },
+  {
+   "kind": "card",
+   "id": "me55-146",
+   "cond": "NM",
+   "name": "Maushold",
+   "setName": "30th Celebration",
+   "number": "146",
+   "rarity": "Illustration Rare",
+   "price": 5,
+   "printedTotal": 128,
+   "image": "https://images.carddex.dev/cards/30c/30c-146--sm.webp",
+   "tcgUrl": "https://www.tcgplayer.com/product/716228"
   },
   {
    "kind": "card",
@@ -216,51 +255,12 @@
    "printedTotal": 128,
    "image": "https://images.carddex.dev/cards/30c/30c-144--sm.webp",
    "tcgUrl": "https://www.tcgplayer.com/product/714358"
-  },
-  {
-   "kind": "card",
-   "id": "jp-709241",
-   "cond": "NM",
-   "name": "Kecleon",
-   "setName": "Storm Emeralda",
-   "number": "088",
-   "rarity": "Art Rare",
-   "price": 7,
-   "printedTotal": "076",
-   "image": "https://tcgplayer-cdn.tcgplayer.com/product/709241_200w.jpg",
-   "tcgUrl": "https://www.tcgplayer.com/product/709241/pokemon-japan-m6-storm-emeralda-kecleon-088-076"
-  },
-  {
-   "kind": "card",
-   "id": "me5-94",
-   "cond": "NM",
-   "name": "Toucannon",
-   "setName": "Pitch Black",
-   "number": "94",
-   "rarity": "Illustration Rare",
-   "price": 2,
-   "printedTotal": 84,
-   "image": "https://images.carddex.dev/cards/me05/me05-094--sm.webp",
-   "tcgUrl": "https://www.tcgplayer.com/product/704851"
-  },
-  {
-   "kind": "card",
-   "id": "me5-90",
-   "cond": "NM",
-   "name": "Slowbro",
-   "setName": "Pitch Black",
-   "number": "90",
-   "rarity": "Illustration Rare",
-   "price": 5,
-   "printedTotal": 84,
-   "image": "https://images.carddex.dev/cards/me05/me05-090--sm.webp",
-   "tcgUrl": "https://www.tcgplayer.com/product/704847"
   }
  ],
  "singles": [
   {
    "name": "Pokémon",
-   "count": 807
+   "count": 816
   },
   {
    "name": "Japanese Pokémon",
