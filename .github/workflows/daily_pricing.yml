@@ -2,7 +2,7 @@ name: Update Pokemon Card Prices Daily
 
 on:
   schedule:
-    # The update is split into 11 parts, about 25 minutes apart, so no single run sends
+    # The update is split into 12 parts, about 25 minutes apart, so no single run sends
     # enough requests to the card APIs to get rate limited.
     # GitHub schedules in UTC. 06:05-10:25 UTC is overnight Eastern all year:
     #   winter (EST): 1:05, 1:30, 1:55, 2:20, 2:45, 3:10, 3:35, 4:00, 4:25, 4:50, 5:25 AM
@@ -19,13 +19,14 @@ on:
     - cron: '25 9 * * *'   # part 9: every Magic sealed product
     - cron: '50 9 * * *'   # part 10: every card in every Pokémon set, English and Japanese (last: sees the others' cards)
     - cron: '25 10 * * *'  # part 11: every One Piece and Lorcana card and sealed product (after part 10's ~27 minutes)
+    - cron: '5 11 * * *'   # part 12: every Magic and Yu-Gi-Oh! single, to Cloudflare R2 (~26 minutes; 6:05 AM EST / 7:05 AM EDT)
   # Allows you to click a button and run it manually whenever you want
   workflow_dispatch:
     inputs:
       part:
         description: 'Which part to update (all = everything in one run)'
         type: choice
-        options: ['all', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+        options: ['all', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
         default: 'all'
 
 permissions:
@@ -68,22 +69,56 @@ jobs:
             "25 9 * * *") PART=9 ;;
             "50 9 * * *") PART=10 ;;
             "25 10 * * *") PART=11 ;;
+            "5 11 * * *") PART=12 ;;
             *)            PART="${{ github.event.inputs.part || 'all' }}" ;;
           esac
           echo "part=$PART" >> "$GITHUB_OUTPUT"
+
+      # Part 12 (every Magic and Yu-Gi-Oh! single) goes to Cloudflare R2, not git: publish_r2.py uploads update_prices.py's
+      # r2/ folder before prices_version.json (which names those files) is pushed. Needs the repo secrets
+      # R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY and R2_BUCKET (an R2 API token with Object Read & Write
+      # on the public kms-card-data bucket only); without them part 12 is skipped and the rest runs as before.
+      - name: Set Up R2 Publishing
+        id: r2
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+        run: |
+          PART="${{ steps.part.outputs.part }}"
+          if [ "$PART" != "12" ] && [ "$PART" != "all" ]; then echo "on=0" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ -z "$R2_ACCOUNT_ID" ] || [ -z "$R2_ACCESS_KEY_ID" ] || [ -z "$R2_SECRET_ACCESS_KEY" ] || [ -z "$R2_BUCKET" ]; then
+            echo "No R2 secrets yet: part 12 is skipped."
+            echo "on=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          pip install boto3==1.43.100
+          echo "on=1" >> "$GITHUB_OUTPUT"
 
       - name: Run Price Updater
         env:
           # Condition prices (LP-DMG) for expensive cards; the step is skipped without it
           JUSTTCG_API_KEY: ${{ secrets.JUSTTCG_API_KEY }}
+          R2_ENABLED: ${{ steps.r2.outputs.on }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
         run: |
           python update_prices.py ${{ steps.part.outputs.part }}
+          if [ "$R2_ENABLED" = "1" ]; then python publish_r2.py; fi
 
       # If another price run pushed while this one ran, its price files clash with these (every run rewrites
       # them): start again from its files and run this part again, up to 3 times.
       - name: Commit and Push Updated prices.json (and the other games' price files)
         env:
           JUSTTCG_API_KEY: ${{ secrets.JUSTTCG_API_KEY }}
+          R2_ENABLED: ${{ steps.r2.outputs.on }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -96,5 +131,6 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python update_prices.py ${{ steps.part.outputs.part }}
+            if [ "$R2_ENABLED" = "1" ]; then python publish_r2.py; fi
           done
           exit 1

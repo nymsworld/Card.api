@@ -1315,8 +1315,27 @@
     // Card games other than Pokémon have their own file (GAME_FILES in update_prices.py; {} until the shop
     // stocks that game), merged into the catalog here. A file that's missing or won't load is skipped.
     var GAME_FILES = ['prices_magic.json', 'prices_yugioh.json', 'prices_onepiece.json', 'prices_lorcana.json'];
+    // Every other Magic and Yu-Gi-Oh! single (update_prices.py's part 12, R2_FILES there and in the shop app's
+    // price-cache.js: keep the three lists the same) is too big for git: it's in Cloudflare R2 (R2_BASE), read first
+    // so the git files' stocked cards win where both list one. Their small card files are R2_BASE + cards/<n>.json.
+    var R2_BASE = 'https://data.kantomisplay.cc/';
+    var R2_GAME_FILES = ['prices_magic_all_1.json', 'prices_magic_all_2.json', 'prices_yugioh_all_1.json'];
+
+    async function fetchR2Shard(n, version) {
+      var res = await fetch(R2_BASE + 'cards/' + n + '.json?v=' + encodeURIComponent(version || Date.now()));
+      if (!res.ok) throw new Error('Card file not available');
+      return res.json();
+    }
 
     async function addGameFiles(catalog) {
+      await Promise.all(R2_GAME_FILES.map(async function (file) {
+        try {
+          var res = await fetch(R2_BASE + file + '?v=' + Date.now());
+          if (!res.ok) return;
+          var cards = await res.json();
+          for (var id in cards) catalog[id] = cards[id];
+        } catch (e) {}
+      }));
       await Promise.all(GAME_FILES.map(async function (file) {
         var endpoints = [
           'https://raw.githubusercontent.com/nymsworld/Card.api/main/' + file + '?v=' + Date.now(),
@@ -1362,6 +1381,11 @@
       if (!res.ok) throw new Error('Card file not available');
       var shard = await res.json();
       var card = findCard(shard, targetId);
+      if (!card) {
+        // A Magic or Yu-Gi-Oh! card only in R2 (part 12's): its card file there (a failure falls back to the full list)
+        shard = await fetchR2Shard(shardOf(targetId), version);
+        card = findCard(shard, targetId);
+      }
       if (card) await addConditionPrices(shard, true); // TCGplayer condition prices are already in the file
       return card;
     }
@@ -2574,6 +2598,20 @@
       } catch (e) {
         return fetchCatalog();
       }
+      // Magic and Yu-Gi-Oh! cards that are only in R2 (part 12's): their own card files there
+      var r2Shards = {};
+      Object.keys(stock.cards || {}).forEach(function (id) {
+        if (!findCard(cards, id)) r2Shards[shardOf(id)] = true;
+      });
+      await Promise.all(Object.keys(r2Shards).map(async function (n) {
+        try {
+          var shard = await fetchR2Shard(n, version);
+          Object.keys(stock.cards).forEach(function (id) {
+            var card = findCard(cards, id) ? null : findCard(shard, id);
+            if (card) cards[id] = card;
+          });
+        } catch (e) {} // R2 unreachable: those cards are left out, as a card missing from its file always was
+      }));
       await addConditionPrices(cards, true); // TCGplayer condition prices are already in the entries
       return cards;
     }

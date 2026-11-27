@@ -2,7 +2,7 @@
 // response): the same as the /* block in _headers, keep the two the same. Also sends Cloudflare's own address for
 // the project (card-api.pages.dev, never public) and www.kantomisplay.cc on to kantomisplay.cc.
 export const SECURITY_HEADERS = {
-  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data: blob:; media-src 'self' blob:; connect-src 'self' https://raw.githubusercontent.com https://cdn.jsdelivr.net https://kms-staff.pages.dev https://challenges.cloudflare.com http://127.0.0.1:8788; frame-src https://challenges.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data: blob:; media-src 'self' blob:; connect-src 'self' https://raw.githubusercontent.com https://data.kantomisplay.cc https://cdn.jsdelivr.net https://kms-staff.pages.dev https://challenges.cloudflare.com http://127.0.0.1:8788; frame-src https://challenges.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
   'X-Frame-Options': 'DENY',
   'X-Content-Type-Options': 'nosniff',

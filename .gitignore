@@ -2,5 +2,8 @@
 __pycache__/
 *.pyc
 
+# Part 12's files (every Magic and Yu-Gi-Oh! single): published to Cloudflare R2 by publish_r2.py, never committed
+r2/
+
 # Cloudflare's local Pages runner (wrangler pages dev) keeps its files here
 .wrangler/

@@ -3,6 +3,7 @@ import re
 import sys
 import csv
 import glob
+import hashlib
 from datetime import datetime, timezone
 import time
 import json
@@ -135,6 +136,24 @@ WHOLE_SET_GROUP = "set-all"
 # Magic's); Lorcana's "Holofoil" (Enchanted cards, only made that way) is the plain card.
 OTHER_GAME_CATEGORIES = [(68, "One Piece Card Game"), (71, "Lorcana TCG")]
 OTHER_GAME_GROUP = "game-all"
+# Every Magic: The Gathering and Yu-Gi-Oh! single (part 12, owner's request, Nov 2026), the same way
+# (fetch_whole_sets), group "r2-all": Magic's Foil is tcg-<id>-foil, Yu-Gi-Oh!'s 1st Edition tcg-<id>-1st-edition.
+# Too big for git (measured Nov 26, 2026: Magic 170,956 entries, 68 MB; Yu-Gi-Oh! 59,682, 25 MB; rewritten every
+# night), so they're NOT in prices_magic.json / prices_yugioh.json: part 12 writes them to R2_DIR (not committed)
+# and publish_r2.py uploads them to Cloudflare R2 (the public kms-card-data bucket, R2_PUBLIC): R2_FILES (Magic in
+# two files, each under ~50 MB, by shard_of) and their own small card files (R2_DIR/cards/<n>.json, same shard_of)
+# for the price page's scan lookup. prices_version.json's "files" lists them ({ cards, changedAt, sha256, r2: true },
+# carried over by the other parts). The rest of this script never sees them: price_history.json, the card files in
+# git, the stock list and condition prices are as before. Products on the stock list are left to part 5 (their
+# entries stay in prices_magic.json / prices_yugioh.json, which keep the stocked and sealed cards, so older app
+# builds keep working). The price page (R2_GAME_FILES in index.html) and the shop app (price-cache.js) read R2_FILES:
+# keep the lists the same. Runs only with R2_ENABLED=1 (the workflow sets it when the R2 secrets are there).
+R2_GAME_CATEGORIES = [(1, "Magic"), (2, "YuGiOh")]
+R2_GAME_GROUP = "r2-all"
+R2_DIR = "r2"
+R2_PUBLIC = "https://data.kantomisplay.cc/"
+R2_FILES = {"Magic: The Gathering": ["prices_magic_all_1.json", "prices_magic_all_2.json"],
+            "Yu-Gi-Oh!": ["prices_yugioh_all_1.json"]}
 
 # Every English card by these illustrators, in every printing TCGplayer prices (regular, holo,
 # reverse holo, 1st Edition, Unlimited...), from the Pokémon card API's artist field. Names must be
@@ -271,6 +290,7 @@ PARTS = {
     "9": "Every Magic: The Gathering sealed product on TCGplayer",
     "10": "Every card in every Pokémon set (English and Japanese)",
     "11": "Every One Piece Card Game and Disney Lorcana card and sealed product",
+    "12": "Every Magic: The Gathering and Yu-Gi-Oh! single, published to Cloudflare R2 (not git)",
 }
 
 _tcgcsv_groups = None
@@ -947,10 +967,11 @@ def fetch_whole_groups(catalog, groups, existing):
     print(f"Synced {total} cards and sealed products from whole sets ({unpriced} cards without a TCGplayer market price: Ask staff)")
 
 
-def fetch_whole_sets(catalog, existing, categories=WHOLE_SET_CATEGORIES, group=WHOLE_SET_GROUP):
+def fetch_whole_sets(catalog, existing, categories=WHOLE_SET_CATEGORIES, group=WHOLE_SET_GROUP, skip_products=()):
     """Every card in every Pokémon set (see WHOLE_SET_CATEGORIES), or (part 11) every One Piece and Lorcana card
-    (OTHER_GAME_CATEGORIES, group OTHER_GAME_GROUP).
-    existing: prices.json as it is now, without the old entries of that group (rebuilt here)."""
+    (OTHER_GAME_CATEGORIES, group OTHER_GAME_GROUP), or (part 12) every Magic and Yu-Gi-Oh! single (R2_GAME_CATEGORIES).
+    existing: prices.json as it is now, without the old entries of that group (rebuilt here).
+    skip_products: TCGplayer product IDs (strings) left to another step (part 12: the stock list's, part 5's)."""
     covered = set()
     for card_id, entry in existing.items():
         key = entry_product_key(card_id, entry)
@@ -984,6 +1005,8 @@ def fetch_whole_sets(catalog, existing, categories=WHOLE_SET_CATEGORIES, group=W
                 if (data.get("Rarity") or "").strip() == "Code Card":
                     continue
                 pid = str(product["productId"])
+                if pid in skip_products:
+                    continue
                 variants = {k: v for k, v in prices.get(product["productId"], {}).items() if v is not None}
                 # (kind for matching other steps' entries, ID, market price, label added to the name)
                 printings = []
@@ -1960,6 +1983,47 @@ def write_catalog(catalog):
     return files
 
 
+def r2_files_before():
+    """The R2 files' lines of prices_version.json as they are (parts other than 12 keep them as they were)."""
+    try:
+        with open(VERSION_FILE, encoding="utf-8") as f:
+            before = json.load(f).get("files") or {}
+    except (OSError, ValueError):
+        before = {}
+    return {name: info for name, info in before.items() if (info or {}).get("r2")}
+
+
+def write_r2(cards):
+    """Part 12's cards (see R2_FILES) into R2_DIR, for publish_r2.py: each game's files (split by shard_of) and the
+    card files (R2_DIR/cards/<n>.json). Returns their prices_version.json lines: changedAt moves only when a file's
+    contents changed (told by its sha256, since the last copy is in R2, not here)."""
+    before = r2_files_before()
+    now = datetime.now(timezone.utc).isoformat()
+    split = {name: {} for names in R2_FILES.values() for name in names}
+    for card_id, entry in cards.items():
+        names = R2_FILES[entry["game"]]
+        split[names[shard_of(card_id) % len(names)]][card_id] = entry
+    os.makedirs(os.path.join(R2_DIR, SHARD_DIR), exist_ok=True)
+    files = {}
+    for name, part in split.items():
+        data = json.dumps(part, separators=(",", ":")).encode("utf-8")
+        with open(os.path.join(R2_DIR, name), "wb") as f:
+            f.write(data)
+        sha = hashlib.sha256(data).hexdigest()
+        old = before.get(name) or {}
+        changed_at = old.get("changedAt") if old.get("sha256") == sha else None
+        files[name] = {"cards": len(part), "changedAt": changed_at or now, "sha256": sha, "r2": True}
+        print(f"{name}: {len(part)} cards, {len(data) / 1e6:.1f} MB")
+    shards = [{} for _ in range(SHARD_COUNT)]
+    for card_id, entry in cards.items():
+        shards[shard_of(card_id)][card_id] = entry
+    for n, part in enumerate(shards):
+        with open(os.path.join(R2_DIR, SHARD_DIR, f"{n}.json"), "w", encoding="utf-8") as f:
+            json.dump(part, f, separators=(",", ":"))
+    print(f"Wrote {SHARD_COUNT} R2 card files (largest {max(len(s) for s in shards)} cards)")
+    return files
+
+
 def build_price_catalog(part):
     updates = {}
 
@@ -2039,6 +2103,19 @@ def build_price_catalog(part):
         fetch_whole_sets(updates, merged, OTHER_GAME_CATEGORIES, OTHER_GAME_GROUP)
 
     stock = load_stock()
+    r2_cards = None
+    if part in ("all", "12"):
+        if os.environ.get("R2_ENABLED") == "1":
+            # Every Magic and Yu-Gi-Oh! single, kept apart from the catalog (R2 only, see R2_FILES). Products on
+            # the stock list are part 5's; printings another step lists (sealed, stocked) are left to it.
+            merged = dict(existing)
+            merged.update(updates)
+            r2_cards = {}
+            fetch_whole_sets(r2_cards, merged, R2_GAME_CATEGORIES, R2_GAME_GROUP,
+                             skip_products={row["Product ID"] for row in stock})
+            mark_priced(r2_cards, {})
+        else:
+            print("Part 12: no R2_ENABLED (the R2 secrets aren't set up), skipped")
     if part in ("all", "5"):
         # Japanese cards and stocked cards are rebuilt every run (cards that left the
         # list drop out, and stocked cards now covered elsewhere aren't listed twice).
@@ -2060,6 +2137,7 @@ def build_price_catalog(part):
 
     # Save to prices.json and the other games' files
     files = write_catalog(catalog)
+    files.update(write_r2(r2_cards) if r2_cards is not None else r2_files_before())
 
     update_history(catalog)
     if part in ("all", "5"):
